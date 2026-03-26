@@ -1,14 +1,21 @@
 {
   "version": 2,
   "name": "criativalia-control-plane",
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/$1"
     },
     {
-      "source": "/health",
-      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/health"
+      "src": "/health",
+      "dest": "https://disclosure-emphasis-costs-heights.trycloudflare.com/health"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
