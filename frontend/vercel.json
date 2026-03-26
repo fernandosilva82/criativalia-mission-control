@@ -4,11 +4,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://patches-ccd-mystery-flickr.trycloudflare.com/api/:path*"
+      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/:path*"
     },
     {
       "source": "/health",
-      "destination": "https://patches-ccd-mystery-flickr.trycloudflare.com/health"
+      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/health"
     }
   ]
 }
