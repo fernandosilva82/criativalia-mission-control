@@ -7,7 +7,7 @@ import Database from 'better-sqlite3';
 import { mkdirSync } from 'fs';
 import { join } from 'path';
 
-const DATA_DIR = process.env.DATA_DIR || './data';
+const DATA_DIR = process.env.DATA_DIR || '/data';
 const DB_PATH = join(DATA_DIR, 'runtime.db');
 
 // Ensure data directory exists
