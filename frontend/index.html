@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criativalia Control Plane</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: #0a0a0b; 
+      color: #fafafa; 
+    }
+    .font-display { font-family: 'Playfair Display', serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .accent { color: #c17767; }
+    .accent-bg { background: #c17767; }
+    .card { 
+      background: #141414; 
+      border: 1px solid #2a2a2a; 
+      border-radius: 12px; 
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: #3a3a3a; }
+    .nav-item { 
+      padding: 12px 16px; 
+      cursor: pointer; 
+      border-radius: 8px;
+      transition: all 0.2s;
+      margin-bottom: 4px;
+    }
+    .nav-item:hover { 
+      background: #1a1a1a; 
+    }
+    .nav-item.active { 
+      background: #c17767; 
+      color: white;
+    }
+    .view { display: none; }
+    .view.active { display: block; }
+    .kanban-card { 
+      background: #1a1a1a; 
+      border: 1px solid #2a2a2a; 
+      border-radius: 8px; 
+      padding: 12px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .kanban-card:hover {
+      transform: translateY(-2px);
+      border-color: #c17767;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .status-running { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .status-idle { background: #6b7280; }
+    .status-busy { background: #eab308; }
+    .priority-p0 { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .priority-p1 { background: rgba(234, 179, 8, 0.2); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3); }
+    .priority-p2 { background: rgba(107, 114, 128, 0.2); color: #9ca3af; border: 1px solid rgba(107, 114, 128, 0.3); }
+    .timesheet-cell {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .timesheet-working { background: rgba(34, 197, 94, 0.3); border: 1px solid #22c55e; }
+    .timesheet-idle { background: rgba(234, 179, 8, 0.3); border: 1px solid #eab308; }
+    .timesheet-empty { background: #1f2937; }
+    .timesheet-current { box-shadow: 0 0 0 2px #c17767; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0b; }
+    ::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4a4a4a; }
+    .loading {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .5; }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-64 h-screen bg-gray-900 border-r border-gray-800 fixed">
+      <div class="p-6 border-b border-gray-800">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg accent-bg flex items-center justify-center">
+            <i class="fas fa-rocket text-white"></i>
+          </div>
+          <div>
+            <h1 class="font-display font-bold text-lg">Criativalia</h1>
+            <p class="text-xs text-gray-500">Control Plane v3.0</p>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="p-4">
+        <div class="nav-item active" onclick="showView('dashboard')" data-view="dashboard">
+          <i class="fas fa-chart-line w-6"></i> Dashboard
+        </div>
+        <div class="nav-item" onclick="showView('timesheet')" data-view="timesheet">
+          <i class="fas fa-clock w-6"></i> Timesheet
+        </div>
+        <div class="nav-item" onclick="showView('kanban')" data-view="kanban">
+          <i class="fas fa-columns w-6"></i> Kanban
+        </div>
+        <div class="nav-item" onclick="showView('finance')" data-view="finance">
+          <i class="fas fa-dollar-sign w-6"></i> Financeiro
+        </div>
+        <div class="nav-item" onclick="showView('agents')" data-view="agents">
+          <i class="fas fa-robot w-6"></i> Agentes
+        </div>
+        <div class="nav-item" onclick="showView('events')" data-view="events">
+          <i class="fas fa-list w-6"></i> Eventos
+        </div>
+      </nav>
+
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <span id="connection-status" class="status-dot status-running"></span>
+          <span id="connection-text">Conectado</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 flex-1 p-8">
+      <!-- Dashboard -->
+      <div id="view-dashboard" class="view active">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-display font-bold">Dashboard</h2>
+          <span class="text-sm text-gray-500">Atualizado: <span id="last-update">-</span></span>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="card">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm text-gray-500">Agentes Ativos</p>
+              <i class="fas fa-robot accent"></i>
+            </div>
+            <p class="text-3xl font-mono font-bold" id="dash-agents">-</p>
+            <p class="text-xs text-gray-500 mt-1">de <span id="dash-agents-total">-</span> total</p>
+          </div>
+          <div class="card">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm text-gray-500">Tarefas Pendentes</p>
+              <i class="fas fa-tasks accent"></i>
+            </div>
+            <p class="text-3xl font-mono font-bold" id="dash-tasks">-</p>
+            <p class="text-xs text-gray-500 mt-1"><span id="dash-tasks-p0" class="text-red-400">-</span> P0</p>
+          </div>
+          <div class="card">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm text-gray-500">Oportunidades</p>
+              <i class="fas fa-lightbulb accent"></i>
+            </div>
+            <p class="text-3xl font-mono font-bold accent" id="dash-opp">-</p>
+            <p class="text-xs text-gray-500 mt-1">Novas hoje</p>
+          </div>
+          <div class="card">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm text-gray-500">Status Runtime</p>
+              <i class="fas fa-server accent"></i>
+            </div>
+            <p class="text-xl font-bold" id="dash-status">-</p>
+            <p class="text-xs text-gray-500 mt-1" id="dash-uptime">Uptime: -</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card">
+            <h3 class="font-semibold mb-4">Agentes em Execução</h3>
+            <div id="dash-agents-list" class="space-y-2"></div>
+          </div>
+          <div class="card">
+            <h3 class="font-semibold mb-4">Eventos Recentes</h3>
+            <div id="dash-events-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timesheet -->
+      <div id="view-timesheet" class="view">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-display font-bold">Timesheet - Agenda 24h</h2>
+          <div class="flex gap-2">
+            <button onclick="changeDate(-1)" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span id="ts-date" class="px-4 py-1 bg-gray-800 rounded">Hoje</span>
+            <button onclick="changeDate(1)" class="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="grid grid-cols-5 gap-4 text-center">
+            <div>
+              <p class="text-sm text-gray-500">Total Agentes</p>
+              <p class="text-2xl font-mono font-bold" id="ts-total">-</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Ativos Agora</p>
+              <p class="text-2xl font-mono font-bold text-green-400" id="ts-active">-</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Ociosos</p>
+              <p class="text-2xl font-mono font-bold text-yellow-400" id="ts-idle">-</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Hora Atual</p>
+              <p class="text-2xl font-mono font-bold accent" id="ts-hour">-</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500">Eficiência</p>
+              <p class="text-2xl font-mono font-bold text-blue-400" id="ts-efficiency">-</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-gray-700">
+                  <th class="p-3 sticky left-0 bg-gray-900 text-left font-medium">Agente</th>
+                  <th class="p-3 text-center font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody id="ts-body"></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="mt-4 flex gap-6 text-xs">
+          <span class="flex items-center gap-2">
+            <span class="timesheet-cell timesheet-working"></span> Trabalhando
+          </span>
+          <span class="flex items-center gap-2">
+            <span class="timesheet-cell timesheet-idle"></span> Ocioso
+          </span>
+          <span class="flex items-center gap-2">
+            <span class="timesheet-cell timesheet-empty"></span> Sem atividade
+          </span>
+        </div>
+      </div>
+
+      <!-- Kanban -->
+      <div id="view-kanban" class="view">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-display font-bold">Kanban Macro</h2>
+          <div class="flex gap-4 text-sm">
+            <span>Total: <b id="kb-total" class="font-mono">-</b></span>
+            <span class="text-red-400">P0: <b id="kb-p0" class="font-mono">-</b></span>
+            <span class="text-yellow-400">P1: <b id="kb-p1" class="font-mono">-</b></span>
+            <span class="text-gray-400">P2: <b id="kb-p2" class="font-mono">-</b></span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-5 gap-3">
+          <div class="bg-gray-900/50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold text-gray-400">📋 Backlog</h4>
+              <span class="text-xs bg-gray-700 px-2 py-1 rounded font-mono" id="kb-count-backlog">0</span>
+            </div>
+            <div id="kb-backlog" class="space-y-2 min-h-[100px]"></div>
+          </div>
+          
+          <div class="bg-gray-900/50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold text-blue-400">📝 To Do</h4>
+              <span class="text-xs bg-gray-700 px-2 py-1 rounded font-mono" id="kb-count-todo">0</span>
+            </div>
+            <div id="kb-todo" class="space-y-2 min-h-[100px]"></div>
+          </div>
+          
+          <div class="bg-gray-900/50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold text-yellow-400">⚡ Doing</h4>
+              <span class="text-xs bg-gray-700 px-2 py-1 rounded font-mono" id="kb-count-in_progress">0</span>
+            </div>
+            <div id="kb-in_progress" class="space-y-2 min-h-[100px]"></div>
+          </div>
+          
+          <div class="bg-gray-900/50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold text-purple-400">👀 Review</h4>
+              <span class="text-xs bg-gray-700 px-2 py-1 rounded font-mono" id="kb-count-review">0</span>
+            </div>
+            <div id="kb-review" class="space-y-2 min-h-[100px]"></div>
+          </div>
+          
+          <div class="bg-gray-900/50 rounded-lg p-3">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="font-semibold text-green-400">✅ Done</h4>
+              <span class="text-xs bg-gray-700 px-2 py-1 rounded font-mono" id="kb-count-done">0</span>
+            </div>
+            <div id="kb-done" class="space-y-2 min-h-[100px]"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financeiro -->
+      <div id="view-finance" class="view">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-display font-bold">Financeiro</h2>
+          <div class="flex items-center gap-3">
+            <span id="shopify-status" class="text-xs px-3 py-1 rounded-full bg-gray-800">
+              <i class="fas fa-circle text-xs mr-1"></i> Shopify
+            </span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="card">
+            <p class="text-sm text-gray-500 mb-1">Vendas Brutas (MTD)</p>
+            <p class="text-2xl font-mono font-bold accent" id="fin-gross">-</p>
+            <p class="text-xs mt-2" id="fin-gross-var">-</p>
+          </div>
+          <div class="card">
+            <p class="text-sm text-gray-500 mb-1">Vendas Líquidas</p>
+            <p class="text-2xl font-mono font-bold text-green-400" id="fin-net">-</p>
+            <p class="text-xs text-gray-500 mt-2">Margem ~80%</p>
+          </div>
+          <div class="card">
+            <p class="text-sm text-gray-500 mb-1">Ticket Médio</p>
+            <p class="text-2xl font-mono font-bold" id="fin-aov">-</p>
+            <p class="text-xs text-gray-500 mt-2">Meta: R$ 250</p>
+          </div>
+          <div class="card">
+            <p class="text-sm text-gray-500 mb-1">Pedidos (MTD)</p>
+            <p class="text-2xl font-mono font-bold" id="fin-orders">-</p>
+            <p class="text-xs text-gray-500 mt-2"><span id="fin-repurchase">-</span> recompra</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="card">
+            <h3 class="font-semibold mb-4">Comparativo Mensal (MoM)</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center p-2 bg-gray-800/50 rounded">
+                <span class="text-gray-400">Mês Atual</span>
+                <span id="fin-mom-cur" class="font-mono font-semibold">-</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-gray-800/50 rounded">
+                <span class="text-gray-400">Mês Anterior</span>
+                <span id="fin-mom-prev" class="font-mono">-</span>
+              </div>
+              <div class="flex justify-between items-center p-2 border-t border-gray-700 pt-3">
+                <span class="font-medium">Variação</span>
+                <span id="fin-mom-var">-</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <h3 class="font-semibold mb-4">Comparativo Anual (YoY)</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center p-2 bg-gray-800/50 rounded">
+                <span class="text-gray-400">YTD Atual</span>
+                <span id="fin-yoy-cur" class="font-mono font-semibold">-</span>
+              </div>
+              <div class="flex justify-between items-center p-2 bg-gray-800/50 rounded">
+                <span class="text-gray-400">YTD Anterior</span>
+                <span id="fin-yoy-prev" class="font-mono">-</span>
+              </div>
+              <div class="flex justify-between items-center p-2 border-t border-gray-700 pt-3">
+                <span class="font-medium">Crescimento</span>
+                <span id="fin-yoy-growth">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="font-semibold mb-4">Detalhamento de Métricas</h3>
+          <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="p-3 bg-gray-800/30 rounded">
+              <p class="text-sm text-gray-500">Itens Vendidos</p>
+              <p class="text-xl font-mono font-bold mt-1" id="fin-items">-</p>
+            </div>
+            <div class="p-3 bg-gray-800/30 rounded">
+              <p class="text-sm text-gray-500">Itens/Pedido</p>
+              <p class="text-xl font-mono font-bold mt-1" id="fin-ipp">-</p>
+            </div>
+            <div class="p-3 bg-gray-800/30 rounded">
+              <p class="text-sm text-gray-500">Taxa Conversão</p>
+              <p class="text-xl font-mono font-bold mt-1" id="fin-conv">-</p>
+            </div>
+            <div class="p-3 bg-gray-800/30 rounded">
+              <p class="text-sm text-gray-500">Receita/Dia</p>
+              <p class="text-xl font-mono font-bold mt-1" id="fin-rpd">-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agentes -->
+      <div id="view-agents" class="view">
+        <h2 class="text-2xl font-display font-bold mb-6">Agentes</h2>
+        <div id="agents-list" class="grid grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Eventos -->
+      <div id="view-events" class="view">
+        <h2 class="text-2xl font-display font-bold mb-6">Eventos</h2>
+        <div id="events-list" class="space-y-2"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ========== CONFIG ==========
+    const API_BASE = '/api'; // Same-origin, proxied to Railway
+    const views = ['dashboard', 'timesheet', 'kanban', 'finance', 'agents', 'events'];
+    let currentDate = new Date().toISOString().split('T')[0];
+    
+    // ========== UTILS ==========
+    function fmtMoney(v) {
+      return 'R$ ' + (v || 0).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+    
+    function fmtVar(v) {
+      if (v === undefined || v === null) return '-';
+      const c = v >= 0 ? 'text-green-400' : 'text-red-400';
+      const a = v >= 0 ? '↑' : '↓';
+      return '<span class="' + c + '">' + a + ' ' + Math.abs(v).toFixed(1) + '%</span>';
+    }
+    
+    function fmtDuration(ms) {
+      const hours = Math.floor(ms / 3600000);
+      const mins = Math.floor((ms % 3600000) / 60000);
+      return hours + 'h ' + mins + 'm';
+    }
+
+    // ========== NAVIGATION ==========
+    function showView(view) {
+      views.forEach(v => {
+        document.getElementById('view-' + v).classList.remove('active');
+        document.querySelector('[data-view="' + v + '"]').classList.remove('active');
+      });
+      document.getElementById('view-' + view).classList.add('active');
+      document.querySelector('[data-view="' + view + '"]').classList.add('active');
+      
+      // Load data for view
+      if (view === 'dashboard') loadDashboard();
+      if (view === 'timesheet') loadTimesheet();
+      if (view === 'kanban') loadKanban();
+      if (view === 'finance') loadFinance();
+      if (view === 'agents') loadAgents();
+      if (view === 'events') loadEvents();
+    }
+
+    // ========== API CALLS ==========
+    async function api(endpoint) {
+      try {
+        const res = await fetch(API_BASE + endpoint);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return await res.json();
+      } catch (e) {
+        console.error('API error:', e);
+        showConnectionError();
+        return null;
+      }
+    }
+
+    function showConnectionError() {
+      document.getElementById('connection-status').className = 'status-dot status-idle';
+      document.getElementById('connection-text').textContent = 'Desconectado';
+      document.getElementById('connection-text').classList.add('text-red-400');
+    }
+
+    function showConnectionSuccess() {
+      document.getElementById('connection-status').className = 'status-dot status-running';
+      document.getElementById('connection-text').textContent = 'Conectado';
+      document.getElementById('connection-text').classList.remove('text-red-400');
+    }
+
+    // ========== DASHBOARD ==========
+    async function loadDashboard() {
+      const d = await api('/stats');
+      if (!d) return;
+      
+      showConnectionSuccess();
+      
+      const runningAgents = d.runtime.agents.filter(a => a.status === 'running');
+      document.getElementById('dash-agents').textContent = runningAgents.length;
+      document.getElementById('dash-agents-total').textContent = d.runtime.agents.length;
+      document.getElementById('dash-tasks').textContent = d.database.tasks.count;
+      document.getElementById('dash-tasks-p0').textContent = d.database.tasks.p0 || 0;
+      document.getElementById('dash-opp').textContent = d.database.opportunities.count;
+      document.getElementById('dash-status').innerHTML = d.runtime.isRunning 
+        ? '<span class="text-green-400">● Running</span>' 
+        : '<span class="text-gray-400">○ Stopped</span>';
+      document.getElementById('dash-uptime').textContent = 'Uptime: ' + fmtDuration(d.runtime.uptime || 0);
+      document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+      
+      // Agents list
+      document.getElementById('dash-agents-list').innerHTML = runningAgents.map(a => 
+        '<div class="flex justify-between items-center p-2 bg-gray-800/30 rounded">' +
+        '<span class="font-medium">' + a.name + '</span>' +
+        '<span class="text-xs text-green-400">● ' + (a.current_task || 'idle') + '</span>' +
+        '</div>'
+      ).join('') || '<p class="text-gray-500 text-sm">Nenhum agente ativo</p>';
+      
+      // Events
+      const events = await api('/events?limit=5');
+      document.getElementById('dash-events-list').innerHTML = (events || []).slice(0, 5).map(e => 
+        '<div class="flex justify-between items-center p-2 bg-gray-800/30 rounded text-sm">' +
+        '<span>' + e.message + '</span>' +
+        '<span class="text-gray-500 text-xs">' + new Date(e.timestamp).toLocaleTimeString() + '</span>' +
+        '</div>'
+      ).join('') || '<p class="text-gray-500 text-sm">Nenhum evento recente</p>';
+    }
+
+    // ========== TIMESHEET ==========
+    async function loadTimesheet() {
+      const d = await api('/timesheet/visual?date=' + currentDate);
+      if (!d) return;
+      
+      document.getElementById('ts-total').textContent = d.summary.total_agents;
+      document.getElementById('ts-active').textContent = d.summary.active_now;
+      document.getElementById('ts-idle').textContent = d.summary.idle_now;
+      document.getElementById('ts-hour').textContent = d.summary.current_hour + 'h';
+      
+      const efficiency = d.summary.total_agents > 0 
+        ? Math.round((d.summary.active_now / d.summary.total_agents) * 100) 
+        : 0;
+      document.getElementById('ts-efficiency').textContent = efficiency + '%';
+      
+      // Render grid
+      const tb = document.getElementById('ts-body');
+      tb.innerHTML = '';
+      
+      Object.values(d.grid || {}).forEach(g => {
+        const statusClass = g.agent.status === 'running' ? 'status-running' : 'status-idle';
+        let row = '<tr class="border-b border-gray-800">' +
+          '<td class="p-3 sticky left-0 bg-gray-900">' +
+          '<div class="flex items-center gap-2">' +
+          '<span class="status-dot ' + statusClass + '"></span>' +
+          '<span class="font-medium">' + g.agent.name + '</span>' +
+          '</div></td>';
+        
+        // Hours
+        for (let h = 0; h < 24; h += 4) {
+          const activities = g.hours.slice(h, h + 4);
+          const working = activities.filter(a => a.activity === 'working').length;
+          const idle = activities.filter(a => a.is_idle).length;
+          
+          let cellClass = 'timesheet-empty';
+          let title = 'Sem atividade';
+          
+          if (working > 0) {
+            cellClass = 'timesheet-working';
+            title = working + 'h trabalhando';
+          } else if (idle > 0) {
+            cellClass = 'timesheet-idle';
+            title = idle + 'h ocioso';
+          }
+          
+          const isCurrent = h <= d.summary.current_hour && d.summary.current_hour < h + 4;
+          if (isCurrent) cellClass += ' timesheet-current';
+          
+          row += '<td class="p-1"><div class="timesheet-cell ' + cellClass + ' mx-auto" title="' + title + '"></div></td>';
+        }
+        
+        row += '</tr>';
+        tb.innerHTML += row;
+      });
+    }
+
+    function changeDate(delta) {
+      const d = new Date(currentDate);
+      d.setDate(d.getDate() + delta);
+      currentDate = d.toISOString().split('T')[0];
+      document.getElementById('ts-date').textContent = delta === 0 ? 'Hoje' : d.toLocaleDateString('pt-BR');
+      loadTimesheet();
+    }
+
+    // ========== KANBAN ==========
+    async function loadKanban() {
+      const d = await api('/kanban/macro');
+      if (!d) return;
+      
+      document.getElementById('kb-total').textContent = d.stats.total;
+      document.getElementById('kb-p0').textContent = d.stats.by_priority.p0;
+      document.getElementById('kb-p1').textContent = d.stats.by_priority.p1;
+      document.getElementById('kb-p2').textContent = d.stats.by_priority.p2;
+      
+      ['backlog', 'todo', 'in_progress', 'review', 'done'].forEach(col => {
+        const tasks = d.columns[col] || [];
+        document.getElementById('kb-count-' + col).textContent = tasks.length;
+        document.getElementById('kb-' + col).innerHTML = tasks.map(t => {
+          const pClass = t.priority === 0 ? 'priority-p0' : t.priority === 1 ? 'priority-p1' : 'priority-p2';
+          return '<div class="kanban-card">' +
+            '<div class="flex justify-between items-start mb-2">' +
+            '<span class="font-medium text-sm">' + t.title + '</span>' +
+            '<span class="text-xs px-2 py-0.5 rounded ' + pClass + '">P' + t.priority + '</span>' +
+            '</div>' +
+            '<div class="flex gap-1">' +
+            '<button onclick="setPriority(\'' + t.id + '\', 0)" class="text-xs px-2 py-1 bg-red-600/80 rounded hover:bg-red-600">P0</button>' +
+            '<button onclick="setPriority(\'' + t.id + '\', 1)" class="text-xs px-2 py-1 bg-yellow-600/80 rounded hover:bg-yellow-600">P1</button>' +
+            '<button onclick="setPriority(\'' + t.id + '\', 2)" class="text-xs px-2 py-1 bg-gray-600/80 rounded hover:bg-gray-600">P2</button>' +
+            '</div></div>';
+        }).join('') || '<p class="text-gray-600 text-sm text-center py-4">Vazio</p>';
+      });
+    }
+
+    async function setPriority(id, p) {
+      try {
+        await fetch(API_BASE + '/tasks/' + id + '/priority', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ priority: p })
+        });
+        loadKanban();
+      } catch (e) {
+        console.error('Failed to set priority:', e);
+      }
+    }
+
+    // ========== FINANCEIRO ==========
+    async function loadFinance() {
+      const d = await api('/finance/summary');
+      if (!d) return;
+      
+      // Shopify status
+      const shopifyStatus = document.getElementById('shopify-status');
+      if (d.shopify?.connected) {
+        shopifyStatus.innerHTML = '<i class="fas fa-check-circle text-green-400 text-xs mr-1"></i> Shopify Conectado';
+        shopifyStatus.className = 'text-xs px-3 py-1 rounded-full bg-green-500/20 text-green-400';
+      } else {
+        shopifyStatus.innerHTML = '<i class="fas fa-circle text-xs mr-1"></i> Dados Simulados';
+        shopifyStatus.className = 'text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400';
+      }
+      
+      document.getElementById('fin-gross').textContent = fmtMoney(d.mtd?.gross);
+      document.getElementById('fin-gross-var').innerHTML = fmtVar(d.variations?.mom);
+      document.getElementById('fin-net').textContent = fmtMoney(d.mtd?.net);
+      document.getElementById('fin-aov').textContent = fmtMoney(d.metrics?.aov);
+      document.getElementById('fin-orders').textContent = d.mtd?.orders || 0;
+      document.getElementById('fin-repurchase').textContent = (d.shopify?.repurchaseRate || 0).toFixed(1) + '%';
+      
+      document.getElementById('fin-mom-cur').textContent = fmtMoney(d.mtd?.gross);
+      document.getElementById('fin-mom-prev').textContent = fmtMoney(d.previous_month?.gross);
+      document.getElementById('fin-mom-var').innerHTML = fmtVar(d.variations?.mom);
+      
+      document.getElementById('fin-yoy-cur').textContent = fmtMoney(d.ytd?.gross);
+      document.getElementById('fin-yoy-prev').textContent = fmtMoney(d.previous_ytd?.gross);
+      document.getElementById('fin-yoy-growth').innerHTML = fmtVar(d.variations?.yoy);
+      
+      document.getElementById('fin-items').textContent = d.mtd?.items || 0;
+      document.getElementById('fin-ipp').textContent = (d.metrics?.items_per_order || 0).toFixed(1);
+      document.getElementById('fin-conv').textContent = (d.metrics?.conversion_rate || 0).toFixed(1) + '%';
+      document.getElementById('fin-rpd').textContent = fmtMoney(d.mtd?.gross / (d.mtd?.days_in_month || 30));
+    }
+
+    // ========== AGENTES ==========
+    async function loadAgents() {
+      const d = await api('/agents');
+      if (!d) return;
+      
+      document.getElementById('agents-list').innerHTML = d.map(a => {
+        const statusClass = a.status === 'running' ? 'text-green-400' : 'text-gray-400';
+        const statusDot = a.status === 'running' ? 'status-running' : 'status-idle';
+        return '<div class="card flex justify-between items-center">' +
+          '<div>' +
+          '<p class="font-semibold">' + a.name + '</p>' +
+          '<p class="text-sm text-gray-500">' + a.role + '</p>' +
+          '</div>' +
+          '<div class="text-right">' +
+          '<span class="' + statusClass + ' flex items-center gap-2">' +
+          '<span class="status-dot ' + statusDot + '"></span>' +
+          (a.status === 'running' ? 'Running' : 'Idle') +
+          '</span>' +
+          '<p class="text-xs text-gray-500 mt-1">' + (a.tasks_completed || 0) + ' tasks</p>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    // ========== EVENTOS ==========
+    async function loadEvents() {
+      const d = await api('/events?limit=30');
+      if (!d) return;
+      
+      document.getElementById('events-list').innerHTML = d.map(e => {
+        const typeColors = {
+          info: 'text-blue-400',
+          success: 'text-green-400',
+          warning: 'text-yellow-400',
+          error: 'text-red-400'
+        };
+        const color = typeColors[e.type] || 'text-gray-400';
+        return '<div class="card flex justify-between items-center">' +
+          '<div>' +
+          '<p class="font-medium">' + e.message + '</p>' +
+          '<p class="text-xs ' + color + '">' + e.type + '</p>' +
+          '</div>' +
+          '<span class="text-sm text-gray-500">' + new Date(e.timestamp).toLocaleString('pt-BR') + '</span>' +
+          '</div>';
+      }).join('');
+    }
+
+    // ========== HEALTH CHECK ==========
+    async function checkHealth() {
+      try {
+        const res = await fetch('/health');
+        if (res.ok) {
+          showConnectionSuccess();
+        } else {
+          showConnectionError();
+        }
+      } catch (e) {
+        showConnectionError();
+      }
+    }
+
+    // ========== INIT ==========
+    function init() {
+      loadDashboard();
+      checkHealth();
+      
+      // Auto refresh
+      setInterval(() => {
+        const activeView = document.querySelector('.view.active').id.replace('view-', '');
+        if (activeView === 'dashboard') loadDashboard();
+        if (activeView === 'timesheet') loadTimesheet();
+        if (activeView === 'kanban') loadKanban();
+        if (activeView === 'finance') loadFinance();
+      }, 5000);
+      
+      // Health check
+      setInterval(checkHealth, 30000);
+    }
+
+    init();
+  </script>
+</body>
+</html>
