@@ -8,7 +8,7 @@
     },
     {
       "source": "/health",
-      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/health"
+      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/stats"
     },
     {
       "source": "/(.*)",
