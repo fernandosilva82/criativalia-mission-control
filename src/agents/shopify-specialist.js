@@ -1,4 +1,4 @@
-import { OpportunityScanner } from '../orchestrator/opportunity-engine.js';
+import { AgentWorker } from './base.js';
 import axios from 'axios';
 
 /**
@@ -11,7 +11,7 @@ import axios from 'axios';
  * - Produtos sem vendas
  */
 
-export class ShopifySpecialistAgent extends OpportunityScanner {
+export class ShopifySpecialistAgent extends AgentWorker {
   constructor(shopifyConfig = {}) {
     super({
       id: 'shopify_specialist',
@@ -23,21 +23,18 @@ export class ShopifySpecialistAgent extends OpportunityScanner {
     this.accessToken = shopifyConfig.token || process.env.SHOPIFY_ACCESS_TOKEN;
   }
 
-  async scanForOpportunities() {
-    const opportunities = [];
-    
+  async checkOpportunities() {
     console.log('  🔍 Shopify Specialist scanning...');
 
     // Check for unprocessed orders (simulated for now)
     const pendingOrders = await this.getPendingOrders();
     if (pendingOrders.length > 0) {
-      opportunities.push({
+      await this.generateOpportunity({
         title: `${pendingOrders.length} pedidos pendentes para processar`,
         description: `Existem ${pendingOrders.length} pedidos aguardando preparação e envio.`,
         area: 'operations',
         impact_score: pendingOrders.length > 5 ? 8 : 6,
         effort_score: 3,
-        auto_convert: true,
         evidence: { pending_orders: pendingOrders.length }
       });
     }
@@ -45,13 +42,12 @@ export class ShopifySpecialistAgent extends OpportunityScanner {
     // Check for low stock (simulated)
     const lowStockProducts = await this.getLowStockProducts();
     if (lowStockProducts.length > 0) {
-      opportunities.push({
+      await this.generateOpportunity({
         title: `${lowStockProducts.length} produtos com estoque baixo`,
         description: 'Produtos precisam de reposição para evitar perda de vendas.',
         area: 'inventory',
         impact_score: 7,
         effort_score: 4,
-        auto_convert: true,
         evidence: { products: lowStockProducts }
       });
     }
@@ -59,23 +55,19 @@ export class ShopifySpecialistAgent extends OpportunityScanner {
     // Check for customers without repurchase (CRITICAL for Criativalia)
     const inactiveCustomers = await this.getInactiveCustomers();
     if (inactiveCustomers > 50) {
-      opportunities.push({
+      await this.generateOpportunity({
         title: `${inactiveCustomers} clientes inativos - campanha de reativação`,
-        description: 'Clientes compraram uma vez e não voltaram. Taxa de recompra é 0%.',
+        description: 'Clientes compraram uma vez e não voltaram. Taxa de recompra é 11.6%.',
         area: 'marketing',
-        impact_score: 9, // CRITICAL
+        impact_score: 10, // CRITICAL
         effort_score: 5,
-        auto_convert: true,
-        evidence: { inactive_count: inactiveCustomers, current_repurchase_rate: 0 }
+        evidence: { inactive_count: inactiveCustomers, current_repurchase_rate: '11.6%' }
       });
     }
-
-    return opportunities;
   }
 
   async getPendingOrders() {
     // Simulated - would connect to Shopify API
-    // For now, return mock data to demonstrate
     return [
       { id: 1001, total: 189.00, created_at: new Date().toISOString() },
       { id: 1002, total: 329.90, created_at: new Date().toISOString() }
