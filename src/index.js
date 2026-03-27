@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+ 
 /**
  * Criativalia Autonomous Runtime v1.1
  * 24/7 persistent runtime with Opportunity Engine
