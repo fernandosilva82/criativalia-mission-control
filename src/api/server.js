@@ -53,6 +53,15 @@ app.put('/api/tasks/:id/priority', (req, res) => {
   res.json({ success: true });
 });
 
+app.put('/api/tasks/:id/status', (req, res) => {
+  const { status, kanban_column } = req.body;
+  const updates = {};
+  if (status) updates.status = status;
+  if (kanban_column) updates.kanban_column = kanban_column;
+  db.updateTask(req.params.id, updates);
+  res.json({ success: true });
+});
+
 // === KANBAN ===
 app.get('/api/kanban', (req, res) => {
   const tasks = db.getTasks();
