@@ -31,3 +31,6 @@ class MemoryDB {
 }
 
 export default MemoryDB;
+// Create and export instance
+export const db = new MemoryDB();
+
