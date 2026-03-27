@@ -239,3 +239,4 @@ app.listen(PORT, () => {
   console.log('✅ Server running on port ' + PORT);
   console.log('📁 Usando FileDB em:', process.env.DATA_FILE || '/data/criativalia-data.json');
 });
+// Deploy trigger: Sat Mar 28 07:12:25 AM CST 2026
