@@ -1,12 +1,16 @@
 /**
- * Database Adapter
- * Uses in-memory storage (compatible with all environments)
+ * Database Adapter - Seleciona o banco apropriado
+ * PostgreSQL se DATABASE_URL existir, senão MemoryDB
  */
 
 import MemoryDB from './memory.js';
+import { db as PostgresDB } from './postgres.js';
 
-const db = new MemoryDB();
-console.log('📊 Using in-memory database');
+// Detecta se tem PostgreSQL configurado
+const hasPostgres = !!process.env.DATABASE_URL;
 
-export { db };
+console.log(`📊 Database: ${hasPostgres ? 'PostgreSQL' : 'MemoryDB'}`);
+
+// Exporta o banco apropriado
+export const db = hasPostgres ? PostgresDB : new MemoryDB();
 export default db;
