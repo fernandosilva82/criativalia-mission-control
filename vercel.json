@@ -4,11 +4,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/:path*"
+      "destination": "https://criativalia-runtime.onrender.com/api/:path*"
     },
     {
       "source": "/health",
-      "destination": "https://disclosure-emphasis-costs-heights.trycloudflare.com/api/stats"
+      "destination": "https://criativalia-runtime.onrender.com/api/stats"
     },
     {
       "source": "/(.*)",
