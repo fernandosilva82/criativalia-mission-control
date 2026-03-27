@@ -1,8 +1,9 @@
 /**
- * API Server - Simplificado e Funcional
+ * API Server - Usando FileDB persistente
  */
 
 import express from 'express';
+import { db } from '../database/adapter.js';
 import { shopify } from '../integrations/shopify.js';
 
 const app = express();
@@ -15,62 +16,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   next();
 });
-
-// Database simples
-const db = {
-  agents: new Map(),
-  tasks: new Map(),
-  opportunities: new Map(),
-  events: [],
-  
-  getAgents() {
-    return Array.from(this.agents.values());
-  },
-  
-  getTasks(filters = {}) {
-    let tasks = Array.from(this.tasks.values());
-    if (filters.status) {
-      tasks = tasks.filter(t => t.status === filters.status);
-    }
-    return tasks;
-  },
-  
-  updateTask(id, updates) {
-    const task = this.tasks.get(id);
-    if (task) {
-      Object.assign(task, updates, { updated_at: new Date().toISOString() });
-    }
-  },
-  
-  getOpportunities() {
-    return Array.from(this.opportunities.values());
-  },
-  
-  getEvents(limit = 100) {
-    return this.events.slice(-limit).reverse();
-  },
-  
-  getStats() {
-    return {
-      agents: { count: this.agents.size },
-      tasks: { count: this.tasks.size },
-      opportunities: { count: this.opportunities.size }
-    };
-  }
-};
-
-// Inicializar agentes
-const defaultAgents = [
-  { id: 'ceo_orchestrator', name: 'CEO Orchestrator', role: 'orchestrator', status: 'running', capabilities: ['prioritization'], total_tasks: 0 },
-  { id: 'bash_architect', name: 'Bash Architect', role: 'developer', status: 'running', capabilities: ['shell'], total_tasks: 0 },
-  { id: 'deploy_engineer', name: 'Deploy Engineer', role: 'devops', status: 'running', capabilities: ['deploy'], total_tasks: 0 },
-  { id: 'ui_guardian', name: 'UI Guardian', role: 'designer', status: 'idle', capabilities: ['ui'], total_tasks: 0 },
-  { id: 'data_analyst', name: 'Data Analyst', role: 'analyst', status: 'idle', capabilities: ['data'], total_tasks: 0 },
-  { id: 'night_watch', name: 'Night Watch', role: 'monitor', status: 'idle', capabilities: ['monitoring'], total_tasks: 0 },
-  { id: 'shopify_specialist', name: 'Shopify Specialist', role: 'ecommerce', status: 'idle', capabilities: ['shopify'], total_tasks: 0 },
-  { id: 'copywriter', name: 'Copywriter', role: 'content', status: 'idle', capabilities: ['copy'], total_tasks: 0 }
-];
-defaultAgents.forEach(agent => db.agents.set(agent.id, agent));
 
 // === HEALTH ===
 app.get('/health', (req, res) => {
@@ -94,6 +39,13 @@ app.get('/api/agents', (req, res) => res.json(db.getAgents()));
 
 // === TASKS ===
 app.get('/api/tasks', (req, res) => res.json(db.getTasks()));
+
+app.post('/api/tasks', (req, res) => {
+  const task = req.body;
+  if (!task.id) task.id = 'task_' + Date.now();
+  db.createTask(task);
+  res.json({ success: true, task });
+});
 
 app.put('/api/tasks/:id/priority', (req, res) => {
   const { priority } = req.body;
@@ -125,7 +77,7 @@ app.get('/api/kanban/macro', (req, res) => {
   };
   
   for (const col in columns) {
-    columns[col].sort((a, b) => a.priority - b.priority);
+    columns[col].sort((a, b) => (a.priority || 2) - (b.priority || 2));
   }
   
   res.json({
@@ -145,7 +97,7 @@ app.get('/api/kanban/macro', (req, res) => {
 app.get('/api/timesheet/visual', (req, res) => {
   const date = req.query.date || new Date().toISOString().split('T')[0];
   const agents = db.getAgents();
-  const tasks = db.getTasks({ status: 'in_progress' });
+  const tasks = db.getTasks();
   const now = new Date();
   const currentHour = now.getHours();
   
@@ -260,131 +212,28 @@ app.get('/api/shopify/inactive-customers', async (req, res) => {
 // === OPPORTUNITIES ===
 app.get('/api/opportunities', (req, res) => res.json(db.getOpportunities()));
 
+app.post('/api/opportunities', (req, res) => {
+  const opp = req.body;
+  if (!opp.id) opp.id = 'opp_' + Date.now();
+  db.createOpportunity(opp);
+  res.json({ success: true, opportunity: opp });
+});
+
 // === EVENTS ===
 app.get('/api/events', (req, res) => res.json(db.getEvents(parseInt(req.query.limit) || 100)));
 
-// === CONTROL PLANE UI ===
-app.get('/', (req, res) => {
-  res.send(ControlPlaneHTML);
+// === PERSISTENCE TEST ===
+app.post('/api/test-persistence', (req, res) => {
+  const testData = {
+    id: 'test_' + Date.now(),
+    message: 'Teste de persistência',
+    timestamp: new Date().toISOString()
+  };
+  db.createEvent(testData);
+  res.json({ success: true, message: 'Dados salvos. Faça restart e verifique /api/events', testData });
 });
 
 app.listen(PORT, () => {
   console.log('✅ Server running on port ' + PORT);
+  console.log('📁 Usando FileDB em:', process.env.DATA_FILE || '/data/criativalia-data.json');
 });
-
-const ControlPlaneHTML = `<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criativalia Runtime</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: Inter, sans-serif; background: #0a0a0b; color: #fafafa; }
-    .accent { color: #c17767; }
-    .accent-bg { background: #c17767; }
-    .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; padding: 16px; }
-    .nav-item { padding: 12px 16px; cursor: pointer; border-radius: 8px; }
-    .nav-item:hover { background: #1a1a1a; }
-    .nav-item.active { background: #c17767; }
-    .view { display: none; }
-    .view.active { display: block; }
-    .kanban-card { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px; }
-  </style>
-</head>
-<body class="min-h-screen">
-  <div class="flex">
-    <aside class="w-64 h-screen bg-gray-900 border-r border-gray-800 fixed">
-      <div class="p-6 border-b border-gray-800">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg accent-bg flex items-center justify-center"><i class="fas fa-rocket text-white"></i></div>
-          <div><h1 class="font-bold">Criativalia</h1><p class="text-xs text-gray-500">Runtime v1.2</p></div>
-        </div>
-      </div>
-      <nav class="p-4">
-        <div class="nav-item active mb-2" onclick="showView('dashboard')"><i class="fas fa-chart-line w-6"></i> Dashboard</div>
-        <div class="nav-item mb-2" onclick="showView('timesheet')"><i class="fas fa-clock w-6"></i> Timesheet</div>
-        <div class="nav-item mb-2" onclick="showView('kanban')"><i class="fas fa-columns w-6"></i> Kanban</div>
-        <div class="nav-item mb-2" onclick="showView('finance')"><i class="fas fa-dollar-sign w-6"></i> Financeiro</div>
-        <div class="nav-item mb-2" onclick="showView('agents')"><i class="fas fa-robot w-6"></i> Agentes</div>
-        <div class="nav-item" onclick="showView('events')"><i class="fas fa-list w-6"></i> Eventos</div>
-      </nav>
-    </aside>
-
-    <main class="ml-64 flex-1 p-8">
-      <div id="view-dashboard" class="view active">
-        <h2 class="text-2xl font-bold mb-6">Dashboard</h2>
-        <div class="grid grid-cols-4 gap-4 mb-6">
-          <div class="card"><p class="text-sm text-gray-500">Agentes</p><p class="text-3xl font-bold" id="dash-agents">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Tarefas</p><p class="text-3xl font-bold" id="dash-tasks">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Oportunidades</p><p class="text-3xl font-bold accent" id="dash-opp">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Status</p><p class="text-xl font-bold" id="dash-status">-</p></div>
-        </div>
-      </div>
-
-      <div id="view-timesheet" class="view">
-        <h2 class="text-2xl font-bold mb-2">Timesheet</h2>
-        <p class="text-gray-500">Em desenvolvimento...</p>
-      </div>
-
-      <div id="view-kanban" class="view">
-        <h2 class="text-2xl font-bold mb-4">Kanban</h2>
-        <p class="text-gray-500">Em desenvolvimento...</p>
-      </div>
-
-      <div id="view-finance" class="view">
-        <h2 class="text-2xl font-bold mb-6">Financeiro</h2>
-        <div class="grid grid-cols-4 gap-4 mb-6">
-          <div class="card"><p class="text-sm text-gray-500">Vendas Brutas</p><p class="text-3xl font-bold accent" id="fin-gross">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Vendas Líquidas</p><p class="text-3xl font-bold text-green-400" id="fin-net">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Ticket Médio</p><p class="text-3xl font-bold" id="fin-aov">-</p></div>
-          <div class="card"><p class="text-sm text-gray-500">Pedidos</p><p class="text-3xl font-bold" id="fin-orders">-</p></div>
-        </div>
-      </div>
-
-      <div id="view-agents" class="view"><h2 class="text-2xl font-bold mb-6">Agentes</h2><div id="agents-list"></div></div>
-      <div id="view-events" class="view"><h2 class="text-2xl font-bold mb-6">Eventos</h2><div id="events-list"></div></div>
-    </main>
-  </div>
-
-  <script>
-    const views = ['dashboard','timesheet','kanban','finance','agents','events'];
-    function showView(view) {
-      views.forEach(v => document.getElementById('view-'+v).classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('view-'+view).classList.add('active');
-      event.target.classList.add('active');
-      if(view==='dashboard') loadDashboard();
-      if(view==='finance') loadFinance();
-      if(view==='agents') loadAgents();
-    }
-    
-    function fmtMoney(v) { return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2}); }
-
-    async function loadDashboard() {
-      const d = await (await fetch('/api/stats')).json();
-      document.getElementById('dash-agents').textContent = d.runtime.agents.filter(a=>a.status==='running').length;
-      document.getElementById('dash-tasks').textContent = d.database.tasks.count;
-      document.getElementById('dash-opp').textContent = d.database.opportunities.count;
-      document.getElementById('dash-status').innerHTML = '<span class="text-green-400">● Online</span>';
-    }
-
-    async function loadFinance() {
-      const d = await (await fetch('/api/finance/summary')).json();
-      document.getElementById('fin-gross').textContent = fmtMoney(d.mtd.gross);
-      document.getElementById('fin-net').textContent = fmtMoney(d.mtd.net);
-      document.getElementById('fin-aov').textContent = fmtMoney(d.metrics.aov);
-      document.getElementById('fin-orders').textContent = d.mtd.orders;
-    }
-
-    async function loadAgents() {
-      const d = await (await fetch('/api/agents')).then(r => r.json());
-      document.getElementById('agents-list').innerHTML = d.map(a => '<div class="card mb-3 flex justify-between"><div><p class="font-semibold">' + a.name + '</p><p class="text-sm text-gray-500">' + a.role + '</p></div><span class="' + (a.status==='running'?'text-green-400':'text-gray-400') + '">' + (a.status==='running'?'● Running':'○ Idle') + '</span></div>').join('');
-    }
-
-    setInterval(loadDashboard, 5000);
-    loadDashboard();
-  </script>
-</body>
-</html>`;
