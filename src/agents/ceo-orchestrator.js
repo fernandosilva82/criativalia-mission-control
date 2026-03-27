@@ -83,6 +83,7 @@ export class CEOOrchestratorAgent extends AgentWorker {
       description: opportunity.description,
       agent_id: opportunity.agent_id || 'executor',
       kanban_column: 'ready',
+      status: 'ready',
       priority: priority,
       impact: opportunity.evidence ? JSON.stringify(opportunity.evidence) : '',
       source_opportunity: opportunity.id
