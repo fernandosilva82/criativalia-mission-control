@@ -3,10 +3,24 @@
  * Simples, confiável, funciona no Render
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 
-const DATA_FILE = process.env.DATA_FILE || '/tmp/criativalia-data.json';
+// Usar /data se disponível (Disk persistente), senão /tmp
+const DATA_FILE = process.env.DATA_FILE || '/data/criativalia-data.json';
+
+// Garantir que o diretório exista
+function ensureDir(filePath) {
+  const dir = dirname(filePath);
+  if (!existsSync(dir)) {
+    try {
+      mkdirSync(dir, { recursive: true });
+      console.log('📁 Diretório criado:', dir);
+    } catch (err) {
+      console.error('❌ Erro ao criar diretório:', err.message);
+    }
+  }
+}
 
 class FileDB {
   constructor() {
@@ -15,6 +29,9 @@ class FileDB {
     this.opportunities = new Map();
     this.events = [];
     this.timesheet = new Map();
+    
+    // Garantir que o diretório existe antes de carregar
+    ensureDir(DATA_FILE);
     
     this.load();
     
@@ -54,6 +71,7 @@ class FileDB {
         this.opportunities = new Map(data.opportunities || []);
         this.events = data.events || [];
         this.timesheet = new Map(data.timesheet || []);
+        console.log('✅ Dados carregados de:', DATA_FILE);
       }
     } catch (err) {
       console.log('📁 Nenhum arquivo de dados encontrado, criando novo...');
@@ -62,6 +80,9 @@ class FileDB {
   
   save() {
     try {
+      // Garantir que o diretório existe antes de salvar
+      ensureDir(DATA_FILE);
+      
       const data = {
         agents: Array.from(this.agents.entries()),
         tasks: Array.from(this.tasks.entries()),
@@ -71,8 +92,10 @@ class FileDB {
         lastSave: new Date().toISOString()
       };
       writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+      console.log('💾 Dados salvos em:', DATA_FILE);
     } catch (err) {
       console.error('❌ Erro ao salvar:', err.message);
+      console.error('   Path:', DATA_FILE);
     }
   }
 
