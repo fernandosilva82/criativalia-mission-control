@@ -22,12 +22,14 @@ export class CEOOrchestratorAgent extends AgentWorker {
     await super.init();
     // Start orchestration loop
     this.startOrchestration();
+    // Run immediately
+    setTimeout(() => this.orchestrate(), 5000);
   }
 
   startOrchestration() {
-    // Run every 15 minutes
-    setInterval(() => this.orchestrate(), 15 * 60 * 1000);
-    console.log('👔 [CEO Orchestrator] Orchestration started (every 15 min)');
+    // Run every 5 minutes (mais frequente para gerar trabalho)
+    setInterval(() => this.orchestrate(), 5 * 60 * 1000);
+    console.log('👔 [CEO Orchestrator] Orchestration started (every 5 min)');
   }
 
   async orchestrate() {
@@ -38,18 +40,21 @@ export class CEOOrchestratorAgent extends AgentWorker {
       const opportunities = db.getOpportunities ? db.getOpportunities() : [];
       console.log(`  📊 Found ${opportunities.length} opportunities`);
 
-      // 2. Filter unprocessed opportunities
+      // 2. Filter unprocessed opportunities (status 'new' or null/undefined)
       const unprocessed = opportunities.filter(opp => opp.status === 'new' || !opp.status);
+      console.log(`  🆕 ${unprocessed.length} unprocessed opportunities`);
       
       // 3. Prioritize
       const prioritized = this.prioritize(unprocessed);
       
       // 4. Convert top opportunities to tasks
+      let created = 0;
       for (const opp of prioritized.slice(0, 5)) { // Process top 5
         await this.convertToTask(opp);
+        created++;
       }
 
-      console.log(`  ✅ Orchestrated ${prioritized.length} opportunities`);
+      console.log(`  ✅ Created ${created} tasks from opportunities`);
       
     } catch (error) {
       console.error('❌ [CEO Orchestrator] Error:', error.message);

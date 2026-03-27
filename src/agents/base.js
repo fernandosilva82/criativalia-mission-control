@@ -35,6 +35,57 @@ export class AgentWorker {
       message: `${this.name} initialized`,
       severity: 'info'
     });
+
+    // Start work loop
+    this.startWorkLoop();
+  }
+
+  /**
+   * Work loop - continuously check for and execute tasks
+   */
+  startWorkLoop() {
+    // Check for work every 2 minutes
+    this.workInterval = setInterval(() => this.checkAndWork(), 2 * 60 * 1000);
+    console.log(`⚡ [${this.id}] Work loop started`);
+    
+    // First check after 10 seconds
+    setTimeout(() => this.checkAndWork(), 10000);
+  }
+
+  async checkAndWork() {
+    if (this.currentTask) {
+      console.log(`⏳ [${this.id}] Already working on: ${this.currentTask.title}`);
+      return;
+    }
+
+    try {
+      // Look for tasks assigned to this agent
+      const tasks = db.getTasks({ agent_id: this.id, status: 'ready' });
+      
+      if (tasks.length > 0) {
+        // Get highest priority task
+        const task = tasks.sort((a, b) => {
+          const pA = a.priority === 'P0' ? 0 : a.priority === 'P1' ? 1 : 2;
+          const pB = b.priority === 'P0' ? 0 : b.priority === 'P1' ? 1 : 2;
+          return pA - pB;
+        })[0];
+
+        console.log(`🎯 [${this.id}] Found work: ${task.title}`);
+        await this.executeTask(task);
+      } else {
+        // No tasks - maybe scan for opportunities
+        console.log(`😴 [${this.id}] No tasks available`);
+      }
+    } catch (error) {
+      console.error(`❌ [${this.id}] Work loop error:`, error.message);
+    }
+  }
+
+  stopWorkLoop() {
+    if (this.workInterval) {
+      clearInterval(this.workInterval);
+      this.workInterval = null;
+    }
   }
 
   /**
@@ -91,8 +142,10 @@ export class AgentWorker {
       // Update agent stats
       const agent = db.getAgent(this.id);
       const newTotal = (agent.total_tasks || 0) + 1;
-      db.db.prepare('UPDATE agents SET total_tasks = ?, last_active = CURRENT_TIMESTAMP WHERE id = ?')
-        .run(newTotal, this.id);
+      db.updateAgent(this.id, { 
+        total_tasks: newTotal, 
+        last_active: new Date().toISOString() 
+      });
 
       // Log success
       db.logEvent({

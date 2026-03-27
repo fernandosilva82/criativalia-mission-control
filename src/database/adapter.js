@@ -101,6 +101,7 @@ class FileDB {
 
   // Agents
   getAgents() { return Array.from(this.agents.values()); }
+  getAgent(id) { return this.agents.get(id); }
   registerAgent(agent) {
     this.agents.set(agent.id, agent);
     this.save();
@@ -113,14 +114,29 @@ class FileDB {
       this.save();
     }
   }
+  updateAgentStatus(id, status) {
+    this.updateAgent(id, { status, last_active: new Date().toISOString() });
+  }
+
+  // Decisions
+  createDecision(decision) {
+    if (!this.decisions) this.decisions = new Map();
+    this.decisions.set(decision.id, decision);
+    this.save();
+  }
+  getDecisions() { 
+    return this.decisions ? Array.from(this.decisions.values()) : [];
+  }
 
   // Tasks
   getTasks(filters = {}) {
     let tasks = Array.from(this.tasks.values());
     if (filters.status) tasks = tasks.filter(t => t.status === filters.status);
     if (filters.kanban_column) tasks = tasks.filter(t => t.kanban_column === filters.kanban_column);
+    if (filters.agent_id) tasks = tasks.filter(t => t.agent_id === filters.agent_id);
     return tasks;
   }
+  getTask(id) { return this.tasks.get(id); }
   createTask(task) {
     this.tasks.set(task.id, task);
     this.save();
@@ -135,7 +151,9 @@ class FileDB {
 
   // Opportunities
   getOpportunities() { return Array.from(this.opportunities.values()); }
+  getOpportunity(id) { return this.opportunities.get(id); }
   createOpportunity(opp) {
+    if (!opp.status) opp.status = 'new';
     this.opportunities.set(opp.id, opp);
     this.save();
   }
@@ -149,7 +167,7 @@ class FileDB {
 
   // Events
   getEvents(limit = 100) { return this.events.slice(-limit).reverse(); }
-  createEvent(event) {
+  logEvent(event) {
     this.events.push({ ...event, timestamp: new Date().toISOString() });
     if (this.events.length > 1000) this.events = this.events.slice(-500);
     this.save();
@@ -157,9 +175,21 @@ class FileDB {
 
   // Timesheet
   getTimesheet(date) { return Array.from(this.timesheet.values()).filter(t => t.date === date); }
+  logTimesheet(entry) {
+    const key = `${entry.agent_id}_${entry.date}_${entry.hour_slot}`;
+    this.timesheet.set(key, entry);
+    this.save();
+  }
   logActivity(agentId, date, hourSlot, activityType, description) {
     const key = `${agentId}_${date}_${hourSlot}`;
-    this.timesheet.set(key, { agent_id: agentId, date, hour_slot: hourSlot, activity_type: activityType, description, timestamp: new Date().toISOString() });
+    this.timesheet.set(key, { 
+      agent_id: agentId, 
+      date, 
+      hour_slot: hourSlot, 
+      activity_type: activityType, 
+      description, 
+      timestamp: new Date().toISOString() 
+    });
     this.save();
   }
 
