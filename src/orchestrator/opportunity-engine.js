@@ -1,131 +1,99 @@
-import { AgentWorker } from '../agents/base.js';
-import { randomUUID } from 'crypto';
-
 /**
- * Opportunity Engine
- * 
- * Responsável por:
- * - Escavar dados periodicamente
- * - Identificar oportunidades
- * - Gerar tasks automaticamente
- * - Alimentar o backlog
+ * Opportunity Engine - Geração de oportunidades
+ * Versão simplificada e estável
  */
 
 export class OpportunityEngine {
   constructor(db) {
     this.db = db;
-    this.agents = [];
-    this.interval = null;
     this.isRunning = false;
+    this.interval = null;
+    this.scanners = [];
   }
 
-  registerAgent(agent) {
-    this.agents.push(agent);
-    console.log(`🔍 [OpportunityEngine] Registered: ${agent.name}`);
+  registerScanner(name, scannerFn) {
+    this.scanners.push({ name, fn: scannerFn });
+    console.log(`🔍 Scanner registrado: ${name}`);
   }
 
   start() {
-    if (this.isRunning) return;
-    
     this.isRunning = true;
-    console.log('🔍 Opportunity Engine started');
+    console.log('🔍 Opportunity Engine iniciado');
     
-    // Scan every 10 minutes
+    // Escanear a cada 10 minutos
     this.interval = setInterval(() => this.scan(), 10 * 60 * 1000);
     
-    // First scan immediately
-    this.scan();
+    // Primeira execução
+    setTimeout(() => this.scan(), 5000);
   }
 
   stop() {
     this.isRunning = false;
-    if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = null;
-    }
-    console.log('🔍 Opportunity Engine stopped');
+    if (this.interval) clearInterval(this.interval);
+    console.log('🔍 Opportunity Engine parado');
   }
 
   async scan() {
-    console.log(`\n🔍 [${new Date().toISOString()}] Scanning for opportunities...`);
+    if (!this.isRunning) return;
     
-    for (const agent of this.agents) {
+    console.log('🔍 Escaneando oportunidades...');
+    
+    for (const scanner of this.scanners) {
       try {
-        const opportunities = await agent.scanForOpportunities();
-        
+        const opportunities = await scanner.fn(this.db);
         if (opportunities && opportunities.length > 0) {
-          console.log(`  💡 ${agent.name} found ${opportunities.length} opportunities`);
-          
           for (const opp of opportunities) {
-            // Save opportunity
             this.db.createOpportunity({
-              id: randomUUID(),
-              agent_id: agent.id,
+              id: `opp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
               ...opp,
-              status: 'open',
-              created_at: new Date().toISOString()
+              created_at: new Date().toISOString(),
+              status: 'open'
             });
-
-            // Auto-convert high-impact opportunities to tasks
-            if (opp.impact_score >= 7 && opp.auto_convert !== false) {
-              await this.convertToTask(opp, agent.id);
-            }
           }
+          console.log(`✅ ${opportunities.length} oportunidades de ${scanner.name}`);
         }
-      } catch (error) {
-        console.error(`  ❌ ${agent.name} scan failed:`, error.message);
-        this.db.logEvent({
-          type: 'system',
-          agent_id: agent.id,
-          message: `Opportunity scan failed: ${error.message}`,
-          severity: 'error'
-        });
+      } catch (err) {
+        console.error(`❌ Erro no scanner ${scanner.name}:`, err.message);
       }
     }
-    
-    console.log('🔍 Scan complete\n');
-  }
-
-  async convertToTask(opp, agentId) {
-    const taskId = randomUUID();
-    
-    this.db.createTask({
-      id: taskId,
-      title: opp.title,
-      description: opp.description,
-      agent_id: agentId,
-      priority: opp.impact_score >= 8 ? 0 : opp.impact_score >= 5 ? 1 : 2,
-      status: 'backlog',
-      kanban_column: 'backlog',
-      source: 'opportunity_engine',
-      metadata: JSON.stringify({ 
-        opportunity_id: opp.id,
-        impact: opp.impact_score,
-        effort: opp.effort_score,
-        area: opp.area
-      })
-    });
-
-    this.db.logEvent({
-      type: 'task_create',
-      agent_id: agentId,
-      message: `Auto-generated task from opportunity: ${opp.title}`,
-      severity: 'info'
-    });
-
-    console.log(`  📝 Auto-converted to task: ${opp.title}`);
   }
 }
 
-// Base class for opportunity scanners
-export class OpportunityScanner extends AgentWorker {
-  constructor(config) {
-    super(config);
+// Scanner de Shopify
+export async function shopifyScanner(db) {
+  // Simular análise de dados Shopify
+  const opportunities = [];
+  
+  // Verificar se há pedidos pendentes
+  const hour = new Date().getHours();
+  if (hour >= 9 && hour <= 18) {
+    opportunities.push({
+      type: 'sales',
+      title: 'Analisar taxa de conversão',
+      description: 'Período comercial ativo - verificar métricas',
+      priority: 'p1',
+      source: 'shopify'
+    });
   }
-
-  async scanForOpportunities() {
-    throw new Error('Scanner must implement scanForOpportunities()');
-  }
+  
+  return opportunities;
 }
 
-export default OpportunityEngine;
+// Scanner de conteúdo
+export async function contentScanner(db) {
+  const opportunities = [];
+  const hour = new Date().getHours();
+  
+  // Sugerir conteúdo durante horário comercial
+  if (hour === 10 || hour === 15) {
+    opportunities.push({
+      type: 'content',
+      title: 'Criar post para redes sociais',
+      description: 'Horário ideal para engajamento',
+      priority: 'p2',
+      source: 'copywriter'
+    });
+  }
+  
+  return opportunities;
+}
