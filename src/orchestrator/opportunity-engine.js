@@ -9,11 +9,19 @@ export class OpportunityEngine {
     this.isRunning = false;
     this.interval = null;
     this.scanners = [];
+    this.agents = [];
   }
 
   registerScanner(name, scannerFn) {
     this.scanners.push({ name, fn: scannerFn });
     console.log(`🔍 Scanner registrado: ${name}`);
+  }
+
+  registerAgent(agent) {
+    if (agent.checkOpportunities) {
+      this.agents.push(agent);
+      console.log(`🔍 Agente registrado no Opportunity Engine: ${agent.name}`);
+    }
   }
 
   start() {
@@ -38,6 +46,7 @@ export class OpportunityEngine {
     
     console.log('🔍 Escaneando oportunidades...');
     
+    // Scan usando scanners registrados
     for (const scanner of this.scanners) {
       try {
         const opportunities = await scanner.fn(this.db);
@@ -54,6 +63,17 @@ export class OpportunityEngine {
         }
       } catch (err) {
         console.error(`❌ Erro no scanner ${scanner.name}:`, err.message);
+      }
+    }
+    
+    // Scan usando agentes registrados
+    for (const agent of this.agents) {
+      try {
+        if (agent.checkOpportunities) {
+          await agent.checkOpportunities();
+        }
+      } catch (err) {
+        console.error(`❌ Erro no agente ${agent.name}:`, err.message);
       }
     }
   }

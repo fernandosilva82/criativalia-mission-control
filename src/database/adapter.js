@@ -101,6 +101,10 @@ class FileDB {
 
   // Agents
   getAgents() { return Array.from(this.agents.values()); }
+  registerAgent(agent) {
+    this.agents.set(agent.id, agent);
+    this.save();
+  }
   updateAgent(id, updates) {
     const agent = this.agents.get(id);
     if (agent) {
