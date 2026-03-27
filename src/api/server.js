@@ -129,10 +129,18 @@ app.get('/api/timesheet/visual', (req, res) => {
 app.get('/api/finance/summary', async (req, res) => {
   try {
     if (shopify.enabled) {
-      const metrics = await shopify.getMetrics(30);
+      const metrics = await shopify.getMetrics();
       res.json({
         source: 'shopify',
-        mtd: {
+        mtd: metrics.mtd,
+        previous_month: metrics.previous_month,
+        ytd: metrics.ytd,
+        previous_ytd: metrics.previous_ytd,
+        metrics: metrics.metrics,
+        variations: metrics.variations,
+        shopify: metrics.shopify
+      });
+      // OLD CODE REMOVED
           gross: metrics.revenue,
           net: metrics.revenue * 0.8,
           orders: metrics.orders,
@@ -149,7 +157,15 @@ app.get('/api/finance/summary', async (req, res) => {
     } else {
       res.json({
         source: 'simulated',
-        mtd: { gross: 19780.84, net: 15824.67, orders: 59, items: 118, days_in_month: 26 },
+        mtd: metrics.mtd,
+        previous_month: metrics.previous_month,
+        ytd: metrics.ytd,
+        previous_ytd: metrics.previous_ytd,
+        metrics: metrics.metrics,
+        variations: metrics.variations,
+        shopify: metrics.shopify
+      });
+      // OLD CODE REMOVED gross: 19780.84, net: 15824.67, orders: 59, items: 118, days_in_month: 26 },
         previous_month: { gross: 15234.50, net: 12187.60, orders: 48, items: 96 },
         ytd: { gross: 156432.18, net: 125145.74, orders: 467, items: 934 },
         previous_ytd: { gross: 128765.32, net: 103012.26, orders: 385, items: 770 },
