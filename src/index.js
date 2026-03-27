@@ -5,7 +5,7 @@
  * 24/7 persistent runtime with Opportunity Engine
  */
 
-import { db } from './database/sqlite.js';
+import { db } from './database/adapter.js';
 import { orchestrator } from './orchestrator/runtime.js';
 import { OpportunityEngine } from './orchestrator/opportunity-engine.js';
 import { ShopifySpecialistAgent } from './agents/shopify-specialist.js';
