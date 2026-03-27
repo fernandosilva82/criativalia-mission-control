@@ -59,6 +59,7 @@ app.get('/api/kanban', (req, res) => {
   res.json({
     backlog: tasks.filter(t => t.kanban_column === 'backlog'),
     todo: tasks.filter(t => t.kanban_column === 'todo'),
+    ready: tasks.filter(t => t.kanban_column === 'ready'),
     in_progress: tasks.filter(t => t.kanban_column === 'in_progress'),
     review: tasks.filter(t => t.kanban_column === 'review'),
     done: tasks.filter(t => t.kanban_column === 'done')
@@ -71,6 +72,7 @@ app.get('/api/kanban/macro', (req, res) => {
   const columns = {
     backlog: tasks.filter(t => t.kanban_column === 'backlog' || !t.kanban_column),
     todo: tasks.filter(t => t.kanban_column === 'todo'),
+    ready: tasks.filter(t => t.kanban_column === 'ready'),
     in_progress: tasks.filter(t => t.kanban_column === 'in_progress'),
     review: tasks.filter(t => t.kanban_column === 'review'),
     done: tasks.filter(t => t.kanban_column === 'done')
