@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "name": "criativalia-control-plane",
+  "builds": [
+    {
+      "src": "src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/dashboard",
+      "dest": "src/server.js"
+    },
+    {
+      "src": "/kanban",
+      "dest": "src/server.js"
+    },
+    {
+      "src": "/timesheet",
+      "dest": "src/server.js"
+    },
+    {
+      "src": "/agent(.*)",
+      "dest": "src/server.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "src/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
