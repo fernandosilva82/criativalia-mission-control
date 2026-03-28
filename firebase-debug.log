@@ -1,0 +1,45 @@
+[debug] [2026-03-19T21:13:30.992Z] ----------------------------------------------------------------------
+[debug] [2026-03-19T21:13:31.065Z] Command:       /usr/bin/node /usr/bin/firebase login
+[debug] [2026-03-19T21:13:31.066Z] CLI Version:   15.11.0
+[debug] [2026-03-19T21:13:31.066Z] Platform:      linux
+[debug] [2026-03-19T21:13:31.071Z] Node Version:  v22.22.0
+[debug] [2026-03-19T21:13:31.072Z] Time:          Fri Mar 20 2026 05:13:31 GMT+0800 (China Standard Time)
+[debug] [2026-03-19T21:13:31.073Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-03-19T21:13:31.081Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  The Firebase CLI’s MCP server feature can optionally make use of Gemini in Firebase. Learn more about Gemini in Firebase and how it uses your data: https://firebase.google.com/docs/gemini-in-firebase#how-gemini-in-firebase-uses-your-data 
+[debug] [2026-03-19T21:13:33.716Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-03-19T21:13:33.717Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=603128160&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2026-03-19T21:14:00.055Z] ----------------------------------------------------------------------
+[debug] [2026-03-19T21:14:00.063Z] Command:       /usr/bin/node /usr/bin/firebase login:ci --no-localhost
+[debug] [2026-03-19T21:14:00.065Z] CLI Version:   15.11.0
+[debug] [2026-03-19T21:14:00.065Z] Platform:      linux
+[debug] [2026-03-19T21:14:00.067Z] Node Version:  v22.22.0
+[debug] [2026-03-19T21:14:00.069Z] Time:          Fri Mar 20 2026 05:14:00 GMT+0800 (China Standard Time)
+[debug] [2026-03-19T21:14:00.070Z] ----------------------------------------------------------------------
+[debug] 
+[warn] ⚠  Authenticating with a `login:ci` token is deprecated and will be removed in a future major version of `firebase-tools`. Instead, use a service account key with `GOOGLE_APPLICATION_CREDENTIALS`: https://cloud.google.com/docs/authentication/getting-started 
+[debug] [2026-03-19T21:14:01.906Z] >>> [apiv2][query] POST https://auth.firebase.tools/attest [none]
+[debug] [2026-03-19T21:14:01.907Z] >>> [apiv2][body] POST https://auth.firebase.tools/attest {"session_id":"c5300c71-1455-4621-9726-26cd84e0475d"}
+[debug] [2026-03-19T21:14:02.522Z] <<< [apiv2][status] POST https://auth.firebase.tools/attest 200
+[debug] [2026-03-19T21:14:02.523Z] <<< [apiv2][body] POST https://auth.firebase.tools/attest {"token":"6RrSNlCm-1wtHvHNKKiLxrkn3W9WdwVKFtQm5wT6BaU"}
+[info] 
+[info] To sign in to the Firebase CLI:
+[info] 
+[info] 1. Take note of your session ID:
+[info] 
+[info]    C5300
+[info] 
+[info] 2. Visit the URL below on any device and follow the instructions to get your code:
+[info] 
+[info]    https://auth.firebase.tools/login?code_challenge=bM0VqIyaX9ujbLD68r56lgCGiQpW-O9y3iW8K6bytEs&session=c5300c71-1455-4621-9726-26cd84e0475d&attest=6RrSNlCm-1wtHvHNKKiLxrkn3W9WdwVKFtQm5wT6BaU
+[info] 
+[info] 3. Paste or enter the authorization code below once you have it:
+[info] 

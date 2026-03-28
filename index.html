@@ -1,966 +1,289 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission Control | Criativalia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* Paleta Criativalia - Japandi */
-            --areia: #E8DFD0;
-            --areia-escura: #D4C9B8;
-            --carvao: #2C2C2C;
-            --carvao-claro: #3D3D3D;
-            --verde-musgo: #4A7C59;
-            --verde-musgo-claro: #5A8C69;
-            --terracota: #C4A484;
-            --terracota-clara: #D4B494;
-            --branco: #FAF8F5;
-            --off-white: #F5F2ED;
-            --sombra: rgba(44, 44, 44, 0.08);
-            --sombra-hover: rgba(44, 44, 44, 0.12);
-            
-            /* Status */
-            --success: #4A7C59;
-            --warning: #C4A484;
-            --danger: #B85450;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--off-white);
-            color: var(--carvao);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        
-        h1, h2, h3, .title-serif {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-weight: 600;
-        }
-        
-        /* Login Screen */
-        .login-screen {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--areia) 0%, var(--off-white) 100%);
-            z-index: 1000;
-        }
-        
-        .login-box {
-            background: var(--branco);
-            padding: 64px 56px;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 20px 60px var(--sombra);
-            text-align: center;
-            border: 1px solid var(--areia);
-        }
-        
-        .logo-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, var(--verde-musgo), var(--verde-musgo-claro));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 32px;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--branco);
-            font-family: 'Cormorant Garamond', serif;
-        }
-        
-        .login-box h1 {
-            font-size: 32px;
-            margin-bottom: 8px;
-            color: var(--carvao);
-        }
-        
-        .login-box .subtitle {
-            color: var(--carvao-claro);
-            margin-bottom: 40px;
-            font-size: 15px;
-            font-weight: 300;
-        }
-        
-        .login-box input {
-            width: 100%;
-            padding: 16px 20px;
-            background: var(--off-white);
-            border: 1px solid var(--areia);
-            border-radius: 6px;
-            color: var(--carvao);
-            font-size: 15px;
-            margin-bottom: 20px;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .login-box input:focus {
-            outline: none;
-            border-color: var(--verde-musgo);
-            background: var(--branco);
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 16px;
-            background: var(--verde-musgo);
-            border: none;
-            border-radius: 6px;
-            color: var(--branco);
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .btn-primary:hover {
-            background: var(--verde-musgo-claro);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3);
-        }
-        
-        /* Dashboard Layout */
-        .dashboard {
-            display: none;
-            min-height: 100vh;
-        }
-        
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 260px;
-            background: var(--branco);
-            border-right: 1px solid var(--areia);
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 48px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--areia);
-        }
-        
-        .sidebar-logo {
-            width: 40px;
-            height: 40px;
-            background: var(--verde-musgo);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--branco);
-            font-weight: 700;
-            font-family: 'Cormorant Garamond', serif;
-        }
-        
-        .sidebar-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--carvao);
-        }
-        
-        .sidebar-subtitle {
-            font-size: 12px;
-            color: var(--carvao-claro);
-            font-weight: 400;
-        }
-        
-        .nav-section {
-            margin-bottom: 32px;
-        }
-        
-        .nav-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--carvao-claro);
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--carvao-claro);
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-        
-        .nav-item:hover {
-            background: var(--off-white);
-            color: var(--carvao);
-        }
-        
-        .nav-item.active {
-            background: var(--verde-musgo);
-            color: var(--branco);
-        }
-        
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-        }
-        
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 24px;
-            border-top: 1px solid var(--areia);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            background: var(--terracota);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--branco);
-            font-weight: 600;
-            font-size: 13px;
-        }
-        
-        .user-details {
-            flex: 1;
-        }
-        
-        .user-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--carvao);
-        }
-        
-        .user-role {
-            font-size: 11px;
-            color: var(--carvao-claro);
-        }
-        
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            padding: 40px 48px;
-            min-height: 100vh;
-        }
-        
-        .page-header {
-            margin-bottom: 40px;
-        }
-        
-        .page-header h2 {
-            font-size: 36px;
-            color: var(--carvao);
-            margin-bottom: 8px;
-        }
-        
-        .page-header p {
-            color: var(--carvao-claro);
-            font-size: 15px;
-        }
-        
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-        
-        .stat-card {
-            background: var(--branco);
-            padding: 28px;
-            border-radius: 8px;
-            border: 1px solid var(--areia);
-            transition: all 0.2s;
-        }
-        
-        .stat-card:hover {
-            box-shadow: 0 8px 24px var(--sombra);
-            transform: translateY(-2px);
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--carvao-claro);
-            margin-bottom: 12px;
-        }
-        
-        .stat-value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 36px;
-            font-weight: 600;
-            color: var(--carvao);
-            margin-bottom: 8px;
-        }
-        
-        .stat-change {
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .stat-change.positive { color: var(--success); }
-        .stat-change.negative { color: var(--danger); }
-        .stat-change.warning { color: var(--warning); }
-        
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 32px;
-            margin-bottom: 40px;
-        }
-        
-        .panel {
-            background: var(--branco);
-            border-radius: 8px;
-            border: 1px solid var(--areia);
-            padding: 32px;
-        }
-        
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px;
-        }
-        
-        .panel-title {
-            font-size: 20px;
-            color: var(--carvao);
-        }
-        
-        .panel-action {
-            font-size: 13px;
-            color: var(--verde-musgo);
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        /* Agent Cards */
-        .agent-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .agent-card {
-            background: var(--branco);
-            border-radius: 8px;
-            border: 1px solid var(--areia);
-            padding: 24px;
-            transition: all 0.2s;
-        }
-        
-        .agent-card:hover {
-            box-shadow: 0 8px 24px var(--sombra);
-        }
-        
-        .agent-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-        
-        .agent-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            background: var(--off-white);
-        }
-        
-        .agent-info h4 {
-            font-size: 16px;
-            color: var(--carvao);
-            margin-bottom: 4px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-        }
-        
-        .agent-role {
-            font-size: 12px;
-            color: var(--carvao-claro);
-        }
-        
-        .agent-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        
-        .status-dot.active { background: var(--success); }
-        .status-dot.paused { background: var(--warning); }
-        .status-dot.offline { background: var(--carvao-claro); }
-        
-        .agent-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        
-        .agent-stat {
-            text-align: center;
-            padding: 12px;
-            background: var(--off-white);
-            border-radius: 6px;
-        }
-        
-        .agent-stat-value {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--carvao);
-        }
-        
-        .agent-stat-label {
-            font-size: 11px;
-            color: var(--carvao-claro);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        /* Queue Section */
-        .queue-section {
-            background: var(--branco);
-            border-radius: 8px;
-            border: 1px solid var(--areia);
-            overflow: hidden;
-        }
-        
-        .queue-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 32px;
-            border-bottom: 1px solid var(--areia);
-            background: var(--off-white);
-        }
-        
-        .queue-title {
-            font-size: 18px;
-            color: var(--carvao);
-        }
-        
-        .queue-count {
-            background: var(--terracota);
-            color: var(--branco);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        
-        .queue-list {
-            padding: 8px;
-        }
-        
-        .queue-item {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px 24px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        
-        .queue-item:hover {
-            background: var(--off-white);
-        }
-        
-        .queue-preview {
-            width: 64px;
-            height: 64px;
-            border-radius: 6px;
-            background: var(--off-white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
-            border: 1px solid var(--areia);
-        }
-        
-        .queue-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .queue-content {
-            flex: 1;
-        }
-        
-        .queue-item-title {
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--carvao);
-            margin-bottom: 4px;
-        }
-        
-        .queue-item-meta {
-            font-size: 12px;
-            color: var(--carvao-claro);
-            margin-bottom: 6px;
-        }
-        
-        .queue-item-desc {
-            font-size: 13px;
-            color: var(--carvao-claro);
-            line-height: 1.5;
-        }
-        
-        .queue-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .btn-approve, .btn-reject {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-        
-        .btn-approve {
-            background: var(--verde-musgo);
-            color: var(--branco);
-        }
-        
-        .btn-approve:hover {
-            background: var(--verde-musgo-claro);
-        }
-        
-        .btn-reject {
-            background: transparent;
-            color: var(--carvao-claro);
-            border: 1px solid var(--areia);
-        }
-        
-        .btn-reject:hover {
-            background: var(--off-white);
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-        
-        /* Charts Placeholder */
-        .chart-container {
-            height: 280px;
-            background: var(--off-white);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--carvao-claro);
-            font-size: 14px;
-            border: 1px dashed var(--areia);
-        }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .content-grid { grid-template-columns: 1fr; }
-            .agent-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 24px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .agent-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control | Criativalia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Login Screen -->
-    <div class="login-screen" id="loginScreen">
-        <div class="login-box">
-            <div class="logo-icon">C</div>
-            <h1>Mission Control</h1>
-            <p class="subtitle">Gestão de Agentes Autônomos — Criativalia</p>
-            <input type="password" id="passwordInput" placeholder="Digite sua senha">
-            <button class="btn-primary" onclick="login()">Entrar no Sistema</button>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">C</div>
+        <div class="brand">
+          <h1>Criativalia</h1>
+          <p>Mission Control</p>
         </div>
-    </div>
-
-    <!-- Dashboard -->
-    <div class="dashboard" id="dashboard">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">C</div>
-                <div>
-                    <div class="sidebar-title">Criativalia</div>
-                    <div class="sidebar-subtitle">Mission Control</div>
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-label">Principal</div>
-                <div class="nav-item active" onclick="showSection('dashboard')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    Dashboard
-                </div>
-                <div class="nav-item" onclick="showSection('agents')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    Agentes
-                </div>
-                <div class="nav-item" onclick="showSection('queue')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    Fila de Aprovação
-                </div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-label">Configurações</div>
-                <div class="nav-item" onclick="showSection('settings')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                    Configurações
-                </div>
-            </div>
-            
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="user-avatar">FS</div>
-                    <div class="user-details">
-                        <div class="user-name">Fernando Silva</div>
-                        <div class="user-role">Administrador</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="page-header">
-                <h2>Dashboard</h2>
-                <p>Visão geral do desempenho e agentes ativos</p>
-            </div>
-
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Receita (30d)</div>
-                    <div class="stat-value">R$19.780</div>
-                    <div class="stat-change positive">+12% vs mês anterior</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Pedidos</div>
-                    <div class="stat-value">59</div>
-                    <div class="stat-change positive">+8% vs mês anterior</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Ticket Médio</div>
-                    <div class="stat-value">R$335</div>
-                    <div class="stat-change positive">+5% vs mês anterior</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Taxa de Recompra</div>
-                    <div class="stat-value">0%</div>
-                    <div class="stat-change negative">Meta: 30%</div>
-                </div>
-            </div>
-
-            <!-- Agents -->
-            <h3 style="font-size: 20px; margin-bottom: 20px; color: var(--carvao);">Agentes Ativos</h3>
-            <div class="agent-grid">
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, var(--verde-musgo), var(--verde-musgo-claro));">🚀</div>
-                        <div class="agent-info">
-                            <h4>Elon</h4>
-                            <div class="agent-role">Mission Director</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot active"></div>
-                        <span>Ativo — último heartbeat 2m</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">6</div>
-                            <div class="agent-stat-label">Agentes</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">12</div>
-                            <div class="agent-stat-label">Tarefas</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, var(--terracota), var(--terracota-clara));">📊</div>
-                        <div class="agent-info">
-                            <h4>Florence</h4>
-                            <div class="agent-role">OpsAgent</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot active"></div>
-                        <span>Ativo — último heartbeat 5m</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">R$335</div>
-                            <div class="agent-stat-label">Ticket Médio</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">4.2:1</div>
-                            <div class="agent-stat-label">LTV/CAC</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #8B7355, #A08060);">🤝</div>
-                        <div class="agent-info">
-                            <h4>Ziglar</h4>
-                            <div class="agent-role">VendaAgent</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot active"></div>
-                        <span>Ativo — último heartbeat 3m</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">5</div>
-                            <div class="agent-stat-label">Templates</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">0%</div>
-                            <div class="agent-stat-label">Recompra</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #6B8E9F, #8BA8B8);">🎨</div>
-                        <div class="agent-info">
-                            <h4>Jony</h4>
-                            <div class="agent-role">ProductAgent</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot active"></div>
-                        <span>Ativo — último heartbeat 8m</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">5</div>
-                            <div class="agent-stat-label">Bundles</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">62%</div>
-                            <div class="agent-stat-label">Margem</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, #9B7CB6, #B59ACF);">🍎</div>
-                        <div class="agent-info">
-                            <h4>Steve</h4>
-                            <div class="agent-role">CreativeAgent</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot active"></div>
-                        <span>Ativo — último heartbeat 1m</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">3</div>
-                            <div class="agent-stat-label">Entregas Hoje</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">50</div>
-                            <div class="agent-stat-label">Fotos</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="agent-card">
-                    <div class="agent-header">
-                        <div class="agent-avatar" style="background: linear-gradient(135deg, var(--carvao-claro), var(--carvao));">📈</div>
-                        <div class="agent-info">
-                            <h4>Gary</h4>
-                            <div class="agent-role">TrafegoAgent</div>
-                        </div>
-                    </div>
-                    <div class="agent-status">
-                        <div class="status-dot paused"></div>
-                        <span>Pausado — aguardando dados</span>
-                    </div>
-                    <div class="agent-stats">
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">—</div>
-                            <div class="agent-stat-label">ROAS</div>
-                        </div>
-                        <div class="agent-stat">
-                            <div class="agent-stat-value">0</div>
-                            <div class="agent-stat-label">Gasto</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Approval Queue -->
-            <h3 style="font-size: 20px; margin-bottom: 20px; color: var(--carvao);">Fila de Aprovação</h3>
-            <div class="queue-section">
-                <div class="queue-header">
-                    <span class="queue-title">Pendentes de Aprovação</span>
-                    <span class="queue-count">3</span>
-                </div>
-                <div class="queue-list">
-                    <div class="queue-item">
-                        <div class="queue-preview" style="background: linear-gradient(135deg, var(--areia), var(--areia-escura));">
-                            <span style="font-size: 28px;">🖼️</span>
-                        </div>
-                        <div class="queue-content">
-                            <div class="queue-item-title">Moodboard Corner Japandi</div>
-                            <div class="queue-item-meta">Steve • CreativeAgent • Há 2 horas</div>
-                            <div class="queue-item-desc">Composição visual com Abajur Accordion + Vaso Okami + Bandeja Orgânica. Paleta: bege, cinza, verde natural.</div>
-                        </div>
-                        <div class="queue-actions">
-                            <button class="btn-approve" onclick="approveItem(this)">✓ Aprovar</button>
-                            <button class="btn-reject" onclick="rejectItem(this)">✗ Rejeitar</button>
-                        </div>
-                    </div>
-                    <div class="queue-item">
-                        <div class="queue-preview" style="background: linear-gradient(135deg, #1e3a5f, #0d2137);">
-                            <span style="font-size: 28px;">📊</span>
-                        </div>
-                        <div class="queue-content">
-                            <div class="queue-item-title">Otimização Google Ads</div>
-                            <div class="queue-item-meta">Gary • TrafegoAgent • Há 1 hora</div>
-                            <div class="queue-item-desc">Sugestões para reduzir CAC de R$50 para R$38. Ações: negativar 12 keywords, reduzir bid -15%.</div>
-                        </div>
-                        <div class="queue-actions">
-                            <button class="btn-approve" onclick="approveItem(this)">✓ Aplicar</button>
-                            <button class="btn-reject" onclick="rejectItem(this)">✗ Ignorar</button>
-                        </div>
-                    </div>
-                    <div class="queue-item">
-                        <div class="queue-preview" style="background: linear-gradient(135deg, var(--terracota-clara), var(--terracota));">
-                            <span style="font-size: 28px;">📦</span>
-                        </div>
-                        <div class="queue-content">
-                            <div class="queue-item-title">Bundle Mushroom Collection — R$379</div>
-                            <div class="queue-item-meta">Jony • ProductAgent • Há 3 horas</div>
-                            <div class="queue-item-desc">3 tamanhos Mushroom (P+M+G). Preço separado: R$388 → Bundle: R$379. Margem: 58%.</div>
-                        </div>
-                        <div class="queue-actions">
-                            <button class="btn-approve" onclick="approveItem(this)">✓ Criar</button>
-                            <button class="btn-reject" onclick="rejectItem(this)">✗ Recusar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // Login
-        function login() {
-            const pwd = document.getElementById('passwordInput').value;
-            if (pwd === 'criativalia2026') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                localStorage.setItem('mc_auth', 'true');
-            } else {
-                alert('Senha incorreta');
-            }
-        }
+      </div>
+      
+      <nav class="nav">
+        <div class="nav-section">
+          <p class="nav-label">Principal</p>
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="nav-item" data-page="kanban">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
+            Kanban
+          </a>
+          <a href="#" class="nav-item" data-page="timesheet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Timesheet
+          </a>
+          <a href="#" class="nav-item" data-page="reports">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+            Reports
+          </a>
+        </div>
         
-        // Auto login
-        if (localStorage.getItem('mc_auth') === 'true') {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-        }
+        <div class="nav-section">
+          <p class="nav-label">Sistema</p>
+          <a href="#" class="nav-item" data-page="products">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Produtos
+          </a>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user">
+          <div class="user-avatar">FS</div>
+          <div class="user-info">
+            <p class="user-name">Fernando Silva</p>
+            <p class="user-role">Administrador</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Dashboard Page -->
+      <div id="page-dashboard" class="page active">
+        <header class="page-header">
+          <h1>Dashboard</h1>
+          <p>Visão geral do desempenho da loja</p>
+        </header>
         
-        // Enter key
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') login();
-        });
+        <div class="stats-grid" id="dashboard-stats">
+          <div class="stat-card loading">
+            <p class="stat-label">Receita (30d)</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Pedidos</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Clientes</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Ticket Médio</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+        </div>
         
-        // Approval actions
-        function approveItem(btn) {
-            btn.closest('.queue-item').style.opacity = '0.5';
-            setTimeout(() => {
-                btn.closest('.queue-item').remove();
-                updateCount();
-            }, 400);
-        }
+        <div class="quick-links">
+          <a href="#" class="quick-card" data-nav="kanban">
+            <div class="quick-icon">📋</div>
+            <div>
+              <h3>Kanban</h3>
+              <p>Gerenciar tarefas dos agentes</p>
+            </div>
+          </a>
+          <a href="#" class="quick-card" data-nav="timesheet">
+            <div class="quick-icon">⏱️</div>
+            <div>
+              <h3>Timesheet</h3>
+              <p>Log de atividades dos agentes</p>
+            </div>
+          </a>
+          <a href="#" class="quick-card" data-nav="reports">
+            <div class="quick-icon">📊</div>
+            <div>
+              <h3>Reports</h3>
+              <p>Relatórios semanais</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Kanban Page -->
+      <div id="page-kanban" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Kanban</h1>
+            <p>Gestão visual de tarefas dos agentes</p>
+          </div>
+          <button class="btn btn-primary" onclick="addTask()">+ Nova Tarefa</button>
+        </header>
         
-        function rejectItem(btn) {
-            btn.closest('.queue-item').style.opacity = '0.5';
-            setTimeout(() => {
-                btn.closest('.queue-item').remove();
-                updateCount();
-            }, 400);
-        }
+        <div class="kanban-board">
+          <div class="kanban-column" data-column="inbox">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #64748b;"></span>
+              <h3>Inbox</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="opportunity_review">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #3b82f6;"></span>
+              <h3>Opportunity Review</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="ready">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #10b981;"></span>
+              <h3>Ready</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="in_progress">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #f59e0b;"></span>
+              <h3>In Progress</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="review">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #8b5cf6;"></span>
+              <h3>Review</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="ready_to_deploy">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #06b6d4;"></span>
+              <h3>Ready to Deploy</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="done">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #22c55e;"></span>
+              <h3>Done</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Timesheet Page -->
+      <div id="page-timesheet" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Timesheet</h1>
+            <p>Log de atividades hora a hora dos agentes</p>
+          </div>
+          <div class="date-display">
+            <span id="current-date">—</span>
+          </div>
+        </header>
         
-        function updateCount() {
-            const count = document.querySelectorAll('.queue-item').length;
-            document.querySelector('.queue-count').textContent = count;
-        }
+        <div class="timesheet-container">
+          <div class="timesheet-grid" id="timesheet-grid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
         
-        // Navigation
-        function showSection(section) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-        }
-    </script>
+        <div class="timesheet-legend">
+          <h3>Categorias</h3>
+          <div class="legend-items" id="legend-items">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reports Page -->
+      <div id="page-reports" class="page">
+        <header class="page-header">
+          <h1>Weekly Report</h1>
+          <p>Relatório semanal com dados reais do Shopify</p>
+        </header>
+        
+        <div class="stats-grid" id="reports-stats">
+          <div class="stat-card loading">
+            <p class="stat-label">Receita Total</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Total de Pedidos</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Ticket Médio</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Clientes</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h2>Top Produtos</h2>
+            <span class="card-subtitle">Por quantidade vendida</span>
+          </div>
+          
+          <div id="top-products-list">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Carregando dados reais do Shopify...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Products Page -->
+      <div id="page-products" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Produtos</h1>
+            <p>Catálogo do Shopify</p>
+          </div>
+          <input type="text" class="search-input" placeholder="Buscar produtos..." id="product-search">
+        </header>
+        
+        <div class="products-grid" id="products-grid">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Carregando produtos do Shopify...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="app.js"></script>
 </body>
 </html>
