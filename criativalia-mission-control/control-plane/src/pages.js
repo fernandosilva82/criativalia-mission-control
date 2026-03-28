@@ -2267,4 +2267,723 @@ module.exports = {
 </body>
 </html>
 `,
+  deliverables: `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entregas - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0b; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0a0a0b; 
+            color: #fafafa; 
+        }
+        
+        .code-font { font-family: 'JetBrains Mono', monospace; }
+        
+        .card { 
+            background: #141414; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .card:hover {
+            border-color: #c17767;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, #c17767 0%, #d48877 100%);
+            color: white;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover { 
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        .category-badge {
+            background: rgba(193, 119, 103, 0.15);
+            color: #c17767;
+            border: 1px solid rgba(193, 119, 103, 0.3);
+        }
+        
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .file-md { background: rgba(66, 153, 225, 0.15); color: #4299e1; }
+        .file-json { background: rgba(236, 201, 75, 0.15); color: #ecc94b; }
+        .file-js { background: rgba(246, 224, 94, 0.15); color: #f6e05e; }
+        .file-py { background: rgba(72, 187, 120, 0.15); color: #48bb78; }
+        .file-csv { background: rgba(159, 122, 234, 0.15); color: #9f7aea; }
+        .file-img { background: rgba(237, 100, 166, 0.15); color: #ed64a6; }
+        .file-code { background: rgba(160, 174, 192, 0.15); color: #a0aec0; }
+        
+        .preview-panel {
+            background: #0d0d0e;
+            border-left: 1px solid #2a2a2a;
+        }
+        
+        .deliverable-item {
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        
+        .deliverable-item:hover {
+            background: rgba(193, 119, 103, 0.05);
+        }
+        
+        .deliverable-item.active {
+            background: rgba(193, 119, 103, 0.1);
+            border-left: 3px solid #c17767;
+        }
+        
+        .hljs {
+            background: #0d0d0e !important;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .markdown-body {
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .markdown-body h1 { color: #fafafa; border-bottom: 1px solid #2a2a2a; padding-bottom: 8px; }
+        .markdown-body h2 { color: #e2e8f0; margin-top: 24px; }
+        .markdown-body h3 { color: #a0aec0; }
+        .markdown-body code {
+            background: #1a1a1b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+        }
+        .markdown-body pre {
+            background: #0d0d0e;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .markdown-body blockquote {
+            border-left: 4px solid #c17767;
+            padding-left: 16px;
+            color: #a0aec0;
+            font-style: italic;
+        }
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        .markdown-body th,
+        .markdown-body td {
+            border: 1px solid #2a2a2a;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .markdown-body th {
+            background: #1a1a1b;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="/" class="text-gray-400 hover:text-white transition">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">📦 Entregas</h1>
+                        <p class="text-sm text-gray-500">Catálogo de entregas e assets</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openUploadModal()" class="btn-primary px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-plus mr-2"></i>Nova Entrega
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex h-[calc(100vh-73px)]">
+        <!-- Sidebar - Filtros -->
+        <aside class="w-64 border-r border-gray-800 bg-gray-900/30 p-4 overflow-y-auto">
+            <div class="space-y-6">
+                <!-- Busca -->
+                <div>
+                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Buscar</label>
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <input type="text" id="searchInput" placeholder="Nome, tag, conteúdo..."
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-c17767">
+                    </div>
+                </div>
+
+                <!-- Categorias -->
+                <div>
+                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Categorias</label>
+                    <div class="space-y-1" id="categoryFilters">
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-white bg-c17767/20 border border-c17767/30 flex items-center gap-2" data-category="all">
+                            <i class="fas fa-th-large"></i> Todas
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-all">0</span>
+                        </button>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="strategy">
+                            <i class="fas fa-chess"></i> Estratégia
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-strategy">0</span>
+                        </button>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="creative">
+                            <i class="fas fa-palette"></i> Criativos
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-creative">0</span>
+                        </button>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="analysis">
+                            <i class="fas fa-chart-line"></i> Análises
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-analysis">0</span>
+                        </button>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="code">
+                            <i class="fas fa-code"></i> Código
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-code">0</span>
+                        </button>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="docs">
+                            <i class="fas fa-file-alt"></i> Documentação
+                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-docs">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tipo de Arquivo -->
+                <div>
+                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Tipo</label>
+                    <div class="space-y-1" id="typeFilters">
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="md">
+                            <i class="fab fa-markdown text-blue-400"></i> Markdown
+                        </button>
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="json">
+                            <i class="fas fa-brackets-curly text-yellow-400"></i> JSON
+                        </button>
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="js">
+                            <i class="fab fa-js text-yellow-300"></i> JavaScript
+                        </button>
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="csv">
+                            <i class="fas fa-table text-purple-400"></i> CSV / Planilha
+                        </button>
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="img">
+                            <i class="fas fa-image text-pink-400"></i> Imagem
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Lista de Entregas -->
+        <main class="flex-1 overflow-y-auto p-6" id="deliverablesList">
+            <div class="mb-4 flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-white" id="listTitle">Todas as Entregas</h2>
+                <div class="text-sm text-gray-500">
+                    <span id="showingCount">0</span> de <span id="totalCount">0</span> entregas
+                </div>
+            </div>
+            
+            <div class="space-y-3" id="deliverablesContainer">
+                <!-- Entregas serão inseridas aqui -->
+            </div>
+        </main>
+
+        <!-- Preview Panel -->
+        <aside class="w-[45%] preview-panel overflow-y-auto hidden" id="previewPanel">
+            <div class="sticky top-0 bg-gray-900/90 backdrop-blur border-b border-gray-800 p-4 z-10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div id="previewIcon" class="file-icon file-md">
+                            <i class="fab fa-markdown"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white" id="previewTitle">Nome do Arquivo</h3>
+                            <p class="text-xs text-gray-500" id="previewMeta">Categoria • Tamanho • Data</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="downloadCurrent()" class="p-2 text-gray-400 hover:text-white transition" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button onclick="closePreview()" class="p-2 text-gray-400 hover:text-white transition" title="Fechar">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6" id="previewContent">
+                <!-- Conteúdo do preview -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- Modal de Upload -->
+    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur hidden items-center justify-center z-50">
+        <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-lg p-6 m-4">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-white">Nova Entrega</h3>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="uploadForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Título</label>
+                    <input type="text" name="title" required
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767"
+                        placeholder="Ex: Análise de LTV - Março 2026">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
+                        <select name="category" required
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767">
+                            <option value="strategy">Estratégia</option>
+                            <option value="creative">Criativos</option>
+                            <option value="analysis">Análises</option>
+                            <option value="code">Código</option>
+                            <option value="docs">Documentação</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Agente</label>
+                        <select name="agent_id"
+                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767">
+                            <option value="">Selecione...</option>
+                            <option value="data_analyst">DATA_ANALYST</option>
+                            <option value="copywriter">COPYWRITER</option>
+                            <option value="designer">DESIGNER</option>
+                            <option value="shopify_specialist">SHOPIFY_SPECIALIST</option>
+                            <option value="dev_automation">DEV_AUTOMATION</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Tags (separadas por vírgula)</label>
+                    <input type="text" name="tags"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767"
+                        placeholder="ltv, análise, março">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Conteúdo / Descrição</label>
+                    <textarea name="content" rows="8" required
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white code-font text-sm focus:outline-none focus:border-c17767 resize-none"
+                        placeholder="Cole o conteúdo aqui (Markdown, JSON, código, etc.)"></textarea>
+                </div>
+                
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeUploadModal()"
+                        class="px-4 py-2 text-gray-400 hover:text-white transition">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="btn-primary px-6 py-2 rounded-lg font-medium">
+                        Salvar Entrega
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Estado
+        let deliverables = [];
+        let currentFilter = 'all';
+        let currentTypeFilter = null;
+        let selectedDeliverable = null;
+
+        // Categoria labels
+        const categoryLabels = {
+            strategy: 'Estratégia',
+            creative: 'Criativos',
+            analysis: 'Análises',
+            code: 'Código',
+            docs: 'Documentação'
+        };
+
+        // Icones por tipo
+        const fileIcons = {
+            md: { class: 'file-md', icon: 'fab fa-markdown' },
+            json: { class: 'file-json', icon: 'fas fa-brackets-curly' },
+            js: { class: 'file-js', icon: 'fab fa-js' },
+            py: { class: 'file-py', icon: 'fab fa-python' },
+            csv: { class: 'file-csv', icon: 'fas fa-table' },
+            img: { class: 'file-img', icon: 'fas fa-image' },
+            default: { class: 'file-code', icon: 'fas fa-file-code' }
+        };
+
+        // Detectar tipo de arquivo
+        function detectType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['md', 'markdown'].includes(ext)) return 'md';
+            if (['json'].includes(ext)) return 'json';
+            if (['js', 'jsx', 'ts', 'tsx'].includes(ext)) return 'js';
+            if (['py'].includes(ext)) return 'py';
+            if (['csv'].includes(ext)) return 'csv';
+            if (['png', 'jpg', 'jpeg', 'gif', 'svg'].includes(ext)) return 'img';
+            return 'default';
+        }
+
+        // Carregar entregas
+        async function loadDeliverables() {
+            try {
+                const response = await fetch('/api/deliverables');
+                deliverables = await response.json();
+                renderDeliverables();
+                updateCounts();
+            } catch (err) {
+                console.error('Erro ao carregar entregas:', err);
+                // Dados de exemplo
+                deliverables = [
+                    {
+                        id: 'del_1',
+                        title: 'Análise LTV - Clientes Inativos',
+                        category: 'analysis',
+                        type: 'md',
+                        agent_id: 'data_analyst',
+                        agent_name: 'DATA_ANALYST',
+                        tags: ['ltv', 'clientes', 'março'],
+                        content: '# Análise LTV - Clientes Inativos\\n\\n## Resumo\\n- **Total clientes inativos:** 73\\n- **Potencial de receita:** R$ 31.000\\n- **Ticket médio histórico:** R$ 425\\n\\n## Recomendações\\n1. Campanha de reativação com 15% OFF\\n2. Sequência de 3 emails\\n3. Oferta de bundle especial',
+                        size: '2.4 KB',
+                        created_at: '2026-03-28T14:30:00Z'
+                    },
+                    {
+                        id: 'del_2',
+                        title: 'Estratégia de Bundles',
+                        category: 'strategy',
+                        type: 'md',
+                        agent_id: 'shopify_specialist',
+                        agent_name: 'SHOPIFY_SPECIALIST',
+                        tags: ['bundles', 'receita', 'estrategia'],
+                        content: '# Estratégia de Bundles\\n\\n## Bundles Propostos\\n\\n### 1. Kit Home Office\\n- Produtos: Mesa + Luminária + Organizador\\n- Preço: R$ 599 (economia de 20%)\\n- Margem: 45%\\n\\n### 2. Kit Decoração\\n- Produtos: 3 Vasos + Bandeja + Porta-retrato\\n- Preço: R$ 299 (economia de 25%)\\n- Margem: 52%',
+                        size: '1.8 KB',
+                        created_at: '2026-03-28T13:15:00Z'
+                    },
+                    {
+                        id: 'del_3',
+                        title: 'Script Automação de Relatórios',
+                        category: 'code',
+                        type: 'js',
+                        agent_id: 'dev_automation',
+                        agent_name: 'DEV_AUTOMATION',
+                        tags: ['automação', 'script', 'relatórios'],
+                        content: \`// Automação de relatórios diários\\nconst { fetchShopifyData } = require('./shopify');\\nconst { generateReport } = require('./reports');\\n\\nasync function generateDailyReport() {\\n  const data = await fetchShopifyData();\\n  const report = generateReport(data);\\n  \\n  await sendEmail({\\n    to: 'fernando@criativalia.com',\\n    subject: 'Relatório Diário - ' + new Date().toLocaleDateString(),\\n    html: report\\n  });\\n}\\n\\nmodule.exports = { generateDailyReport };\`,
+                        size: '856 B',
+                        created_at: '2026-03-28T10:00:00Z'
+                    },
+                    {
+                        id: 'del_4',
+                        title: 'Copy Email de Reativação',
+                        category: 'creative',
+                        type: 'md',
+                        agent_id: 'copywriter',
+                        agent_name: 'COPYWRITER',
+                        tags: ['email', 'copy', 'reativação'],
+                        content: '# Email de Reativação\\n\\n**Assunto:** Sentimos sua falta, [Nome] 💙\\n\\n---\\n\\nOi [Nome],\\n\\nPercebi que faz um tempo que você não visita a Criativalia.\\n\\nE se eu te dissesse que preparamos algo especial só para você?\\n\\n**15% OFF** em todo o site\\nCódigo: **VOLTEI15**\\n\\nVálido por 48h ⏰\\n\\n[Ver Novidades]\\n\\n---\\n\\nUm abraço,\\nFernando',
+                        size: '1.2 KB',
+                        created_at: '2026-03-27T16:45:00Z'
+                    }
+                ];
+                renderDeliverables();
+                updateCounts();
+            }
+        }
+
+        // Renderizar lista
+        function renderDeliverables() {
+            const container = document.getElementById('deliverablesContainer');
+            const filtered = filterDeliverables();
+            
+            document.getElementById('showingCount').textContent = filtered.length;
+            document.getElementById('totalCount').textContent = deliverables.length;
+            
+            if (filtered.length === 0) {
+                container.innerHTML = \`\\n                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-inbox text-4xl mb-4"></i>
+                        <p>Nenhuma entrega encontrada</p>
+                    </div>\\n                \`;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(d => {
+                const typeInfo = fileIcons[d.type] || fileIcons.default;
+                const date = new Date(d.created_at).toLocaleDateString('pt-BR');
+                return \`\\n                    <div class="deliverable-item card p-4 flex items-center gap-4 \${selectedDeliverable?.id === d.id ? 'active' : ''}"
+                         onclick="selectDeliverable('\${d.id}')">
+                        <div class="file-icon \${typeInfo.class}">
+                            <i class="\${typeInfo.icon}"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-medium text-white truncate">\${d.title}</h4>
+                                <span class="category-badge text-xs px-2 py-0.5 rounded-full">
+                                    \${categoryLabels[d.category] || d.category}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">
+                                \${d.agent_name || 'Desconhecido'} • \${date} • \${d.size || ''}
+                            </p>
+                            \${d.tags?.length ? \`\\n                                <div class="flex gap-1 mt-2">
+                                    \${d.tags.map(t => \`<span class="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">#\${t}</span>\`).join('')}
+                                </div>\\n                            \` : ''}
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </div>\\n                \`;
+            }).join('');
+        }
+
+        // Filtrar entregas
+        function filterDeliverables() {
+            let filtered = deliverables;
+            
+            // Filtro de categoria
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(d => d.category === currentFilter);
+            }
+            
+            // Filtro de tipo
+            if (currentTypeFilter) {
+                filtered = filtered.filter(d => d.type === currentTypeFilter);
+            }
+            
+            // Busca
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            if (search) {
+                filtered = filtered.filter(d => 
+                    d.title.toLowerCase().includes(search) ||
+                    d.tags?.some(t => t.toLowerCase().includes(search)) ||
+                    d.content?.toLowerCase().includes(search)
+                );
+            }
+            
+            // Ordenar por data (mais recente primeiro)
+            return filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        }
+
+        // Atualizar contagens
+        function updateCounts() {
+            const counts = {
+                all: deliverables.length,
+                strategy: deliverables.filter(d => d.category === 'strategy').length,
+                creative: deliverables.filter(d => d.category === 'creative').length,
+                analysis: deliverables.filter(d => d.category === 'analysis').length,
+                code: deliverables.filter(d => d.category === 'code').length,
+                docs: deliverables.filter(d => d.category === 'docs').length
+            };
+            
+            Object.entries(counts).forEach(([key, count]) => {
+                const el = document.getElementById(\`count-\${key}\`);
+                if (el) el.textContent = count;
+            });
+        }
+
+        // Selecionar entrega
+        function selectDeliverable(id) {
+            selectedDeliverable = deliverables.find(d => d.id === id);
+            if (!selectedDeliverable) return;
+            
+            // Atualizar UI
+            document.querySelectorAll('.deliverable-item').forEach(el => el.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Mostrar preview
+            const panel = document.getElementById('previewPanel');
+            panel.classList.remove('hidden');
+            
+            // Atualizar header
+            document.getElementById('previewTitle').textContent = selectedDeliverable.title;
+            const date = new Date(selectedDeliverable.created_at).toLocaleDateString('pt-BR');
+            document.getElementById('previewMeta').textContent = 
+                \`\${categoryLabels[selectedDeliverable.category]} • \${selectedDeliverable.size || 'N/A'} • \${date}\`;
+            
+            // Icon
+            const typeInfo = fileIcons[selectedDeliverable.type] || fileIcons.default;
+            const iconEl = document.getElementById('previewIcon');
+            iconEl.className = \`file-icon \${typeInfo.class}\`;
+            iconEl.innerHTML = \`<i class="\${typeInfo.icon}"></i>\`;
+            
+            // Renderizar conteúdo
+            renderPreview();
+        }
+
+        // Renderizar preview
+        function renderPreview() {
+            const contentEl = document.getElementById('previewContent');
+            const type = selectedDeliverable.type;
+            const content = selectedDeliverable.content;
+            
+            if (type === 'md') {
+                // Markdown
+                contentEl.innerHTML = \`<div class="markdown-body">\${marked.parse(content)}</div>\`;
+            } else if (['js', 'py', 'json'].includes(type)) {
+                // Código
+                contentEl.innerHTML = \`<pre><code class="language-\${type}">\${escapeHtml(content)}</code></pre>\`;
+                hljs.highlightAll();
+            } else {
+                // Texto plano
+                contentEl.innerHTML = \`<pre class="text-gray-300 code-font text-sm whitespace-pre-wrap">\${escapeHtml(content)}</pre>\`;
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Fechar preview
+        function closePreview() {
+            document.getElementById('previewPanel').classList.add('hidden');
+            selectedDeliverable = null;
+            document.querySelectorAll('.deliverable-item').forEach(el => el.classList.remove('active'));
+        }
+
+        // Download
+        function downloadCurrent() {
+            if (!selectedDeliverable) return;
+            
+            const blob = new Blob([selectedDeliverable.content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = \`\${selectedDeliverable.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.\${selectedDeliverable.type === 'md' ? 'md' : selectedDeliverable.type}\`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Modal de upload
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+            document.getElementById('uploadModal').classList.add('flex');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+            document.getElementById('uploadModal').classList.remove('flex');
+            document.getElementById('uploadForm').reset();
+        }
+
+        // Submit do formulário
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = {
+                title: formData.get('title'),
+                category: formData.get('category'),
+                agent_id: formData.get('agent_id'),
+                tags: formData.get('tags').split(',').map(t => t.trim()).filter(t => t),
+                content: formData.get('content'),
+                type: detectType(formData.get('title')),
+                size: \`\${(formData.get('content').length / 1024).toFixed(1)} KB\`,
+                created_at: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch('/api/deliverables', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    deliverables.unshift({ ...data, id: result.id });
+                    renderDeliverables();
+                    updateCounts();
+                    closeUploadModal();
+                } else {
+                    alert('Erro ao salvar entrega');
+                }
+            } catch (err) {
+                // Adicionar localmente se API falhar
+                deliverables.unshift({
+                    ...data,
+                    id: 'del_' + Date.now(),
+                    agent_name: formData.get('agent_id') || 'Manual'
+                });
+                renderDeliverables();
+                updateCounts();
+                closeUploadModal();
+            }
+        });
+
+        // Event listeners para filtros
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-c17767/20', 'border', 'border-c17767/30', 'text-white');
+                    b.classList.add('text-gray-400');
+                });
+                btn.classList.add('bg-c17767/20', 'border', 'border-c17767/30', 'text-white');
+                btn.classList.remove('text-gray-400');
+                
+                currentFilter = btn.dataset.category;
+                renderDeliverables();
+            });
+        });
+
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const isActive = btn.classList.contains('text-white');
+                document.querySelectorAll('.type-btn').forEach(b => {
+                    b.classList.remove('text-white', 'bg-gray-800');
+                    b.classList.add('text-gray-400');
+                });
+                
+                if (!isActive) {
+                    btn.classList.add('text-white', 'bg-gray-800');
+                    btn.classList.remove('text-gray-400');
+                    currentTypeFilter = btn.dataset.type;
+                } else {
+                    currentTypeFilter = null;
+                }
+                renderDeliverables();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', renderDeliverables);
+
+        // Inicializar
+        loadDeliverables();
+    </script>
+</body>
+</html>
+`,
 };

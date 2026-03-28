@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const publicDir = path.join(__dirname, '../public');
-const files = ['index.html', 'dashboard.html', 'kanban.html', 'timesheet.html', 'agent.html'];
+const files = ['index.html', 'dashboard.html', 'kanban.html', 'timesheet.html', 'agent.html', 'deliverables.html'];
 
 let output = '// Auto-generated pages file\nmodule.exports = {\n';
 
@@ -17,10 +17,12 @@ for (const file of files) {
       .replace(/`/g, '\\`')
       .replace(/\${/g, '\\${');
     output += `  ${name}: \`${escaped}\`,\n`;
+  } else {
+    console.warn(`⚠️  Arquivo não encontrado: ${filePath}`);
   }
 }
 
 output += '};\n';
 
-fs.writeFileSync(path.join(__dirname, 'pages.js'), output);
+fs.writeFileSync(path.join(__dirname, '../src/pages.js'), output);
 console.log('✅ pages.js generated successfully');
