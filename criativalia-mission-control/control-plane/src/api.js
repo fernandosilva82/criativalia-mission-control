@@ -637,75 +637,35 @@ function generateRecentOrders() {
 
 // ========== PAGE ROUTES ==========
 
-// Helper para encontrar arquivo
-function findFile(filename) {
-    const possiblePaths = [
-        path.join(__dirname, '../public', filename),
-        path.join(__dirname, 'public', filename),
-        path.join(process.cwd(), 'public', filename),
-        path.join('/var/task/public', filename),
-        path.join('/var/task/criativalia-mission-control/control-plane/public', filename)
-    ];
-    
-    for (const p of possiblePaths) {
-        if (fs.existsSync(p)) {
-            return p;
-        }
+// Import pages as strings (for serverless compatibility)
+const pages = require('./pages');
+
+// Helper to serve page
+function servePage(res, pageName) {
+    if (pages[pageName]) {
+        res.setHeader('Content-Type', 'text/html');
+        res.send(pages[pageName]);
+    } else {
+        res.status(404).send(`Page "${pageName}" not found`);
     }
-    return possiblePaths[0]; // Retorna o primeiro mesmo se não existir
 }
 
 // Kanban page
-app.get('/kanban', (req, res) => {
-    const filePath = findFile('kanban.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Kanban page not found. Path: ' + filePath);
-    }
-});
+app.get('/kanban', (req, res) => servePage(res, 'kanban'));
 
 // Timesheet page
-app.get('/timesheet', (req, res) => {
-    const filePath = findFile('timesheet.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Timesheet page not found. Path: ' + filePath);
-    }
-});
+app.get('/timesheet', (req, res) => servePage(res, 'timesheet'));
 
 // Dashboard page
-app.get('/dashboard', (req, res) => {
-    const filePath = findFile('dashboard.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Dashboard page not found. Path: ' + filePath);
-    }
-});
+app.get('/dashboard', (req, res) => servePage(res, 'dashboard'));
 
 // Agent page
-app.get('/agent', (req, res) => {
-    const filePath = findFile('agent.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Agent page not found. Path: ' + filePath);
-    }
-});
+app.get('/agent', (req, res) => servePage(res, 'agent'));
 
-// Serve dashboard HTML (root)
-app.get('/', (req, res) => {
-    const filePath = findFile('index.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Index page not found. Path: ' + filePath);
-    }
-});
+// Serve index HTML (root)
+app.get('/', (req, res) => servePage(res, 'index'));
 
-// Serve output files
+// Serve output files (if directory exists)
 app.use('/data/outputs', express.static(path.join(__dirname, '../data/outputs')));
 
 // For Vercel serverless

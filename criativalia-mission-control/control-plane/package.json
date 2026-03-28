@@ -5,7 +5,9 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node src/server.js --dev"
+    "dev": "node src/server.js --dev",
+    "build": "node scripts/build-pages.js",
+    "vercel-build": "node scripts/build-pages.js"
   },
   "dependencies": {
     "express": "^4.22.1",
