@@ -46,6 +46,9 @@ module.exports = {
                 <a href="/dashboard" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
                     <i class="fas fa-chart-line mr-1"></i> Dashboard
                 </a>
+                <a href="/deliverables" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition text-orange-400">
+                    <i class="fas fa-box mr-1"></i> Entregas
+                </a>
             </nav>
             <div class="flex items-center gap-4">
                 <div id="runtime-status" class="flex items-center gap-2 text-sm">

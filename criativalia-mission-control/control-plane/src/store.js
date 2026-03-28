@@ -90,6 +90,8 @@ let sessions = [];
 let tasks = [];
 let logs = [];
 let changesStore = [];
+let executionsStore = [];
+let deliverablesStore = [];
 let stateData = {
     id: 'runtime',
     status: 'running',
@@ -138,6 +140,8 @@ module.exports = {
     tasks: new MemoryStore(tasks),
     logs: new MemoryStore(logs),
     changes: new MemoryStore(changesStore),
+    executions: new MemoryStore(executionsStore),
+    deliverables: new MemoryStore(deliverablesStore),
     state: {
         getById: () => stateData,
         update: (id, updates) => {

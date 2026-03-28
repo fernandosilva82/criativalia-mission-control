@@ -635,6 +635,83 @@ function generateRecentOrders() {
     return orders;
 }
 
+// ========== DELIVERABLES API ==========
+
+const { deliverables } = require('./store');
+
+// List all deliverables
+app.get('/api/deliverables', (req, res) => {
+    const allDeliverables = deliverables.getAll();
+    const allAgents = agents.getAll();
+    
+    const enriched = allDeliverables.map(d => ({
+        ...d,
+        agent_name: allAgents.find(a => a.id === d.agent_id)?.name || d.agent_id || 'Manual'
+    }));
+    
+    res.json(enriched);
+});
+
+// Get single deliverable
+app.get('/api/deliverables/:id', (req, res) => {
+    const deliverable = deliverables.getById(req.params.id);
+    if (!deliverable) {
+        return res.status(404).json({ error: 'Deliverable not found' });
+    }
+    res.json(deliverable);
+});
+
+// Create deliverable
+app.post('/api/deliverables', (req, res) => {
+    const { title, category, type, agent_id, tags, content, size } = req.body;
+    
+    const deliverableId = `del_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    const deliverable = deliverables.create({
+        id: deliverableId,
+        title: title || 'Untitled',
+        category: category || 'docs',
+        type: type || 'md',
+        agent_id: agent_id || null,
+        tags: tags || [],
+        content: content || '',
+        size: size || '0 B',
+        created_at: new Date().toISOString()
+    });
+    
+    res.json({ id: deliverableId, status: 'created', deliverable });
+});
+
+// Update deliverable
+app.patch('/api/deliverables/:id', (req, res) => {
+    const { title, category, tags, content } = req.body;
+    const updates = {};
+    
+    if (title) updates.title = title;
+    if (category) updates.category = category;
+    if (tags) updates.tags = tags;
+    if (content) {
+        updates.content = content;
+        updates.size = `${(content.length / 1024).toFixed(1)} KB`;
+    }
+    
+    const deliverable = deliverables.update(req.params.id, updates);
+    if (!deliverable) {
+        return res.status(404).json({ error: 'Deliverable not found' });
+    }
+    
+    res.json({ status: 'updated', deliverable });
+});
+
+// Delete deliverable
+app.delete('/api/deliverables/:id', (req, res) => {
+    const deleted = deliverables.delete(req.params.id);
+    if (!deleted) {
+        return res.status(404).json({ error: 'Deliverable not found' });
+    }
+    res.json({ status: 'deleted' });
+});
+
 // ========== PAGE ROUTES ==========
 
 // Import pages as strings (for serverless compatibility)
@@ -661,6 +738,9 @@ app.get('/dashboard', (req, res) => servePage(res, 'dashboard'));
 
 // Agent page
 app.get('/agent', (req, res) => servePage(res, 'agent'));
+
+// Deliverables page
+app.get('/deliverables', (req, res) => servePage(res, 'deliverables'));
 
 // Serve index HTML (root)
 app.get('/', (req, res) => servePage(res, 'index'));
