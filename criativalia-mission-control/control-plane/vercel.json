@@ -9,32 +9,11 @@
   ],
   "routes": [
     {
-      "src": "/dashboard",
-      "dest": "src/server.js"
-    },
-    {
-      "src": "/kanban",
-      "dest": "src/server.js"
-    },
-    {
-      "src": "/timesheet",
-      "dest": "src/server.js"
-    },
-    {
-      "src": "/agent(.*)",
-      "dest": "src/server.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "src/server.js"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
       "dest": "src/server.js"
     }
-  ],
-  "buildCommand": "npm run build",
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
