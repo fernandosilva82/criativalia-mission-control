@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-03-29T12:20:00+08:00",
+  "total_opportunities": 0,
+  "priorities": {
+    "P0": [],
+    "P1": [],
+    "P2": [],
+    "P3": []
+  },
+  "summary": "Nenhuma oportunidade detectada nas últimas 24h. Os Opportunity Scanners (TrafficBot, CopyBot, DesignBot, OpsBot) ainda não geraram oportunidades. Status: Sistema iniciado em 2026-03-29, aguardando primeira execução dos scanners.",
+  "next_check": "2026-03-29T14:20:00+08:00",
+  "notes": "CEO Agent operacional. Aguardando dados dos agentes scanners para análise de impacto e esforço."
+}

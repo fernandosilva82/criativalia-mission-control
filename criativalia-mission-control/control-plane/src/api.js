@@ -869,6 +869,9 @@ app.get('/agent', (req, res) => servePage(res, 'agent'));
 // Deliverables page
 app.get('/deliverables', (req, res) => servePage(res, 'deliverables'));
 
+// Financial page
+app.get('/financial', (req, res) => servePage(res, 'financial'));
+
 // Serve index HTML (root)
 app.get('/', (req, res) => servePage(res, 'index'));
 

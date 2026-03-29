@@ -1,0 +1,12 @@
+{
+  "last_checked": "2026-03-29T12:55:00Z",
+  "notified_runs": [
+    {
+      "run_id": 23701492867,
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-03-29T12:55:00Z"
+    }
+  ],
+  "pending_notifications": []
+}

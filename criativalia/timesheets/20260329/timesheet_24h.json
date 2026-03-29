@@ -1,0 +1,57 @@
+{
+  "date": "2026-03-29",
+  "generated_at": "2026-03-29T05:06:00Z",
+  "period": "24h",
+  "summary": {
+    "total_activities": 1,
+    "active_agents": 1,
+    "pending_agents": 3,
+    "total_duration_min": 45
+  },
+  "agents": {
+    "TrafficBot": [
+      {
+        "start": "09:00",
+        "end": "09:45",
+        "duration_min": 45,
+        "task": "Análise de oportunidades de tráfego e SEO",
+        "priority": "P0",
+        "status": "completed",
+        "details": "Detectadas 12 oportunidades de tráfego incluindo Mushroom Lamps, Pendentes +40%, Arandela Articulada, e gaps de SEO",
+        "evidence_link": "/criativalia/opportunities/20250329/traffic_opps.json",
+        "deliverables": [
+          "12 oportunidades mapeadas",
+          "Análise de concorrência (Boobam)",
+          "Tendências 2026 identificadas",
+          "Recomendações de keywords"
+        ]
+      }
+    ],
+    "CopyBot": [],
+    "DesignBot": [],
+    "OpsBot": []
+  },
+  "gaps": {
+    "CopyBot": {
+      "scheduled": "a cada 8h",
+      "status": "Aguardando primeira execução",
+      "next_expected": "2026-03-29T16:00:00Z"
+    },
+    "DesignBot": {
+      "scheduled": "a cada 12h", 
+      "status": "Aguardando primeira execução",
+      "next_expected": "2026-03-29T20:00:00Z"
+    },
+    "OpsBot": {
+      "scheduled": "a cada 4h",
+      "status": "Aguardando primeira execução", 
+      "next_expected": "2026-03-29T14:00:00Z"
+    }
+  },
+  "insights": [
+    "TrafficBot foi o único agente ativo nas últimas 24h",
+    "12 oportunidades de alto valor detectadas",
+    "3 agentes ainda não iniciaram (sem evidências encontradas)",
+    "Próxima execução esperada: OpsBot às 14:00"
+  ]
+}

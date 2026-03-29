@@ -1,0 +1,6 @@
+# Render Deploy Config
+# Preencha e salve como /root/.openclaw/workspace/.render-config
+
+RENDER_API_KEY=sua_key_aqui
+SHOPIFY_ACCESS_TOKEN=seu_token_aqui
+SHOPIFY_STORE=seu_store_aqui

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Timesheet 24h - Criativalia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1em;
+        }
+        .date-badge {
+            display: inline-block;
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 15px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        
+        /* Timeline Container */
+        .timeline-wrapper {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .timeline {
+            position: relative;
+            min-width: 1200px;
+        }
+        
+        /* Hours Header */
+        .hours-header {
+            display: flex;
+            margin-left: 150px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .hour-label {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75em;
+            color: #64748b;
+            padding: 5px;
+        }
+        
+        /* Agent Row */
+        .agent-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .agent-label {
+            width: 140px;
+            padding-right: 20px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .agent-label .icon {
+            margin-right: 8px;
+        }
+        .agent-row.traffic .agent-label { color: #60a5fa; }
+        .agent-row.copy .agent-label { color: #a78bfa; }
+        .agent-row.design .agent-label { color: #f472b6; }
+        .agent-row.ops .agent-label { color: #4ade80; }
+        
+        /* Timeline Track */
+        .track {
+            flex: 1;
+            height: 50px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            position: relative;
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+        
+        /* Activity Block */
+        .activity-block {
+            position: absolute;
+            height: 40px;
+            top: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .activity-block:hover {
+            transform: translateY(-2px) scale(1.02);
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+        .activity-block.p0 {
+            border: 2px solid #ef4444;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+        .activity-block.p0::after {
+            content: '🔥';
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            font-size: 0.7em;
+        }
+        
+        /* Agent Colors */
+        .traffic .activity-block {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+        .copy .activity-block {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: white;
+        }
+        .design .activity-block {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+        }
+        .ops .activity-block {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+        }
+        
+        /* Empty State */
+        .empty-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #475569;
+            font-size: 0.85em;
+            font-style: italic;
+        }
+        
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+        }
+        .legend-color.traffic { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .legend-color.copy { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        .legend-color.design { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .legend-color.ops { background: linear-gradient(135deg, #22c55e, #15803d); }
+        .legend-color.p0 { 
+            background: #ef4444; 
+            border: 2px solid #ef4444;
+            position: relative;
+        }
+        .legend-color.p0::after {
+            content: '🔥';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.6em;
+        }
+        
+        /* Stats Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        /* Activity Details */
+        .details-panel {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 25px;
+        }
+        .details-panel h2 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .activity-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3b82f6;
+        }
+        .activity-item.p0 {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .activity-title {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .activity-time {
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        .activity-desc {
+            color: #94a3b8;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+        .activity-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .meta-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        .meta-tag.p0 {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        .evidence-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .evidence-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Waiting Agents Notice */
+        .waiting-notice {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .waiting-notice h3 {
+            color: #f59e0b;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .waiting-list {
+            list-style: none;
+        }
+        .waiting-list li {
+            padding: 8px 0;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .waiting-list .agent-name {
+            color: #e2e8f0;
+            font-weight: 500;
+            min-width: 100px;
+        }
+        .waiting-list .schedule {
+            color: #64748b;
+            font-size: 0.9em;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Timesheet 24h</h1>
+            <p class="subtitle">Timeline de atividades dos agentes Criativalia</p>
+            <span class="date-badge">📅 29 de Março de 2026</span>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" style="color: #60a5fa;">1</div>
+                <div class="stat-label">Agentes Ativos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #4ade80;">1</div>
+                <div class="stat-label">Tarefas Concluídas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #f472b6;">45</div>
+                <div class="stat-label">Minutos de Execução</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color: #f59e0b;">3</div>
+                <div class="stat-label">Agentes Aguardando</div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-wrapper">
+            <div class="timeline">
+                <!-- Hours Header -->
+                <div class="hours-header">
+                    <div class="hour-label">00:00</div>
+                    <div class="hour-label">02:00</div>
+                    <div class="hour-label">04:00</div>
+                    <div class="hour-label">06:00</div>
+                    <div class="hour-label">08:00</div>
+                    <div class="hour-label">10:00</div>
+                    <div class="hour-label">12:00</div>
+                    <div class="hour-label">14:00</div>
+                    <div class="hour-label">16:00</div>
+                    <div class="hour-label">18:00</div>
+                    <div class="hour-label">20:00</div>
+                    <div class="hour-label">22:00</div>
+                </div>
+                
+                <!-- TrafficBot -->
+                <div class="agent-row traffic">
+                    <div class="agent-label">
+                        <span class="icon">🔍</span>TrafficBot
+                    </div>
+                    <div class="track">
+                        <div class="activity-block p0" 
+                             style="left: 37.5%; width: 3.125%;" 
+                             onclick="window.open('../../opportunities/20250329/traffic_opps.json', '_blank')"
+                             title="Análise de oportunidades de tráfego - 09:00 às 09:45">
+                            🔍 Análise SEO
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CopyBot -->
+                <div class="agent-row copy">
+                    <div class="agent-label">
+                        <span class="icon">✍️</span>CopyBot
+                    </div>
+                    <div class="track">
+                        <div class="empty-track">⏳ Aguardando primeira execução</div>
+                    </div>
+                </div>
+                
+                <!-- DesignBot -->
+                <div class="agent-row design">
+                    <div class="agent-label">
+                        <span class="icon">🎨</span>DesignBot
+                    </div>
+                    <div class="track">
+                        <div class="empty-track">⏳ Aguardando primeira execução</div>
+                    </div>
+                </div>
+                
+                <!-- OpsBot -->
+                <div class="agent-row ops">
+                    <div class="agent-label">
+                        <span class="icon">⚙️</span>OpsBot
+                    </div>
+                    <div class="track">
+                        <div class="empty-track">⏳ Aguardando primeira execução</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color traffic"></div>
+                    <span>TrafficBot (SEO/Tráfego)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color copy"></div>
+                    <span>CopyBot (Copy/Conteúdo)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color design"></div>
+                    <span>DesignBot (Design/Produto)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color ops"></div>
+                    <span>OpsBot (Operações)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color p0"></div>
+                    <span>Tarefa Prioridade P0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Details -->
+        <div class="details-panel">
+            <h2>📋 Detalhes das Atividades</h2>
+            
+            <div class="activity-item p0">
+                <div class="activity-header">
+                    <span class="activity-title">🔍 Análise de Oportunidades de Tráfego e SEO</span>
+                    <span class="activity-time">09:00 - 09:45 (45 min)</span>
+                </div>
+                <div class="activity-desc">
+                    Scanner TrafficBot executou análise completa de oportunidades de tráfego orgânico, 
+                    tendências de mercado, concorrência e gaps de SEO. Foram identificadas 12 oportunidades 
+                    de alto valor incluindo tendências como Mushroom Lamps, Pendentes em alta e diferenciais 
+                    de biopolímero PLA.
+                </div>
+                <div class="activity-meta">
+                    <span class="meta-tag p0">🔥 Prioridade P0</span>
+                    <span class="meta-tag">✅ Concluído</span>
+                    <span class="meta-tag">📊 12 oportunidades</span>
+                    <span class="meta-tag">🔍 SEO</span>
+                </div>
+                <a href="../../opportunities/20250329/traffic_opps.json" class="evidence-link" target="_blank">
+                    📁 Ver evidência completa →
+                </a>
+            </div>
+            
+            <!-- Waiting Notice -->
+            <div class="waiting-notice">
+                <h3>⏳ Agentes Aguardando Inicialização</h3>
+                <ul class="waiting-list">
+                    <li>
+                        <span class="agent-name">✍️ CopyBot</span>
+                        <span class="schedule">Agendado: a cada 8h | Próxima: 16:00</span>
+                    </li>
+                    <li>
+                        <span class="agent-name">🎨 DesignBot</span>
+                        <span class="schedule">Agendado: a cada 12h | Próxima: 20:00</span>
+                    </li>
+                    <li>
+                        <span class="agent-name">⚙️ OpsBot</span>
+                        <span class="schedule">Agendado: a cada 4h | Próxima: 14:00</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>🤖 Criativalia Multi-Agent System</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                Gerado em: 29/03/2026 05:06 UTC | 
+                <a href="timesheet_24h.json" style="color: #60a5fa;">📄 Ver JSON</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
