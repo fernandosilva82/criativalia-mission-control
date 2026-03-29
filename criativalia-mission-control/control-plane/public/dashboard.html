@@ -2,25 +2,99 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shopify Dashboard - Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        olive: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#c5d8c5',
+                            300: '#9ebf9e',
+                            400: '#7a9e7a',
+                            500: '#5a825a',
+                            600: '#456645',
+                            700: '#3a523a',
+                            800: '#304130',
+                            900: '#293629',
+                        },
+                        terracotta: {
+                            400: '#c17767',
+                            500: '#d48877',
+                            600: '#b56555',
+                        },
+                        cream: {
+                            50: '#fafaf8',
+                            100: '#f5f5f0',
+                            200: '#e8e8e0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0b; }
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
-        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0a0a0b; 
+            color: #fafafa; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Sidebar Animation */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Card Styles */
+        .card { 
+            background: #141414; 
+            border: 1px solid #2a2a2a; 
+            border-radius: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            border-color: #3a3a3a;
+        }
+        
         .metric-card { 
             background: linear-gradient(135deg, #141414 0%, #1a1a1b 100%);
             border: 1px solid #2a2a2a; 
             border-radius: 12px;
             position: relative;
             overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: #c17767;
         }
         .metric-card::before {
             content: '';
@@ -29,163 +103,379 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #c17767, #d48877);
+            background: linear-gradient(90deg, #c17767, #7a9e7a);
         }
+        
         .metric-value { 
             background: linear-gradient(135deg, #fafafa 0%, #c17767 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .btn-primary { background: #c17767; color: white; }
-        .btn-primary:hover { background: #d48877; }
-        .trend-up { color: #7a9e7e; }
+        
+        .btn-primary { 
+            background: #c17767; 
+            color: white;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { 
+            background: #d48877;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(193, 119, 103, 0.3);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .trend-up { color: #7a9e7a; }
         .trend-down { color: #c17767; }
-        .product-row:hover { background: rgba(193, 119, 103, 0.1); }
-        .chart-container { position: relative; height: 300px; }
+        
+        .product-row:hover { 
+            background: rgba(193, 119, 103, 0.1); 
+        }
+        
+        .chart-container { 
+            position: relative; 
+            height: 300px; 
+        }
+        
+        /* Skeleton Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a1b 25%, #252525 50%, #1a1a1b 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .metric-card:hover {
+                transform: none;
+            }
+            .btn-primary:hover {
+                transform: none;
+            }
+            .product-row:hover {
+                background: transparent;
+            }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 200px;
+            }
+        }
+        
+        /* Focus states for accessibility */
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid #c17767;
+            outline-offset: 2px;
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .sidebar,
+            .metric-card,
+            .btn-primary,
+            .skeleton {
+                transition: none;
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-gray-900 border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none">
+        <div class="p-6 border-b border-gray-800">
             <div class="flex items-center gap-3">
-                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
-                    <i class="fas fa-rocket text-white"></i>
-                </a>
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                    <i class="fas fa-rocket text-white text-sm"></i>
+                </div>
                 <div>
-                    <h1 class="font-bold text-lg">Shopify Dashboard</h1>
-                    <p class="text-xs text-gray-400">Real-time Store Analytics</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div id="data-source-indicator" class="mr-2"></div>
-                <div class="text-right">
-                    <div class="text-xs text-gray-400">Last Updated</div>
-                    <div id="last-updated" class="text-sm font-medium">-</div>
-                </div>
-                <button onclick="refreshDashboard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 py-6">
-        <!-- Key Metrics -->
-        <div class="grid grid-cols-4 gap-4 mb-6">
-            <div class="metric-card p-5">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-xs uppercase tracking-wider">Receita MTD</span>
-                    <i class="fas fa-dollar-sign text-[#c17767]"></i>
-                </div>
-                <div id="metric-revenue" class="text-3xl font-bold metric-value">-</div>
-                <div id="trend-revenue" class="text-xs mt-2 flex items-center gap-1">
-                    <i class="fas fa-chart-line"></i>
-                    <span>-</span>
-                </div>
-            </div>
-            <div class="metric-card p-5">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-xs uppercase tracking-wider">Pedidos</span>
-                    <i class="fas fa-shopping-bag text-blue-400"></i>
-                </div>
-                <div id="metric-orders" class="text-3xl font-bold metric-value">-</div>
-                <div id="trend-orders" class="text-xs mt-2 flex items-center gap-1">
-                    <i class="fas fa-chart-line"></i>
-                    <span>-</span>
-                </div>
-            </div>
-            <div class="metric-card p-5">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-xs uppercase tracking-wider">Ticket Médio</span>
-                    <i class="fas fa-receipt text-green-400"></i>
-                </div>
-                <div id="metric-aov" class="text-3xl font-bold metric-value">-</div>
-                <div id="trend-aov" class="text-xs mt-2 flex items-center gap-1">
-                    <i class="fas fa-chart-line"></i>
-                    <span>-</span>
-                </div>
-            </div>
-            <div class="metric-card p-5">
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-400 text-xs uppercase tracking-wider">Taxa Recompra</span>
-                    <i class="fas fa-redo text-purple-400"></i>
-                </div>
-                <div id="metric-repeat" class="text-3xl font-bold metric-value">-</div>
-                <div id="trend-repeat" class="text-xs mt-2 flex items-center gap-1">
-                    <i class="fas fa-chart-line"></i>
-                    <span>-</span>
+                    <h1 class="font-bold text-lg text-white">Criativalia</h1>
+                    <p class="text-xs text-gray-400">Control Plane</p>
                 </div>
             </div>
         </div>
+        
+        <nav class="p-4 space-y-1">
+            <a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-terracotta-400/10 text-terracotta-400 border border-terracotta-400/20">
+                <i class="fas fa-chart-line w-5"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/products.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-box w-5"></i>
+                <span>Produtos</span>
+            </a>
+            <a href="/orders.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-shopping-bag w-5"></i>
+                <span>Pedidos</span>
+            </a>
+            <a href="/customers.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-users w-5"></i>
+                <span>Clientes</span>
+            </a>
+            <a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-chart-pie w-5"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="/agents.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-robot w-5"></i>
+                <span>Agentes</span>
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+            <a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
+                <i class="fas fa-cog w-5"></i>
+                <span>Configurações</span>
+            </a>
+            <div class="mt-4 px-4 py-3 rounded-lg bg-olive-900/30 border border-olive-800">
+                <div class="flex items-center gap-2 text-olive-400 text-xs">
+                    <i class="fas fa-circle text-[8px] animate-pulse"></i>
+                    <span>Sistema Online</span>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift</p>
+            </div>
+        </div>
+    </aside>
 
-        <div class="grid grid-cols-3 gap-6">
-            <!-- Revenue Chart -->
-            <div class="col-span-2 card p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-semibold flex items-center gap-2">
-                        <i class="fas fa-chart-bar text-[#c17767]"></i>
-                        Receita - Últimos 7 Dias
-                    </h2>
-                    <div class="flex items-center gap-2 text-xs">
-                        <span class="flex items-center gap-1">
-                            <span class="w-3 h-3 rounded bg-[#c17767]"></span> Receita
-                        </span>
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Header -->
+        <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-30">
+            <div class="px-4 sm:px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-800 transition" aria-label="Menu">
+                        <i class="fas fa-bars text-gray-400"></i>
+                    </button>
+                    <div>
+                        <h1 class="font-bold text-base sm:text-lg">Shopify Dashboard</h1>
+                        <p class="text-xs text-gray-400 hidden sm:block">Real-time Store Analytics</p>
                     </div>
                 </div>
-                <div class="chart-container">
-                    <canvas id="revenueChart"></canvas>
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <div id="data-source-indicator" class="hidden sm:block mr-2"></div>
+                    <div class="text-right hidden sm:block">
+                        <div class="text-xs text-gray-400">Last Updated</div>
+                        <div id="last-updated" class="text-sm font-medium">-</div>
+                    </div>
+                    <button onclick="refreshDashboard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Atualizar">
+                        <i class="fas fa-sync-alt text-sm"></i>
+                    </button>
+                    <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Voltar">
+                        <i class="fas fa-arrow-left text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="px-4 sm:px-6 py-4 sm:py-6">
+            <!-- Loading State -->
+            <div id="loading-state" class="space-y-4">
+                <!-- Skeleton Metrics -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="skeleton h-4 w-24 mb-3"></div>
+                        <div class="skeleton h-8 w-32 mb-2"></div>
+                        <div class="skeleton h-3 w-20"></div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="skeleton h-4 w-20 mb-3"></div>
+                        <div class="skeleton h-8 w-28 mb-2"></div>
+                        <div class="skeleton h-3 w-16"></div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="skeleton h-4 w-28 mb-3"></div>
+                        <div class="skeleton h-8 w-32 mb-2"></div>
+                        <div class="skeleton h-3 w-20"></div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="skeleton h-4 w-24 mb-3"></div>
+                        <div class="skeleton h-8 w-24 mb-2"></div>
+                        <div class="skeleton h-3 w-16"></div>
+                    </div>
+                </div>
+                
+                <!-- Skeleton Chart & Products -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <div class="lg:col-span-2 card p-4 sm:p-5">
+                        <div class="skeleton h-6 w-48 mb-4"></div>
+                        <div class="skeleton h-[200px] sm:h-[300px] w-full"></div>
+                    </div>
+                    <div class="card">
+                        <div class="p-4 border-b border-gray-800">
+                            <div class="skeleton h-5 w-32"></div>
+                        </div>
+                        <div class="p-4 space-y-3">
+                            <div class="skeleton h-12 w-full"></div>
+                            <div class="skeleton h-12 w-full"></div>
+                            <div class="skeleton h-12 w-full"></div>
+                            <div class="skeleton h-12 w-full"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Top Products -->
-            <div class="card">
-                <div class="p-4 border-b border-gray-800">
-                    <h2 class="font-semibold flex items-center gap-2">
-                        <i class="fas fa-trophy text-yellow-400"></i>
-                        Top Produtos
-                    </h2>
+            <!-- Content (hidden while loading) -->
+            <div id="dashboard-content" class="space-y-4 sm:space-y-6 hidden">
+                <!-- Key Metrics -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-400 text-xs uppercase tracking-wider">Receita MTD</span>
+                            <i class="fas fa-dollar-sign text-terracotta-400"></i>
+                        </div>
+                        <div id="metric-revenue" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="trend-revenue" class="text-xs mt-2 flex items-center gap-1">
+                            <i class="fas fa-chart-line"></i>
+                            <span>-</span>
+                        </div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-400 text-xs uppercase tracking-wider">Pedidos</span>
+                            <i class="fas fa-shopping-bag text-blue-400"></i>
+                        </div>
+                        <div id="metric-orders" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="trend-orders" class="text-xs mt-2 flex items-center gap-1">
+                            <i class="fas fa-chart-line"></i>
+                            <span>-</span>
+                        </div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-400 text-xs uppercase tracking-wider">Ticket Médio</span>
+                            <i class="fas fa-receipt text-olive-400"></i>
+                        </div>
+                        <div id="metric-aov" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="trend-aov" class="text-xs mt-2 flex items-center gap-1">
+                            <i class="fas fa-chart-line"></i>
+                            <span>-</span>
+                        </div>
+                    </div>
+                    <div class="metric-card p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-400 text-xs uppercase tracking-wider">Taxa Recompra</span>
+                            <i class="fas fa-redo text-purple-400"></i>
+                        </div>
+                        <div id="metric-repeat" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="trend-repeat" class="text-xs mt-2 flex items-center gap-1">
+                            <i class="fas fa-chart-line"></i>
+                            <span>-</span>
+                        </div>
+                    </div>
                 </div>
-                <div id="top-products" class="divide-y divide-gray-800 max-h-[340px] overflow-y-auto">
-                    <!-- Products loaded here -->
-                </div>
-            </div>
-        </div>
 
-        <!-- Recent Orders -->
-        <div class="card mt-6">
-            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                <h2 class="font-semibold flex items-center gap-2">
-                    <i class="fas fa-list text-blue-400"></i>
-                    Pedidos Recentes
-                </h2>
-                <a href="#" class="text-xs text-[#c17767] hover:underline">Ver todos</a>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Revenue Chart -->
+                    <div class="lg:col-span-2 card p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                                <i class="fas fa-chart-bar text-terracotta-400"></i>
+                                Receita - Últimos 7 Dias
+                            </h2>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="flex items-center gap-1">
+                                    <span class="w-3 h-3 rounded bg-terracotta-400"></span> Receita
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="card">
+                        <div class="p-4 border-b border-gray-800">
+                            <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                                <i class="fas fa-trophy text-yellow-400"></i>
+                                Top Produtos
+                            </h2>
+                        </div>
+                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto">
+                            <!-- Products loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="card overflow-hidden">
+                    <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                        <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                            <i class="fas fa-list text-blue-400"></i>
+                            Pedidos Recentes
+                        </h2>
+                        <a href="/orders.html" class="text-xs text-terracotta-400 hover:underline">Ver todos</a>
+                    </div>
+                    <div class="overflow-x-auto -mx-4 sm:mx-0">
+                        <div class="min-w-[600px] sm:min-w-0 px-4 sm:px-0">
+                            <table class="w-full">
+                                <thead class="bg-gray-900/50">
+                                    <tr>
+                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">ID</th>
+                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Cliente</th>
+                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Data</th>
+                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Status</th>
+                                        <th class="text-right p-3 text-xs font-medium text-gray-400 uppercase">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-orders" class="divide-y divide-gray-800">
+                                    <!-- Orders loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-900/50">
-                        <tr>
-                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">ID</th>
-                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Cliente</th>
-                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Data</th>
-                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Status</th>
-                            <th class="text-right p-3 text-xs font-medium text-gray-400 uppercase">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recent-orders" class="divide-y divide-gray-800">
-                        <!-- Orders loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
         let revenueChart = null;
+        let isSidebarOpen = false;
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (isSidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close sidebar on resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024 && isSidebarOpen) {
+                toggleSidebar();
+            }
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isSidebarOpen) {
+                toggleSidebar();
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDashboard();
@@ -193,8 +483,16 @@
 
         async function loadDashboard() {
             try {
+                // Show loading state
+                document.getElementById('loading-state').classList.remove('hidden');
+                document.getElementById('dashboard-content').classList.add('hidden');
+                
                 const res = await fetch('/api/shopify/stats');
                 const data = await res.json();
+                
+                // Hide loading, show content
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
                 
                 updateMetrics(data);
                 renderChart(data.revenue_7days || []);
@@ -205,7 +503,7 @@
                 const sourceIndicator = document.getElementById('data-source-indicator');
                 if (sourceIndicator) {
                     if (data._source === 'shopify_api') {
-                        sourceIndicator.innerHTML = '<span class="text-green-400 text-xs flex items-center gap-1"><i class="fas fa-check-circle"></i> Dados Reais Shopify</span>';
+                        sourceIndicator.innerHTML = '<span class="text-olive-400 text-xs flex items-center gap-1"><i class="fas fa-check-circle"></i> Dados Reais Shopify</span>';
                     } else {
                         sourceIndicator.innerHTML = '<span class="text-yellow-400 text-xs flex items-center gap-1"><i class="fas fa-exclamation-triangle"></i> Dados Simulados</span>';
                     }
@@ -214,7 +512,9 @@
                 document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('pt-BR');
             } catch (err) {
                 console.error('Error loading dashboard:', err);
-                // Fallback data
+                // Hide loading, show content with fallback
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
                 loadFallbackData();
             }
         }
@@ -250,7 +550,7 @@
             const isUp = trend >= 0;
             const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
             const colorClass = isUp ? 'trend-up' : 'trend-down';
-            el.innerHTML = `<i class="fas ${icon} ${colorClass}"></i><span class="${colorClass}">${Math.abs(trend).toFixed(1)}% vs mês anterior</span>`;
+            el.innerHTML = `<i class="fas ${icon} ${colorClass}"></i><span class="${colorClass} ml-1">${Math.abs(trend).toFixed(1)}% vs mês anterior</span>`;
         }
 
         function renderChart(revenueData) {
@@ -266,6 +566,9 @@
                 revenueChart.destroy();
             }
             
+            // Detect mobile for chart options
+            const isMobile = window.innerWidth < 640;
+            
             revenueChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -276,7 +579,7 @@
                         backgroundColor: 'rgba(193, 119, 103, 0.8)',
                         borderColor: '#c17767',
                         borderWidth: 1,
-                        borderRadius: 4,
+                        borderRadius: isMobile ? 2 : 4,
                     }]
                 },
                 options: {
@@ -301,12 +604,17 @@
                             grid: { color: '#1f1f1f' },
                             ticks: {
                                 color: '#888',
-                                callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k'
+                                callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k',
+                                font: { size: isMobile ? 10 : 12 }
                             }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#888' }
+                            ticks: { 
+                                color: '#888',
+                                font: { size: isMobile ? 9 : 11 },
+                                maxRotation: isMobile ? 45 : 0
+                            }
                         }
                     }
                 }
@@ -316,20 +624,20 @@
         function renderTopProducts(products) {
             const container = document.getElementById('top-products');
             if (products.length === 0) {
-                container.innerHTML = '<div class="p-4 text-center text-gray-500 text-sm">No products data</div>';
+                container.innerHTML = '<div class="p-4 text-center text-gray-500 text-sm">Nenhum dado de produtos</div>';
                 return;
             }
             
             container.innerHTML = products.slice(0, 10).map((product, index) => `
-                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer">
-                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-[#c17767]' : 'text-gray-500'}">
+                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer" tabindex="0" role="button">
+                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-terracotta-400' : 'text-gray-500'} flex-shrink-0">
                         ${index + 1}
                     </div>
                     <div class="flex-1 min-w-0">
                         <h4 class="text-sm font-medium truncate">${product.name}</h4>
                         <p class="text-xs text-gray-500">${product.sold} vendas</p>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right flex-shrink-0">
                         <div class="text-sm font-medium">${formatCurrency(product.revenue)}</div>
                         <div class="text-xs text-gray-500">${product.quantity} unid.</div>
                     </div>
@@ -340,7 +648,7 @@
         function renderRecentOrders(orders) {
             const container = document.getElementById('recent-orders');
             if (orders.length === 0) {
-                container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500 text-sm">No orders</td></tr>';
+                container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500 text-sm">Nenhum pedido</td></tr>';
                 return;
             }
             
@@ -351,7 +659,7 @@
                     <td class="p-3 text-sm text-gray-400">${new Date(order.date).toLocaleDateString('pt-BR')}</td>
                     <td class="p-3">
                         <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(order.status)}">
-                            ${order.status}
+                            ${translateStatus(order.status)}
                         </span>
                     </td>
                     <td class="p-3 text-sm text-right font-medium">${formatCurrency(order.total)}</td>
@@ -359,9 +667,20 @@
             `).join('');
         }
 
+        function translateStatus(status) {
+            const translations = {
+                'paid': 'Pago',
+                'pending': 'Pendente',
+                'processing': 'Processando',
+                'fulfilled': 'Enviado',
+                'cancelled': 'Cancelado'
+            };
+            return translations[status?.toLowerCase()] || status;
+        }
+
         function getStatusClass(status) {
             const classes = {
-                'paid': 'bg-green-900/50 text-green-400',
+                'paid': 'bg-olive-900/50 text-olive-400',
                 'pending': 'bg-yellow-900/50 text-yellow-400',
                 'processing': 'bg-blue-900/50 text-blue-400',
                 'fulfilled': 'bg-purple-900/50 text-purple-400',
