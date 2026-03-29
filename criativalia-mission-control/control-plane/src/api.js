@@ -52,6 +52,17 @@ app.get('/api/debug/env', (req, res) => {
     });
 });
 
+// Alternative env check
+app.get('/env-check', (req, res) => {
+    res.json({
+        has_shopify_access_token: !!process.env.SHOPIFY_ACCESS_TOKEN,
+        has_shopify_token: !!process.env.SHOPIFY_TOKEN,
+        shopify_store: process.env.SHOPIFY_STORE || 'not set',
+        timestamp: new Date().toISOString(),
+        code_version: '62ba4f7'
+    });
+});
+
 // Runtime state
 app.get('/api/state', (req, res) => {
     const currentState = state.getById('runtime') || {};
