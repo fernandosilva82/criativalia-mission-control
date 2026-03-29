@@ -1111,23 +1111,480 @@ app.get('/kanban', (req, res) => {
     `);
 });
 
-// Timesheet page
-app.get('/timesheet', (req, res) => servePage(res, 'timesheet'));
+        renderKanban();
+    </script>
+</body>
+</html>
+    `);
+});
 
-// Dashboard page
-app.get('/dashboard', (req, res) => servePage(res, 'dashboard'));
+// Timesheet page - INLINE HTML
+app.get('/timesheet', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Timesheet - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; }
+        .main-content { margin-left: 0; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item active"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+    </aside>
 
-// Agent page
-app.get('/agent', (req, res) => servePage(res, 'agent'));
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <h1 style="font-size: 20px; font-weight: 700;"><i class="fas fa-clock" style="color: #D4A853; margin-right: 8px;"></i>Timesheet</h1>
+                </div>
+            </div>
+        </header>
 
-// Deliverables page
-app.get('/deliverables', (req, res) => servePage(res, 'deliverables'));
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div class="card" style="padding: 24px;">
+                <div style="text-align: center; padding: 60px 20px; color: #7a7a6a;">
+                    <i class="fas fa-clock" style="font-size: 48px; color: #4A5D23; margin-bottom: 16px;"></i>
+                    <p>Timesheet em desenvolvimento</p>
+                    <p style="font-size: 12px; margin-top: 8px;">Dados de atividades dos agentes aparecerão aqui</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-// Financial page
-app.get('/financial', (req, res) => servePage(res, 'financial'));
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
+    `);
+});
 
-// Serve index HTML (root)
-app.get('/', (req, res) => servePage(res, 'index'));
+// Deliverables page - INLINE HTML
+app.get('/deliverables', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Entregas - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; }
+        .main-content { margin-left: 0; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item active"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <h1 style="font-size: 20px; font-weight: 700;"><i class="fas fa-box" style="color: #D4A853; margin-right: 8px;"></i>Entregas</h1>
+                </div>
+                <button onclick="createDeliverable()" class="btn-primary" style="padding: 10px 16px; border-radius: 8px;"><i class="fas fa-plus"></i> Nova Entrega</button>
+            </div>
+        </header>
+
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div id="deliverables-list" class="card" style="padding: 24px;">
+                <div style="text-align: center; padding: 60px 20px; color: #7a7a6a;">
+                    <i class="fas fa-box-open" style="font-size: 48px; color: #4A5D23; margin-bottom: 16px;"></i>
+                    <p>Nenhuma entrega encontrada</p>
+                    <p style="font-size: 12px; margin-top: 8px;">As entregas dos agentes aparecerão aqui automaticamente</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+        
+        function createDeliverable() {
+            alert('Funcionalidade em desenvolvimento');
+        }
+        
+        // Load deliverables from API
+        async function loadDeliverables() {
+            try {
+                const response = await fetch('/api/deliverables');
+                const data = await response.json();
+                
+                if (data.length === 0) return;
+                
+                const container = document.getElementById('deliverables-list');
+                container.innerHTML = data.map(d => \`
+                    <div class="card" style="padding: 16px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <div style="font-weight: 600; color: #F5F5DC;">\${d.title}</div>
+                                <div style="font-size: 12px; color: #D4A853;">\${d.category} • \${d.type}</div>
+                            </div>
+                            <span style="background: #4A5D23; color: #F5F5DC; padding: 4px 8px; border-radius: 4px; font-size: 11px;">\${d.size || '0 B'}</span>
+                        </div>
+                    </div>
+                \`).join('');
+            } catch (e) {
+                console.error('Error loading deliverables:', e);
+            }
+        }
+        
+        loadDeliverables();
+    </script>
+</body>
+</html>
+    `);
+});
+
+// Dashboard (Shopify) page - INLINE HTML
+app.get('/dashboard', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Shopify - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; }
+        .main-content { margin-left: 0; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item active"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <h1 style="font-size: 20px; font-weight: 700;"><i class="fas fa-store" style="color: #D4A853; margin-right: 8px;"></i>Shopify Dashboard</h1>
+                </div>
+            </div>
+        </header>
+
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Revenue MTD</div>
+                    <div id="revenue-mtd" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Pedidos</div>
+                    <div id="total-orders" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Produtos</div>
+                    <div id="total-products" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+            </div>
+            
+            <div class="card" style="padding: 24px;">
+                <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;"><i class="fas fa-shopping-bag" style="color: #D4A853; margin-right: 8px;"></i>Pedidos Recentes</h2>
+                <div id="recent-orders">
+                    <div style="text-align: center; padding: 40px; color: #7a7a6a;">Carregando...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+        
+        async function loadShopifyData() {
+            try {
+                const response = await fetch('/api/shopify/stats');
+                const data = await response.json();
+                
+                document.getElementById('revenue-mtd').textContent = 'R$ ' + (data.revenue_mtd || 0).toLocaleString('pt-BR');
+                document.getElementById('total-orders').textContent = data.total_orders || 0;
+                document.getElementById('total-products').textContent = data.total_products || 0;
+                
+                const ordersContainer = document.getElementById('recent-orders');
+                if (data.recent_orders && data.recent_orders.length > 0) {
+                    ordersContainer.innerHTML = data.recent_orders.map(o => \`
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #2a2a22;">
+                            <div>
+                                <div style="font-weight: 500;">\${o.name || o.id}</div>
+                                <div style="font-size: 12px; color: #7a7a6a;">\${o.created_at || ''}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #D4A853;">R$ \${(o.total_price || 0).toLocaleString('pt-BR')}</div>
+                                <div style="font-size: 11px; color: #7a9e7e;">\${o.financial_status}</div>
+                            </div>
+                        </div>
+                    \`).join('');
+                } else {
+                    ordersContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Nenhum pedido encontrado</div>';
+                }
+            } catch (e) {
+                console.error('Error loading Shopify data:', e);
+                document.getElementById('recent-orders').innerHTML = '<div style="text-align: center; padding: 40px; color: #c17767;">Erro ao carregar dados</div>';
+            }
+        }
+        
+        loadShopifyData();
+    </script>
+</body>
+</html>
+    `);
+});
+
+// Index page (root) - INLINE HTML
+app.get('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; }
+        .main-content { margin-left: 0; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item active"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <h1 style="font-size: 20px; font-weight: 700;"><i class="fas fa-home" style="color: #D4A853; margin-right: 8px;"></i>Dashboard</h1>
+                </div>
+            </div>
+        </header>
+
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Agentes Ativos</div>
+                    <div id="stat-agents" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Tarefas Ativas</div>
+                    <div id="stat-tasks" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Entregas</div>
+                    <div id="stat-deliverables" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+            </div>
+            
+            <div class="card" style="padding: 24px;">
+                <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;"><i class="fas fa-robot" style="color: #D4A853; margin-right: 8px;"></i>Agentes</h2>
+                <div id="agents-list">
+                    <div style="text-align: center; padding: 40px; color: #7a7a6a;">Carregando agentes...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+        
+        async function loadDashboard() {
+            try {
+                const [stateRes, agentsRes] = await Promise.all([
+                    fetch('/api/state'),
+                    fetch('/api/agents')
+                ]);
+                
+                const state = await stateRes.json();
+                const agentsData = await agentsRes.json();
+                const agents = agentsData.agents || [];
+                
+                document.getElementById('stat-agents').textContent = state.active_agents || 0;
+                document.getElementById('stat-tasks').textContent = state.active_tasks || 0;
+                document.getElementById('stat-deliverables').textContent = state.pending_review || 0;
+                
+                const agentsContainer = document.getElementById('agents-list');
+                if (agents.length > 0) {
+                    agentsContainer.innerHTML = agents.slice(0, 6).map(a => \`
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #2a2a22;">
+                            <div>
+                                <div style="font-weight: 500;">\${a.name}</div>
+                                <div style="font-size: 12px; color: #7a7a6a;">\${a.role}</div>
+                            </div>
+                            <span style="background: \${a.status === 'running' ? '#7a9e7e' : '#4A5D23'}; color: #F5F5DC; padding: 4px 8px; border-radius: 4px; font-size: 11px;">
+                                \${a.status === 'running' ? '🔥 RUNNING' : '⏳ IDLE'}
+                            </span>
+                        </div>
+                    \`).join('');
+                } else {
+                    agentsContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Nenhum agente encontrado</div>';
+                }
+            } catch (e) {
+                console.error('Error loading dashboard:', e);
+            }
+        }
+        
+        loadDashboard();
+    </script>
+</body>
+</html>
+    `);
+});
 
 // Serve output files (if directory exists)
 app.use('/data/outputs', express.static(path.join(__dirname, '../data/outputs')));
