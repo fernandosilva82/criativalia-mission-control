@@ -673,75 +673,14 @@ app.get('/api/shopify/stats', async (req, res) => {
         
     } catch (err) {
         console.error('Shopify API error:', err.message);
-        // Fallback para dados mockados apenas em erro
-        res.json(generateShopifyStats());
+        // SEM DADOS MOCKADOS - Retorna erro ou vazio
+        res.status(503).json({ 
+            error: 'Shopify API unavailable', 
+            message: err.message,
+            data: null
+        });
     }
 });
-
-// Generate realistic Shopify stats
-function generateShopifyStats() {
-    const today = new Date();
-    const revenue7Days = [];
-    let totalRevenue = 0;
-    
-    for (let i = 6; i >= 0; i--) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const amount = 3000 + Math.random() * 6000;
-        totalRevenue += amount;
-        revenue7Days.push({
-            date: date.toISOString().split('T')[0],
-            amount: Math.round(amount * 100) / 100
-        });
-    }
-    
-    const ordersMTD = Math.floor(80 + Math.random() * 60);
-    const aov = Math.round((totalRevenue / 7 / (ordersMTD / 30)) * 100) / 100;
-    
-    return {
-        revenue_mtd: Math.round(totalRevenue * 4.5 * 100) / 100,
-        orders_mtd: ordersMTD,
-        aov: aov,
-        repeat_rate: 25 + Math.random() * 15,
-        revenue_trend: (Math.random() * 20 - 5).toFixed(1),
-        orders_trend: (Math.random() * 15 - 3).toFixed(1),
-        aov_trend: (Math.random() * 10 - 2).toFixed(1),
-        repeat_trend: (Math.random() * 10 - 2).toFixed(1),
-        revenue_7days: revenue7Days,
-        top_products: [
-            { name: 'Camiseta Oversized Premium', sold: 45, quantity: 89, revenue: 4455.50 },
-            { name: 'Boné Dad Hat Minimal', sold: 38, quantity: 52, revenue: 1899.00 },
-            { name: 'Calça Jogger Essential', sold: 32, quantity: 41, revenue: 3196.80 },
-            { name: 'Moletom Crewneck Logo', sold: 28, quantity: 35, revenue: 3916.00 },
-            { name: 'Tote Bag Canvas', sold: 25, quantity: 48, revenue: 997.50 },
-            { name: 'Meia Cano Alto (Pack 3)', sold: 23, quantity: 69, revenue: 689.70 },
-            { name: 'Pochete Utility', sold: 19, quantity: 22, revenue: 1329.50 },
-            { name: 'Bucket Hat Reversível', sold: 17, quantity: 19, revenue: 1189.30 }
-        ],
-        recent_orders: generateRecentOrders()
-    };
-}
-
-function generateRecentOrders() {
-    const customers = ['Ana Silva', 'Bruno Costa', 'Carla Mendes', 'Daniel Souza', 'Elena Lima', 
-                       'Felipe Rocha', 'Gabriela Dias', 'Henrique Alves', 'Isabela Nunes', 'João Pereira'];
-    const statuses = ['paid', 'fulfilled', 'processing'];
-    const orders = [];
-    
-    for (let i = 0; i < 10; i++) {
-        const date = new Date();
-        date.setHours(date.getHours() - i * 2);
-        orders.push({
-            id: `order_${Date.now()}_${i}`,
-            customer: customers[i % customers.length],
-            date: date.toISOString(),
-            status: statuses[Math.floor(Math.random() * statuses.length)],
-            total: Math.round((100 + Math.random() * 500) * 100) / 100
-        });
-    }
-    
-    return orders;
-}
 
 // Get REAL Shopify products
 app.get('/api/shopify/products', async (req, res) => {
