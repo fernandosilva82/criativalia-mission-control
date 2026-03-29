@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { agents, sessions, tasks, logs, changes, state, executions } = require('./store');
+const { getRealAgents, getAgentsStatus } = require('./cron-integration');
 
 const app = express();
 
@@ -38,19 +39,45 @@ app.get('/api/state', (req, res) => {
     });
 });
 
-// List all agents
+// Get REAL agents from OpenClaw cron
+app.get('/api/agents/real', getRealAgents);
+
+// Get agents status summary
+app.get('/api/agents/status', getAgentsStatus);
+
+// List all agents (COMBINED: real + simulated)
 app.get('/api/agents', (req, res) => {
-    const allAgents = agents.getAll();
-    const allSessions = sessions.getAll();
-    const allTasks = tasks.getAll();
-    
-    const enriched = allAgents.map(agent => ({
-        ...agent,
-        active_sessions: allSessions.filter(s => s.agent_id === agent.id && s.status === 'running').length,
-        pending_tasks: allTasks.filter(t => t.agent_id === agent.id && ['pending', 'in_progress'].includes(t.status)).length
-    }));
-    
-    res.json(enriched);
+    // Primeiro tenta buscar agentes reais
+    try {
+        const { fetchCronJobs, mapToAgents } = require('./cron-integration');
+        const jobs = fetchCronJobs();
+        const realAgents = mapToAgents(jobs);
+        
+        return res.json({
+            agents: realAgents,
+            source: 'openclaw_cron',
+            count: realAgents.length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (error) {
+        // Fallback para agentes simulados
+        const allAgents = agents.getAll();
+        const allSessions = sessions.getAll();
+        const allTasks = tasks.getAll();
+        
+        const enriched = allAgents.map(agent => ({
+            ...agent,
+            active_sessions: allSessions.filter(s => s.agent_id === agent.id && s.status === 'running').length,
+            pending_tasks: allTasks.filter(t => t.agent_id === agent.id && ['pending', 'in_progress'].includes(t.status)).length
+        }));
+        
+        res.json({
+            agents: enriched,
+            source: 'simulated',
+            error: error.message,
+            timestamp: new Date().toISOString()
+        });
+    }
 });
 
 // Get single agent
