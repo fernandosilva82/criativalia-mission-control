@@ -34,35 +34,6 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Debug env vars (temporary)
-app.get('/api/debug/env', (req, res) => {
-    const envVars = Object.keys(process.env)
-        .filter(k => k.includes('SHOPIFY') || k.includes('TOKEN'))
-        .reduce((obj, key) => {
-            obj[key] = key.includes('TOKEN') ? '***' + (process.env[key] || '').slice(-4) : process.env[key];
-            return obj;
-        }, {});
-    
-    res.json({
-        shopify_vars: envVars,
-        all_matching: Object.keys(process.env).filter(k => k.includes('SHOPIFY') || k.includes('TOKEN')),
-        has_access_token: !!process.env.SHOPIFY_ACCESS_TOKEN,
-        has_token: !!process.env.SHOPIFY_TOKEN,
-        store: process.env.SHOPIFY_STORE || 'not set'
-    });
-});
-
-// Alternative env check
-app.get('/env-check', (req, res) => {
-    res.json({
-        has_shopify_access_token: !!process.env.SHOPIFY_ACCESS_TOKEN,
-        has_shopify_token: !!process.env.SHOPIFY_TOKEN,
-        shopify_store: process.env.SHOPIFY_STORE || 'not set',
-        timestamp: new Date().toISOString(),
-        code_version: '62ba4f7'
-    });
-});
-
 // Runtime state
 app.get('/api/state', (req, res) => {
     const currentState = state.getById('runtime') || {};
