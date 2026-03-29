@@ -802,6 +802,105 @@ app.get('/api/shopify/products/top', async (req, res) => {
     }
 });
 
+// Financial data endpoint - REAL data from Shopify
+app.get('/api/shopify/financial', async (req, res) => {
+    const SHOPIFY_TOKEN = process.env.SHOPIFY_TOKEN;
+    const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'criativalia';
+    
+    if (!SHOPIFY_TOKEN) {
+        return res.status(500).json({ 
+            error: 'Shopify token not configured',
+            _source: 'error'
+        });
+    }
+    
+    try {
+        // Get orders for revenue calculation
+        const ordersData = await shopifyFetch('orders.json?status=any&limit=250&fields=id,total_price,created_at,financial_status,line_items', SHOPIFY_TOKEN, SHOPIFY_STORE);
+        const orders = ordersData.orders || [];
+        
+        // Calculate MTD revenue
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        
+        const mtdOrders = orders.filter(o => {
+            const orderDate = new Date(o.created_at);
+            return orderDate.getMonth() === currentMonth && orderDate.getFullYear() === currentYear;
+        });
+        
+        const revenueMTD = mtdOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
+        
+        // Calculate YTD revenue
+        const ytdOrders = orders.filter(o => {
+            const orderDate = new Date(o.created_at);
+            return orderDate.getFullYear() === currentYear;
+        });
+        
+        const revenueYTD = ytdOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
+        
+        // Get products for cost analysis
+        const productsData = await shopifyFetch('products.json?limit=250&fields=id,title,variants,vendor,product_type', SHOPIFY_TOKEN, SHOPIFY_STORE);
+        const products = productsData.products || [];
+        
+        // Calculate product metrics (revenue only - no cost data available)
+        const productMetrics = {};
+        
+        orders.forEach(order => {
+            (order.line_items || []).forEach(item => {
+                const productId = item.product_id;
+                if (!productMetrics[productId]) {
+                    const product = products.find(p => p.id === productId);
+                    productMetrics[productId] = {
+                        id: productId,
+                        name: item.title,
+                        quantity: 0,
+                        revenue: 0,
+                        orders: 0
+                    };
+                }
+                productMetrics[productId].quantity += item.quantity || 0;
+                productMetrics[productId].revenue += parseFloat(item.price || 0) * (item.quantity || 0);
+                productMetrics[productId].orders += 1;
+            });
+        });
+        
+        const topProducts = Object.values(productMetrics)
+            .sort((a, b) => b.revenue - a.revenue)
+            .slice(0, 10);
+        
+        // Monthly comparison data
+        const monthlyData = {};
+        orders.forEach(o => {
+            const date = new Date(o.created_at);
+            const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            if (!monthlyData[key]) monthlyData[key] = 0;
+            monthlyData[key] += parseFloat(o.total_price || 0);
+        });
+        
+        res.json({
+            revenue_mtd: Math.round(revenueMTD * 100) / 100,
+            revenue_ytd: Math.round(revenueYTD * 100) / 100,
+            orders_mtd: mtdOrders.length,
+            orders_ytd: ytdOrders.length,
+            total_orders: orders.length,
+            top_products: topProducts,
+            monthly_comparison: monthlyData,
+            last_updated: new Date().toISOString(),
+            _source: 'shopify_api',
+            _note: 'CAC/LTV removed - cost data not available via Shopify API'
+        });
+        
+    } catch (err) {
+        console.error('Shopify financial error:', err.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch financial data', 
+            message: err.message,
+            _source: 'error'
+        });
+    }
+});
+
 // ========== DELIVERABLES API ==========
 
 const { deliverables } = require('./store');
@@ -894,8 +993,123 @@ function servePage(res, pageName) {
     }
 }
 
-// Kanban page
-app.get('/kanban', (req, res) => servePage(res, 'kanban'));
+// Kanban page - INLINE HTML to bypass cache issues
+app.get('/kanban', (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.send(`
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Kanban - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a15; }
+        ::-webkit-scrollbar-thumb { background: #4A5D23; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; }
+        .main-content { margin-left: 0; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .kanban-column { background: rgba(74, 93, 35, 0.1); border-radius: 8px; min-height: 400px; }
+        .kanban-card { background: #252520; border: 1px solid #3A4D13; border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: grab; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item active"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <h1 style="font-size: 20px; font-weight: 700;"><i class="fas fa-columns" style="color: #D4A853; margin-right: 8px;"></i>Kanban Board</h1>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button onclick="createTask()" class="btn-primary" style="padding: 10px 16px; border-radius: 8px;"><i class="fas fa-plus"></i> Nova Tarefa</button>
+                </div>
+            </div>
+        </header>
+
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div id="kanban-board" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px;">
+                <!-- Columns loaded via JS -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+        
+        const columns = [
+            { id: 'backlog', title: 'Backlog', color: '#4A5D23' },
+            { id: 'todo', title: 'A Fazer', color: '#D4A853' },
+            { id: 'inprogress', title: 'Em Progresso', color: '#7a9e7e' },
+            { id: 'review', title: 'Revisão', color: '#c17767' },
+            { id: 'done', title: 'Concluído', color: '#5A6D33' }
+        ];
+        
+        function renderKanban() {
+            const board = document.getElementById('kanban-board');
+            board.innerHTML = columns.map(col => \`
+                <div class="kanban-column" style="min-width: 280px; padding: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: \${col.color};">\${col.title}</div>
+                        <span style="background: \${col.color}20; color: \${col.color}; padding: 2px 8px; border-radius: 4px; font-size: 12px;">0</span>
+                    </div>
+                    <div id="col-\${col.id}" class="column-tasks">
+                        <div style="text-align: center; padding: 40px 20px; color: #7a7a6a; font-size: 14px;">
+                            Nenhuma tarefa\n                        </div>
+                    </div>
+                </div>
+            \`).join('');
+        }
+        
+        function createTask() {
+            alert('Funcionalidade em desenvolvimento');
+        }
+        
+        renderKanban();
+    </script>
+</body>
+</html>
+    `);
+});
 
 // Timesheet page
 app.get('/timesheet', (req, res) => servePage(res, 'timesheet'));
