@@ -10,8 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Rota raiz - Dashboard
+// Rota raiz - Dashboard (sem cache)
 app.get('/', (req, res) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
