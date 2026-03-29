@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0b; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
+        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
+        .kanban-column { background: #0f0f10; border: 1px solid #1f1f1f; border-radius: 8px; min-width: 280px; max-width: 280px; }
+        .kanban-card { background: #1a1a1b; border: 1px solid #2a2a2a; border-radius: 8px; cursor: grab; transition: all 0.2s; }
+        .kanban-card:hover { border-color: #3a3a3a; transform: translateY(-2px); }
+        .kanban-card.dragging { opacity: 0.5; transform: rotate(2deg); }
+        .kanban-column.drag-over { background: #1a1a1b; border-color: #c17767; }
+        .btn-primary { background: #c17767; color: white; }
+        .btn-primary:hover { background: #d48877; }
+        .priority-1, .priority-2 { border-left: 3px solid #7a9e7e; }
+        .priority-3, .priority-4, .priority-5 { border-left: 3px solid #d4a373; }
+        .priority-6, .priority-7, .priority-8 { border-left: 3px solid #c17767; }
+        .priority-9, .priority-10 { border-left: 3px solid #e74c3c; }
+        .column-header-inbox { border-top: 3px solid #888; }
+        .column-header-opportunity { border-top: 3px solid #9b59b6; }
+        .column-header-ready { border-top: 3px solid #3498db; }
+        .column-header-progress { border-top: 3px solid #f39c12; }
+        .column-header-review { border-top: 3px solid #e67e22; }
+        .column-header-deploy { border-top: 3px solid #1abc9c; }
+        .column-header-done { border-top: 3px solid #7a9e7e; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
+                    <i class="fas fa-rocket text-white"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-lg">Kanban Board</h1>
+                    <p class="text-xs text-gray-400">Task Management</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 text-sm text-gray-400">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Arraste os cards entre as colunas</span>
+                </div>
+                <button onclick="refreshBoard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Kanban Board -->
+    <main class="p-6 overflow-x-auto">
+        <div class="flex gap-4 min-w-max pb-4" id="kanban-board">
+            <!-- Columns will be rendered here -->
+        </div>
+    </main>
+
+    <!-- Task Detail Modal -->
+    <div id="task-modal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-6">
+        <div class="card max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Task Details</h3>
+                <button onclick="closeModal()" class="p-2 hover:bg-gray-800 rounded-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modal-content" class="p-6 overflow-y-auto">
+                <!-- Content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const COLUMNS = [
+            { id: 'inbox', name: 'Inbox', headerClass: 'column-header-inbox', icon: 'fa-inbox' },
+            { id: 'opportunity_review', name: 'Opportunity Review', headerClass: 'column-header-opportunity', icon: 'fa-search' },
+            { id: 'ready', name: 'Ready', headerClass: 'column-header-ready', icon: 'fa-clipboard-check' },
+            { id: 'in_progress', name: 'In Progress', headerClass: 'column-header-progress', icon: 'fa-spinner' },
+            { id: 'review', name: 'Review', headerClass: 'column-header-review', icon: 'fa-eye' },
+            { id: 'ready_to_deploy', name: 'Ready to Deploy', headerClass: 'column-header-deploy', icon: 'fa-rocket' },
+            { id: 'done', name: 'Done', headerClass: 'column-header-done', icon: 'fa-check-circle' }
+        ];
+
+        let tasks = [];
+        let agents = [];
+        let draggedTask = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBoard();
+        });
+
+        async function loadBoard() {
+            try {
+                const [tasksRes, agentsRes] = await Promise.all([
+                    fetch('/api/tasks'),
+                    fetch('/api/agents')
+                ]);
+                
+                tasks = await tasksRes.json();
+                agents = await agentsRes.json();
+                
+                renderBoard();
+            } catch (err) {
+                console.error('Error loading board:', err);
+            }
+        }
+
+        function renderBoard() {
+            const board = document.getElementById('kanban-board');
+            board.innerHTML = COLUMNS.map(col => {
+                const colTasks = tasks.filter(t => t.status === col.id);
+                return `
+                    <div class="kanban-column ${col.headerClass}" 
+                         data-column="${col.id}"
+                         ondrop="handleDrop(event, '${col.id}')" 
+                         ondragover="handleDragOver(event)"
+                         ondragleave="handleDragLeave(event)">
+                        <div class="p-3 border-b border-gray-800/50">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas ${col.icon} text-gray-400"></i>
+                                    <span class="font-semibold text-sm">${col.name}</span>
+                                </div>
+                                <span class="text-xs bg-gray-800 px-2 py-1 rounded-full">${colTasks.length}</span>
+                            </div>
+                        </div>
+                        <div class="p-2 space-y-2 min-h-[200px]" id="column-${col.id}">
+                            ${colTasks.map(task => renderTaskCard(task)).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTaskCard(task) {
+            const agent = agents.find(a => a.id === task.agent_id);
+            const priority = task.priority || 5;
+            return `
+                <div class="kanban-card p-3 priority-${priority}"
+                     draggable="true"
+                     data-task-id="${task.id}"
+                     ondragstart="handleDragStart(event, '${task.id}')"
+                     ondragend="handleDragEnd(event)"
+                     onclick="viewTask('${task.id}')">
+                    <div class="flex items-start justify-between mb-2">
+                        <span class="text-[10px] bg-gray-800 px-1.5 py-0.5 rounded text-gray-400">P${priority}</span>
+                        ${task.deliverables?.length ? `<span class="text-[10px] text-gray-500"><i class="fas fa-paperclip mr-1"></i>${task.deliverables.length}</span>` : ''}
+                    </div>
+                    <h4 class="font-medium text-sm mb-2 line-clamp-2">${task.title}</h4>
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-robot text-[10px]"></i>
+                            ${agent?.name || 'Unassigned'}
+                        </span>
+                        <span>${formatDate(task.created_at)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleDragStart(e, taskId) {
+            draggedTask = tasks.find(t => t.id === taskId);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.kanban-column').forEach(col => {
+                col.classList.remove('drag-over');
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            const column = e.currentTarget;
+            column.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            const column = e.currentTarget;
+            if (!column.contains(e.relatedTarget)) {
+                column.classList.remove('drag-over');
+            }
+        }
+
+        async function handleDrop(e, newStatus) {
+            e.preventDefault();
+            const column = e.currentTarget;
+            column.classList.remove('drag-over');
+            
+            if (!draggedTask || draggedTask.status === newStatus) return;
+            
+            try {
+                const res = await fetch(`/api/tasks/${draggedTask.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                if (res.ok) {
+                    draggedTask.status = newStatus;
+                    renderBoard();
+                }
+            } catch (err) {
+                console.error('Error updating task:', err);
+            }
+            
+            draggedTask = null;
+        }
+
+        function viewTask(taskId) {
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            
+            const agent = agents.find(a => a.id === task.agent_id);
+            
+            document.getElementById('modal-content').innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase">Title</label>
+                        <h2 class="text-xl font-bold mt-1">${task.title}</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase">Status</label>
+                            <p class="mt-1">
+                                <span class="px-2 py-1 rounded bg-gray-800 text-sm">${task.status.replace(/_/g, ' ')}</span>
+                            </p>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase">Priority</label>
+                            <p class="mt-1 flex items-center gap-2">
+                                <span class="text-lg font-bold">${task.priority || 5}</span>
+                                <span class="text-xs text-gray-400">/ 10</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase">Agent</label>
+                        <p class="mt-1 flex items-center gap-2">
+                            <i class="fas fa-robot text-gray-400"></i>
+                            ${agent?.name || 'Unassigned'}
+                            <span class="text-gray-500">(${agent?.role || 'Unknown'})</span>
+                        </p>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase">Description</label>
+                        <p class="mt-1 text-gray-300 whitespace-pre-wrap">${task.description || 'No description'}</p>
+                    </div>
+                    ${task.deliverables?.length ? `
+                        <div>
+                            <label class="text-xs text-gray-500 uppercase">Deliverables</label>
+                            <ul class="mt-1 space-y-1">
+                                ${task.deliverables.map(d => `<li class="text-sm text-gray-300"><i class="fas fa-check text-green-400 mr-2"></i>${d}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    <div class="grid grid-cols-2 gap-4 text-xs text-gray-500">
+                        <div>
+                            <label class="uppercase">Created</label>
+                            <p>${formatFullDate(task.created_at)}</p>
+                        </div>
+                        ${task.started_at ? `
+                            <div>
+                                <label class="uppercase">Started</label>
+                                <p>${formatFullDate(task.started_at)}</p>
+                            </div>
+                        ` : ''}
+                        ${task.completed_at ? `
+                            <div>
+                                <label class="uppercase">Completed</label>
+                                <p>${formatFullDate(task.completed_at)}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            document.getElementById('task-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('task-modal').classList.add('hidden');
+        }
+
+        function refreshBoard() {
+            loadBoard();
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diff = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            if (diff === 0) return 'Hoje';
+            if (diff === 1) return 'Ontem';
+            if (diff < 7) return `${diff}d`;
+            return date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+        }
+
+        function formatFullDate(dateStr) {
+            if (!dateStr) return '-';
+            return new Date(dateStr).toLocaleString('pt-BR');
+        }
+
+        // Close modal on outside click
+        document.getElementById('task-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+name: Deploy on Opportunities Update
+
+on:
+  push:
+    paths:
+      - 'criativalia/opportunities/**'
+      - 'criativalia/priorities_queue.json'
+    branches: [ clean-deploy, main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Render
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          curl -X POST "$RENDER_DEPLOY_HOOK"
+          echo "🚀 Deploy triggered by opportunities update"
+
+      - name: Notify Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=🎯 Novas oportunidades detectadas! Deploy automático iniciado..." \
+            -d "parse_mode=HTML"

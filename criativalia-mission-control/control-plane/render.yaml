@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: criativalia-control-plane
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SHOPIFY_STORE
+        value: m-s-negocios-2
+      - key: SHOPIFY_ACCESS_TOKEN
+        sync: false  # Configure no dashboard do Render
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
