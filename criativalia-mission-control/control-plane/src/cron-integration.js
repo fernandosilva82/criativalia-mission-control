@@ -1,9 +1,14 @@
 /**
  * OpenClaw Cron Integration
  * Integra os jobs cron do OpenClaw com o Control Plane
+ * 
+ * MODO 1: Leitura de arquivo JSON (produção no Render)
+ * MODO 2: Execução direta (desenvolvimento local)
  */
 
 const { execSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 // Mapeamento dos cron jobs para agentes do dashboard
 const CRON_TO_AGENT_MAP = {
@@ -157,9 +162,11 @@ const CRON_TO_AGENT_MAP = {
 let lastFetch = 0;
 let cachedJobs = [];
 const CACHE_TTL = 30000; // 30 segundos
+const AGENT_STATE_FILE = path.join(__dirname, '../data/agent_state.json');
 
 /**
  * Busca jobs cron do OpenClaw
+ * Tenta primeiro ler do arquivo (Render), depois executa comando (local)
  */
 function fetchCronJobs() {
     try {
@@ -168,19 +175,33 @@ function fetchCronJobs() {
             return cachedJobs;
         }
 
-        // Executa openclaw cron list
-        const output = execSync('openclaw cron list --json 2>/dev/null || echo "[]"', {
-            encoding: 'utf8',
-            timeout: 10000,
-            cwd: '/root/.openclaw/workspace'
-        });
-
         let jobs = [];
-        try {
-            jobs = JSON.parse(output);
-        } catch (e) {
-            // Tenta extrair do formato texto
-            jobs = parseCronListText(output);
+
+        // MODO 1: Tenta ler do arquivo (produção no Render)
+        if (fs.existsSync(AGENT_STATE_FILE)) {
+            try {
+                const fileContent = fs.readFileSync(AGENT_STATE_FILE, 'utf8');
+                const data = JSON.parse(fileContent);
+                jobs = data.jobs || [];
+                console.log(`📁 Lidos ${jobs.length} jobs do arquivo`);
+            } catch (e) {
+                console.log('⚠️ Erro ao ler arquivo:', e.message);
+            }
+        }
+
+        // MODO 2: Executa comando openclaw (desenvolvimento local)
+        if (jobs.length === 0) {
+            try {
+                const output = execSync('openclaw cron list --json 2>/dev/null || echo "[]"', {
+                    encoding: 'utf8',
+                    timeout: 10000,
+                    cwd: '/root/.openclaw/workspace'
+                });
+                jobs = JSON.parse(output);
+                console.log(`⚡ Lidos ${jobs.length} jobs via comando`);
+            } catch (e) {
+                console.log('⚠️ Comando openclaw não disponível');
+            }
         }
 
         cachedJobs = jobs;
