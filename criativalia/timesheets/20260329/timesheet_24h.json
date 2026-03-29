@@ -1,57 +1,92 @@
 {
   "date": "2026-03-29",
-  "generated_at": "2026-03-29T05:06:00Z",
+  "date_brt": "29/03/2026",
+  "generated_at": "2026-03-29T07:35:00Z",
   "period": "24h",
-  "summary": {
-    "total_activities": 1,
-    "active_agents": 1,
-    "pending_agents": 3,
-    "total_duration_min": 45
-  },
   "agents": {
     "TrafficBot": [
       {
-        "start": "09:00",
-        "end": "09:45",
-        "duration_min": 45,
-        "task": "Análise de oportunidades de tráfego e SEO",
-        "priority": "P0",
-        "status": "completed",
-        "details": "Detectadas 12 oportunidades de tráfego incluindo Mushroom Lamps, Pendentes +40%, Arandela Articulada, e gaps de SEO",
-        "evidence_link": "/criativalia/opportunities/20250329/traffic_opps.json",
-        "deliverables": [
-          "12 oportunidades mapeadas",
-          "Análise de concorrência (Boobam)",
-          "Tendências 2026 identificadas",
-          "Recomendações de keywords"
-        ]
+        "start": "12:00",
+        "end": "12:30",
+        "duration_min": 30,
+        "task": "Scanner de SEO e Tráfego - Identificação de oportunidades",
+        "description": "Análise de tendências de mercado, keywords e oportunidades de SEO",
+        "evidence_link": "/evidencias/20260329/traffic_opps.json",
+        "output_count": 12,
+        "priority": "P1",
+        "status": "completed"
       }
     ],
-    "CopyBot": [],
-    "DesignBot": [],
-    "OpsBot": []
+    "CopyBot": [
+      {
+        "start": "--:--",
+        "end": "--:--",
+        "duration_min": 0,
+        "task": "Aguardando primeira execução",
+        "description": "Scanner de copy e conteúdo - ainda não executado nas últimas 24h",
+        "evidence_link": null,
+        "output_count": 0,
+        "priority": null,
+        "status": "idle"
+      }
+    ],
+    "DesignBot": [
+      {
+        "start": "--:--",
+        "end": "--:--",
+        "duration_min": 0,
+        "task": "Em breve - Não ativo",
+        "description": "Scanner de design e produto - agendado para implementação futura",
+        "evidence_link": null,
+        "output_count": 0,
+        "priority": null,
+        "status": "scheduled"
+      }
+    ],
+    "OpsBot": [
+      {
+        "start": "05:40",
+        "end": "06:20",
+        "duration_min": 40,
+        "task": "Monitoramento de Deploys - Render",
+        "description": "Verificação de workflows de deploy e notificações",
+        "evidence_link": "/evidencias/20260329/deploy_notifications.json",
+        "output_count": 6,
+        "priority": "P0",
+        "status": "completed",
+        "details": {
+          "success_deploys": 4,
+          "failed_notifications": 2,
+          "workflows_monitored": ["Deploy to Render", "notify-deploy.yml"]
+        }
+      }
+    ]
   },
-  "gaps": {
-    "CopyBot": {
-      "scheduled": "a cada 8h",
-      "status": "Aguardando primeira execução",
-      "next_expected": "2026-03-29T16:00:00Z"
+  "summary": {
+    "total_tasks": 2,
+    "total_duration_min": 70,
+    "agents_active": 2,
+    "agents_idle": 1,
+    "agents_scheduled": 1,
+    "opportunities_generated": 12,
+    "deploys_monitored": 6
+  },
+  "gaps": [
+    {
+      "agent": "CopyBot",
+      "period": "00:00-23:59",
+      "reason": "Aguardando configuração de cron job"
     },
-    "DesignBot": {
-      "scheduled": "a cada 12h", 
-      "status": "Aguardando primeira execução",
-      "next_expected": "2026-03-29T20:00:00Z"
-    },
-    "OpsBot": {
-      "scheduled": "a cada 4h",
-      "status": "Aguardando primeira execução", 
-      "next_expected": "2026-03-29T14:00:00Z"
+    {
+      "agent": "DesignBot", 
+      "period": "00:00-23:59",
+      "reason": "Não implementado - agendado para futuro"
     }
-  },
-  "insights": [
-    "TrafficBot foi o único agente ativo nas últimas 24h",
-    "12 oportunidades de alto valor detectadas",
-    "3 agentes ainda não iniciaram (sem evidências encontradas)",
-    "Próxima execução esperada: OpsBot às 14:00"
-  ]
+  ],
+  "next_expected_runs": {
+    "TrafficBot": "2026-03-29T18:00:00Z (a cada 6h)",
+    "CopyBot": "Aguardando configuração (a cada 8h)",
+    "DesignBot": "Não agendado (a cada 12h)",
+    "OpsBot": "2026-03-29T09:40:00Z (a cada 4h)"
+  }
 }

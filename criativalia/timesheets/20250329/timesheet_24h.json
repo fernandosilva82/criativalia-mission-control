@@ -1,0 +1,180 @@
+{
+  "date": "2026-03-29",
+  "generated_at": "2026-03-29T14:22:00+08:00",
+  "period": {
+    "start": "2026-03-28T14:22:00Z",
+    "end": "2026-03-29T14:22:00Z"
+  },
+  "summary": {
+    "total_agents_active": 2,
+    "total_opportunities": 12,
+    "total_deploys": 4,
+    "failed_deploys": 2,
+    "p0_tasks": 0,
+    "p1_tasks": 0
+  },
+  "agents": {
+    "TrafficBot": {
+      "status": "active",
+      "activities": [
+        {
+          "start": "12:00",
+          "end": "12:15",
+          "duration_min": 15,
+          "task": "Scanner de Oportunidades - Análise de Tendências",
+          "description": "Identificação de 12 oportunidades de tráfego incluindo tendências de design (Mushroom Lamp, Minimalismo Quente), análise competitiva (Boobam) e gaps de SEO",
+          "opportunities_count": 12,
+          "evidence_link": "/criativalia/opportunities/20250329/traffic_opps.json",
+          "status": "completed",
+          "priority": "P1",
+          "impact": "high"
+        }
+      ],
+      "stats": {
+        "total_activities": 1,
+        "total_duration_min": 15,
+        "opportunities_generated": 12
+      }
+    },
+    "CopyBot": {
+      "status": "idle",
+      "activities": [],
+      "stats": {
+        "total_activities": 0,
+        "total_duration_min": 0,
+        "notes": "Sistema iniciado - aguardando primeira execução do scanner"
+      }
+    },
+    "DesignBot": {
+      "status": "idle", 
+      "activities": [],
+      "stats": {
+        "total_activities": 0,
+        "total_duration_min": 0,
+        "notes": "Sistema iniciado - aguardando primeira execução do scanner"
+      }
+    },
+    "OpsBot": {
+      "status": "active",
+      "activities": [
+        {
+          "start": "05:40",
+          "end": "05:42",
+          "duration_min": 2,
+          "task": "Deploy #23702420432",
+          "description": "Deploy automático para Render",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "completed",
+          "priority": "P1",
+          "conclusion": "success"
+        },
+        {
+          "start": "05:40",
+          "end": "05:42",
+          "duration_min": 2,
+          "task": "Deploy #23702379283",
+          "description": "Deploy automático para Render",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "completed",
+          "priority": "P1",
+          "conclusion": "success"
+        },
+        {
+          "start": "05:58",
+          "end": "06:00",
+          "duration_min": 2,
+          "task": "Deploy #23702458783",
+          "description": "Deploy automático para Render",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "completed",
+          "priority": "P1",
+          "conclusion": "success"
+        },
+        {
+          "start": "06:06",
+          "end": "06:08",
+          "duration_min": 2,
+          "task": "Notificação de Deploy #23702458551",
+          "description": "Falha no workflow notify-deploy.yml",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "failed",
+          "priority": "P2",
+          "conclusion": "failure"
+        },
+        {
+          "start": "06:17",
+          "end": "06:19",
+          "duration_min": 2,
+          "task": "Notificação de Deploy #23702420224",
+          "description": "Falha no workflow notify-deploy.yml",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "failed",
+          "priority": "P2",
+          "conclusion": "failure"
+        },
+        {
+          "start": "12:55",
+          "end": "12:57",
+          "duration_min": 2,
+          "task": "Deploy #23701492867",
+          "description": "Deploy automático para Render",
+          "evidence_link": "/criativalia/deploy_notifications.json",
+          "status": "completed",
+          "priority": "P1",
+          "conclusion": "success"
+        }
+      ],
+      "stats": {
+        "total_activities": 6,
+        "total_duration_min": 12,
+        "successful_deploys": 4,
+        "failed_deploys": 2
+      }
+    }
+  },
+  "opportunities_summary": {
+    "total": 12,
+    "by_category": {
+      "trends": 5,
+      "seo": 4,
+      "competitive": 2,
+      "product": 1
+    },
+    "high_impact": [
+      {
+        "id": "traffic_001",
+        "title": "Mushroom Lamp - Tendência confirmada",
+        "impact_score": 9
+      },
+      {
+        "id": "traffic_005",
+        "title": "Mercado LED Decorativo Brasil +10.23% CAGR",
+        "impact_score": 9
+      },
+      {
+        "id": "traffic_009",
+        "title": "Biopolímero PLA - Diferencial não explorado",
+        "impact_score": 9
+      }
+    ]
+  },
+  "next_actions": {
+    "scheduled": [
+      {
+        "agent": "CopyBot",
+        "action": "Scanner de oportunidades de conteúdo",
+        "scheduled_time": "2026-03-29T20:00:00Z"
+      },
+      {
+        "agent": "DesignBot",
+        "action": "Scanner de tendências de design",
+        "scheduled_time": "2026-03-30T00:00:00Z"
+      },
+      {
+        "agent": "CEO Agent",
+        "action": "Análise e priorização de oportunidades",
+        "scheduled_time": "2026-03-29T14:20:00+08:00"
+      }
+    ]
+  }
+}

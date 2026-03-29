@@ -1,12 +1,21 @@
 {
-  "last_checked": "2026-03-29T12:55:00Z",
+  "last_checked": "2026-03-29T09:04:00Z",
   "notified_runs": [
-    {
-      "run_id": 23701492867,
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-03-29T12:55:00Z"
-    }
+    {"run_id": 23701492867, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
+    {"run_id": 23702420432, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
+    {"run_id": 23702379283, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
+    {"run_id": 23702458783, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:58:00Z"},
+    {"run_id": 23702458551, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T06:06:00Z"},
+    {"run_id": 23702420224, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T06:17:00Z"},
+    {"run_id": 23702249166, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
+    {"run_id": 23702249161, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
+    {"run_id": 23702249160, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"}
   ],
-  "pending_notifications": []
+  "pending_notifications": [],
+  "last_check_summary": {
+    "checked_at": "2026-03-29T09:04:00Z",
+    "total_runs_found": 10,
+    "new_notifications": 0,
+    "message": "Nenhum deploy novo para notificar. Todos os workflows já foram notificados anteriormente."
+  }
 }

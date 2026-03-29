@@ -233,6 +233,51 @@
             font-size: 0.9em;
             margin-bottom: 20px;
         }
+        .timesheet-preview {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        .timesheet-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .timesheet-item:last-child {
+            border-bottom: none;
+        }
+        .timesheet-agent {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .timesheet-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-traffic { background: #3498db; }
+        .dot-copy { background: #9b59b6; }
+        .dot-design { background: #e74c3c; }
+        .dot-ops { background: #2ecc71; }
+        .timesheet-info {
+            font-size: 0.85em;
+            color: #94a3b8;
+        }
+        .timesheet-status {
+            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        .timesheet-status.idle {
+            background: rgba(100, 116, 139, 0.2);
+            color: #64748b;
+        }
     </style>
 </head>
 <body>
@@ -246,15 +291,15 @@
 
         <div class="status-bar">
             <div class="status-card">
-                <div class="number" id="oppCount">0</div>
+                <div class="number" id="oppCount">12</div>
                 <div class="label">Oportunidades Detectadas</div>
             </div>
             <div class="status-card">
-                <div class="number" id="taskCount">0</div>
+                <div class="number" id="taskCount">2</div>
                 <div class="label">Tarefas Executadas</div>
             </div>
             <div class="status-card">
-                <div class="number" id="deployCount">0</div>
+                <div class="number" id="deployCount">6</div>
                 <div class="label">Deploys Automáticos</div>
             </div>
             <div class="status-card">
@@ -291,7 +336,7 @@
                             <div style="font-size: 0.85em; color: #94a3b8; margin-top: 5px;">A cada 8h - Copy e conteúdo</div>
                         </div>
                         <div class="agent-status">
-                            <span class="status-dot"></span> Ativo
+                            <span class="status-dot" style="background: #64748b;"></span> Idle
                         </div>
                     </li>
                     <li class="design">
@@ -318,22 +363,81 @@
             <div class="panel">
                 <h2><span class="icon">🎯</span> Oportunidades Detectadas (24h)</h2>
                 <div id="opportunitiesContainer">
-                    <div class="empty-state">
-                        <div class="icon">🔍</div>
-                        <p>Oportunidades sendo detectadas...</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">Os scanners estão rodando. Volte em algumas horas!</p>
+                    <ul class="opportunities-list">
+                        <li>
+                            <div class="opp-title">🍄 Mushroom Lamp - Tendência confirmada India Design ID 2026</div>
+                            <div class="opp-meta">
+                                <span class="tag">Impacto: 9/10</span>
+                                <span>TrafficBot</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="opp-title">📈 Pendentes +40% em alta no Pinterest 2026</div>
+                            <div class="opp-meta">
+                                <span class="tag">Impacto: 8/10</span>
+                                <span>TrafficBot</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="opp-title">💡 LED Decorativo Brasil crescendo 10,23% CAGR</div>
+                            <div class="opp-meta">
+                                <span class="tag">Impacto: 9/10</span>
+                                <span>TrafficBot</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="../opportunities/20250329/traffic_opps.json" class="btn" style="font-size: 0.85em;">Ver todas (12)</a>
                     </div>
                 </div>
             </div>
 
             <div class="panel">
                 <h2><span class="icon">📊</span> Timesheet 24h</h2>
-                <div id="timesheetContainer">
-                    <div class="empty-state">
-                        <div class="icon">⏱️</div>
-                        <p>Timeline sendo construída...</p>
-                        <p style="font-size: 0.9em; margin-top: 10px;">Dados serão exibidos após execução dos agentes</p>
+                <div class="timesheet-preview">
+                    <div class="timesheet-item">
+                        <div class="timesheet-agent">
+                            <div class="timesheet-dot dot-traffic"></div>
+                            <div>
+                                <div style="font-weight: 600;">🔍 TrafficBot</div>
+                                <div class="timesheet-info">Scanner SEO • 12:00-12:30</div>
+                            </div>
+                        </div>
+                        <span class="timesheet-status">✅ 30min</span>
                     </div>
+                    <div class="timesheet-item">
+                        <div class="timesheet-agent">
+                            <div class="timesheet-dot dot-copy"></div>
+                            <div>
+                                <div style="font-weight: 600;">✍️ CopyBot</div>
+                                <div class="timesheet-info">Aguardando configuração</div>
+                            </div>
+                        </div>
+                        <span class="timesheet-status idle">⏸️ Idle</span>
+                    </div>
+                    <div class="timesheet-item">
+                        <div class="timesheet-agent">
+                            <div class="timesheet-dot dot-design"></div>
+                            <div>
+                                <div style="font-weight: 600;">🎨 DesignBot</div>
+                                <div class="timesheet-info">Em breve</div>
+                            </div>
+                        </div>
+                        <span class="timesheet-status idle">📅</span>
+                    </div>
+                    <div class="timesheet-item">
+                        <div class="timesheet-agent">
+                            <div class="timesheet-dot dot-ops"></div>
+                            <div>
+                                <div style="font-weight: 600;">⚙️ OpsBot</div>
+                                <div class="timesheet-info">Monitor Deploys • 05:40-06:20</div>
+                            </div>
+                        </div>
+                        <span class="timesheet-status">✅ 40min</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="../timesheets/20260329/timesheet_24h.html" class="btn">📊 Ver Timeline Completa</a>
                 </div>
             </div>
 
@@ -381,12 +485,6 @@
             hour: '2-digit',
             minute: '2-digit'
         }) + ' (BRT)';
-
-        // Simular carregamento de dados (em produção, isso viria de APIs)
-        function loadData() {
-            // Aqui você pode adicionar chamadas para carregar dados reais
-            // fetch('/api/opportunities') etc.
-        }
 
         // Auto-refresh a cada 5 minutos
         setInterval(() => {

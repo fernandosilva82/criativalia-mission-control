@@ -1,0 +1,15 @@
+{
+  "agent": "OpsBot",
+  "date": "2026-03-29",
+  "entries": [
+    {
+      "start": "08:00",
+      "end": "08:10",
+      "duration": "10min",
+      "task": "Opportunity Scanner - Análise operacional",
+      "evidence_link": "/criativalia/evidencias/20260329/opsbot/ops_scan_evidence.json",
+      "status": "completed",
+      "output": "10 oportunidades identificadas em /opportunities/20260329/ops_opps.json"
+    }
+  ]
+}
