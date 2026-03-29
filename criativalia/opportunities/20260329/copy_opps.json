@@ -1,0 +1,139 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Blog vazio - Gap de Content Marketing",
+    "description": "A página de blog (/blogs/news) não possui nenhum artigo. Comparação com concorrentes: Hay, Vitsœ e Gantri têm blogs ativos com conteúdo sobre lifestyle, design e sustentabilidade. Isso representa uma grande oportunidade de tráfego orgânico e engajamento.",
+    "affected_pages": ["https://criativalia.com/blogs/news"],
+    "impact_score": 9,
+    "effort_score": 6,
+    "action_suggested": "Criar estratégia editorial com posts sobre: decoração sustentável, guias de iluminação, cuidados com plantas, behind-the-scenes da produção 3D. Foco em SEO e storytelling da marca.",
+    "category": "content_marketing"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Headline da homepage genérica - falta propósito emocional",
+    "description": "A homepage atual mostra apenas 'Decoração Sustentável e Moderna para Casa e Jardim' no title. Comparado com Vitsœ ('Against obsolescence', 'Investing for life') e Gantri ('A new future for design'), a Criativalia perde a conexão emocional. A copy atual é descritiva, não transformacional.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 8,
+    "effort_score": 2,
+    "action_suggested": "Trocar para headline com propósito: 'Design que transforma espaços sem destruir o planeta' ou 'Beleza com propósito para quem se importa' - focar em transformação, não apenas funcionalidade.",
+    "category": "headline_optimization"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Página 'Quem Somos' sem storytelling de fundadores",
+    "description": "A página atual tem copy técnica focada em 'design contemporâneo, sustentabilidade e personalidade'. Falta a narrativa humana - quem são os fundadores? Qual foi o momento exato que inspirou a marca? Comparado com Vitsœ que tem história de 65 anos e missão clara.",
+    "affected_pages": ["https://criativalia.com/pages/quem-somos"],
+    "impact_score": 7,
+    "effort_score": 3,
+    "action_suggested": "Adicionar storytelling pessoal: nomes dos fundadores, momento de inspiração ('construindo nossa vida juntos'), fotos do ateliê, o porquê do nome 'Criativalia'. Criar conexão humana.",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Newsletter com CTA fraco - 'Registrar' em vez de promessa de valor",
+    "description": "O formulário de newsletter no footer tem placeholder genérico 'Seu e-mail' e botão 'Registrar'. Não há promessa de valor, benefício ou incentivo para inscrição. Perdendo oportunidade de capturar emails de visitantes.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 6,
+    "effort_score": 1,
+    "action_suggested": "Alterar para: 'Receba 10% OFF na primeira compra' + placeholder 'Digite seu melhor email' + botão 'Quero meu desconto'. Ou foco em conteúdo: 'Dicas de decoração sustentável no seu email'.",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Produtos sem descrição persuasiva - apenas títulos",
+    "description": "Múltiplos produtos (ex: 'Abajur Aro', 'Abajur Funky', 'Pendente SAN') têm apenas títulos simples na listagem, sem subtítulos que vendam o benefício. Apenas o Abajur Accordion tem descrição completa e persuasiva.",
+    "affected_pages": [
+      "https://criativalia.com/collections/all",
+      "https://criativalia.com/products/abajur-aro",
+      "https://criativalia.com/products/abajur-funky",
+      "https://criativalia.com/products/pendente-san"
+    ],
+    "impact_score": 8,
+    "effort_score": 5,
+    "action_suggested": "Adicionar subtítulos persuasivos em todos os produtos. Ex: 'Abajur Aro' → 'Abajur Aro: Luz circular que transforma seu cantinho de leitura'. Focar em emoção e transformação, não apenas nome.",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Página Envio e Prazos sem copy de tranquilidade",
+    "description": "A página de envio tem informações técnicas (3-10 dias úteis) mas falta copy que transmita tranquilidade e reduza ansiedade do comprador. Não há rastreamento proativo, nem política de garantia de entrega mencionada.",
+    "affected_pages": ["https://criativalia.com/pages/envio-e-prazos"],
+    "impact_score": 5,
+    "effort_score": 2,
+    "action_suggested": "Adicionar copy tranquilizadora: 'Sua peça chega em segurança ou devolvemos seu dinheiro', 'Acompanhamos cada etapa da entrega', 'Embalagem reforçada para proteger sua obra de arte'. Reduzir ansiedade de compra.",
+    "category": "trust_copy"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Depoimentos na homepage sem fotos nem contexto",
+    "description": "Os depoimentos de clientes (Juliana M., Bernardo P., Juçara S., Fernando H) estão na homepage mas sem fotos, fotos dos produtos comprados, ou contexto de qual produto. Perde credibilidade e social proof efetivo.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 6,
+    "effort_score": 4,
+    "action_suggested": "Transformar em 'User Generated Content': pedir fotos dos clientes com os produtos, adicionar 'Comprou: Abajur Accordion', tornar carrossel clicável com links para produtos.",
+    "category": "social_proof"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Falta página/Seção de FAQ dedicada no site",
+    "description": "Apenas o produto Abajur Accordion tem FAQ embutido. Não há página dedicada de FAQ do site onde clientes possam encontrar respostas antes de comprar. Isso aumenta carga no suporte e pode gerar abandono.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Criar página /faq com: materiais de impressão 3D, cuidados com produtos PLA, personalização disponível, como funciona autoirrigação dos vasos, garantia detalhada. Reduzir objeções de compra.",
+    "category": "content_marketing"
+  },
+  {
+    "id": "copy_009",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Meta description genérica - oportunidade de SEO",
+    "description": "A meta description atual não foi otimizada para SEO. Título é apenas 'Criativalia | Decoração Sustentável...'. Perdendo oportunidade de rankear para keywords como 'luminária sustentável', 'vaso autoirrigável', 'decoração 3D'.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 7,
+    "effort_score": 2,
+    "action_suggested": "Otimizar meta tags: Title: 'Criativalia | Luminárias e Vasos Sustentáveis em 3D | 100% Nacional'. Description: 'Peças únicas de decoração feitas com impressão 3D sustentável. Luminárias, vasos autoirrigáveis e acessórios ecológicos. Frete grátis acima de R$150.'",
+    "category": "seo_optimization"
+  },
+  {
+    "id": "copy_010",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Banner de newsletter no footer sem contexto da marca",
+    "description": "O texto 'Fique por dentro de todas as novidades e promoção em primeira mão' é genérico. Não conecta com valores da marca nem explica o que torna a newsletter da Criativalia especial comparada a outras lojas.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 4,
+    "effort_score": 1,
+    "action_suggested": "Tornar específico: 'Descubra novas peças antes de todo mundo + guias de decoração sustentável que só enviamos por email'. Conectar com valor de exclusividade e conteúdo.",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_011",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Produto 'Prateleira Ondina IV' com título técnico demais",
+    "description": "O produto em destaque tem título 'Prateleira Ondina IV - Design Minimalista, Funcionalidade Máxima'. É descritivo mas frio. Falta emoção - o que essa prateleira permite na vida do cliente? Como transforma o espaço?",
+    "affected_pages": ["https://criativalia.com/products/prateleira-ondina-iv"],
+    "impact_score": 5,
+    "effort_score": 1,
+    "action_suggested": "Testar variações: 'Prateleira Ondina: Seu cantinho de plantas em estilo escandinavo' ou 'Ondina IV: A prateleira que organiza com leveza e beleza'. Focar no lifestyle, não apenas nas características.",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_012",
+    "timestamp": "2026-03-29T12:24:00Z",
+    "title": "Seção 'Drops Criativalia' sem chamadas para ação",
+    "description": "A homepage tem 3 'Drops' listados ('O Poder dos Vasos Decorativos...', 'O Guia Definitivo...', 'Como Escolher a Luminária...') mas sem botões de 'Ler mais', sem preview do conteúdo, sem datas. Parece conteúdo fantasma.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 5,
+    "effort_score": 2,
+    "action_suggested": "Adicionar preview de 2-3 linhas de cada artigo, botão 'Ler artigo completo', e data de publicação. Se não houver conteúdo real, remover essa seção até que o blog seja populado.",
+    "category": "content_marketing"
+  }
+]

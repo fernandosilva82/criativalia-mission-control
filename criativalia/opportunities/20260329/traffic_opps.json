@@ -1,0 +1,167 @@
+[
+  {
+    "id": "traffic_001",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Mushroom Lamp (Luminária Cogumelo) - Alta Crescente",
+    "description": "A luminária cogumelo está em franca expansão com crescimento projetado de 9.34% no mercado de materiais sustentáveis relacionados a fungos. Estética vintage dos anos 70 retornando com força, especialmente em designs de vidro soprado (Murano) e cerâmica. Pinterest reporta alta nas buscas por 'mushroom lamp' e variações.",
+    "source": "Accio Research / Pinterest Trends / Revista Claudia",
+    "impact_score": 9,
+    "effort_score": 3,
+    "action_suggested": "Criar coleção de luminárias cogumelo em materiais nobres (vidro Murano, cerâmica, alabastro). Produzir conteúdo educativo sobre como usar sem cair no infantilismo - focar em 'maximalismo curado' e 'quiet luxury'.",
+    "evidence_url": "https://pt.accio.com/business/best-selling-mushroom-lamp"
+  },
+  {
+    "id": "traffic_002",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Neo Deco - Revival do Art Déco Moderno",
+    "description": "O Neo Deco é uma releitura moderna do Art Déco dos anos 1920, com linhas curvas, acentos metálicos (cromo/latão), tecidos luxuosos e acabamentos em mármore. Pinterest previu como tendência top para 2026. Buscas por 'brass aesthetic' e 'red marble bathroom' em crescimento.",
+    "source": "Pinterest Predicts 2026 / House Beautiful / The Everygirl",
+    "impact_score": 8,
+    "effort_score": 4,
+    "action_suggested": "Desenvolver linha de luminárias com acabamentos em latão, cromo e vidro âmbar. Focar em peças esculturais que funcionem como 'joias do ambiente'. Criar landing page 'Neo Deco Lighting Collection'.",
+    "evidence_url": "https://www.bhg.com/pinterest-home-trend-predictions-2026-11867782"
+  },
+  {
+    "id": "traffic_003",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Human Centric Lighting (HCL) - Iluminação Centrada no Bem-Estar",
+    "description": "O conceito de Human Centric Lighting está revolucionando a iluminação corporativa e residencial. Sistemas que mudam intensidade e temperatura de cor ao longo do dia, imitando a luz solar natural. Estudos do Lighting Research Center comprovam redução de estresse e melhora na qualidade do sono.",
+    "source": "Lighting Research Center / Faro Barcelona / ConexaoIN",
+    "impact_score": 9,
+    "effort_score": 6,
+    "action_suggested": "Criar categoria 'Iluminação Circadiana' ou 'HCL' na loja. Produzir conteúdo educativo sobre ritmos biológicos e qualidade do sono. Oferecer luminárias dimerizáveis com controle de temperatura de cor (2700K-4000K).",
+    "evidence_url": "https://conexaoin.com.br/tendencias-de-iluminacao-para-2026/"
+  },
+  {
+    "id": "traffic_004",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Trilhos Magnéticos - Versatilidade e Praticidade",
+    "description": "Trilhos magnéticos seguem em alta para 2026, oferecendo liberdade para mover, adicionar ou substituir luminárias com facilidade. Tecnologia valorizada em ambientes comerciais, corporativos e residenciais de alto padrão. Permite adaptar iluminação a novos layouts sem obra.",
+    "source": "Cristallux / ConexaoIN / Feira Light+Building 2026",
+    "impact_score": 7,
+    "effort_score": 5,
+    "action_suggested": "Expandir portfólio de trilhos magnéticos com foco em design minimalista. Criar guia 'Como escolher trilho magnético para cada ambiente'. Destacar vantagens de flexibilidade e economia a longo prazo.",
+    "evidence_url": "https://conexaoin.com.br/tendencias-de-iluminacao-para-2026/"
+  },
+  {
+    "id": "traffic_005",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Iluminação Escultural - Peças de Arte Funcionais",
+    "description": "Em 2026, a iluminação decorativa evolui para peças esculturais que funcionam como arte. Design orgânico com linhas fluidas, vidro soprado artesanal, silhuetas assimétricas. Conceito 'joias para o ambiente'. Tendência alinhada com slow decorating e escolha consciente.",
+    "source": "Lighting EFX / Pinterest / Revista Casa e Jardim",
+    "impact_score": 8,
+    "effort_score": 6,
+    "action_suggested": "Curadoria de luminárias esculturais de designers independentes. Fotografar peças como obras de arte em ambientes minimalistas. Storytelling sobre o designer/artesão por trás de cada peça.",
+    "evidence_url": "https://lightingefx.com/blog/top-4-home-decor-lighting-trends-for-2026"
+  },
+  {
+    "id": "traffic_006",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Cool Blue / Glacier Aesthetic - Tons Gelados em Alta",
+    "description": "Pinterest reporta aumento de 50% em buscas por 'icy blue' e 35% em 'glacier aesthetic'. Tons azuis gelados dominam 2026, combinando com a Cor do Ano Pantone 2026 'Cloud Dancer'. Vidro azul-tintado em acessórios e luminárias com acabamentos opalescentes.",
+    "source": "Pinterest Predicts 2026 / House Beautiful / Pantone",
+    "impact_score": 7,
+    "effort_score": 4,
+    "action_suggested": "Incluir luminárias com vidro azul-tintado, acabamentos iridescentes/opalescentes na coleção. Criar categoria 'Cool Blue' ou 'Glacier'. Conteúdo sobre combinação com paletas neutras e madeira clara.",
+    "evidence_url": "https://evrimagaci.org/gpt/pinterest-predicts-bold-home-decor-trends-for-2026-519476"
+  },
+  {
+    "id": "traffic_007",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Maximalismo Curado - Personalidade sem Caos",
+    "description": "O maximalismo performático perde espaço para o 'maximalismo curado' - ambientes expressivos, mas intencionais. Combinação de peças 'high' e 'low', sobreposição de texturas e histórias. Iluminação como elemento de equilíbrio visual.",
+    "source": "Pinterest / Casa Claudia / Desmobilia",
+    "impact_score": 7,
+    "effort_score": 5,
+    "action_suggested": "Criar editoriais de ambientes maximalistas curados usando luminárias como ponto de equilíbrio. Mostrar como uma peça escultural de iluminação ancora ambientes complexos. Guia 'High-Low: onde investir em iluminação'.",
+    "evidence_url": "https://claudia.abril.com.br/decoracao/10-formas-de-usar-abajur-na-decoracao-que-estao-em-alta-em-2026/"
+  },
+  {
+    "id": "traffic_008",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Afrohemian Design - Fusão Africana e Boho",
+    "description": "Pinterest reporta crescimento em buscas por 'African boho living room' e 'afro chic home decor'. Combinação de estética africana vibrante com conforto boêmio. Paletas terrosas, fibras naturais (rattan, juta, sisal), padrões ousados.",
+    "source": "Pinterest Predicts 2026 / House Digest / The Wed",
+    "impact_score": 6,
+    "effort_score": 5,
+    "action_suggested": "Desenvolver luminárias com fibras naturais (rattan, palha, bambu) e materiais terrosos. Criar coleção 'Afrohemian' com storytelling sobre artesanato e origens. Fotografar em ambientes com tapeçarias e padrões africanos.",
+    "evidence_url": "https://www.housedigest.com/2050878/decor-trend-2026-african-bohemian-pinterest/"
+  },
+  {
+    "id": "traffic_009",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Iluminação Circadiana - Ritmo Natural do Corpo",
+    "description": "A iluminação circadiana avança para abordagem personalizada, ajustando-se automaticamente ao ritmo biológico de cada pessoa. Sistemas que simulam luz natural promovendo saúde física e mental. Demanda crescente em home office e quartos.",
+    "source": "Alumiframe / JustLIGHT / Faro Barcelona",
+    "impact_score": 8,
+    "effort_score": 7,
+    "action_suggested": "Criar guia completo sobre iluminação circadiana para residências. Oferecer kits de iluminação inteligente com controle por aplicativo. Conteúdo sobre produtividade no home office e qualidade do sono.",
+    "evidence_url": "https://alumiframe.com.br/tedencias-da-iluminacao-para-2026/"
+  },
+  {
+    "id": "traffic_010",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Luz Indireta em Camadas - Conforto Visual",
+    "description": "Destaque de 2026 é o uso de camadas de luz em substituição ao protagonismo de um único ponto central. Perfis lineares embutidos, sancas iluminadas, nichos, rodapés e luzes de efeito criam ambientes suaves, profundos e acolhedores.",
+    "source": "Cristallux / CasaTechSmart / ConexaoIN",
+    "impact_score": 8,
+    "effort_score": 5,
+    "action_suggested": "Criar conteúdo educativo sobre 'layered lighting' (iluminação em camadas). Oferecer kits completos de perfis LED embutidos, fitas LED e arandelas. Guia prático de instalação para diferentes ambientes.",
+    "evidence_url": "https://conexaoin.com.br/tendencias-de-iluminacao-para-2026/"
+  },
+  {
+    "id": "traffic_011",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Vidro Murano - Artesanato e Sofisticação",
+    "description": "O vidro Murano está em alta como material premium para luminárias. Cada peça soprada à mão é única, com ranhuras e manchas que controlam a luz de forma única. Combina com madeira clara, mármore, linho e cerâmica artesanal.",
+    "source": "Minha Sala Decorada / Pinterest / Casa Claudia",
+    "impact_score": 7,
+    "effort_score": 6,
+    "action_suggested": "Sourcing de luminárias em vidro Murano genuíno ou estilo Murano. Storytelling sobre o processo artesanal de sopro do vidro. Fotografia destacando a transparência e reflexos únicos de cada peça.",
+    "evidence_url": "https://www.minhasaladecorada.com.br/2025/12/abajur-cogumelo-decoracao-sofisticada.html"
+  },
+  {
+    "id": "traffic_012",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Alabastro Natural - Luxo Atemporal",
+    "description": "O alabastro (pedra translúcida) é destacado como material de luxo natural para luminárias. Efeito quase mágico quando a luz atravessa a pedra, iluminando veios e textura únicos. Combina com madeira quente, tecidos naturais e paletas neutras.",
+    "source": "Minha Sala Decorada / Revista CASACOR / Pinterest",
+    "impact_score": 7,
+    "effort_score": 6,
+    "action_suggested": "Incluir luminárias em alabastro genuíno ou similar na linha premium. Criar categoria 'Luxo Natural' ou 'Materiais Nobres'. Conteúdo sobre durabilidade e valorização patrimonial.",
+    "evidence_url": "https://www.minhasaladecorada.com.br/2025/12/abajur-cogumelo-decoracao-sofisticada.html"
+  },
+  {
+    "id": "traffic_013",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Iluminação com Fibras Naturais - Sustentabilidade Estética",
+    "description": "Uso crescente de fibras naturais em luminárias: rattan, juta, sisal, bambu, palha. Tendência alinhada com biophilic design e consciência ambiental. Empresas buscam produtos com certificações ambientais e materiais recicláveis.",
+    "source": "PrintDoors / Casa Claudia / Light+Building 2026",
+    "impact_score": 7,
+    "effort_score": 4,
+    "action_suggested": "Expandir linha de luminárias com fibras naturais. Destacar aspectos sustentáveis e certificações. Criar storytelling sobre origem dos materiais e impacto ambiental reduzido.",
+    "evidence_url": "https://www.printdoors.com/info/what-are-the-best-home-decor-dropshipping-products-to-sell-for-2026/"
+  },
+  {
+    "id": "traffic_014",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Luminárias 3D - Personalização e Tecnologia",
+    "description": "Luminárias impressas em 3D ganham espaço com designs orgânicos impossíveis de fabricar por métodos tradicionais. Oportunidade para personalização em escala e peças únicas. Tendência crescente em decoração contemporânea.",
+    "source": "Pinterest / Design Milk / ArchDaily",
+    "impact_score": 6,
+    "effort_score": 8,
+    "action_suggested": "Explorar parcerias com designers de impressão 3D ou investir em tecnologia interna. Oferecer personalização de designs. Posicionar como 'tecnologia + arte'.",
+    "evidence_url": "https://www.pinterest.com/trends"
+  },
+  {
+    "id": "traffic_015",
+    "timestamp": "2026-03-29T16:46:00Z",
+    "title": "Extra Celestial - Iluminação Cósmica",
+    "description": "Tendência 'alien core aesthetic' com crescimento de 80% nas buscas. Acabamentos iridescentes, holográficos, formas de planetas e estrelas. Paletas angélicas (branco, marfim, lavanda gélida) combinadas com elementos sci-fi.",
+    "source": "Pinterest Predicts 2026 / House Beautiful / The Everygirl",
+    "impact_score": 6,
+    "effort_score": 5,
+    "action_suggested": "Desenvolver luminárias com acabamentos iridescentes, vidro opalescente e formas celestiais. Criar coleção 'Cosmic' ou 'Stellar'. Apelar para público jovem e early adopters.",
+    "evidence_url": "https://evrimagaci.org/gpt/pinterest-predicts-bold-home-decor-trends-for-2026-519476"
+  }
+]

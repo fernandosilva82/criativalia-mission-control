@@ -1,92 +1,136 @@
 {
   "date": "2026-03-29",
-  "date_brt": "29/03/2026",
-  "generated_at": "2026-03-29T07:35:00Z",
+  "generated_at": "2026-03-29T22:47:00+08:00",
   "period": "24h",
+  "summary": {
+    "total_tasks": 24,
+    "total_agents_active": 3,
+    "total_duration_min": 90
+  },
   "agents": {
     "TrafficBot": [
       {
         "start": "12:00",
         "end": "12:30",
         "duration_min": 30,
-        "task": "Scanner de SEO e Tráfego - Identificação de oportunidades",
-        "description": "Análise de tendências de mercado, keywords e oportunidades de SEO",
-        "evidence_link": "/evidencias/20260329/traffic_opps.json",
-        "output_count": 12,
-        "priority": "P1",
-        "status": "completed"
+        "task": "Scanner SEO - Análise de tráfego e tendências",
+        "evidence_link": "/criativalia/evidencias/20250329/traffic_scan.json",
+        "output_link": "/criativalia/opportunities/20250329/traffic_opps.json",
+        "status": "completed",
+        "opportunities_found": 12,
+        "priority": "normal"
       }
     ],
     "CopyBot": [
       {
-        "start": "--:--",
-        "end": "--:--",
-        "duration_min": 0,
-        "task": "Aguardando primeira execução",
-        "description": "Scanner de copy e conteúdo - ainda não executado nas últimas 24h",
-        "evidence_link": null,
-        "output_count": 0,
-        "priority": null,
-        "status": "idle"
+        "start": "12:24",
+        "end": "12:30",
+        "duration_min": 6,
+        "task": "Scanner de Copy - Análise de conteúdo e copywriting",
+        "evidence_link": "/criativalia/evidencias/20260329/copy_scan_evidence.json",
+        "output_link": "/criativalia/opportunities/20260329/copy_opps.json",
+        "status": "completed",
+        "opportunities_found": 12,
+        "priority": "normal"
       }
     ],
     "DesignBot": [
       {
-        "start": "--:--",
-        "end": "--:--",
-        "duration_min": 0,
-        "task": "Em breve - Não ativo",
-        "description": "Scanner de design e produto - agendado para implementação futura",
-        "evidence_link": null,
-        "output_count": 0,
-        "priority": null,
-        "status": "scheduled"
+        "start": "17:16",
+        "end": "18:00",
+        "duration_min": 44,
+        "task": "Night Shift UX/UI Review - Correções de design",
+        "evidence_link": "/criativalia/evidencias/20250329/uxui_review_1716.md",
+        "status": "completed",
+        "deliverables": [
+          "Grid de Métricas Mobile (P0)",
+          "Sidebar com navegação (P0)",
+          "Tabela de Pedidos com scroll (P1)",
+          "Loading State Skeleton (P1)",
+          "Cores consistentes - Design System (P2)"
+        ],
+        "priority": "high",
+        "notes": "Branch: clean-deploy | ~200 linhas adicionadas"
       }
     ],
     "OpsBot": [
       {
-        "start": "05:40",
-        "end": "06:20",
-        "duration_min": 40,
-        "task": "Monitoramento de Deploys - Render",
-        "description": "Verificação de workflows de deploy e notificações",
-        "evidence_link": "/evidencias/20260329/deploy_notifications.json",
-        "output_count": 6,
-        "priority": "P0",
+        "start": "08:00",
+        "end": "08:10",
+        "duration_min": 10,
+        "task": "Opportunity Scanner - Análise operacional",
+        "evidence_link": "/criativalia/evidencias/20260329/opsbot/ops_scan_evidence.json",
+        "output_link": "/criativalia/opportunities/20260329/ops_opps.json",
         "status": "completed",
-        "details": {
-          "success_deploys": 4,
-          "failed_notifications": 2,
-          "workflows_monitored": ["Deploy to Render", "notify-deploy.yml"]
+        "opportunities_found": 10,
+        "priority": "normal",
+        "top_priority": {
+          "id": "ops_001",
+          "title": "Configurar Shopify Token",
+          "impact": 10,
+          "blocking": true,
+          "reason": "Sem dados, operação é cega"
         }
+      },
+      {
+        "start": "12:30",
+        "end": "12:35",
+        "duration_min": 5,
+        "task": "Priorização automática de oportunidades",
+        "evidence_link": "/criativalia/priorities_queue.json",
+        "status": "completed",
+        "priority": "high"
       }
     ]
   },
-  "summary": {
-    "total_tasks": 2,
-    "total_duration_min": 70,
-    "agents_active": 2,
-    "agents_idle": 1,
-    "agents_scheduled": 1,
-    "opportunities_generated": 12,
-    "deploys_monitored": 6
+  "gaps": {
+    "TrafficBot": [
+      {"from": "00:00", "to": "12:00", "duration_min": 720, "status": "idle"},
+      {"from": "12:30", "to": "23:59", "duration_min": 689, "status": "idle"}
+    ],
+    "CopyBot": [
+      {"from": "00:00", "to": "12:24", "duration_min": 744, "status": "idle"},
+      {"from": "12:30", "to": "23:59", "duration_min": 689, "status": "idle"}
+    ],
+    "DesignBot": [
+      {"from": "00:00", "to": "17:16", "duration_min": 1036, "status": "idle"},
+      {"from": "18:00", "to": "23:59", "duration_min": 359, "status": "idle"}
+    ],
+    "OpsBot": [
+      {"from": "00:00", "to": "08:00", "duration_min": 480, "status": "idle"},
+      {"from": "08:10", "to": "12:30", "duration_min": 260, "status": "idle"},
+      {"from": "12:35", "to": "23:59", "duration_min": 684, "status": "idle"}
+    ]
   },
-  "gaps": [
+  "top_opportunities_24h": [
     {
-      "agent": "CopyBot",
-      "period": "00:00-23:59",
-      "reason": "Aguardando configuração de cron job"
+      "id": "ops_001",
+      "agent": "OpsBot",
+      "title": "Configurar Shopify Token (BLOQUEANTE)",
+      "impact_score": 10,
+      "category": "infrastructure",
+      "financial_impact": "+R$15k+/mês"
     },
     {
-      "agent": "DesignBot", 
-      "period": "00:00-23:59",
-      "reason": "Não implementado - agendado para futuro"
+      "id": "traffic_001",
+      "agent": "TrafficBot",
+      "title": "Mushroom Lamp - Tendência India Design ID 2026",
+      "impact_score": 9,
+      "category": "product_development"
+    },
+    {
+      "id": "traffic_005",
+      "agent": "TrafficBot",
+      "title": "Mercado LED Decorativo BR crescendo 10,23% CAGR",
+      "impact_score": 9,
+      "category": "market_positioning"
+    },
+    {
+      "id": "copy_001",
+      "agent": "CopyBot",
+      "title": "Blog vazio - Gap de Content Marketing",
+      "impact_score": 9,
+      "category": "content_marketing"
     }
-  ],
-  "next_expected_runs": {
-    "TrafficBot": "2026-03-29T18:00:00Z (a cada 6h)",
-    "CopyBot": "Aguardando configuração (a cada 8h)",
-    "DesignBot": "Não agendado (a cada 12h)",
-    "OpsBot": "2026-03-29T09:40:00Z (a cada 4h)"
-  }
+  ]
 }

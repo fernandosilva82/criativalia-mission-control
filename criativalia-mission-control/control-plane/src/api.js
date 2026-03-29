@@ -1330,6 +1330,7 @@ app.get('/kanban', (req, res) => {
         renderKanban();
         loadTasks();
     </script>
+    <script src="/js/kanban.js"></script>
 </body>
 </html>
     `);
@@ -1492,6 +1493,7 @@ app.get('/timesheet', (req, res) => {
         
         loadExecutions();
     </script>
+    <script src="/js/timesheet.js"></script>
 </body>
 </html>
     `);

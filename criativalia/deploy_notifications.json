@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-03-29T09:04:00Z",
+  "last_checked": "2026-03-29T15:18:00Z",
   "notified_runs": [
     {"run_id": 23701492867, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
     {"run_id": 23702420432, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
@@ -9,13 +9,24 @@
     {"run_id": 23702420224, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T06:17:00Z"},
     {"run_id": 23702249166, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
     {"run_id": 23702249161, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
-    {"run_id": 23702249160, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"}
+    {"run_id": 23702249160, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
+    {"run_id": 23708716740, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
+    {"run_id": 23708479820, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
+    {"run_id": 23708441037, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
+    {"run_id": 23706033265, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:10:00Z"},
+    {"run_id": 23706033251, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-03-29T13:10:00Z"},
+    {"run_id": 23710490985, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
+    {"run_id": 23710454588, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
+    {"run_id": 23710389930, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
+    {"run_id": 23710490704, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T14:42:00Z"},
+    {"run_id": 23710454270, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T14:42:00Z"},
+    {"run_id": 23710305440, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T15:12:00Z"}
   ],
   "pending_notifications": [],
   "last_check_summary": {
-    "checked_at": "2026-03-29T09:04:00Z",
-    "total_runs_found": 10,
+    "checked_at": "2026-03-29T15:18:00Z",
+    "total_runs_found": 3,
     "new_notifications": 0,
-    "message": "Nenhum deploy novo para notificar. Todos os workflows já foram notificados anteriormente."
+    "message": "Nenhum deploy novo para notificar. Todos os 3 workflows recentes já foram notificados anteriormente."
   }
 }
