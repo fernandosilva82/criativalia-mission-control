@@ -1111,13 +1111,6 @@ app.get('/kanban', (req, res) => {
     `);
 });
 
-        renderKanban();
-    </script>
-</body>
-</html>
-    `);
-});
-
 // Timesheet page - INLINE HTML
 app.get('/timesheet', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
