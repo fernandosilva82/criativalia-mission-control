@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0b; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
+        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
+        .btn-primary { background: #c17767; color: white; }
+        .btn-primary:hover { background: #d48877; }
+        .timeline-container { overflow-x: auto; }
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: 150px repeat(24, 60px);
+            gap: 1px;
+            background: #1a1a1b;
+            min-width: max-content;
+        }
+        .timeline-header {
+            background: #0f0f10;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .timeline-hour {
+            background: #0f0f10;
+            padding: 12px 4px;
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            border-bottom: 1px solid #2a2a2a;
+            border-left: 1px solid #1f1f1f;
+        }
+        .timeline-hour.current {
+            background: #c17767/20;
+            color: #c17767;
+            font-weight: 600;
+        }
+        .agent-row { display: contents; }
+        .agent-name {
+            background: #141414;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            border-right: 1px solid #2a2a2a;
+        }
+        .time-cell {
+            background: #0a0a0b;
+            border-left: 1px solid #1f1f1f;
+            min-height: 50px;
+            position: relative;
+        }
+        .activity-bar {
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            border-radius: 4px;
+            font-size: 9px;
+            padding: 2px 4px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .activity-bar:hover {
+            z-index: 100;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .activity-session { background: #7a9e7e; color: #0a0a0b; }
+        .activity-task { background: #c17767; color: white; }
+        .activity-log { background: #3b82f6; color: white; }
+        .current-time-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #c17767;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .current-time-line::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            background: #c17767;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
+                    <i class="fas fa-rocket text-white"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-lg">Timesheet</h1>
+                    <p class="text-xs text-gray-400">Agent Activity Timeline (24h)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 text-xs">
+                    <span class="flex items-center gap-1">
+                        <span class="w-3 h-3 rounded bg-[#7a9e7e]"></span> Session
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="w-3 h-3 rounded bg-[#c17767]"></span> Task
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <span class="w-3 h-3 rounded bg-[#3b82f6]"></span> Log
+                    </span>
+                </div>
+                <button onclick="refreshTimesheet()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Timesheet -->
+    <main class="p-6">
+        <div class="card overflow-hidden">
+            <div class="timeline-container" id="timeline-container">
+                <div class="timeline-grid" id="timeline-grid">
+                    <!-- Timeline will be rendered here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="grid grid-cols-4 gap-4 mt-6">
+            <div class="card p-4">
+                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Sessions</div>
+                <div id="stat-sessions" class="text-2xl font-bold">-</div>
+            </div>
+            <div class="card p-4">
+                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Active Now</div>
+                <div id="stat-active" class="text-2xl font-bold text-green-400">-</div>
+            </div>
+            <div class="card p-4">
+                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Tasks Completed</div>
+                <div id="stat-completed" class="text-2xl font-bold text-orange-400">-</div>
+            </div>
+            <div class="card p-4">
+                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Logs</div>
+                <div id="stat-logs" class="text-2xl font-bold">-</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Activity Detail Modal -->
+    <div id="activity-modal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-6">
+        <div class="card max-w-lg w-full">
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Activity Details</h3>
+                <button onclick="closeModal()" class="p-2 hover:bg-gray-800 rounded-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modal-content" class="p-6">
+                <!-- Content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sessions = [];
+        let tasks = [];
+        let logs = [];
+        let agents = [];
+        let currentHour = new Date().getHours();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTimesheet();
+            setInterval(updateCurrentTimeLine, 60000);
+        });
+
+        async function loadTimesheet() {
+            try {
+                const [sessionsRes, tasksRes, logsRes, agentsRes] = await Promise.all([
+                    fetch('/api/sessions'),
+                    fetch('/api/tasks'),
+                    fetch('/api/logs?limit=200'),
+                    fetch('/api/agents')
+                ]);
+                
+                sessions = await sessionsRes.json();
+                tasks = await tasksRes.json();
+                logs = await logsRes.json();
+                agents = await agentsRes.json();
+                
+                renderTimeline();
+                updateStats();
+            } catch (err) {
+                console.error('Error loading timesheet:', err);
+            }
+        }
+
+        function renderTimeline() {
+            const grid = document.getElementById('timeline-grid');
+            const hours = Array.from({length: 24}, (_, i) => i);
+            
+            // Header row
+            let html = '<div class="timeline-header sticky left-0 z-20">Agent</div>';
+            hours.forEach(hour => {
+                const isCurrent = hour === currentHour;
+                html += `<div class="timeline-hour ${isCurrent ? 'current' : ''}" data-hour="${hour}">${String(hour).padStart(2, '0')}:00</div>`;
+            });
+            
+            // Agent rows
+            agents.forEach(agent => {
+                html += `<div class="agent-name">${getAgentIcon(agent.role)} ${agent.name}</div>`;
+                hours.forEach(hour => {
+                    const activities = getActivitiesForHour(agent.id, hour);
+                    html += `
+                        <div class="time-cell" data-agent="${agent.id}" data-hour="${hour}">
+                            ${activities.map(act => renderActivityBar(act, hour)).join('')}
+                        </div>
+                    `;
+                });
+            });
+            
+            grid.innerHTML = html;
+            updateCurrentTimeLine();
+        }
+
+        function getActivitiesForHour(agentId, hour) {
+            const activities = [];
+            const hourStart = new Date();
+            hourStart.setHours(hour, 0, 0, 0);
+            const hourEnd = new Date();
+            hourEnd.setHours(hour, 59, 59, 999);
+            
+            // Sessions
+            sessions.filter(s => s.agent_id === agentId).forEach(session => {
+                const start = new Date(session.started_at);
+                if (start >= hourStart && start <= hourEnd) {
+                    activities.push({
+                        type: 'session',
+                        title: 'Session started',
+                        time: start,
+                        data: session
+                    });
+                }
+            });
+            
+            // Tasks
+            tasks.filter(t => t.agent_id === agentId).forEach(task => {
+                if (task.started_at) {
+                    const start = new Date(task.started_at);
+                    if (start >= hourStart && start <= hourEnd) {
+                        activities.push({
+                            type: 'task',
+                            title: task.title,
+                            time: start,
+                            data: task
+                        });
+                    }
+                }
+            });
+            
+            // Logs
+            logs.filter(l => l.agent_id === agentId).forEach(log => {
+                const time = new Date(log.created_at);
+                if (time >= hourStart && time <= hourEnd) {
+                    activities.push({
+                        type: 'log',
+                        title: log.message.substring(0, 30) + '...',
+                        time: time,
+                        data: log
+                    });
+                }
+            });
+            
+            return activities.sort((a, b) => a.time - b.time);
+        }
+
+        function renderActivityBar(activity, hour) {
+            const minute = activity.time.getMinutes();
+            const top = (minute / 60) * 100;
+            const height = Math.max(20, 100 / Math.max(1, getActivitiesForHour(activity.data.agent_id || activity.data.agent_id, hour).length));
+            
+            return `
+                <div class="activity-bar activity-${activity.type}" 
+                     style="top: ${top}%; height: ${height}%;"
+                     onclick="showActivityDetail('${activity.type}', '${activity.data.id || activity.data.id}')">
+                    ${activity.title}
+                </div>
+            `;
+        }
+
+        function updateCurrentTimeLine() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            // Remove existing lines
+            document.querySelectorAll('.current-time-line').forEach(el => el.remove());
+            
+            // Add new line
+            const hourCell = document.querySelector(`.timeline-hour[data-hour="${currentHour}"]`);
+            if (hourCell) {
+                const line = document.createElement('div');
+                line.className = 'current-time-line';
+                line.style.left = `${hourCell.offsetLeft + (currentMinute / 60) * hourCell.offsetWidth}px`;
+                document.getElementById('timeline-grid').appendChild(line);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('stat-sessions').textContent = sessions.length;
+            document.getElementById('stat-active').textContent = sessions.filter(s => s.status === 'running').length;
+            document.getElementById('stat-completed').textContent = tasks.filter(t => t.status === 'completed').length;
+            document.getElementById('stat-logs').textContent = logs.length;
+        }
+
+        function showActivityDetail(type, id) {
+            let data;
+            let html;
+            
+            switch(type) {
+                case 'session':
+                    data = sessions.find(s => s.id === id);
+                    if (!data) return;
+                    html = `
+                        <div class="space-y-3">
+                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Session</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">ID</span><p class="font-mono text-xs">${data.id}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Status</span><p class="capitalize">${data.status}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Started</span><p>${new Date(data.started_at).toLocaleString('pt-BR')}</p></div>
+                            ${data.completed_at ? `<div><span class="text-xs text-gray-500 uppercase">Completed</span><p>${new Date(data.completed_at).toLocaleString('pt-BR')}</p></div>` : ''}
+                        </div>
+                    `;
+                    break;
+                case 'task':
+                    data = tasks.find(t => t.id === id);
+                    if (!data) return;
+                    html = `
+                        <div class="space-y-3">
+                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Task</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Title</span><p class="font-medium">${data.title}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Status</span><p class="capitalize">${data.status}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Priority</span><p>P${data.priority}</p></div>
+                        </div>
+                    `;
+                    break;
+                case 'log':
+                    data = logs.find(l => l.id === id);
+                    if (!data) return;
+                    html = `
+                        <div class="space-y-3">
+                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Log Entry</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Level</span><p class="capitalize ${data.level}">${data.level}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Message</span><p>${data.message}</p></div>
+                            <div><span class="text-xs text-gray-500 uppercase">Time</span><p>${new Date(data.created_at).toLocaleString('pt-BR')}</p></div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            document.getElementById('modal-content').innerHTML = html;
+            document.getElementById('activity-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('activity-modal').classList.add('hidden');
+        }
+
+        function refreshTimesheet() {
+            loadTimesheet();
+        }
+
+        function getAgentIcon(role) {
+            if (role?.includes('CEO')) return '👑';
+            if (role?.includes('Traffic')) return '📢';
+            if (role?.includes('Shopify')) return '🛒';
+            if (role?.includes('Copy')) return '✍️';
+            if (role?.includes('Design')) return '🎨';
+            if (role?.includes('Dev')) return '💻';
+            if (role?.includes('Data')) return '📊';
+            if (role?.includes('Support')) return '🎧';
+            return '🤖';
+        }
+
+        // Close modal on outside click
+        document.getElementById('activity-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+    </script>
+</body>
+</html>

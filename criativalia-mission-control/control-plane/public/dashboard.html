@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Dashboard - Criativalia Control Plane</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0b; }
+        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
+        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
+        .metric-card { 
+            background: linear-gradient(135deg, #141414 0%, #1a1a1b 100%);
+            border: 1px solid #2a2a2a; 
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #c17767, #d48877);
+        }
+        .metric-value { 
+            background: linear-gradient(135deg, #fafafa 0%, #c17767 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-primary { background: #c17767; color: white; }
+        .btn-primary:hover { background: #d48877; }
+        .trend-up { color: #7a9e7e; }
+        .trend-down { color: #c17767; }
+        .product-row:hover { background: rgba(193, 119, 103, 0.1); }
+        .chart-container { position: relative; height: 300px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
+                    <i class="fas fa-rocket text-white"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold text-lg">Shopify Dashboard</h1>
+                    <p class="text-xs text-gray-400">Real-time Store Analytics</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div id="data-source-indicator" class="mr-2"></div>
+                <div class="text-right">
+                    <div class="text-xs text-gray-400">Last Updated</div>
+                    <div id="last-updated" class="text-sm font-medium">-</div>
+                </div>
+                <button onclick="refreshDashboard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-6">
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="metric-card p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400 text-xs uppercase tracking-wider">Receita MTD</span>
+                    <i class="fas fa-dollar-sign text-[#c17767]"></i>
+                </div>
+                <div id="metric-revenue" class="text-3xl font-bold metric-value">-</div>
+                <div id="trend-revenue" class="text-xs mt-2 flex items-center gap-1">
+                    <i class="fas fa-chart-line"></i>
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="metric-card p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400 text-xs uppercase tracking-wider">Pedidos</span>
+                    <i class="fas fa-shopping-bag text-blue-400"></i>
+                </div>
+                <div id="metric-orders" class="text-3xl font-bold metric-value">-</div>
+                <div id="trend-orders" class="text-xs mt-2 flex items-center gap-1">
+                    <i class="fas fa-chart-line"></i>
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="metric-card p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400 text-xs uppercase tracking-wider">Ticket Médio</span>
+                    <i class="fas fa-receipt text-green-400"></i>
+                </div>
+                <div id="metric-aov" class="text-3xl font-bold metric-value">-</div>
+                <div id="trend-aov" class="text-xs mt-2 flex items-center gap-1">
+                    <i class="fas fa-chart-line"></i>
+                    <span>-</span>
+                </div>
+            </div>
+            <div class="metric-card p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-400 text-xs uppercase tracking-wider">Taxa Recompra</span>
+                    <i class="fas fa-redo text-purple-400"></i>
+                </div>
+                <div id="metric-repeat" class="text-3xl font-bold metric-value">-</div>
+                <div id="trend-repeat" class="text-xs mt-2 flex items-center gap-1">
+                    <i class="fas fa-chart-line"></i>
+                    <span>-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6">
+            <!-- Revenue Chart -->
+            <div class="col-span-2 card p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-semibold flex items-center gap-2">
+                        <i class="fas fa-chart-bar text-[#c17767]"></i>
+                        Receita - Últimos 7 Dias
+                    </h2>
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="flex items-center gap-1">
+                            <span class="w-3 h-3 rounded bg-[#c17767]"></span> Receita
+                        </span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Products -->
+            <div class="card">
+                <div class="p-4 border-b border-gray-800">
+                    <h2 class="font-semibold flex items-center gap-2">
+                        <i class="fas fa-trophy text-yellow-400"></i>
+                        Top Produtos
+                    </h2>
+                </div>
+                <div id="top-products" class="divide-y divide-gray-800 max-h-[340px] overflow-y-auto">
+                    <!-- Products loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="card mt-6">
+            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
+                <h2 class="font-semibold flex items-center gap-2">
+                    <i class="fas fa-list text-blue-400"></i>
+                    Pedidos Recentes
+                </h2>
+                <a href="#" class="text-xs text-[#c17767] hover:underline">Ver todos</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-900/50">
+                        <tr>
+                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">ID</th>
+                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Cliente</th>
+                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Data</th>
+                            <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Status</th>
+                            <th class="text-right p-3 text-xs font-medium text-gray-400 uppercase">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-orders" class="divide-y divide-gray-800">
+                        <!-- Orders loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let revenueChart = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboard();
+        });
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch('/api/shopify/stats');
+                const data = await res.json();
+                
+                updateMetrics(data);
+                renderChart(data.revenue_7days || []);
+                renderTopProducts(data.top_products || []);
+                renderRecentOrders(data.recent_orders || []);
+                
+                // Mostrar indicador de dados reais vs mockados
+                const sourceIndicator = document.getElementById('data-source-indicator');
+                if (sourceIndicator) {
+                    if (data._source === 'shopify_api') {
+                        sourceIndicator.innerHTML = '<span class="text-green-400 text-xs flex items-center gap-1"><i class="fas fa-check-circle"></i> Dados Reais Shopify</span>';
+                    } else {
+                        sourceIndicator.innerHTML = '<span class="text-yellow-400 text-xs flex items-center gap-1"><i class="fas fa-exclamation-triangle"></i> Dados Simulados</span>';
+                    }
+                }
+                
+                document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('pt-BR');
+            } catch (err) {
+                console.error('Error loading dashboard:', err);
+                // Fallback data
+                loadFallbackData();
+            }
+        }
+
+        function updateMetrics(data) {
+            // Revenue MTD
+            const revenue = data.revenue_mtd || 0;
+            document.getElementById('metric-revenue').textContent = formatCurrency(revenue);
+            updateTrend('trend-revenue', data.revenue_trend);
+            
+            // Orders
+            const orders = data.orders_mtd || 0;
+            document.getElementById('metric-orders').textContent = orders.toLocaleString('pt-BR');
+            updateTrend('trend-orders', data.orders_trend);
+            
+            // AOV
+            const aov = data.aov || 0;
+            document.getElementById('metric-aov').textContent = formatCurrency(aov);
+            updateTrend('trend-aov', data.aov_trend);
+            
+            // Repeat rate
+            const repeatRate = data.repeat_rate || 0;
+            document.getElementById('metric-repeat').textContent = repeatRate.toFixed(1) + '%';
+            updateTrend('trend-repeat', data.repeat_trend);
+        }
+
+        function updateTrend(elementId, trend) {
+            const el = document.getElementById(elementId);
+            if (!trend) {
+                el.innerHTML = '<span class="text-gray-500">-</span>';
+                return;
+            }
+            const isUp = trend >= 0;
+            const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
+            const colorClass = isUp ? 'trend-up' : 'trend-down';
+            el.innerHTML = `<i class="fas ${icon} ${colorClass}"></i><span class="${colorClass}">${Math.abs(trend).toFixed(1)}% vs mês anterior</span>`;
+        }
+
+        function renderChart(revenueData) {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            
+            const labels = revenueData.map(d => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric' });
+            });
+            const values = revenueData.map(d => d.amount);
+            
+            if (revenueChart) {
+                revenueChart.destroy();
+            }
+            
+            revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Receita',
+                        data: values,
+                        backgroundColor: 'rgba(193, 119, 103, 0.8)',
+                        borderColor: '#c17767',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1a1a1b',
+                            titleColor: '#fafafa',
+                            bodyColor: '#fafafa',
+                            borderColor: '#2a2a2a',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: (context) => formatCurrency(context.raw)
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#1f1f1f' },
+                            ticks: {
+                                color: '#888',
+                                callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#888' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTopProducts(products) {
+            const container = document.getElementById('top-products');
+            if (products.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-gray-500 text-sm">No products data</div>';
+                return;
+            }
+            
+            container.innerHTML = products.slice(0, 10).map((product, index) => `
+                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer">
+                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-[#c17767]' : 'text-gray-500'}">
+                        ${index + 1}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-medium truncate">${product.name}</h4>
+                        <p class="text-xs text-gray-500">${product.sold} vendas</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-medium">${formatCurrency(product.revenue)}</div>
+                        <div class="text-xs text-gray-500">${product.quantity} unid.</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRecentOrders(orders) {
+            const container = document.getElementById('recent-orders');
+            if (orders.length === 0) {
+                container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500 text-sm">No orders</td></tr>';
+                return;
+            }
+            
+            container.innerHTML = orders.slice(0, 10).map(order => `
+                <tr class="hover:bg-gray-900/30 transition">
+                    <td class="p-3 text-sm font-mono">#${order.id.slice(-6)}</td>
+                    <td class="p-3 text-sm">${order.customer}</td>
+                    <td class="p-3 text-sm text-gray-400">${new Date(order.date).toLocaleDateString('pt-BR')}</td>
+                    <td class="p-3">
+                        <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(order.status)}">
+                            ${order.status}
+                        </span>
+                    </td>
+                    <td class="p-3 text-sm text-right font-medium">${formatCurrency(order.total)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'paid': 'bg-green-900/50 text-green-400',
+                'pending': 'bg-yellow-900/50 text-yellow-400',
+                'processing': 'bg-blue-900/50 text-blue-400',
+                'fulfilled': 'bg-purple-900/50 text-purple-400',
+                'cancelled': 'bg-red-900/50 text-red-400'
+            };
+            return classes[status?.toLowerCase()] || 'bg-gray-800 text-gray-400';
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value || 0);
+        }
+
+        function loadFallbackData() {
+            const fallbackData = {
+                revenue_mtd: 45678.90,
+                orders_mtd: 123,
+                aov: 371.37,
+                repeat_rate: 32.5,
+                revenue_trend: 12.5,
+                orders_trend: 8.3,
+                aov_trend: 3.7,
+                repeat_trend: -2.1,
+                revenue_7days: [
+                    { date: '2024-03-21', amount: 5234.50 },
+                    { date: '2024-03-22', amount: 7891.20 },
+                    { date: '2024-03-23', amount: 4567.80 },
+                    { date: '2024-03-24', amount: 6234.90 },
+                    { date: '2024-03-25', amount: 8912.40 },
+                    { date: '2024-03-26', amount: 7234.60 },
+                    { date: '2024-03-27', amount: 5423.70 }
+                ],
+                top_products: [
+                    { name: 'Camiseta Oversized', sold: 45, quantity: 89, revenue: 4455.50 },
+                    { name: 'Boné Dad Hat', sold: 38, quantity: 52, revenue: 1899.00 },
+                    { name: 'Calça Jogger', sold: 32, quantity: 41, revenue: 3196.80 },
+                    { name: 'Moletom Essential', sold: 28, quantity: 35, revenue: 3916.00 },
+                    { name: 'Tote Bag', sold: 25, quantity: 48, revenue: 997.50 }
+                ],
+                recent_orders: [
+                    { id: 'order_001', customer: 'João Silva', date: '2024-03-27T10:30:00', status: 'paid', total: 234.50 },
+                    { id: 'order_002', customer: 'Maria Santos', date: '2024-03-27T09:15:00', status: 'processing', total: 189.90 },
+                    { id: 'order_003', customer: 'Pedro Costa', date: '2024-03-26T18:45:00', status: 'fulfilled', total: 567.80 }
+                ]
+            };
+            
+            updateMetrics(fallbackData);
+            renderChart(fallbackData.revenue_7days);
+            renderTopProducts(fallbackData.top_products);
+            renderRecentOrders(fallbackData.recent_orders);
+        }
+
+        function refreshDashboard() {
+            loadDashboard();
+        }
+    </script>
+</body>
+</html>
