@@ -1,7 +1,7 @@
 {
   "name": "criativalia-control-plane",
-  "version": "1.0.0",
-  "description": "Multi-agent control plane for Criativalia",
+  "version": "1.0.1",
+  "description": "Multi-agent control plane for Criativalia - NO MOCK DATA",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
