@@ -10,6 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Rota raiz - Dashboard
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
 // Página Financial
 app.get('/financial', (req, res) => {
     res.sendFile(path.join(__dirname, '../src/pages/financial.html'));
