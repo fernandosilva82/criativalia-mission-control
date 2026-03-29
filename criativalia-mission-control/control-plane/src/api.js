@@ -904,6 +904,14 @@ app.get('/api/shopify/financial', async (req, res) => {
         }
         
         // Monthly data for YTD chart
+        const monthlyData = {};
+        orders.forEach(o => {
+            const date = new Date(o.created_at);
+            const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+            if (!monthlyData[key]) monthlyData[key] = 0;
+            monthlyData[key] += parseFloat(o.total_price || 0);
+        });
+        
         const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
         const ytd2026 = [];
         const ytd2025 = [];
