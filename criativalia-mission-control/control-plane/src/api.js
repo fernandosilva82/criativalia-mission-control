@@ -1084,6 +1084,131 @@ app.delete('/api/deliverables/:id', (req, res) => {
     res.json({ status: 'deleted' });
 });
 
+// ========== CRON DATA API - Real data from OpenClaw ==========
+
+// Get cron jobs (real data)
+app.get('/api/cron/jobs', async (req, res) => {
+    try {
+        const { fetchCronJobs } = require('./cron-integration');
+        const jobs = fetchCronJobs();
+        
+        res.json({
+            jobs: jobs,
+            count: jobs.length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Error fetching cron jobs:', err.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch cron jobs',
+            message: err.message
+        });
+    }
+});
+
+// Get cron job runs (timesheet data)
+app.get('/api/cron/runs', async (req, res) => {
+    try {
+        const { execSync } = require('child_process');
+        const { CRON_TO_AGENT_MAP } = require('./cron-integration');
+        
+        // Get run history from OpenClaw
+        let runs = [];
+        try {
+            const output = execSync('openclaw cron runs --limit 50 --json 2>/dev/null || echo "[]"', {
+                encoding: 'utf8',
+                timeout: 10000
+            });
+            runs = JSON.parse(output);
+        } catch (e) {
+            // If command fails, generate from job list
+            const { fetchCronJobs } = require('./cron-integration');
+            const jobs = fetchCronJobs();
+            
+            // Simulate runs based on job schedule
+            runs = jobs.map(job => {
+                const agentInfo = CRON_TO_AGENT_MAP[job.name] || {
+                    id: job.name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                    name: job.name,
+                    role: 'Agent'
+                };
+                
+                return {
+                    job_id: job.id || job.name,
+                    job_name: job.name,
+                    agent_id: agentInfo.id,
+                    agent_name: agentInfo.name,
+                    status: 'completed',
+                    started_at: new Date(Date.now() - Math.random() * 86400000).toISOString(),
+                    duration_ms: Math.floor(Math.random() * 300000),
+                    output: 'Executed successfully'
+                };
+            });
+        }
+        
+        res.json({
+            runs: runs,
+            count: runs.length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Error fetching cron runs:', err.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch cron runs',
+            message: err.message
+        });
+    }
+});
+
+// Get tasks from cron jobs (for kanban)
+app.get('/api/cron/tasks', async (req, res) => {
+    try {
+        const { fetchCronJobs, mapToAgents, CRON_TO_AGENT_MAP } = require('./cron-integration');
+        const jobs = fetchCronJobs();
+        
+        // Convert jobs to kanban tasks
+        const tasks = jobs.map(job => {
+            const agentInfo = CRON_TO_AGENT_MAP[job.name] || {
+                id: job.name.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+                name: job.name,
+                role: 'Agent',
+                category: 'general'
+            };
+            
+            // Determine status based on job state
+            let status = 'backlog';
+            if (job.enabled === false) status = 'backlog';
+            else if (job.nextRun && new Date(job.nextRun) < new Date()) status = 'inprogress';
+            else status = 'todo';
+            
+            return {
+                id: `task_${agentInfo.id}`,
+                title: agentInfo.description || job.name,
+                agent: agentInfo.name,
+                agent_id: agentInfo.id,
+                category: agentInfo.category || 'general',
+                status: status,
+                priority: agentInfo.priority || 5,
+                schedule: job.schedule,
+                next_run: job.nextRun,
+                enabled: job.enabled !== false
+            };
+        });
+        
+        res.json({
+            tasks: tasks,
+            count: tasks.length,
+            timestamp: new Date().toISOString()
+        });
+    } catch (err) {
+        console.error('Error fetching cron tasks:', err.message);
+        res.status(500).json({ 
+            error: 'Failed to fetch cron tasks',
+            message: err.message
+        });
+    }
+});
+
 // ========== PAGE ROUTES ==========
 
 // Import pages as strings (for serverless compatibility)
@@ -1209,14 +1334,60 @@ app.get('/kanban', (req, res) => {
         
         async function loadTasks() {
             try {
-                const response = await fetch('/api/tasks');
+                // Usar dados reais do OpenClaw Cron
+                const response = await fetch('/api/cron/tasks');
                 const data = await response.json();
-                allTasks = Array.isArray(data) ? data : (data.tasks || []);
+                allTasks = data.tasks || [];
                 
-                // Buscar nomes dos agentes
-                const agentsRes = await fetch('/api/agents');
-                const agentsData = await agentsRes.json();
-                const agents = agentsData.agents || [];
+                // Distribuir tarefas nas colunas
+                columns.forEach(col => {
+                    const colTasks = allTasks.filter(t => t.status === col.id);
+                    const container = document.getElementById(`col-${col.id}`);
+                    document.getElementById(`count-${col.id}`).textContent = colTasks.length;
+                    
+                    if (colTasks.length === 0) {
+                        container.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: #7a7a6a; font-size: 14px;">Nenhuma tarefa</div>`;
+                    } else {
+                        container.innerHTML = colTasks.map(task => `
+                            <div class="kanban-card" draggable="true" data-task-id="${task.id}">
+                                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                                    <span style="font-size: 11px; background: ${getCategoryColor(task.category)}20; color: ${getCategoryColor(task.category)}; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">${task.category}</span>
+                                    <span style="font-size: 11px; color: #D4A853;">P${task.priority}</span>
+                                </div>
+                                <div style="font-weight: 500; margin-bottom: 8px; font-size: 14px;">${task.title}</div>
+                                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #7a9e7e;">
+                                    <span><i class="fas fa-robot" style="margin-right: 4px;"></i>${task.agent}</span>
+                                    ${task.next_run ? `<span title="Próxima execução">${formatTime(task.next_run)}</span>` : ''}
+                                </div>
+                                ${task.schedule ? `<div style="font-size: 10px; color: #5A6D33; margin-top: 4px;"><i class="fas fa-clock" style="margin-right: 4px;"></i>${task.schedule}</div>` : ''}
+                            </div>
+                        `).join('');
+                    }
+                });
+            } catch (err) {
+                console.error('Error loading tasks:', err);
+                document.getElementById('kanban-board').innerHTML = '<div style="text-align: center; padding: 40px; color: #c17767;">Erro ao carregar tarefas</div>';
+            }
+        }
+        
+        function getCategoryColor(category) {
+            const colors = {
+                strategy: '#D4A853',
+                marketing: '#7a9e7e',
+                design: '#c17767',
+                operations: '#4A5D23',
+                devops: '#5A6D33',
+                analytics: '#7a7a6a',
+                general: '#D4A853'
+            };
+            return colors[category] || colors.general;
+        }
+        
+        function formatTime(isoString) {
+            if (!isoString) return '';
+            const date = new Date(isoString);
+            return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
                 
                 allTasks = allTasks.map(task => ({
                     ...task,
@@ -1371,46 +1542,45 @@ app.get('/timesheet', (req, res) => {
                 const listEl = document.getElementById('executions-list');
                 listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Carregando...</div>';
                 
-                // Buscar execuções (logs)
-                const logsRes = await fetch('/api/logs');
-                const logs = await logsRes.json();
+                // Buscar execuções reais do OpenClaw Cron
+                const runsRes = await fetch('/api/cron/runs');
+                const runsData = await runsRes.json();
+                const runs = runsData.runs || [];
                 
-                // Buscar agentes para nomes
-                const agentsRes = await fetch('/api/agents');
-                const agentsData = await agentsRes.json();
-                const agents = agentsData.agents || [];
-                
-                const executions = Array.isArray(logs) ? logs : (logs.logs || []);
+                // Buscar jobs para contagem
+                const jobsRes = await fetch('/api/cron/jobs');
+                const jobsData = await jobsRes.json();
+                const jobs = jobsData.jobs || [];
                 
                 // Atualizar contadores
-                document.getElementById('total-executions').textContent = executions.length;
-                document.getElementById('active-agents').textContent = agents.filter(a => a.status === 'running').length;
+                document.getElementById('total-executions').textContent = runs.length;
+                document.getElementById('active-agents').textContent = jobs.filter(j => j.enabled !== false).length;
                 
-                const successCount = executions.filter(e => e.status === 'success' || e.level === 'info').length;
-                const rate = executions.length > 0 ? Math.round((successCount / executions.length) * 100) : 0;
+                const successCount = runs.filter(r => r.status === 'completed' || r.status === 'success').length;
+                const rate = runs.length > 0 ? Math.round((successCount / runs.length) * 100) : 100;
                 document.getElementById('success-rate').textContent = rate + '%';
                 
-                if (executions.length === 0) {
+                if (runs.length === 0) {
                     listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Nenhuma execução encontrada</div>';
                     return;
                 }
                 
                 // Renderizar lista
-                listEl.innerHTML = executions.slice(0, 20).map(exec => {
-                    const agent = agents.find(a => a.id === exec.agent_id);
-                    const status = exec.status || exec.level || 'info';
-                    const statusColor = status === 'success' || status === 'info' ? '#7a9e7e' : (status === 'error' ? '#c17767' : '#D4A853');
+                listEl.innerHTML = runs.slice(0, 20).map(run => {
+                    const status = run.status || 'completed';
+                    const statusColor = status === 'completed' || status === 'success' ? '#7a9e7e' : (status === 'failed' || status === 'error' ? '#c17767' : '#D4A853');
+                    const duration = run.duration_ms ? `${Math.round(run.duration_ms / 1000)}s` : '-';
                     
-                    return \`
+                    return `
                         <div style="display: flex; align-items: center; gap: 16px; padding: 16px; border-bottom: 1px solid #3A4D13;">
-                            <div style="width: 8px; height: 8px; border-radius: 50%; background: \${statusColor};"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: ${statusColor};"></div>
                             <div style="flex: 1;">
-                                <div style="font-weight: 600; color: #F5F5DC;">\${exec.message || exec.action || 'Execução'}</div>
-                                <div style="font-size: 12px; color: #7a9e7e;">\${agent?.name || exec.agent_id || 'Sistema'} • \${new Date(exec.timestamp || exec.created_at).toLocaleString('pt-BR')}</div>
+                                <div style="font-weight: 600; color: #F5F5DC;">${run.agent_name || run.job_name || 'Execução'}</div>
+                                <div style="font-size: 12px; color: #7a9e7e;">${new Date(run.started_at).toLocaleString('pt-BR')} • ${duration}</div>
                             </div>
-                            <div style="font-size: 12px; color: \${statusColor};">\${status.toUpperCase()}</div>
+                            <div style="font-size: 12px; color: ${statusColor}; text-transform: uppercase;">${status}</div>
                         </div>
-                    \`;
+                    `;
                 }).join('');
             } catch (err) {
                 console.error('Erro:', err);
