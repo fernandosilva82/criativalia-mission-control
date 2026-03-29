@@ -1190,20 +1190,65 @@ app.get('/kanban', (req, res) => {
             { id: 'done', title: 'Concluído', color: '#5A6D33' }
         ];
         
+        let allTasks = [];
+        
         function renderKanban() {
             const board = document.getElementById('kanban-board');
             board.innerHTML = columns.map(col => \`
                 <div class="kanban-column" style="min-width: 280px; padding: 16px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                         <div style="font-weight: 600; color: \${col.color};">\${col.title}</div>
-                        <span style="background: \${col.color}20; color: \${col.color}; padding: 2px 8px; border-radius: 4px; font-size: 12px;">0</span>
+                        <span id="count-\${col.id}" style="background: \${col.color}20; color: \${col.color}; padding: 2px 8px; border-radius: 4px; font-size: 12px;">0</span>
                     </div>
                     <div id="col-\${col.id}" class="column-tasks">
-                        <div style="text-align: center; padding: 40px 20px; color: #7a7a6a; font-size: 14px;">
-                            Nenhuma tarefa\n                        </div>
+                        <div style="text-align: center; padding: 40px 20px; color: #7a7a6a; font-size: 14px;">Carregando...</div>
                     </div>
                 </div>
             \`).join('');
+        }
+        
+        async function loadTasks() {
+            try {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                allTasks = Array.isArray(data) ? data : (data.tasks || []);
+                
+                // Buscar nomes dos agentes
+                const agentsRes = await fetch('/api/agents');
+                const agentsData = await agentsRes.json();
+                const agents = agentsData.agents || [];
+                
+                allTasks = allTasks.map(task => ({
+                    ...task,
+                    status: task.status || 'backlog',
+                    agent_name: agents.find(a => a.id === task.agent_id)?.name || task.agent_id || 'Não atribuído'
+                }));
+                
+                // Renderizar tarefas por coluna
+                columns.forEach(col => {
+                    const colTasks = allTasks.filter(t => t.status === col.id);
+                    const colEl = document.getElementById('col-' + col.id);
+                    const countEl = document.getElementById('count-' + col.id);
+                    
+                    if (countEl) countEl.textContent = colTasks.length;
+                    
+                    if (colEl) {
+                        if (colTasks.length > 0) {
+                            colEl.innerHTML = colTasks.map(task => \`
+                                <div class="kanban-card" style="background: #252520; border: 1px solid #3A4D13; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                                    <div style="font-weight: 600; color: #F5F5DC; margin-bottom: 8px;">\${task.title || 'Sem título'}</div>
+                                    <div style="font-size: 12px; color: #7a9e7e;">\${task.agent_name}</div>
+                                    <div style="font-size: 11px; color: #D4A853; margin-top: 4px;">\${task.priority || 'normal'}</div>
+                                </div>
+                            \`).join('');
+                        } else {
+                            colEl.innerHTML = '<div style="text-align: center; padding: 40px 20px; color: #7a7a6a; font-size: 14px;">Nenhuma tarefa</div>';
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error('Erro ao carregar tarefas:', err);
+            }
         }
         
         function createTask() {
@@ -1211,6 +1256,7 @@ app.get('/kanban', (req, res) => {
         }
         
         renderKanban();
+        loadTasks();
     </script>
 </body>
 </html>
@@ -1283,11 +1329,32 @@ app.get('/timesheet', (req, res) => {
         </header>
 
         <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <!-- Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px; border-left: 3px solid #D4A853;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Total de Execuções (24h)</div>
+                    <div id="total-executions" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 3px solid #7a9e7e;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Agentes Ativos</div>
+                    <div id="active-agents" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 3px solid #4A5D23;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase;">Taxa de Sucesso</div>
+                    <div id="success-rate" style="font-size: 28px; font-weight: 700; margin-top: 8px;">-</div>
+                </div>
+            </div>
+            
+            <!-- Executions List -->
             <div class="card" style="padding: 24px;">
-                <div style="text-align: center; padding: 60px 20px; color: #7a7a6a;">
-                    <i class="fas fa-clock" style="font-size: 48px; color: #4A5D23; margin-bottom: 16px;"></i>
-                    <p>Timesheet em desenvolvimento</p>
-                    <p style="font-size: 12px; margin-top: 8px;">Dados de atividades dos agentes aparecerão aqui</p>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h2 style="font-size: 18px; font-weight: 600;"><i class="fas fa-history" style="color: #D4A853; margin-right: 8px;"></i>Execuções Recentes</h2>
+                    <button onclick="loadExecutions()" class="btn-primary" style="padding: 8px 16px; border-radius: 6px; font-size: 14px;">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+                <div id="executions-list">
+                    <div style="text-align: center; padding: 40px; color: #7a7a6a;">Carregando...</div>
                 </div>
             </div>
         </div>
@@ -1298,6 +1365,60 @@ app.get('/timesheet', (req, res) => {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('open');
         }
+        
+        async function loadExecutions() {
+            try {
+                const listEl = document.getElementById('executions-list');
+                listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Carregando...</div>';
+                
+                // Buscar execuções (logs)
+                const logsRes = await fetch('/api/logs');
+                const logs = await logsRes.json();
+                
+                // Buscar agentes para nomes
+                const agentsRes = await fetch('/api/agents');
+                const agentsData = await agentsRes.json();
+                const agents = agentsData.agents || [];
+                
+                const executions = Array.isArray(logs) ? logs : (logs.logs || []);
+                
+                // Atualizar contadores
+                document.getElementById('total-executions').textContent = executions.length;
+                document.getElementById('active-agents').textContent = agents.filter(a => a.status === 'running').length;
+                
+                const successCount = executions.filter(e => e.status === 'success' || e.level === 'info').length;
+                const rate = executions.length > 0 ? Math.round((successCount / executions.length) * 100) : 0;
+                document.getElementById('success-rate').textContent = rate + '%';
+                
+                if (executions.length === 0) {
+                    listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: #7a7a6a;">Nenhuma execução encontrada</div>';
+                    return;
+                }
+                
+                // Renderizar lista
+                listEl.innerHTML = executions.slice(0, 20).map(exec => {
+                    const agent = agents.find(a => a.id === exec.agent_id);
+                    const status = exec.status || exec.level || 'info';
+                    const statusColor = status === 'success' || status === 'info' ? '#7a9e7e' : (status === 'error' ? '#c17767' : '#D4A853');
+                    
+                    return \`
+                        <div style="display: flex; align-items: center; gap: 16px; padding: 16px; border-bottom: 1px solid #3A4D13;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: \${statusColor};"></div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; color: #F5F5DC;">\${exec.message || exec.action || 'Execução'}</div>
+                                <div style="font-size: 12px; color: #7a9e7e;">\${agent?.name || exec.agent_id || 'Sistema'} • \${new Date(exec.timestamp || exec.created_at).toLocaleString('pt-BR')}</div>
+                            </div>
+                            <div style="font-size: 12px; color: \${statusColor};">\${status.toUpperCase()}</div>
+                        </div>
+                    \`;
+                }).join('');
+            } catch (err) {
+                console.error('Erro:', err);
+                document.getElementById('executions-list').innerHTML = '<div style="text-align: center; padding: 40px; color: #c17767;">Erro ao carregar dados</div>';
+            }
+        }
+        
+        loadExecutions();
     </script>
 </body>
 </html>
