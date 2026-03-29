@@ -1,0 +1,48 @@
+name: Update Dashboard on Evidence
+
+on:
+  push:
+    paths:
+      - 'criativalia/evidencias/**'
+      - 'criativalia/timesheets/**'
+    branches: [ clean-deploy, main ]
+  workflow_dispatch:
+
+jobs:
+  update-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd criativalia-mission-control/control-plane
+          npm install
+
+      - name: Rebuild dashboard
+        run: |
+          cd criativalia-mission-control/control-plane
+          npm run build
+
+      - name: Deploy to Render
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          curl -X POST "$RENDER_DEPLOY_HOOK"
+          echo "📊 Dashboard updated with new evidences"
+
+      - name: Notify Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=📊 Novas evidências registradas! Dashboard atualizado automaticamente." \
+            -d "parse_mode=HTML"

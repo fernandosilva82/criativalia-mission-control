@@ -1,0 +1,57 @@
+name: Notify on Deploy Complete
+
+on:
+  workflow_run:
+    workflows: 
+      - "Deploy to Render"
+      - "Deploy on Opportunities Update"
+      - "Update Dashboard on Evidence"
+    types:
+      - completed
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Notify Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          WORKFLOW_URL="${{ github.event.workflow_run.html_url }}"
+          
+          MESSAGE="✅ <b>Deploy Concluído!</b>
+
+📦 Workflow: <code>${WORKFLOW_NAME}</code>
+⏰ Horário: $(date '+%d/%m/%Y %H:%M')
+🔗 <a href=\"${WORKFLOW_URL}\">Ver detalhes</a>
+
+🌐 Control Plane: https://criativalia-control-plane.onrender.com"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=${MESSAGE}" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=true"
+
+      - name: Notify on Failure
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          WORKFLOW_URL="${{ github.event.workflow_run.html_url }}"
+          
+          MESSAGE="❌ <b>Deploy Falhou!</b>
+
+📦 Workflow: <code>${WORKFLOW_NAME}</code>
+⏰ Horário: $(date '+%d/%m/%Y %H:%M')
+🔗 <a href=\"${WORKFLOW_URL}\">Ver logs</a>"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=${MESSAGE}" \
+            -d "parse_mode=HTML"
