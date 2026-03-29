@@ -605,10 +605,10 @@ async function shopifyFetch(endpoint, token, store) {
 // Get REAL Shopify stats
 app.get('/api/shopify/stats', async (req, res) => {
     try {
-        const SHOPIFY_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
+        const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
         const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'criativalia';
         
-        if (!SHOPIFY_TOKEN) {
+        if (!SHOPIFY_ACCESS_TOKEN) {
             throw new Error('SHOPIFY_ACCESS_TOKEN not configured');
         }
         
@@ -619,7 +619,7 @@ app.get('/api/shopify/stats', async (req, res) => {
         
         const ordersData = await shopifyFetch(
             `orders.json?status=any&created_at_min=${createdAtMin}&limit=250`,
-            SHOPIFY_TOKEN, 
+            SHOPIFY_ACCESS_TOKEN, 
             SHOPIFY_STORE
         );
         
@@ -725,14 +725,14 @@ app.get('/api/shopify/stats', async (req, res) => {
 // Get REAL Shopify products
 app.get('/api/shopify/products', async (req, res) => {
     try {
-        const SHOPIFY_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
+        const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
         const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'criativalia';
         
-        if (!SHOPIFY_TOKEN) {
+        if (!SHOPIFY_ACCESS_TOKEN) {
             throw new Error('SHOPIFY_ACCESS_TOKEN not configured');
         }
         
-        const data = await shopifyFetch('products.json?limit=50', SHOPIFY_TOKEN, SHOPIFY_STORE);
+        const data = await shopifyFetch('products.json?limit=50', SHOPIFY_ACCESS_TOKEN, SHOPIFY_STORE);
         
         const products = (data.products || []).map(p => ({
             id: p.id,
@@ -757,10 +757,10 @@ app.get('/api/shopify/products', async (req, res) => {
 // Get REAL Shopify top products
 app.get('/api/shopify/products/top', async (req, res) => {
     try {
-        const SHOPIFY_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
+        const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
         const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'criativalia';
         
-        if (!SHOPIFY_TOKEN) {
+        if (!SHOPIFY_ACCESS_TOKEN) {
             throw new Error('SHOPIFY_ACCESS_TOKEN not configured');
         }
         
@@ -770,7 +770,7 @@ app.get('/api/shopify/products/top', async (req, res) => {
         
         const ordersData = await shopifyFetch(
             `orders.json?status=any&created_at_min=${thirtyDaysAgo.toISOString()}&limit=250&fields=line_items`,
-            SHOPIFY_TOKEN, 
+            SHOPIFY_ACCESS_TOKEN, 
             SHOPIFY_STORE
         );
         
@@ -804,10 +804,10 @@ app.get('/api/shopify/products/top', async (req, res) => {
 
 // Financial data endpoint - REAL data from Shopify
 app.get('/api/shopify/financial', async (req, res) => {
-    const SHOPIFY_TOKEN = process.env.SHOPIFY_TOKEN;
+    const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
     const SHOPIFY_STORE = process.env.SHOPIFY_STORE || 'criativalia';
     
-    if (!SHOPIFY_TOKEN) {
+    if (!SHOPIFY_ACCESS_TOKEN) {
         return res.status(500).json({ 
             error: 'Shopify token not configured',
             _source: 'error'
@@ -816,7 +816,7 @@ app.get('/api/shopify/financial', async (req, res) => {
     
     try {
         // Get orders for revenue calculation
-        const ordersData = await shopifyFetch('orders.json?status=any&limit=250&fields=id,total_price,created_at,financial_status,line_items', SHOPIFY_TOKEN, SHOPIFY_STORE);
+        const ordersData = await shopifyFetch('orders.json?status=any&limit=250&fields=id,total_price,created_at,financial_status,line_items', SHOPIFY_ACCESS_TOKEN, SHOPIFY_STORE);
         const orders = ordersData.orders || [];
         
         // Calculate MTD revenue
@@ -840,7 +840,7 @@ app.get('/api/shopify/financial', async (req, res) => {
         const revenueYTD = ytdOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
         
         // Get products for cost analysis
-        const productsData = await shopifyFetch('products.json?limit=250&fields=id,title,variants,vendor,product_type', SHOPIFY_TOKEN, SHOPIFY_STORE);
+        const productsData = await shopifyFetch('products.json?limit=250&fields=id,title,variants,vendor,product_type', SHOPIFY_ACCESS_TOKEN, SHOPIFY_STORE);
         const products = productsData.products || [];
         
         // Calculate product metrics (revenue only - no cost data available)
@@ -1121,7 +1121,10 @@ app.get('/kanban', (req, res) => {
 // Timesheet page - INLINE HTML
 app.get('/timesheet', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
     res.send(`
 <!DOCTYPE html>
 <html lang="pt-BR">
