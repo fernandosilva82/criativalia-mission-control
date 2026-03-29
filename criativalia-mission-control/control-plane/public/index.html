@@ -8,509 +8,163 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
-        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
-        .btn-primary { background: #c17767; color: white; }
-        .btn-primary:hover { background: #d48877; }
-        .status-idle { color: #888; }
-        .status-running { color: #7a9e7e; }
-        .status-error { color: #c17767; }
-        .log-debug { color: #888; }
-        .log-info { color: #fafafa; }
-        .log-warning { color: #d4a373; }
-        .log-error { color: #c17767; }
+        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a15; }
+        ::-webkit-scrollbar-thumb { background: #4A5D23; border-radius: 3px; }
+        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
+        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
+        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
+        .btn-primary:hover { background: linear-gradient(135deg, #5A6D33 0%, #4A5D23 100%); }
+        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease; }
+        .sidebar.open { transform: translateX(0); }
+        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
+        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
+        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; transition: all 0.3s; }
+        .main-content { margin-left: 0; transition: margin-left 0.3s; }
+        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
+        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-                    <i class="fas fa-rocket text-white"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg">Criativalia Control Plane</h1>
-                    <p class="text-xs text-gray-400">Multi-Agent Runtime v1.0</p>
-                </div>
-            </div>
-            <nav class="hidden md:flex items-center gap-1">
-                <a href="/kanban" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
-                    <i class="fas fa-columns mr-1"></i> Kanban
-                </a>
-                <a href="/timesheet" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
-                    <i class="fas fa-clock mr-1"></i> Timesheet
-                </a>
-                <a href="/dashboard" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition">
-                    <i class="fas fa-chart-line mr-1"></i> Dashboard
-                </a>
-                <a href="/deliverables" class="px-3 py-2 rounded-lg text-sm hover:bg-gray-800 transition text-orange-400">
-                    <i class="fas fa-box mr-1"></i> Entregas
-                </a>
-            </nav>
-            <div class="flex items-center gap-4">
-                <div id="runtime-status" class="flex items-center gap-2 text-sm">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <span>Running</span>
-                </div>
-                <button onclick="refreshData()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
+            <div><div style="font-size: 18px; font-weight: 700; color: #F5F5DC;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+        </div>
+        <nav style="padding: 16px 0;">
+            <a href="/" class="sidebar-item active"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
+            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
+            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
+            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
+            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        </nav>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; border-top: 1px solid #3A4D13;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4A5D23, #D4A853); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-robot"></i></div>
+                <div><div style="font-size: 13px; font-weight: 500; color: #F5F5DC;">Multi-Agent</div><div style="font-size: 11px; color: #7a9e7e;">v2.0 • Online</div></div>
             </div>
         </div>
-    </header>
+    </aside>
 
-    <main class="max-w-7xl mx-auto px-6 py-6">
-        <!-- Stats -->
-        <div class="grid grid-cols-4 gap-4 mb-6">
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Active Agents</div>
-                <div id="stat-agents" class="text-2xl font-bold">-</div>
-            </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Active Tasks</div>
-                <div id="stat-tasks" class="text-2xl font-bold">-</div>
-            </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Sessions</div>
-                <div id="stat-sessions" class="text-2xl font-bold">-</div>
-            </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Pending Review</div>
-                <div id="stat-review" class="text-2xl font-bold text-orange-400">-</div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-3 gap-6">
-            <!-- Agents List -->
-            <div class="col-span-2">
-                <div class="card">
-                    <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                        <h2 class="font-semibold flex items-center gap-2">
-                            <i class="fas fa-robot text-orange-400"></i>
-                            Agents
-                        </h2>
-                        <button onclick="createTask()" class="btn-primary px-3 py-1.5 rounded-lg text-sm font-medium">
-                            <i class="fas fa-plus mr-1"></i> New Task
-                        </button>
-                    </div>
-                    <div id="agents-list" class="divide-y divide-gray-800">
-                        <!-- Agents loaded here -->
+    <main class="main-content">
+        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+                    <div>
+                        <h1 style="font-size: 20px; font-weight: 700; color: #F5F5DC;"><i class="fas fa-home" style="color: #D4A853; margin-right: 8px;"></i>Dashboard</h1>
+                        <p style="font-size: 12px; color: #D4A853;">Multi-Agent Runtime v2.0</p>
                     </div>
                 </div>
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div id="runtime-status" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #F5F5DC;">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #7a9e7e;"></span>
+                        <span>Running</span>
+                    </div>
+                    <button onclick="refreshData()" class="btn-primary" style="padding: 10px 16px; border-radius: 8px;"><i class="fas fa-sync-alt"></i></button>
+                </div>
+            </div>
+        </header>
 
-                <!-- Tasks -->
-                <div class="card mt-6">
-                    <div class="p-4 border-b border-gray-800">
-                        <h2 class="font-semibold flex items-center gap-2">
-                            <i class="fas fa-tasks text-blue-400"></i>
-                            Recent Tasks
-                        </h2>
-                    </div>
-                    <div id="tasks-list" class="divide-y divide-gray-800 max-h-64 overflow-y-auto">
-                        <!-- Tasks loaded here -->
-                    </div>
+        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                <div class="card" style="padding: 20px; border-left: 3px solid #D4A853;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Active Agents</div>
+                    <div id="stat-agents" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 3px solid #7a9e7e;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Active Tasks</div>
+                    <div id="stat-tasks" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 3px solid #4A5D23;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Sessions</div>
+                    <div id="stat-sessions" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+                </div>
+                <div class="card" style="padding: 20px; border-left: 3px solid #c17767;">
+                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Pending Review</div>
+                    <div id="stat-review" style="font-size: 28px; font-weight: 700; color: #c17767;">-</div>
+                </div>
+            </div>
+            
+            <!-- Agent List Section -->
+            <div class="card" style="padding: 20px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <h2 style="font-size: 18px; font-weight: 600; color: #F5F5DC;"><i class="fas fa-robot" style="color: #D4A853; margin-right: 8px;"></i>Agents</h2>
+                    <button onclick="loadAgents()" class="btn-primary" style="padding: 8px 16px; border-radius: 6px; font-size: 14px;">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div id="agents-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                    <!-- Agents loaded here -->
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Create Task Form -->
-                <div class="card p-4">
-                    <h3 class="font-semibold mb-4 flex items-center gap-2">
-                        <i class="fas fa-plus-circle text-green-400"></i>
-                        Create Task
-                    </h3>
-                    <form id="task-form" class="space-y-3">
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Agent</label>
-                            <select id="task-agent" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm">
-                                <option value="">Select agent...</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Title</label>
-                            <input type="text" id="task-title" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm" placeholder="Task title...">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Description</label>
-                            <textarea id="task-desc" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm" placeholder="Task description..."></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-gray-400 mb-1">Priority</label>
-                            <input type="range" id="task-priority" min="1" max="10" value="5" class="w-full">
-                            <div class="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>Low</span>
-                                <span id="priority-val">5</span>
-                                <span>High</span>
-                            </div>
-                        </div>
-                        <button type="submit" class="w-full btn-primary py-2 rounded-lg text-sm font-medium">
-                            Create Task
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Live Logs -->
-                <div class="card p-4">
-                    <h3 class="font-semibold mb-4 flex items-center gap-2">
-                        <i class="fas fa-terminal text-purple-400"></i>
-                        Live Logs
-                    </h3>
-                    <div id="logs-container" class="bg-gray-900 rounded-lg p-3 h-48 overflow-y-auto font-mono text-xs space-y-1">
-                        <!-- Logs here -->
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="card p-4">
-                    <h3 class="font-semibold mb-3">Quick Actions</h3>
-                    <div class="space-y-2">
-                        <button onclick="viewChanges()" class="w-full text-left px-3 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 text-sm flex items-center gap-2">
-                            <i class="fas fa-code-branch text-orange-400"></i>
-                            Review Changes
-                            <span id="changes-badge" class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full hidden">0</span>
-                        </button>
-                        <button onclick="startAll()" class="w-full text-left px-3 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 text-sm flex items-center gap-2">
-                            <i class="fas fa-play text-green-400"></i>
-                            Start All Idle
-                        </button>
-                        <button onclick="stopAll()" class="w-full text-left px-3 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 text-sm flex items-center gap-2">
-                            <i class="fas fa-stop text-red-400"></i>
-                            Stop All
-                        </button>
-                    </div>
-                </div>
+            <div style="text-align: center; padding: 24px; color: #D4A853;">
+                <i class="fas fa-leaf" style="margin-right: 8px;"></i>Criativalia Control Plane v2.0 - Sidebar navigation with Olive Green theme
             </div>
         </div>
     </main>
 
-    <!-- Agent Detail Modal -->
-    <div id="agent-modal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-6">
-        <div class="card max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                <h3 id="modal-title" class="font-bold text-lg">Agent Details</h3>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-800 rounded-lg">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div id="modal-content" class="p-6 overflow-y-auto">
-                <!-- Content -->
-            </div>
-        </div>
-    </div>
-
     <script>
-        // State
-        let agents = [];
-        let refreshInterval;
-
-        // Initialize
+        function toggleSidebar() { 
+            const s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay'); 
+            s.classList.toggle('open'); 
+            o.classList.toggle('open'); 
+        }
+        
+        async function refreshData() { 
+            try { 
+                const r = await fetch('/api/state'); 
+                const d = await r.json(); 
+                document.getElementById('stat-agents').textContent = d.active_agents || 0; 
+                document.getElementById('stat-tasks').textContent = d.active_tasks || 0; 
+                document.getElementById('stat-sessions').textContent = d.active_sessions || 0; 
+                document.getElementById('stat-review').textContent = d.pending_review || 0; 
+            } catch(e) {} 
+        }
+        
+        async function loadAgents() {
+            try {
+                const r = await fetch('/api/agents');
+                const data = await r.json();
+                const agents = data.agents || [];
+                const container = document.getElementById('agents-list');
+                
+                if (agents.length === 0) {
+                    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #D4A853; padding: 40px;">No agents found</div>';
+                    return;
+                }
+                
+                container.innerHTML = agents.map(agent => `
+                    <div class="card" style="padding: 16px; border-left: 3px solid ${agent.status === 'running' ? '#7a9e7e' : '#4A5D23'};">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <div style="font-weight: 600; color: #F5F5DC;">${agent.name}</div>
+                            <span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; background: ${agent.status === 'running' ? 'rgba(122, 158, 126, 0.2)' : 'rgba(74, 93, 35, 0.2)'}; color: ${agent.status === 'running' ? '#7a9e7e' : '#D4A853'};">
+                                ${agent.status === 'running' ? '🔥 RUNNING' : '⏳ IDLE'}
+                            </span>
+                        </div>
+                        <div style="font-size: 13px; color: #D4A853; margin-bottom: 8px;">${agent.role}</div>
+                        <div style="font-size: 12px; color: #7a9e7e;">
+                            ${agent.time_until_next_min ? `Next in ${agent.time_until_next_min}min` : 'Waiting...'}
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                document.getElementById('agents-list').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #c17767;">Error loading agents</div>';
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            refreshInterval = setInterval(loadData, 5000);
-            
-            // Priority slider
-            document.getElementById('task-priority').addEventListener('input', (e) => {
-                document.getElementById('priority-val').textContent = e.target.value;
-            });
-
-            // Task form
-            document.getElementById('task-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                await createTaskSubmit();
-            });
-        });
-
-        async function loadData() {
-            try {
-                // Load state
-                const stateRes = await fetch('/api/state');
-                const state = await stateRes.json();
-                document.getElementById('stat-agents').textContent = state.active_agents || 0;
-                document.getElementById('stat-tasks').textContent = state.active_tasks || 0;
-                document.getElementById('stat-sessions').textContent = state.active_sessions || 0;
-
-                // Load agents
-                const agentsRes = await fetch('/api/agents');
-                agents = await agentsRes.json();
-                renderAgents(agents);
-                updateAgentSelect(agents);
-
-                // Load tasks
-                const tasksRes = await fetch('/api/tasks');
-                const tasks = await tasksRes.json();
-                renderTasks(tasks);
-
-                // Load changes
-                const changesRes = await fetch('/api/changes?reviewed=0');
-                const changes = await changesRes.json();
-                document.getElementById('stat-review').textContent = changes.length;
-                const badge = document.getElementById('changes-badge');
-                if (changes.length > 0) {
-                    badge.textContent = changes.length;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
-
-                // Load logs
-                const logsRes = await fetch('/api/logs?limit=20');
-                const logs = await logsRes.json();
-                renderLogs(logs);
-
-            } catch (err) {
-                console.error('Error loading data:', err);
-                addLog('error', 'Failed to load data: ' + err.message);
-            }
-        }
-
-        function renderAgents(agents) {
-            const container = document.getElementById('agents-list');
-            container.innerHTML = agents.map(agent => `
-                <div class="p-4 hover:bg-gray-800/50 transition group">
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-start gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-lg">
-                                ${getAgentIcon(agent.role)}
-                            </div>
-                            <div>
-                                <h3 class="font-medium">${agent.name}</h3>
-                                <p class="text-xs text-gray-400">${agent.role}</p>
-                                <div class="flex items-center gap-3 mt-2 text-xs">
-                                    <span class="status-${agent.status}">
-                                        <i class="fas fa-circle text-[8px] mr-1"></i>
-                                        ${agent.status}
-                                    </span>
-                                    ${agent.active_sessions > 0 ? `<span class="text-blue-400">${agent.active_sessions} session${agent.active_sessions > 1 ? 's' : ''}</span>` : ''}
-                                    ${agent.pending_tasks > 0 ? `<span class="text-orange-400">${agent.pending_tasks} task${agent.pending_tasks > 1 ? 's' : ''}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                            ${agent.status === 'idle' ? `
-                                <button onclick="startSession('${agent.id}')" class="p-2 rounded-lg bg-green-600/20 text-green-400 hover:bg-green-600/30" title="Start Session">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                            ` : `
-                                <button onclick="stopSession('${agent.id}')" class="p-2 rounded-lg bg-red-600/20 text-red-400 hover:bg-red-600/30" title="Stop Session">
-                                    <i class="fas fa-stop"></i>
-                                </button>
-                            `}
-                            <button onclick="viewAgent('${agent.id}')" class="p-2 rounded-lg bg-gray-700 hover:bg-gray-600" title="View Details">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <a href="/agent?id=${agent.id}" class="p-2 rounded-lg bg-[#c17767] hover:bg-[#d48877] text-white" title="Open Agent Page">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="mt-2 flex flex-wrap gap-1">
-                        ${agent.skills.slice(0, 4).map(skill => `
-                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-gray-800 text-gray-400">${skill}</span>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderTasks(tasks) {
-            const container = document.getElementById('tasks-list');
-            if (tasks.length === 0) {
-                container.innerHTML = '<div class="p-4 text-center text-gray-500 text-sm">No tasks yet</div>';
-                return;
-            }
-            container.innerHTML = tasks.slice(0, 10).map(task => `
-                <div class="p-3 hover:bg-gray-800/50 transition">
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-medium px-2 py-0.5 rounded bg-gray-800">P${task.priority}</span>
-                                <h4 class="font-medium text-sm">${task.title}</h4>
-                            </div>
-                            <p class="text-xs text-gray-400 mt-1">${task.agent_name}</p>
-                        </div>
-                        <span class="text-xs px-2 py-1 rounded-full ${getTaskStatusClass(task.status)}">
-                            ${task.status}
-                        </span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderLogs(logs) {
-            const container = document.getElementById('logs-container');
-            container.innerHTML = logs.reverse().map(log => `
-                <div class="log-${log.level} flex items-start gap-2">
-                    <span class="text-gray-600">[${new Date(log.created_at).toLocaleTimeString()}]</span>
-                    <span class="uppercase text-[10px] px-1 rounded bg-gray-800">${log.level}</span>
-                    <span>${log.message}</span>
-                </div>
-            `).join('');
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function updateAgentSelect(agents) {
-            const select = document.getElementById('task-agent');
-            select.innerHTML = '<option value="">Select agent...</option>' + 
-                agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-        }
-
-        function getAgentIcon(role) {
-            if (role.includes('CEO')) return '👑';
-            if (role.includes('Traffic')) return '📢';
-            if (role.includes('Shopify')) return '🛒';
-            if (role.includes('Copy')) return '✍️';
-            if (role.includes('Design')) return '🎨';
-            if (role.includes('Dev')) return '💻';
-            if (role.includes('Data')) return '📊';
-            if (role.includes('Support')) return '🎧';
-            return '🤖';
-        }
-
-        function getTaskStatusClass(status) {
-            const classes = {
-                'pending': 'bg-gray-800 text-gray-400',
-                'in_progress': 'bg-blue-900/50 text-blue-400',
-                'review': 'bg-orange-900/50 text-orange-400',
-                'completed': 'bg-green-900/50 text-green-400',
-                'blocked': 'bg-red-900/50 text-red-400'
-            };
-            return classes[status] || 'bg-gray-800';
-        }
-
-        async function startSession(agentId) {
-            try {
-                const res = await fetch(`/api/agents/${agentId}/sessions`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ workspace_path: `workspaces/${agentId}_${Date.now()}` })
-                });
-                const data = await res.json();
-                addLog('info', `Started session ${data.id.slice(0, 8)}... for ${agentId}`);
-                loadData();
-            } catch (err) {
-                addLog('error', 'Failed to start session: ' + err.message);
-            }
-        }
-
-        async function stopSession(agentId) {
-            // Find running session for agent
-            try {
-                const res = await fetch(`/api/agents/${agentId}`);
-                const agent = await res.json();
-                if (agent.sessions && agent.sessions.length > 0) {
-                    const session = agent.sessions.find(s => s.status === 'running');
-                    if (session) {
-                        await fetch(`/api/sessions/${session.id}/stop`, { method: 'POST' });
-                        addLog('info', `Stopped session for ${agentId}`);
-                        loadData();
-                    }
-                }
-            } catch (err) {
-                addLog('error', 'Failed to stop session: ' + err.message);
-            }
-        }
-
-        async function createTaskSubmit() {
-            const agentId = document.getElementById('task-agent').value;
-            const title = document.getElementById('task-title').value;
-            const desc = document.getElementById('task-desc').value;
-            const priority = document.getElementById('task-priority').value;
-
-            if (!agentId || !title) {
-                addLog('warning', 'Please select agent and enter title');
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/tasks', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        agent_id: agentId,
-                        title: title,
-                        description: desc,
-                        priority: parseInt(priority),
-                        deliverables: ['output']
-                    })
-                });
-                const data = await res.json();
-                addLog('info', `Created task: ${title}`);
-                document.getElementById('task-form').reset();
-                loadData();
-            } catch (err) {
-                addLog('error', 'Failed to create task: ' + err.message);
-            }
-        }
-
-        function viewAgent(agentId) {
-            const agent = agents.find(a => a.id === agentId);
-            if (!agent) return;
-
-            document.getElementById('modal-title').textContent = agent.name;
-            document.getElementById('modal-content').innerHTML = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase">Role</label>
-                        <p>${agent.role}</p>
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase">Description</label>
-                        <p class="text-gray-300">${agent.description}</p>
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase">Skills</label>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            ${agent.skills.map(s => `<span class="px-2 py-1 rounded bg-gray-800 text-sm">${s}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase">Configuration</label>
-                        <pre class="mt-1 p-3 rounded-lg bg-gray-900 text-xs overflow-x-auto">${JSON.stringify(agent.config, null, 2)}</pre>
-                    </div>
-                </div>
-            `;
-            document.getElementById('agent-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('agent-modal').classList.add('hidden');
-        }
-
-        function viewChanges() {
-            window.open('/api/changes', '_blank');
-        }
-
-        function refreshData() {
-            loadData();
-            addLog('info', 'Manual refresh');
-        }
-
-        function addLog(level, message) {
-            const container = document.getElementById('logs-container');
-            const entry = document.createElement('div');
-            entry.className = `log-${level}`;
-            entry.innerHTML = `
-                <span class="text-gray-600">[${new Date().toLocaleTimeString()}]</span>
-                <span class="uppercase text-[10px] px-1 rounded bg-gray-800">${level}</span>
-                <span>${message}</span>
-            `;
-            container.appendChild(entry);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function startAll() {
-            agents.filter(a => a.status === 'idle').forEach(a => startSession(a.id));
-        }
-
-        function stopAll() {
-            agents.filter(a => a.status === 'running').forEach(a => stopSession(a.id));
-        }
-
-        // Close modal on outside click
-        document.getElementById('agent-modal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) closeModal();
+            refreshData();
+            loadAgents();
         });
     </script>
 </body>
