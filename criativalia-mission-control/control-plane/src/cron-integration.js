@@ -486,5 +486,6 @@ module.exports = {
     getRealAgents,
     getAgentsStatus,
     fetchCronJobs,
-    mapToAgents
+    mapToAgents,
+    CRON_TO_AGENT_MAP
 };
