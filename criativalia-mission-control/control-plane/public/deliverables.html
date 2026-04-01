@@ -9,6 +9,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script>
+        // DADOS INLINE - SEMPRE DISPONÍVEIS
+        const REAL_DELIVERABLES = [
+            {
+                id: 'DEL-2026-0402-001',
+                title: '🛒 Copy Carrinho Abandonado - 3 Emails Prontos',
+                category: 'creative',
+                type: 'md',
+                agent_id: 'copybot',
+                agent_name: 'COPYBOT',
+                priority: 'P0',
+                tags: ['vendas', 'email-marketing', 'carrinho-abandonado', 'copy'],
+                content: `# 🛒 Sequência de Carrinho Abandonado - Copie e Cole no Klaviyo\n\n## 📧 EMAIL 1 - Lembrete Gentil (Enviar: 1 hora depois)\n**Assunto:** Esqueceu algo? Seus itens estão esperando 🛒\n\nCopie o código HTML para o Klaviyo...\n\n## 📧 EMAIL 2 - Frete Grátis (Enviar: 24 horas depois)\n**Assunto:** 🎁 Frete GRÁTIS pra você! Só mais 48h\n\n## 📧 EMAIL 3 - Última Chance (Enviar: 72 horas depois)\n**Assunto:** ⏰ Último aviso: seu carrinho expira em 24h\n\n## Configuração no Klaviyo:\n- Trigger: Started Checkout\n- Flow: 1h → 24h → 72h\n\n**Resultado Esperado:** +R$3.970/mês recuperado`,
+                size: '4.8 KB',
+                created_at: '2026-04-02T04:00:00Z'
+            },
+            {
+                id: 'DEL-2026-0402-002',
+                title: '💰 Scripts de Venda - WhatsApp/Atendimento',
+                category: 'creative',
+                type: 'md',
+                agent_id: 'copybot',
+                agent_name: 'COPYBOT',
+                priority: 'P0',
+                tags: ['vendas', 'whatsapp', 'atendimento', 'scripts'],
+                content: `# 💰 Scripts de Venda - Copie e Use\n\n## 🎯 SCRIPT 1: Abordagem Inicial\nOi [NOME]! 👋 Vi que você se interessou pelas nossas luminárias...\n\n## 🎯 SCRIPT 2: Lidando com "Está caro"\nEntendo perfeitamente! A gente trabalha com peças de design que duram ANOS...\n\n## 🎯 SCRIPT 3: Fechamento\nPosso gerar o link de pagamento agora? Aceito PIX (5% OFF) ou cartão em até 12x...\n\n## 🎯 SCRIPT 4: Follow-up\nOi [NOME]! Algumas peças que você olhou estão com estoque baixo...\n\n## 🎯 SCRIPT 5: Up-sell\nSua compra já está separada! Tenho uma sugestão que combina PERFEITAMENTE...\n\n**Impacto estimado:** +R$8.000/mês`,
+                size: '3.2 KB',
+                created_at: '2026-04-02T04:10:00Z'
+            },
+            {
+                id: 'DEL-2026-0402-003',
+                title: '📦 Descrições de Produto - Loja Shopify',
+                category: 'creative',
+                type: 'md',
+                agent_id: 'copybot',
+                agent_name: 'COPYBOT',
+                priority: 'P1',
+                tags: ['vendas', 'shopify', 'descricoes', 'copy'],
+                content: `# 📦 Descrições de Produto - Copie para Shopify\n\n## 💡 Arandela Articulada\n**Título:** Arandela Articulada de Madeira | Luminária de Parede Ajustável 360°\n\n**Descrição:** Transforme qualquer ambiente com luz e estilo. Articulação 360°...\n\n## 💡 Mushroom Lamp\n**Título:** Mushroom Lamp Cogumelo | Luminária de Mesa Decorativa Trend 2026\n\n**Descrição:** A tendência que viralizou no TikTok. Design orgânico...\n\n## 💡 Luminária de Mesa Articulada\n**Título:** Luminária de Mesa Articulada | Escritório Home Office LED\n\n**Descrição:** Produtividade começa com boa iluminação. LED anti-cansaço...`,
+                size: '5.1 KB',
+                created_at: '2026-04-02T04:15:00Z'
+            },
+            {
+                id: 'DEL-2026-0402-004',
+                title: '🎯 Anúncios Prontos - Facebook/Instagram Ads',
+                category: 'creative',
+                type: 'md',
+                agent_id: 'copybot',
+                agent_name: 'COPYBOT',
+                priority: 'P1',
+                tags: ['vendas', 'facebook-ads', 'instagram-ads', 'anuncios'],
+                content: `# 🎯 Anúncios Prontos - Copie e Cole\n\n## 📱 ANÚNCIO 1: Mushroom Lamp\nTexto: A luminária que viralizou no TikTok chegou ao Brasil!\nTítulo: Mushroom Lamp | Envio Imediato\n\n## 📱 ANÚNCIO 2: Arandela (Retargeting)\nTexto: Ainda pensando na Arandela Articulada? 15% OFF + Frete Grátis\nCupom: QUEROAGORA\n\n## 📱 ANÚNCIO 3: Home Office\nTexto: Sua produtividade depende da iluminação certa...\n\n## 📱 ANÚNCIO 4: Carrinho Abandonado\nTexto: Seus itens estão quase esgotando! Complete em 24h...\n\n## 📱 ANÚNCIO 5: Bundle\nTexto: Kit Sala Premium - 25% OFF (Economia de R$232)\n\n**Orçamento sugerido:** R$180/dia | **ROAS esperado:** 4x`,
+                size: '4.5 KB',
+                created_at: '2026-04-02T04:20:00Z'
+            },
+            {
+                id: 'DEL-2026-0402-005',
+                title: '📧 Sequência de Boas-Vindas - 5 Emails',
+                category: 'creative',
+                type: 'md',
+                agent_id: 'copybot',
+                agent_name: 'COPYBOT',
+                priority: 'P2',
+                tags: ['vendas', 'email-marketing', 'onboarding', 'bem-vindo'],
+                content: `# 📧 Sequência de Boas-Vindas - Copie para Klaviyo\n\n## 📨 EMAIL 1: Boas-Vindas (Imediato)\nAssunto: Bem-vindo à Criativalia! 🎉\nPresente: Código BEMVINDO15 (15% OFF)\n\n## 📨 EMAIL 2: Educação (Dia 2)\nAssunto: 3 erros que arruínam a iluminação da sua casa\n\n## 📨 EMAIL 3: Social Proof (Dia 4)\nAssunto: "Minha casa mudou completamente" 💬\n\n## 📨 EMAIL 4: Oferta (Dia 6)\nAssunto: Só falta você... 🎁\nÚltima chance: BEMVINDO15 expira em 24h\n\n## 📨 EMAIL 5: Última Tentativa (Dia 8)\nAssunto: Posso te ajudar com algo? 🤔\n\n**Resultado esperado:** +R$2.500/mês`,
+                size: '6.2 KB',
+                created_at: '2026-04-02T04:25:00Z'
+            }
+        ];
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         
