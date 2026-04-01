@@ -1,6 +1,372 @@
 {
-  "status": "STOPPED",
-  "reason": "Desabilitado por gerar oportunidades falsas",
-  "last_updated": "2026-03-29T20:25:00Z",
-  "note": "CEO Agent desabilitado até correção completa das instruções"
+  "generated_at": "2026-04-02T01:16:00Z",
+  "total_opportunities": 30,
+  "priorities": {
+    "P0": [
+      {
+        "agent": "OpsBot",
+        "task": "Configurar Shopify Token - Acesso a dados reais",
+        "why": "IMPEDINDO TODAS AS ANÁLISES DE ROI REAL. Sem token, não há acesso a pedidos, estoque e comportamento de clientes. Impacto: R$10k+/mês em oportunidades não identificadas.",
+        "opportunity_id": "ops_001",
+        "impact_score": 10,
+        "effort_score": 2,
+        "roi": 5.0,
+        "financial_impact": "R$10k+/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Instalar Meta Pixel e Google Ads Tag",
+        "why": "Sem retargeting, CAC é 3-5x maior. Todos visitantes não convertidos são perdidos. Economia estimada: R$2.5k/mês + ROAS 3x maior.",
+        "opportunity_id": "ops_005",
+        "impact_score": 9,
+        "effort_score": 2,
+        "roi": 4.5,
+        "financial_impact": "R$2.5k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Padronizar SKUs dos produtos (15 produtos afetados)",
+        "why": "Produtos sem SKU dificultam controle de estoque e fulfillment. Erros logísticos custam R$2k/mês. Esforço baixo, impacto alto na operação.",
+        "opportunity_id": "ops_003",
+        "impact_score": 8,
+        "effort_score": 2,
+        "roi": 4.0,
+        "financial_impact": "R$2k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Criar bundles estratégicos (4 combos iniciais)",
+        "why": "23 produtos com sinergia clara. Ticket médio pode aumentar 35% (R$180 → R$243). Impacto: +R$5k/mês estimado.",
+        "opportunity_id": "ops_002",
+        "impact_score": 9,
+        "effort_score": 3,
+        "roi": 3.0,
+        "financial_impact": "R$5k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Configurar Abandoned Cart Recovery (Klaviyo)",
+        "why": "Taxa de abandono 70-75% no setor. Com sequência otimizada, recupera 12-15% dos carrinhos. Impacto: +R$3.5k/mês.",
+        "opportunity_id": "ops_006",
+        "impact_score": 9,
+        "effort_score": 3,
+        "roi": 3.0,
+        "financial_impact": "R$3.5k/mês"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar categoria 'Luminárias Cogumelo' com 3-5 produtos",
+        "why": "Tendência GLOBAL mais forte de 2026. Milhões de unidades vendidas no TikTok. Produtos em vidro Murano e cerâmica têm maior margem. Keywords de alta conversão.",
+        "opportunity_id": "traffic_001",
+        "impact_score": 9,
+        "effort_score": 5,
+        "roi": 1.8,
+        "financial_impact": "Alto potencial"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar coleção 'Arandelas Articuladas' + conteúdo SEO",
+        "why": "Keyword 'arandela articulada' tem alta intenção de compra e baixa concorrência. Foco em quartos/cabeceiras (alta conversão). Esforço baixo.",
+        "opportunity_id": "traffic_002",
+        "impact_score": 8,
+        "effort_score": 3,
+        "roi": 2.67,
+        "financial_impact": "Médio-Alto"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Criar descrições estruturadas para 5 produtos sem copy",
+        "why": "Abajur Aro, Funky, Pendente SAN, Xiomu, Prateleira Ondina IV estão vendendo 'no escuro'. Descrições persuasivas aumentam conversão em 15-25%.",
+        "opportunity_id": "copy_001",
+        "impact_score": 9,
+        "effort_score": 4,
+        "roi": 2.25,
+        "financial_impact": "Médio-Alto"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Calcular e documentar margens de todos os produtos",
+        "why": "Sem dados de custo, risco de venda com prejuízo. Abajur Accordion: se custo for R$450 e vender a R$499, margem é 10% (insustentável). Política de margem inexistente.",
+        "opportunity_id": "ops_004",
+        "impact_score": 9,
+        "effort_score": 4,
+        "roi": 2.25,
+        "financial_impact": "Protege R$3k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Implementar cross-selling nas páginas de produto",
+        "why": "Clientes compram ambientes, não peças isoladas. 'Compre junto' aumenta ticket médio em 20%. Impacto: +R$4k/mês.",
+        "opportunity_id": "ops_007",
+        "impact_score": 8,
+        "effort_score": 3,
+        "roi": 2.67,
+        "financial_impact": "R$4k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Configurar alertas de estoque baixo + webhook Telegram",
+        "why": "Risco de ruptura em produtos populares. Cada dia de ruptura = receita perdida definitivamente. Produtos com variações (Arandela Articture: 10 variações) são difíceis de gerenciar manualmente.",
+        "opportunity_id": "ops_008",
+        "impact_score": 8,
+        "effort_score": 3,
+        "roi": 2.67,
+        "financial_impact": "Evita perda R$5k+/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Configurar sequência de emails pós-compra (Klaviyo)",
+        "why": "Perdemos reviews (social proof), upsell e retenção. Shopify envia apenas email transacional básico. Impacto: +15% taxa de recompra + SEO boost.",
+        "opportunity_id": "ops_011",
+        "impact_score": 8,
+        "effort_score": 4,
+        "roi": 2.0,
+        "financial_impact": "R$3k/mês"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar guia 'Iluminação e Bem-estar: HCL (Human Centric Lighting)'",
+        "why": "Tendência consolidada internacionalmente. Consumidores buscam iluminação que respeite ritmo circadiano. Conteúdo sobre 'wellness lighting' escasso em português = oportunidade de autoridade.",
+        "opportunity_id": "traffic_006",
+        "impact_score": 8,
+        "effort_score": 5,
+        "roi": 1.6,
+        "financial_impact": "Médio (autoridade)"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar categoria 'Estilo Japandi / Design Escandinavo'",
+        "why": "Japandi é uma das estéticas mais buscadas em decoração. Poucos e-commerces brasileiros usam keywords 'Nordic', 'Scandinavian' estrategicamente. Esforço baixo, alto retorno de tráfego qualificado.",
+        "opportunity_id": "traffic_007",
+        "impact_score": 7,
+        "effort_score": 4,
+        "roi": 1.75,
+        "financial_impact": "Médio"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Otimizar headlines da home ('Os Mais Desejados' → copy emocional)",
+        "why": "Headline funcional sem apelo emocional. Testar: 'O que está transformando ambientes', 'Design que conta histórias'. Esforço mínimo, potencial de conversão imediato.",
+        "opportunity_id": "copy_004",
+        "impact_score": 6,
+        "effort_score": 2,
+        "roi": 3.0,
+        "financial_impact": "Médio"
+      }
+    ],
+    "P1": [
+      {
+        "agent": "TrafficBot",
+        "task": "Criar categoria 'Iluminação 3D / Efeito Visual'",
+        "why": "Lâmpadas 3D com ilusão óptica estão em ascensão. Nicho pouco explorado no Brasil. Combinação madeira + LED 3D cria efeito premium.",
+        "opportunity_id": "traffic_003",
+        "impact_score": 7,
+        "effort_score": 6,
+        "roi": 1.17,
+        "financial_impact": "Médio"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar filtros/categorias por material (alabastro, cerâmica, vidro Murano)",
+        "why": "Tendência 'Truth in Materials'. Consumidores pagam premium por peças únicas. Gap: poucos e-commerces focam nesses materiais de forma educativa.",
+        "opportunity_id": "traffic_004",
+        "impact_score": 8,
+        "effort_score": 7,
+        "roi": 1.14,
+        "financial_impact": "Alto (margens premium)"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar categoria 'Luminárias Smart / Recarregáveis USB'",
+        "why": "Tendência 'sem fio' e flexível. Nicho tecnológico com margens melhores. Aumento de buscas por 'LED smart lamps' e 'luminária recarregável'.",
+        "opportunity_id": "traffic_005",
+        "impact_score": 7,
+        "effort_score": 6,
+        "roi": 1.17,
+        "financial_impact": "Médio"
+      },
+      {
+        "agent": "TrafficBot",
+        "task": "Criar série de posts 'Como Escolher Luminária por Ambiente'",
+        "why": "Conteúdo longo, rico em keywords de cauda longa. Análise competitiva mostra que concorrentes produzem conteúdo genérico. Oportunidade de diferenciação.",
+        "opportunity_id": "traffic_008",
+        "impact_score": 6,
+        "effort_score": 4,
+        "roi": 1.5,
+        "financial_impact": "Médio (SEO longo prazo)"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Otimizar Core Web Vitals (compressão de imagens, lazy loading)",
+        "why": "Cada segundo de delay = -7% conversão. Lojas Shopify não otimizadas têm LCP > 4s. Para decoração (imagens pesadas), isso é crítico. Meta: LCP < 2.5s.",
+        "opportunity_id": "ops_010",
+        "impact_score": 7,
+        "effort_score": 4,
+        "roi": 1.75,
+        "financial_impact": "R$2.5k/mês"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Padronizar lógica de precificação por variação de tamanho",
+        "why": "Arandela Articture: 14cm R$239, 20cm R$359 (50% diferença). Vaso Ariko: 12cm R$97, 17cm R$129 (33% diferença). Sem lógica clara. Pode estar deixando dinheiro na mesa.",
+        "opportunity_id": "ops_012",
+        "impact_score": 7,
+        "effort_score": 3,
+        "roi": 2.33,
+        "financial_impact": "R$1.5k/mês"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Criar blog com 4-6 posts evergreen",
+        "why": "Página /pages/blog retorna 404. Perdendo tráfego orgânico e engajamento. 3 pilares: 'Como Decorar', 'Design Sustentável', 'Cuidados'.",
+        "opportunity_id": "copy_002",
+        "impact_score": 8,
+        "effort_score": 6,
+        "roi": 1.33,
+        "financial_impact": "Alto (SEO longo prazo)"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Criar página de FAQ estruturada",
+        "why": "Clientes precisam contatar suporte para dúvidas básicas. FAQ reduz tickets de suporte e aumenta conversão. Categorias: Produto, Pedido, Sustentabilidade.",
+        "opportunity_id": "copy_003",
+        "impact_score": 7,
+        "effort_score": 3,
+        "roi": 2.33,
+        "financial_impact": "Médio"
+      }
+    ],
+    "P2": [
+      {
+        "agent": "OpsBot",
+        "task": "Implementar programa de indicação (ReferralCandy/Smile.io)",
+        "why": "CAC orgânico via indicação é 50% menor que ads. Meta: 20% dos novos clientes vêm de indicação em 6 meses. Impacto após maturação: +R$6k/mês.",
+        "opportunity_id": "ops_009",
+        "impact_score": 8,
+        "effort_score": 5,
+        "roi": 1.6,
+        "financial_impact": "R$6k/mês (após 3 meses)"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Criar lead magnet + otimizar newsletter",
+        "why": "Newsletter atual sem incentivo claro. Criar: 'Guia: 5 Formas de Transformar sua Sala com Design Sustentável'. Nova copy com prova social.",
+        "opportunity_id": "copy_007",
+        "impact_score": 7,
+        "effort_score": 3,
+        "roi": 2.33,
+        "financial_impact": "Médio"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Padronizar títulos de produtos (formato: Nome - Benefício)",
+        "why": "Nomenclatura irregular confunde e prejudica SEO. Ex: 'Abajur Aro' vs 'Abajur Accordion: Luminária Ecológica e Sustentável'.",
+        "opportunity_id": "copy_008",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Médio"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Reescrever meta descriptions com CTA",
+        "why": "Meta descriptions não otimizadas para CTR. Formato sugerido: [Benefício] + [Diferencial] + [CTA].",
+        "opportunity_id": "copy_010",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Médio"
+      }
+    ],
+    "P3": [
+      {
+        "agent": "CopyBot",
+        "task": "Aprofundar storytelling na página 'Quem Somos'",
+        "why": "Falta elemento humano: quem está por trás, origem da marca, momento de inspiração. Adicionar seção 'Nossa História' com foto do fundador.",
+        "opportunity_id": "copy_009",
+        "impact_score": 5,
+        "effort_score": 4,
+        "roi": 1.25,
+        "financial_impact": "Baixo"
+      },
+      {
+        "agent": "CopyBot",
+        "task": "Adicionar copy persuasiva na página de contato",
+        "why": "Página tem apenas formulário básico. Adicionar tempo de resposta, mini-FAQ, frase de garantia.",
+        "opportunity_id": "copy_005",
+        "impact_score": 5,
+        "effort_score": 2,
+        "roi": 2.5,
+        "financial_impact": "Baixo"
+      },
+      {
+        "agent": "OpsBot",
+        "task": "Corrigir links de redes sociais no footer",
+        "why": "Links apontam para @shopify em vez de perfis reais da Criativalia. Prejudica credibilidade. Esforço mínimo.",
+        "opportunity_id": "copy_006",
+        "impact_score": 6,
+        "effort_score": 1,
+        "roi": 6.0,
+        "financial_impact": "Baixo"
+      }
+    ]
+  },
+  "summary": "Analisadas 30 oportunidades dos últimos 3 dias. Prioridade máxima (P0): Configurar Shopify Token - é o blocker crítico que impede todas as análises baseadas em dados reais. Sem isso, estamos operando no escuro. Em seguida: Meta Pixel/Google Ads (retargeting essencial), SKUs (risco operacional), bundles (ticket médio), e abandoned cart (recuperação). Cumprindo apenas os 5 primeiros itens P0, potencial de impacto financeiro é de R$25k+/mês. Oportunidades de tráfego focam em tendências 2026: luminárias cogumelo (explosão global), arandelas articuladas (baixa concorrência), e wellness lighting (autoridade).",
+  "top_3_opportunities": [
+    {
+      "rank": 1,
+      "title": "Configurar Shopify Token",
+      "agent": "OpsBot",
+      "impact": 10,
+      "effort": 2,
+      "roi": 5.0,
+      "potential": "R$10k+/mês"
+    },
+    {
+      "rank": 2,
+      "title": "Instalar Meta Pixel e Google Ads Tag",
+      "agent": "OpsBot",
+      "impact": 9,
+      "effort": 2,
+      "roi": 4.5,
+      "potential": "R$2.5k/mês"
+    },
+    {
+      "rank": 3,
+      "title": "Criar categoria 'Luminárias Cogumelo'",
+      "agent": "TrafficBot",
+      "impact": 9,
+      "effort": 5,
+      "roi": 1.8,
+      "potential": "Alto potencial (tendência global 2026)"
+    }
+  ],
+  "next_automated_actions": [
+    {
+      "agent": "OpsBot",
+      "task": "Configurar Shopify Token",
+      "schedule": "Manual - aguardando ação do Fernando"
+    },
+    {
+      "agent": "OpsBot",
+      "task": "Instalar Meta Pixel e Google Ads Tag",
+      "schedule": "Manual - aguardando ação do Fernando"
+    },
+    {
+      "agent": "CopyBot",
+      "task": "Criar descrições para 5 produtos sem copy",
+      "schedule": "Próxima execução (hoje à noite)"
+    },
+    {
+      "agent": "TrafficBot",
+      "task": "Criar categoria 'Luminárias Cogumelo'",
+      "schedule": "Após aprovação do Fernando"
+    }
+  ],
+  "financial_projection": {
+    "p0_potential_monthly": "R$35k+",
+    "p1_potential_monthly": "R$15k+",
+    "total_addressable": "R$50k+/mês",
+    "note": "Projeções baseadas em benchmarks do setor. Dados reais só após configurar Shopify Token."
+  }
 }

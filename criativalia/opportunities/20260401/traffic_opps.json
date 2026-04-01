@@ -1,0 +1,170 @@
+{
+  "scanner": "TrafficBot - Criativalia",
+  "scan_date": "2026-04-01",
+  "scan_timestamp": "2026-04-01T04:45:00Z",
+  "summary": {
+    "total_opportunities": 8,
+    "high_impact": 4,
+    "medium_impact": 4,
+    "sources_analyzed": [
+      "Google Trends Data",
+      "Pinterest Trends",
+      "Lume Decor",
+      "Cristallux",
+      "Skapetze",
+      "Expolux",
+      "Martha Stewart",
+      "Pooky Lighting",
+      "Accio Business Intelligence"
+    ]
+  },
+  "opportunities": [
+    {
+      "id": "traffic_001",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Mushroom Lamp / Luminária Cogumelo - Tendência Global em Alta",
+      "description": "A luminária cogumelo (mushroom lamp) é uma das tendências mais fortes de 2026. Dados mostram vendas massivas no TikTok (milhões de unidades) e alta demanda na Amazon. O estilo retrô-moderno (mid-century) voltou com força, impulsionado pela estética 'cottagecore' e 'vintage revival'. Produtos em vidro Murano e cerâmica têm maior margem de lucro e menor concorrência que os modelos plásticos.",
+      "source": "Accio Business Intelligence / TikTok Trends / Amazon",
+      "impact_score": 9,
+      "effort_score": 5,
+      "action_suggested": "Criar categoria 'Luminárias Cogumelo' na loja. Focar em materiais premium (vidro, cerâmica) com margens melhores. Criar conteúdo: 'Como escolher uma luminária cogumelo elegante' e 'Materiais que transformam o abajur cogumelo em peça sofisticada'.",
+      "evidence_url": "https://pt.accio.com/business/best-selling-mushroom-lamp",
+      "keywords_target": ["luminária cogumelo", "mushroom lamp", "abajur cogumelo", "luminária mushroom", "lampada cogumelo decorativa"],
+      "category": "produto"
+    },
+    {
+      "id": "traffic_002",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Arandelas Articuladas - Funcionalidade + Design",
+      "description": "Arandelas são tendência confirmada para 2026 segundo múltiplas fontes (Lume Decor, Expolux). O diferencial está nas arandelas ARTICULADAS que oferecem funcionalidade extra - podem ser direcionadas para leitura, cozinha, espelhos. A combinação de 'arandela + articulada' é uma keyword de cauda longa com alta intenção de compra e baixa concorrência.",
+      "source": "Lume Decor / Expolux / Skapetze",
+      "impact_score": 8,
+      "effort_score": 3,
+      "action_suggested": "Criar coleção 'Arandelas Articuladas' destacando funcionalidade. Produzir conteúdo SEO: 'Arandela articulada para quarto: otimização de espaço', 'Como usar arandela articulada na cozinha'. Oportunidade de diferenciação: focar em quartos/cabeceiras (alta conversão).",
+      "evidence_url": "https://www.lumedecoronline.com.br/iluminacao-na-parede-por-que-as-arandelas-sao-tendencia-em-2026",
+      "keywords_target": ["arandela articulada", "arandela articulável", "arandela quarto casal", "arandela cabeceira", "arandela funcional"],
+      "category": "produto"
+    },
+    {
+      "id": "traffic_003",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Iluminação 3D / Efeito Visual - Nicho Emergente",
+      "description": "Lâmpadas 3D com efeito de ilusão óptica (optical illusion) estão em ascensão. Oferecem um diferencial visual único que cativa atenção, especialmente em ambientes com luz mais baixa. Mercado ainda pouco explorado no Brasil com potencial de crescimento. Combinação de madeira + LED 3D cria efeito premium.",
+      "source": "Accio Trends / Iluminarte Iluminação",
+      "impact_score": 7,
+      "effort_score": 6,
+      "action_suggested": "Adicionar categoria 'Iluminação 3D' ou 'Luminárias com Efeito Visual'. Criar campanha focada em 'presentes criativos' e 'decoração única'. Conteúdo: 'Luminárias 3D: como criar ambientes com personalidade'.",
+      "evidence_url": "https://pt.accio.com/business/trending-3d-lamp",
+      "keywords_target": ["luminária 3D", "lampada 3D", "luminária efeito visual", "lampada ilusão óptica", "luminária LED 3D"],
+      "category": "produto"
+    },
+    {
+      "id": "traffic_004",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Materiais Naturais Premium: Alabastro, Cerâmica, Vidro Murano",
+      "description": "Tendência 'Truth in Materials' - retorno a materiais honestos e naturais. Alabastro (pedra translúcida), cerâmica artesanal e vidro Murano são destaque internacional (Martha Stewart, Pooky, Kichler). Consumidores pagam premium por peças únicas com história. Gap: poucos e-commerces brasileiros focam nesses materiais de forma educativa.",
+      "source": "Martha Stewart / Pooky Lighting / Kichler / Expolux",
+      "impact_score": 8,
+      "effort_score": 7,
+      "action_suggested": "Criar filtros/categorias por material. Conteúdo educativo: 'Por que escolher luminária de alabastro?', 'Vidro Murano na iluminação: arte e funcionalidade'. Posicionamento: 'quiet luxury' / 'maximalismo curado'.",
+      "evidence_url": "https://www.marthastewart.com/lighting-trends-2026-11915098",
+      "keywords_target": ["luminária alabastro", "luminária cerâmica", "luminária vidro murano", "lustre alabastro", "luminária pedra natural"],
+      "category": "conteúdo"
+    },
+    {
+      "id": "traffic_005",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Iluminação Inteligente + Recarregável USB - Oportunidade Tecnológica",
+      "description": "Luminárias LED recarregáveis via USB com controle touch estão em crescimento. Tendência 'sem fio' e flexível para mesas de trabalho, áreas externas, restaurantes. Dados mostram aumento de buscas por 'LED smart lamps' e 'luminária recarregável'. Nicho tecnológico com margens melhores que luminárias tradicionais.",
+      "source": "Cristallux / Govee CES 2026 / Accio",
+      "impact_score": 7,
+      "effort_score": 6,
+      "action_suggested": "Adicionar categoria 'Luminárias Smart' ou 'Iluminação Recarregável'. Destacar funcionalidades: USB-C, dimerização, portabilidade. Conteúdo: 'Vantagens da luminária recarregável na decoração moderna'.",
+      "evidence_url": "https://www.cristallux.com.br/artigo/tendencias-de-iluminacao-para-2026",
+      "keywords_target": ["luminária recarregável", "luminária smart", "luminária LED USB", "luminária touch", "luminária sem fio"],
+      "category": "produto"
+    },
+    {
+      "id": "traffic_006",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Wellness Lighting / HCL - Iluminação Centrada no Bem-estar",
+      "description": "Human Centric Lighting (HCL) é tendência consolidada internacionalmente. Consumidores buscam iluminação que respeite o ritmo circadiano, com dimmers e temperatura de cor ajustável. Conteúdo sobre 'wellness lighting' ainda escasso em português. Oportunidade de autoridade no tema.",
+      "source": "Kichler / Skapetze / Expolux",
+      "impact_score": 8,
+      "effort_score": 5,
+      "action_suggested": "Criar guia completo: 'Iluminação e bem-estar: como a luz afeta seu sono'. Categorizar produtos por 'temperatura de cor' (2700K a 3000K para aconchego). Conteúdo SEO sobre HCL e iluminação circadiana.",
+      "evidence_url": "https://www.kichler.com/lighting-ideas/blog/trends-2026",
+      "keywords_target": ["iluminação bem estar", "luminária circadiana", "HCL iluminação", "luz quente quarto", "iluminação saúde"],
+      "category": "conteúdo"
+    },
+    {
+      "id": "traffic_007",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Japandi + Scandinavian Design - Estética em Alta",
+      "description": "Japandi (fusão japonesa + escandinava) é uma das estéticas mais buscadas em decoração. Luminárias Nordic/Scandinavian bedside lamps têm demanda crescente. Foco em designs minimalistas, materiais naturais, funcionalidade. Poucos e-commerces brasileiros usam essas keywords estrategicamente.",
+      "source": "Diiiz / Skapetze",
+      "impact_score": 7,
+      "effort_score": 4,
+      "action_suggested": "Criar categoria 'Estilo Japandi' ou 'Design Escandinavo'. Usar tags 'Nordic', 'Scandinavian', 'Minimalista'. Conteúdo: 'Como criar um quarto no estilo Japandi', 'Luminárias escandinavas: minimalismo funcional'.",
+      "evidence_url": "https://www.diiiz.com/blogs/diiiz-home-best-interior-decoration-blog/scandinavian-nordic-bedside-lamp-guide-2026",
+      "keywords_target": ["luminária japandi", "luminária escandinava", "luminária nordic", "abajur minimalista", "luminária estilo japandi"],
+      "category": "conteúdo"
+    },
+    {
+      "id": "traffic_008",
+      "timestamp": "2026-04-01T04:45:00Z",
+      "title": "Content Gap: Guia 'Como Escolher' por Ambiente",
+      "description": "Análise de concorrentes (Lume Decor, Expolux) mostra que eles produzem conteúdo genérico. Oportunidade de criar guias específicos e detalhados: 'Como escolher luminária para banheiro pequeno', 'Iluminação ideal para home office', 'Arandelas para corredor: dicas de posicionamento'. Conteúdo longo, rico em keywords de cauda longa.",
+      "source": "Análise Competitiva - Lume Decor / Expolux / Casa Decora",
+      "impact_score": 6,
+      "effort_score": 4,
+      "action_suggested": "Criar série de posts 'Como Escolher': banheiro, cozinha, quarto, home office, área externa. Cada post deve ter 1500+ palavras, com FAQ schema. Incluir calculadora/visualizador de luminárias por ambiente (interativo).",
+      "evidence_url": "https://www.lumedecoronline.com.br/iluminacao-na-parede-por-que-as-arandelas-sao-tendencia-em-2026",
+      "keywords_target": ["como escolher luminária", "luminária para banheiro", "iluminação home office", "luminária cozinha pequena", "arandela corredor"],
+      "category": "conteúdo"
+    }
+  ],
+  "competitor_analysis": {
+    "analyzed": [
+      {
+        "name": "Lume Decor",
+        "strengths": ["Conteúdo SEO bem estruturado", "Cobertura de tendências"],
+        "gaps": ["Produtos premium limitados", "Pouco foco em materiais naturais"]
+      },
+      {
+        "name": "Cristallux",
+        "strengths": ["Foco em tecnologia LED", "Soluções profissionais"],
+        "gaps": ["Design pouco inspirador", "Não aproveita tendências estéticas"]
+      },
+      {
+        "name": "Skapetze",
+        "strengths": ["Marcas internacionais", "Design europeu"],
+        "gaps": ["Preços altos", "Pouco conteúdo educativo em PT-BR"]
+      }
+    ]
+  },
+  "keyword_recommendations": {
+    "high_volume": ["luminária decorativa", "abajur", "arandela", "lustre", "pendente"],
+    "emerging": ["mushroom lamp", "luminária cogumelo", "luminária 3D", "arandela articulada", "luminária smart"],
+    "long_tail": [
+      "luminária de mesa estilo cogumelo",
+      "arandela articulada para quarto",
+      "luminária recarregável USB touch",
+      "abajur cerâmica escandinavo",
+      "luminária alabastro natural"
+    ],
+    "content_gaps": [
+      "como escolher luminária por ambiente",
+      "diferença entre materiais de luminárias",
+      "iluminação e bem-estar",
+      "tendências de iluminação 2026"
+    ]
+  },
+  "next_actions": [
+    "Prioridade 1: Criar categoria 'Luminárias Cogumelo' com 3-5 produtos",
+    "Prioridade 2: Produzir post 'Arandelas Articuladas: Guia Completo 2026'",
+    "Prioridade 3: Otimizar produtos existentes com keywords 'luminária', 'abajur', 'arandela'",
+    "Prioridade 4: Criar landing page 'Tendências de Iluminação 2026'",
+    "Prioridade 5: Implementar filtros por material (cerâmica, vidro, metal, alabastro)"
+  ]
+}

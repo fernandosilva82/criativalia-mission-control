@@ -1,0 +1,138 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Produtos com descrição ausente ou mínima",
+    "description": "Vários produtos possuem apenas nome e preço, sem descrição persuasiva que conecte com o desejo do cliente. Exemplos: Abajur Aro, Abajur Funky, Pendente SAN, Pendente Xiomu, Prateleira Ondina IV.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/products/abajur-aro",
+      "https://m-s-negocios-2.myshopify.com/products/abajur-funky",
+      "https://m-s-negocios-2.myshopify.com/products/pendente-san",
+      "https://m-s-negocios-2.myshopify.com/products/pendente-xiomu",
+      "https://m-s-negocios-2.myshopify.com/products/prateleira-ondina-iv"
+    ],
+    "impact_score": 9,
+    "effort_score": 4,
+    "action_suggested": "Criar descrições estruturadas em 3 camadas: (1) headline emocional focada na transformação do ambiente, (2) storytelling do produto/materiais, (3) bullets de benefícios. Referência: descrição do Vaso Flollia está bem estruturada - replicar esse padrão.",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Blog não existe - oportunidade de conteúdo",
+    "description": "A página /pages/blog retorna 404. A Criativalia está perdendo tráfego orgânico e oportunidades de engajamento. Concorrentes como Hay usam conteúdo lifestyle ('Festive dining', 'Gifts from HAY') para criar contexto emocional.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/pages/blog"
+    ],
+    "impact_score": 8,
+    "effort_score": 6,
+    "action_suggested": "Criar blog com 3 pilares: (1) 'Como Decorar' - guias por ambiente, (2) 'Design Sustentável' - histórias dos materiais e processo, (3) 'Cuidados' - manutenção de plantas e luminárias. Começar com 4-6 posts evergreen.",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Página de FAQ inexistente",
+    "description": "Não há página de perguntas frequentes. Clientes precisam contatar suporte para dúvidas básicas sobre autoirrigação, compatibilidade de lâmpadas, cuidados com materiais sustentáveis.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/pages/faq"
+    ],
+    "impact_score": 7,
+    "effort_score": 3,
+    "action_suggested": "Criar FAQ estruturado em categorias: Produto (como funciona autoirrigação, compatibilidade), Pedido (prazos, rastreio), Sustentabilidade (materiais, descarte). Reduzirá tickets de suporte e aumentará conversão.",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Headlines de categoria genéricas e pouco persuasivas",
+    "description": "Seção 'Os Mais Desejados' usa headline funcional sem apelo emocional. Comparar com concorrentes: Vitsœ usa 'Investing for life', 'Transcending fashion' - posicionamento filosófico que conecta com valores.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/"
+    ],
+    "impact_score": 6,
+    "effort_score": 2,
+    "action_suggested": "Substituir 'Os Mais Desejados' por alternativas mais emocionais: 'O que está transformando ambientes', 'Escolhas que fazem a diferença', ou 'Design que conta histórias'. Testar A/B com foco em transformação vs funcionalidade.",
+    "category": "headline_optimization"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Página de Contato sem copy persuasiva",
+    "description": "Página de contato tem apenas formulário básico e telefone. Falta informar tempo de resposta, disponibilidade, e criar confiança no processo de atendimento.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/pages/contact"
+    ],
+    "impact_score": 5,
+    "effort_score": 2,
+    "action_suggested": "Adicionar antes do formulário: (1) 'Respondemos em até X horas', (2) mini-FAQ com dúvidas rápidas, (3) frase de garantia: 'Sua satisfação é nossa prioridade. Se não ficar feliz, devolvemos seu dinheiro em 7 dias.'",
+    "category": "page_copy"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Links de redes sociais apontam para placeholders",
+    "description": "Todos os links de redes sociais no footer (Facebook, Instagram, TikTok, X, YouTube) apontam para perfis da Shopify (@shopify), não para perfis reais da Criativalia. Isso prejudica credibilidade.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/"
+    ],
+    "impact_score": 6,
+    "effort_score": 1,
+    "action_suggested": "Atualizar todos os links para perfis reais da Criativalia ou remover temporariamente até ter presença ativa. Considerar: Instagram é prioridade #1 para decoração visual.",
+    "category": "trust_signal"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Newsletter sem lead magnet ou copy persuasiva",
+    "description": "Newsletter no footer diz apenas 'Assine nossa newletter e receba promoções em primeira mão'. Não há incentivo claro, nem prova social do valor do conteúdo.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/"
+    ],
+    "impact_score": 7,
+    "effort_score": 3,
+    "action_suggested": "Criar lead magnet: 'Guia: 5 Formas de Transformar sua Sala com Design Sustentável'. Nova copy: 'Junte-se a X pessoas que recebem dicas exclusivas de decoração consciente direto no e-mail.'",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Títulos de produtos inconsistentes - oportunidade de padronização",
+    "description": "Produtos têm nomenclatura irregular: alguns têm subtítulos descritivos ('Abajur Accordion: Luminária Ecológica e Sustentável'), outros apenas nome ('Abajur Aro', 'Abajur Funky'). Isso confunde e prejudica SEO.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/collections/luminarias",
+      "https://m-s-negocios-2.myshopify.com/collections/acessorios"
+    ],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Padronizar formato: [Nome do Produto] - [Benefício/Contexto]. Ex: 'Abajur Aro - Iluminação Suave para Momentos Especiais' ou 'Abajur Funky - Design Irreverente que Transforma Ambientes'.",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_009",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Página 'Quem Somos' pode aprofundar storytelling",
+    "description": "Página Quem Somos tem conteúdo bom sobre sustentabilidade e design, mas falta o elemento humano: quem está por trás, a origem da marca, o momento de inspiração. Comparar com Gantri que usa 'A new future for design'.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/pages/quem-somos"
+    ],
+    "impact_score": 5,
+    "effort_score": 4,
+    "action_suggested": "Adicionar seção 'Nossa História' com origem pessoal, foto do fundador/equipe, e momento de virada. Framing sugerido: 'Nascemos da vontade de provar que design bonito e responsabilidade ambiental podem andar juntos.'",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_010",
+    "timestamp": "2026-04-01T04:46:00Z",
+    "title": "Meta descriptions não otimizadas para conversão",
+    "description": "Análise indica que meta descriptions não estão otimizadas para CTR. Faltam calls-to-action e propostas de valor claras nos resultados de busca.",
+    "affected_pages": [
+      "https://m-s-negocios-2.myshopify.com/",
+      "https://m-s-negocios-2.myshopify.com/collections/all"
+    ],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Reescrever meta descriptions com formato: [Benefício Principal] + [Diferencial] + [CTA]. Ex: 'Decoração sustentável feita no Brasil. Luminárias e vasos em materiais ecológicos com design autoral. Frete grátis acima de R$150. Transforme seu ambiente!'",
+    "category": "seo_copy"
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "date": "2026-04-01",
+  "generated_at": "2026-04-02T01:49:00+08:00",
+  "period": "24h",
+  "agents": {
+    "CopyBot": [
+      {
+        "start": "22:50",
+        "end": "22:56",
+        "duration_min": 6,
+        "task": "Calendário Editorial Q2 2026",
+        "priority": "P2",
+        "type": "content_strategy",
+        "deliverable_id": "DEL-2026-0401-005",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/deliverable_calendario_editorial.json"
+      },
+      {
+        "start": "23:00",
+        "end": "23:05",
+        "duration_min": 5,
+        "task": "Estratégia de Marketing 360°",
+        "priority": "P1",
+        "type": "strategy_document",
+        "deliverable_id": "DEL-2026-0401-001",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/deliverable_estrategia_360.json"
+      },
+      {
+        "start": "23:06",
+        "end": "23:11",
+        "duration_min": 5,
+        "task": "Sequência Carrinho Abandonado (Klaviyo)",
+        "priority": "P0",
+        "type": "email_automation",
+        "deliverable_id": "DEL-2026-0401-002",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/deliverable_carrinho_abandonado.json"
+      },
+      {
+        "start": "23:08",
+        "end": "23:11",
+        "duration_min": 3,
+        "task": "3 Bundles Estratégicos Shopify",
+        "priority": "P1",
+        "type": "product_strategy",
+        "deliverable_id": "DEL-2026-0401-003",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/deliverable_bundles.json"
+      },
+      {
+        "start": "23:10",
+        "end": "23:12",
+        "duration_min": 2,
+        "task": "Conteúdo Blog: Luminária Cogumelo (SEO)",
+        "priority": "P1",
+        "type": "content_marketing",
+        "deliverable_id": "DEL-2026-0401-004",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/deliverable_blog_mushroom.json"
+      }
+    ],
+    "DesignBot": [
+      {
+        "start": "19:12",
+        "end": "20:12",
+        "duration_min": 60,
+        "task": "UX/UI Review - Night Shift",
+        "priority": "P0",
+        "type": "uxui_review",
+        "status": "completed",
+        "issues_fixed": [
+          "Consolidação do Sistema de Navegação",
+          "Melhorias Mobile (swipe, touch targets)",
+          "Contraste & Cores",
+          "Acessibilidade"
+        ],
+        "files_modified": [
+          "dashboard.html",
+          "index.html",
+          "kanban.html",
+          "timesheet.html",
+          "deliverables.html"
+        ],
+        "evidence_link": "/evidencias/20260401/uxui_review_1912.md"
+      }
+    ],
+    "TrafficBot": [],
+    "OpsBot": []
+  },
+  "summary": {
+    "total_deliverables": 6,
+    "total_agents_active": 2,
+    "by_priority": {
+      "P0": 2,
+      "P1": 3,
+      "P2": 1
+    },
+    "by_agent": {
+      "CopyBot": { "deliverables": 5, "total_minutes": 21 },
+      "DesignBot": { "deliverables": 1, "total_minutes": 60 },
+      "TrafficBot": { "deliverables": 0, "total_minutes": 0 },
+      "OpsBot": { "deliverables": 0, "total_minutes": 0 }
+    }
+  }
+}

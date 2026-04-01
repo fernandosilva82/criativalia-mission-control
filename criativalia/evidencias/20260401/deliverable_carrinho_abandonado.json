@@ -1,0 +1,47 @@
+{
+  "deliverable_id": "DEL-2026-0401-002",
+  "title": "Sequência de Carrinho Abandonado - Klaviyo",
+  "type": "email_automation",
+  "agent": "CopyBot",
+  "status": "completed",
+  "priority": "P0",
+  "created_at": "2026-04-01T23:06:00Z",
+  "completed_at": "2026-04-01T23:11:00Z",
+  "description": "3 emails HTML prontos para implementação no Klaviyo. Sequência completa de recuperação de carrinhos abandonados com urgência crescente.",
+  "deliverables": [
+    {
+      "item": "Email 1: Lembrete Gentil (1h)",
+      "status": "completed"
+    },
+    {
+      "item": "Email 2: Frete Grátis (24h)",
+      "status": "completed"
+    },
+    {
+      "item": "Email 3: Última Chance (72h)",
+      "status": "completed"
+    }
+  ],
+  "files": [
+    {
+      "name": "SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md",
+      "path": "/root/.openclaw/workspace/criativalia/estrategias/SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md",
+      "size": 22038,
+      "type": "markdown"
+    }
+  ],
+  "impact": {
+    "expected_revenue_increase": "+R$3.970/mês recuperados",
+    "metrics": {
+      "recovery_rate": "10% dos carrinhos abandonados",
+      "monthly_abandoned_carts": 100,
+      "avg_order_value": "R$397"
+    }
+  },
+  "next_steps": [
+    "Criar conta Klaviyo",
+    "Integrar com Shopify",
+    "Copiar templates HTML",
+    "Ativar flow"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "deliverable_id": "DEL-2026-0401-003",
+  "title": "3 Bundles Estratégicos - Configuração Shopify",
+  "type": "product_strategy",
+  "agent": "CopyBot",
+  "status": "completed",
+  "priority": "P1",
+  "created_at": "2026-04-01T23:08:00Z",
+  "completed_at": "2026-04-01T23:11:00Z",
+  "description": "Configuração completa de 3 bundles estratégicos para aumentar ticket médio: Quarto dos Sonhos, Sala Premium e Home Office Produtivo.",
+  "deliverables": [
+    {
+      "item": "Bundle 1: Quarto dos Sonhos (R$499)",
+      "status": "completed"
+    },
+    {
+      "item": "Bundle 2: Sala Premium (R$699)",
+      "status": "completed"
+    },
+    {
+      "item": "Bundle 3: Home Office Produtivo (R$429)",
+      "status": "completed"
+    }
+  ],
+  "files": [
+    {
+      "name": "BUNDLES_SHOPIFY_CONFIGURACAO.md",
+      "path": "/root/.openclaw/workspace/criativalia/estrategias/BUNDLES_SHOPIFY_CONFIGURACAO.md",
+      "size": 10407,
+      "type": "markdown"
+    }
+  ],
+  "impact": {
+    "expected_revenue_increase": "+R$4.500/mês",
+    "metrics": {
+      "current_avg_ticket": "R$397",
+      "target_avg_ticket": "R$520",
+      "increase_percentage": "+30%",
+      "bundle_sales_target": "40 unidades/mês"
+    }
+  },
+  "next_steps": [
+    "Criar produtos bundle no Shopify",
+    "Produzir 3 imagens de ambientes",
+    "Configurar descontos automáticos",
+    "Ativar cross-sell na página de produto"
+  ]
+}

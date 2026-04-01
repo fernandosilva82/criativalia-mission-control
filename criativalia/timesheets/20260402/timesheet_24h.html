@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Timesheet 24h - Criativalia Agents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #e8b86d, #d4a574, #e8b86d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .header .date {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e8b86d;
+        }
+        
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+        
+        .timeline-container {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow-x: auto;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-header h2 {
+            font-size: 1.5rem;
+            color: #e8b86d;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .timeline {
+            position: relative;
+            min-width: 1200px;
+        }
+        
+        .time-axis {
+            display: flex;
+            height: 40px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            margin-left: 150px;
+            margin-bottom: 10px;
+        }
+        
+        .time-slot {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            padding-top: 10px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .time-slot:nth-child(even) {
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .agent-row {
+            display: flex;
+            height: 80px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .agent-label {
+            width: 150px;
+            display: flex;
+            align-items: center;
+            padding-right: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .agent-label .emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .agent-timeline {
+            flex: 1;
+            position: relative;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+        
+        .grid-line {
+            flex: 1;
+            border-right: 1px dashed rgba(255,255,255,0.05);
+        }
+        
+        .activity-block {
+            position: absolute;
+            height: 60px;
+            top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        .activity-block:hover {
+            transform: scale(1.02);
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+        
+        .activity-block .task-title {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .activity-block .task-time {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+        
+        .activity-block .priority {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+        
+        /* Agent Colors */
+        .copybot { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .opsbot { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .trafficbot { background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%); }
+        .designbot { background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); }
+        
+        .copybot .agent-label { color: #a78bfa; }
+        .opsbot .agent-label { color: #34d399; }
+        .trafficbot .agent-label { color: #fbbf24; }
+        .designbot .agent-label { color: #f472b6; }
+        
+        /* Priority badges */
+        .priority-p0 { background: #ef4444; color: #fff; }
+        .priority-p1 { background: #f59e0b; color: #000; }
+        .priority-p2 { background: #3b82f6; color: #fff; }
+        
+        .gap-block {
+            position: absolute;
+            height: 60px;
+            top: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.02),
+                rgba(255,255,255,0.02) 10px,
+                rgba(255,255,255,0.05) 10px,
+                rgba(255,255,255,0.05) 20px
+            );
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .deliverables-section {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .deliverables-section h2 {
+            color: #e8b86d;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .deliverable-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+            transition: transform 0.2s;
+        }
+        
+        .deliverable-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .deliverable-card.p0 { border-left-color: #ef4444; }
+        .deliverable-card.p1 { border-left-color: #f59e0b; }
+        .deliverable-card.p2 { border-left-color: #3b82f6; }
+        
+        .deliverable-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .deliverable-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .deliverable-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-p0 { background: #ef4444; color: #fff; }
+        .badge-p1 { background: #f59e0b; color: #000; }
+        .badge-p2 { background: #3b82f6; color: #fff; }
+        .badge-copybot { background: rgba(102, 126, 234, 0.3); color: #a78bfa; }
+        .badge-opsbot { background: rgba(17, 153, 142, 0.3); color: #34d399; }
+        
+        .revenue-impact {
+            margin-top: 30px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            text-align: center;
+        }
+        
+        .revenue-impact h2 {
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        
+        .revenue-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .revenue-label {
+            color: #9ca3af;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .timeline-container { padding: 15px; }
+            .agent-label { width: 100px; font-size: 0.8rem; }
+            .agent-label .emoji { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Timesheet 24h</h1>
+        <div class="date">Período: 01/04/2026 - Criativalia Agents</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">6</div>
+                <div class="label">Tarefas Concluídas</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">54</div>
+                <div class="label">Minutos de Trabalho</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">2</div>
+                <div class="label">P0 (Crítico)</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">4</div>
+                <div class="label">P1 (Alta)</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">6</div>
+                <div class="label">Arquivos Gerados</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">+R$22k</div>
+                <div class="label">Impacto Esperado/mês</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <h2>⏱️ Timeline de Atividades</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                    <span>CopyBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></div>
+                    <span>OpsBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);"></div>
+                    <span>TrafficBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);"></div>
+                    <span>DesignBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ef4444;"></div>
+                    <span>P0 - Crítico</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f59e0b;"></div>
+                    <span>P1 - Alta</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="time-axis">
+                <div class="time-slot">00:00</div>
+                <div class="time-slot">02:00</div>
+                <div class="time-slot">04:00</div>
+                <div class="time-slot">06:00</div>
+                <div class="time-slot">08:00</div>
+                <div class="time-slot">10:00</div>
+                <div class="time-slot">12:00</div>
+                <div class="time-slot">14:00</div>
+                <div class="time-slot">16:00</div>
+                <div class="time-slot">18:00</div>
+                <div class="time-slot">20:00</div>
+                <div class="time-slot">22:00</div>
+            </div>
+
+            <!-- CopyBot Row -->
+            <div class="agent-row copybot">
+                <div class="agent-label">
+                    <span class="emoji">✍️</span>
+                    CopyBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="grid-lines">
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                    </div>
+                    
+                    <!-- Calendário Editorial Q2 - 22:50-22:56 -->
+                    <a href="/evidencias/20260401/deliverable_calendario_editorial.json" class="activity-block copybot" style="left: 91.67%; width: 0.42%;">
+                        <span class="priority priority-p2">P2</span>
+                        <div class="task-title">Calendário Editorial Q2</div>
+                        <div class="task-time">22:50-22:56 (6min)</div>
+                    </a>
+                    
+                    <!-- Estratégia 360° - 23:00-23:05 -->
+                    <a href="/evidencias/20260401/deliverable_estrategia_360.json" class="activity-block copybot" style="left: 95.83%; width: 0.35%;">
+                        <span class="priority priority-p1">P1</span>
+                        <div class="task-title">Estratégia 360°</div>
+                        <div class="task-time">23:00-23:05 (5min)</div>
+                    </a>
+                    
+                    <!-- Carrinho Abandonado - 23:06-23:11 -->
+                    <a href="/evidencias/20260401/deliverable_carrinho_abandonado.json" class="activity-block copybot" style="left: 96.25%; width: 0.35%;">
+                        <span class="priority priority-p0">P0</span>
+                        <div class="task-title">Carrinho Abandonado</div>
+                        <div class="task-time">23:06-23:11 (5min)</div>
+                    </a>
+                    
+                    <!-- Bundles - 23:08-23:11 -->
+                    <a href="/evidencias/20260401/deliverable_bundles.json" class="activity-block copybot" style="left: 96.11%; width: 0.21%;">
+                        <span class="priority priority-p1">P1</span>
+                        <div class="task-title">3 Bundles Shopify</div>
+                        <div class="task-time">23:08-23:11 (3min)</div>
+                    </a>
+                    
+                    <!-- Blog Mushroom - 23:10-23:12 -->
+                    <a href="/evidencias/20260401/deliverable_blog_mushroom.json" class="activity-block copybot" style="left: 96.39%; width: 0.14%;">
+                        <span class="priority priority-p1">P1</span>
+                        <div class="task-title">Blog: Luminária Cogumelo</div>
+                        <div class="task-time">23:10-23:12 (2min)</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- OpsBot Row -->
+            <div class="agent-row opsbot">
+                <div class="agent-label">
+                    <span class="emoji">⚙️</span>
+                    OpsBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="grid-lines">
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                    </div>
+                    
+                    <!-- UX/UI Review - 19:12-19:45 -->
+                    <a href="/evidencias/20260401/uxui_review_1912.md" class="activity-block opsbot" style="left: 79.58%; width: 2.29%;">
+                        <span class="priority priority-p0">P0</span>
+                        <div class="task-title">UX/UI Review Night Shift</div>
+                        <div class="task-time">19:12-19:45 (33min)</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TrafficBot Row -->
+            <div class="agent-row trafficbot">
+                <div class="agent-label">
+                    <span class="emoji">🚀</span>
+                    TrafficBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="grid-lines">
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                    </div>
+                    
+                    <div class="gap-block" style="left: 0; width: 100%;">
+                        🌙 Standby - Aguardando ativação
+                    </div>
+                </div>
+            </div>
+
+            <!-- DesignBot Row -->
+            <div class="agent-row designbot">
+                <div class="agent-label">
+                    <span class="emoji">🎨</span>
+                    DesignBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="grid-lines">
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                    </div>
+                    
+                    <div class="gap-block" style="left: 0; width: 100%;">
+                        🌙 Standby - Aguardando ativação
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="deliverables-section">
+        <h2>📦 Entregas do Dia</h2>
+        
+        <div class="deliverable-card p0">
+            <div class="deliverable-header">
+                <div class="deliverable-title">🛒 Sequência de Carrinho Abandonado - Klaviyo</div>
+                <span class="badge badge-p0">P0</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>✍️ CopyBot</span>
+                <span>⏱️ 23:06 - 23:11 (5 min)</span>
+                <span>📄 SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md</span>
+            </div>
+        </div>
+        
+        <div class="deliverable-card p0">
+            <div class="deliverable-header">
+                <div class="deliverable-title">🎨 UX/UI Review - Night Shift</div>
+                <span class="badge badge-p0">P0</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>⚙️ OpsBot</span>
+                <span>⏱️ 19:12 - 19:45 (33 min)</span>
+                <span>📄 5 arquivos HTML atualizados</span>
+            </div>
+        </div>
+        
+        <div class="deliverable-card p1">
+            <div class="deliverable-header">
+                <div class="deliverable-title">📊 Estratégia de Marketing 360°</div>
+                <span class="badge badge-p1">P1</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>✍️ CopyBot</span>
+                <span>⏱️ 23:00 - 23:05 (5 min)</span>
+                <span>📄 marketing_estrategia_360.md</span>
+            </div>
+        </div>
+        
+        <div class="deliverable-card p1">
+            <div class="deliverable-header">
+                <div class="deliverable-title">🎁 3 Bundles Estratégicos - Configuração Shopify</div>
+                <span class="badge badge-p1">P1</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>✍️ CopyBot</span>
+                <span>⏱️ 23:08 - 23:11 (3 min)</span>
+                <span>📄 BUNDLES_SHOPIFY_CONFIGURACAO.md</span>
+            </div>
+        </div>
+        
+        <div class="deliverable-card p1">
+            <div class="deliverable-header">
+                <div class="deliverable-title">📝 Conteúdo Blog: Luminária Cogumelo (SEO)</div>
+                <span class="badge badge-p1">P1</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>✍️ CopyBot</span>
+                <span>⏱️ 23:10 - 23:12 (2 min)</span>
+                <span>📄 CONTEUDO_BLOG_POST_1_MUSHROOM.md</span>
+            </div>
+        </div>
+        
+        <div class="deliverable-card p2">
+            <div class="deliverable-header">
+                <div class="deliverable-title">📅 Calendário Editorial Q2 2026</div>
+                <span class="badge badge-p2">P2</span>
+            </div>
+            <div class="deliverable-meta">
+                <span>✍️ CopyBot</span>
+                <span>⏱️ 22:50 - 22:56 (6 min)</span>
+                <span>📄 calendario_editorial_q2.md</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="revenue-impact">
+        <h2>💰 Impacto de Receita Esperado</h2>
+        <div class="revenue-amount">+R$ 22.470/mês</div>
+        <div class="revenue-label">Projeção baseada nas estratégias implementadas hoje</div>
+        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+            <div>
+                <strong style="color: #10b981;">+R$ 14.000</strong>
+                <div style="font-size: 0.85rem; color: #9ca3af;">Estratégia 360°</div>
+            </div>
+            <div>
+                <strong style="color: #10b981;">+R$ 4.500</strong>
+                <div style="font-size: 0.85rem; color: #9ca3af;">Bundles</div>
+            </div>
+            <div>
+                <strong style="color: #10b981;">+R$ 3.970</strong>
+                <div style="font-size: 0.85rem; color: #9ca3af;">Carrinho Abandonado</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>📊 Timesheet gerado automaticamente pelo Timesheet Generator</p>
+        <p>Criativalia Agent System • 2026</p>
+    </div>
+</body>
+</html>

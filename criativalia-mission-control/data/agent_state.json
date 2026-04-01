@@ -1,0 +1,12 @@
+{
+  "synced_at": "2026-04-01T05:38:00.000Z",
+  "agents": [],
+  "total_agents": 0,
+  "active_agents": 0,
+  "summary": {
+    "pending": 0,
+    "running": 0,
+    "completed": 0,
+    "failed": 0
+  }
+}

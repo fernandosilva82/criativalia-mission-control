@@ -1,0 +1,88 @@
+{
+  "date": "2026-04-01",
+  "generated_at": "2026-04-02T01:07:00+08:00",
+  "total_agents": 2,
+  "total_tasks": 6,
+  "agents": {
+    "CopyBot": [
+      {
+        "start": "22:50",
+        "end": "22:56",
+        "duration_min": 6,
+        "task": "Calendário Editorial Q2 2026",
+        "priority": "P2",
+        "deliverable_id": "DEL-2026-0401-005",
+        "evidence_link": "/evidencias/20260401/deliverable_calendario_editorial.json",
+        "output_file": "/criativalia/estrategias/calendario_editorial_q2.md"
+      },
+      {
+        "start": "23:00",
+        "end": "23:05",
+        "duration_min": 5,
+        "task": "Estratégia de Marketing 360°",
+        "priority": "P1",
+        "deliverable_id": "DEL-2026-0401-001",
+        "evidence_link": "/evidencias/20260401/deliverable_estrategia_360.json",
+        "output_file": "/criativalia/estrategias/marketing_estrategia_360.md"
+      },
+      {
+        "start": "23:06",
+        "end": "23:11",
+        "duration_min": 5,
+        "task": "Sequência Carrinho Abandonado (Klaviyo)",
+        "priority": "P0",
+        "deliverable_id": "DEL-2026-0401-002",
+        "evidence_link": "/evidencias/20260401/deliverable_carrinho_abandonado.json",
+        "output_file": "/criativalia/estrategias/SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md"
+      },
+      {
+        "start": "23:08",
+        "end": "23:11",
+        "duration_min": 3,
+        "task": "3 Bundles Estratégicos Shopify",
+        "priority": "P1",
+        "deliverable_id": "DEL-2026-0401-003",
+        "evidence_link": "/evidencias/20260401/deliverable_bundles.json",
+        "output_file": "/criativalia/estrategias/BUNDLES_SHOPIFY_CONFIGURACAO.md"
+      },
+      {
+        "start": "23:10",
+        "end": "23:12",
+        "duration_min": 2,
+        "task": "Conteúdo Blog: Luminária Cogumelo (SEO)",
+        "priority": "P1",
+        "deliverable_id": "DEL-2026-0401-004",
+        "evidence_link": "/evidencias/20260401/deliverable_blog_mushroom.json",
+        "output_file": "/criativalia/estrategias/CONTEUDO_BLOG_POST_1_MUSHROOM.md"
+      }
+    ],
+    "OpsBot": [
+      {
+        "start": "19:12",
+        "end": "19:45",
+        "duration_min": 33,
+        "task": "UX/UI Review - Night Shift (Consolidação de Navegação)",
+        "priority": "P0",
+        "deliverable_id": "UX-2026-0401-001",
+        "evidence_link": "/evidencias/20260401/uxui_review_1912.md",
+        "output_file": "dashboard.html, index.html, kanban.html, timesheet.html, deliverables.html"
+      }
+    ],
+    "TrafficBot": [],
+    "DesignBot": []
+  },
+  "summary": {
+    "total_working_minutes": 54,
+    "p0_tasks": 2,
+    "p1_tasks": 4,
+    "p2_tasks": 1,
+    "files_generated": 6,
+    "expected_revenue_impact": "+R$22.470/mês"
+  },
+  "revenue_impact": {
+    "carrinho_abandonado": "+R$3.970/mês",
+    "bundles": "+R$4.500/mês",
+    "estrategia_360": "+R$14k/mês",
+    "total": "+R$22.470/mês"
+  }
+}
