@@ -9,109 +9,156 @@
     <title>Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/criativalia-theme.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a15; }
-        ::-webkit-scrollbar-thumb { background: #4A5D23; border-radius: 3px; }
-        body { font-family: 'Inter', sans-serif; background: #1a1a15; color: #F5F5DC; }
-        .card { background: linear-gradient(145deg, #252520 0%, #1e1e18 100%); border: 1px solid #3A4D13; border-radius: 12px; }
-        .btn-primary { background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%); color: #F5F5DC; border: 1px solid #5A6D33; }
-        .btn-primary:hover { background: linear-gradient(135deg, #5A6D33 0%, #4A5D23 100%); }
-        .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 260px; background: linear-gradient(180deg, #252520 0%, #1a1a15 100%); border-right: 1px solid #3A4D13; z-index: 100; transform: translateX(-100%); transition: transform 0.3s ease; }
-        .sidebar.open { transform: translateX(0); }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99; opacity: 0; visibility: hidden; transition: all 0.3s; }
-        .sidebar-overlay.open { opacity: 1; visibility: visible; }
-        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: #E5E5CC; text-decoration: none; transition: all 0.2s; border-left: 3px solid transparent; }
-        .sidebar-item:hover, .sidebar-item.active { background: rgba(74, 93, 35, 0.3); border-left-color: #D4A853; color: #F5F5DC; }
-        .sidebar-item i { width: 24px; text-align: center; color: #D4A853; }
-        .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
-        .hamburger span { width: 24px; height: 2px; background: #F5F5DC; transition: all 0.3s; }
-        .main-content { margin-left: 0; transition: margin-left 0.3s; }
-        @media (min-width: 1024px) { .sidebar { transform: translateX(0); } .main-content { margin-left: 260px; } .hamburger { display: none; } }
-        .logo-container { display: flex; align-items: center; gap: 12px; padding: 20px; border-bottom: 1px solid #3A4D13; }
-        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="logo-container">
-            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-            <div><div style="font-size: 18px; font-weight: 700; color: #F5F5DC;">Criativalia</div><div style="font-size: 11px; color: #D4A853;">CONTROL PLANE</div></div>
+            <div class="logo-icon">
+                <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Criativalia Logo - Olive Leaf -->
+                    <path d="M50 5C50 5 20 25 20 55C20 75 35 90 50 90C65 90 80 75 80 55C80 25 50 5 50 5Z" 
+                          fill="url(#oliveGradient)" stroke="#F5F5DC" stroke-width="2"/>
+                    <path d="M50 15C50 15 30 30 30 55C30 70 40 80 50 80C60 80 70 70 70 55C70 30 50 15 50 15Z" 
+                          fill="url(#innerGradient)" opacity="0.6"/>
+                    <line x1="50" y1="15" x2="50" y2="85" stroke="#D4A853" stroke-width="1.5"/>
+                    <ellipse cx="35" cy="45" rx="8" ry="4" fill="#5A6D33" transform="rotate(-30 35 45)"/>
+                    <ellipse cx="65" cy="50" rx="8" ry="4" fill="#5A6D33" transform="rotate(30 65 50)"/>
+                    <ellipse cx="40" cy="65" rx="6" ry="3" fill="#5A6D33" transform="rotate(-45 40 65)"/>
+                    <defs>
+                        <linearGradient id="oliveGradient" x1="20%" y1="0%" x2="80%" y2="100%">
+                            <stop offset="0%" stop-color="#4A5D23"/>
+                            <stop offset="100%" stop-color="#D4A853"/>
+                        </linearGradient>
+                        <linearGradient id="innerGradient" x1="30%" y1="0%" x2="70%" y2="100%">
+                            <stop offset="0%" stop-color="#5A6D33"/>
+                            <stop offset="100%" stop-color="#4A5D23"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <div class="logo-brand">Criativalia</div>
+                <div class="logo-tagline">Control Plane</div>
+            </div>
         </div>
-        <nav style="padding: 16px 0;">
-            <a href="/" class="sidebar-item active"><i class="fas fa-home"></i><span>Dashboard</span></a>
-            <a href="/kanban" class="sidebar-item"><i class="fas fa-columns"></i><span>Kanban</span></a>
-            <a href="/timesheet" class="sidebar-item"><i class="fas fa-clock"></i><span>Timesheet</span></a>
-            <a href="/deliverables" class="sidebar-item"><i class="fas fa-box"></i><span>Entregas</span></a>
-            <a href="/financial" class="sidebar-item"><i class="fas fa-chart-line"></i><span>Financeiro</span></a>
-            <a href="/dashboard" class="sidebar-item"><i class="fas fa-store"></i><span>Shopify</span></a>
+        
+        <nav class="sidebar-nav">
+            <a href="/" class="sidebar-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/kanban.html" class="sidebar-item">
+                <i class="fas fa-columns"></i>
+                <span>Kanban</span>
+            </a>
+            <a href="/timesheet.html" class="sidebar-item">
+                <i class="fas fa-clock"></i>
+                <span>Timesheet</span>
+            </a>
+            <a href="/deliverables.html" class="sidebar-item">
+                <i class="fas fa-box"></i>
+                <span>Entregas</span>
+            </a>
+            <a href="/dashboard.html" class="sidebar-item">
+                <i class="fas fa-store"></i>
+                <span>Shopify</span>
+            </a>
         </nav>
-        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; border-top: 1px solid #3A4D13;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4A5D23, #D4A853); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-robot"></i></div>
-                <div><div style="font-size: 13px; font-weight: 500; color: #F5F5DC;">Multi-Agent</div><div style="font-size: 11px; color: #7a9e7e;">v2.0 • Online</div></div>
+        
+        <div class="sidebar-footer">
+            <div class="agent-status">
+                <div class="agent-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="agent-info">
+                    <div class="agent-name">Multi-Agent</div>
+                    <div class="agent-version">v2.0 • Online</div>
+                </div>
             </div>
         </div>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
-        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
-            <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <div class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="hamburger" onclick="toggleSidebar()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                     <div>
-                        <h1 style="font-size: 20px; font-weight: 700; color: #F5F5DC;"><i class="fas fa-home" style="color: #D4A853; margin-right: 8px;"></i>Dashboard</h1>
-                        <p style="font-size: 12px; color: #D4A853;">Multi-Agent Runtime v2.0</p>
+                        <h1 class="header-title">
+                            <i class="fas fa-home"></i>
+                            Dashboard
+                        </h1>
+                        <p class="header-subtitle">Multi-Agent Runtime v2.0</p>
                     </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <div id="runtime-status" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #F5F5DC;">
-                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #7a9e7e;"></span>
+                <div class="header-right">
+                    <div id="runtime-status" class="flex items-center gap-sm" style="color: var(--text-primary);">
+                        <span class="status-dot online"></span>
                         <span>Running</span>
                     </div>
-                    <button onclick="refreshData()" class="btn-primary" style="padding: 10px 16px; border-radius: 8px;"><i class="fas fa-sync-alt"></i></button>
+                    <button onclick="refreshData()" class="btn btn-primary btn-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
                 </div>
             </div>
         </header>
 
-        <div style="max-width: 1400px; margin: 0 auto; padding: 24px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
-                <div class="card" style="padding: 20px; border-left: 3px solid #D4A853;">
-                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Active Agents</div>
-                    <div id="stat-agents" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+        <!-- Content -->
+        <div class="container">
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-4 mb-lg">
+                <div class="stat-card success">
+                    <div class="stat-label">Active Agents</div>
+                    <div id="stat-agents" class="stat-value">-</div>
                 </div>
-                <div class="card" style="padding: 20px; border-left: 3px solid #7a9e7e;">
-                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Active Tasks</div>
-                    <div id="stat-tasks" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+                <div class="stat-card warning">
+                    <div class="stat-label">Active Tasks</div>
+                    <div id="stat-tasks" class="stat-value">-</div>
                 </div>
-                <div class="card" style="padding: 20px; border-left: 3px solid #4A5D23;">
-                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Sessions</div>
-                    <div id="stat-sessions" style="font-size: 28px; font-weight: 700; color: #F5F5DC;">-</div>
+                <div class="stat-card info">
+                    <div class="stat-label">Sessions</div>
+                    <div id="stat-sessions" class="stat-value">-</div>
                 </div>
-                <div class="card" style="padding: 20px; border-left: 3px solid #c17767;">
-                    <div style="font-size: 12px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">Pending Review</div>
-                    <div id="stat-review" style="font-size: 28px; font-weight: 700; color: #c17767;">-</div>
+                <div class="stat-card error">
+                    <div class="stat-label">Pending Review</div>
+                    <div id="stat-review" class="stat-value" style="color: var(--status-error);">-</div>
                 </div>
             </div>
             
             <!-- Agent List Section -->
-            <div class="card" style="padding: 20px; margin-bottom: 24px;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-                    <h2 style="font-size: 18px; font-weight: 600; color: #F5F5DC;"><i class="fas fa-robot" style="color: #D4A853; margin-right: 8px;"></i>Agents</h2>
-                    <button onclick="loadAgents()" class="btn-primary" style="padding: 8px 16px; border-radius: 6px; font-size: 14px;">
-                        <i class="fas fa-sync-alt"></i> Refresh
+            <div class="card mb-lg">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-robot"></i>
+                        Agents
+                    </h2>
+                    <button onclick="loadAgents()" class="btn btn-primary btn-sm">
+                        <i class="fas fa-sync-alt"></i>
+                        Refresh
                     </button>
                 </div>
-                <div id="agents-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                <div id="agents-list" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
                     <!-- Agents loaded here -->
                 </div>
             </div>
 
-            <div style="text-align: center; padding: 24px; color: #D4A853;">
-                <i class="fas fa-leaf" style="margin-right: 8px;"></i>Criativalia Control Plane v2.0 - Sidebar navigation with Olive Green theme
+            <!-- Footer -->
+            <div class="app-footer">
+                <i class="fas fa-leaf"></i>
+                Criativalia Control Plane v2.0 — Sistema Multi-Agente Autônomo
             </div>
         </div>
     </main>
@@ -131,7 +178,9 @@
                 document.getElementById('stat-tasks').textContent = d.active_tasks || 0; 
                 document.getElementById('stat-sessions').textContent = d.active_sessions || 0; 
                 document.getElementById('stat-review').textContent = d.pending_review || 0; 
-            } catch(e) {} 
+            } catch(e) {
+                console.error('Error refreshing data:', e);
+            } 
         }
         
         async function loadAgents() {
@@ -142,32 +191,45 @@
                 const container = document.getElementById('agents-list');
                 
                 if (agents.length === 0) {
-                    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #D4A853; padding: 40px;">No agents found</div>';
+                    container.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1/-1;">
+                            <i class="fas fa-robot"></i>
+                            <p>Nenhum agente encontrado</p>
+                        </div>
+                    `;
                     return;
                 }
                 
                 container.innerHTML = agents.map(agent => `
-                    <div class="card" style="padding: 16px; border-left: 3px solid ${agent.status === 'running' ? '#7a9e7e' : '#4A5D23'};">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                            <div style="font-weight: 600; color: #F5F5DC;">${agent.name}</div>
-                            <span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; background: ${agent.status === 'running' ? 'rgba(122, 158, 126, 0.2)' : 'rgba(74, 93, 35, 0.2)'}; color: ${agent.status === 'running' ? '#7a9e7e' : '#D4A853'};">
+                    <div class="card agent-card ${agent.status}">
+                        <div class="agent-card-header">
+                            <div class="agent-card-name">${agent.name}</div>
+                            <span class="agent-card-status ${agent.status}">
                                 ${agent.status === 'running' ? '🔥 RUNNING' : '⏳ IDLE'}
                             </span>
                         </div>
-                        <div style="font-size: 13px; color: #D4A853; margin-bottom: 8px;">${agent.role}</div>
-                        <div style="font-size: 12px; color: #7a9e7e;">
+                        <div class="agent-card-role">${agent.role}</div>
+                        <div class="agent-card-meta">
                             ${agent.time_until_next_min ? `Next in ${agent.time_until_next_min}min` : 'Waiting...'}
                         </div>
                     </div>
                 `).join('');
             } catch(e) {
-                document.getElementById('agents-list').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #c17767;">Error loading agents</div>';
+                document.getElementById('agents-list').innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1; color: var(--status-error);">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Erro ao carregar agents</p>
+                    </div>
+                `;
             }
         }
         
         document.addEventListener('DOMContentLoaded', () => {
             refreshData();
             loadAgents();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(refreshData, 30000);
         });
     </script>
 </body>
