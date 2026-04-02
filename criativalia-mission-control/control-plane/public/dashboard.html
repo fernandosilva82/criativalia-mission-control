@@ -2,8 +2,15 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0b">
     <title>Shopify Dashboard - Criativalia Control Plane</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -191,6 +198,10 @@
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-terracotta-400 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
+        Pular para conteúdo
+    </a>
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden" onclick="toggleSidebar()"></div>
     
@@ -240,18 +251,18 @@
                 <i class="fas fa-cog w-5"></i>
                 <span>Configurações</span>
             </a>
-            <div class="mt-4 px-4 py-3 rounded-lg bg-olive-900/30 border border-olive-800">
-                <div class="flex items-center gap-2 text-olive-400 text-xs">
+            <div class="mt-4 px-4 py-3 rounded-lg bg-olive-900/50 border border-olive-700">
+                <div class="flex items-center gap-2 text-olive-300 text-xs">
                     <i class="fas fa-circle text-[8px] animate-pulse"></i>
                     <span>Sistema Online</span>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift</p>
+                <p class="text-xs text-gray-400 mt-1">v2.1.0 • Night Shift</p>
             </div>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <div class="lg:ml-64">
+    <div id="main-content" class="lg:ml-64">
         <!-- Header -->
         <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-30">
             <div class="px-4 sm:px-6 py-4 flex items-center justify-between">

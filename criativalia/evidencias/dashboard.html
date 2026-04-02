@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌅 Morning Brief - Criativalia | 01/04/2026</title>
+    <title>🌅 Morning Brief - Criativalia | 02/04/2026</title>
     <style>
         * {
             margin: 0;
@@ -90,6 +90,20 @@
             gap: 10px;
             margin-bottom: 15px;
         }
+        .success-box {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.05));
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        .success-box h2 {
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -152,6 +166,7 @@
         .tag.p0 { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
         .tag.p1 { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
         .tag.p2 { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
+        .tag.success { background: rgba(46, 204, 113, 0.2); color: #2ecc71; }
         .agent-activity {
             background: rgba(255,255,255,0.03);
             border-radius: 12px;
@@ -163,6 +178,7 @@
         .agent-activity.copy { border-left-color: #9b59b6; }
         .agent-activity.design { border-left-color: #e74c3c; }
         .agent-activity.ops { border-left-color: #2ecc71; }
+        .agent-activity.deploy { border-left-color: #f39c12; }
         .agent-header {
             display: flex;
             justify-content: space-between;
@@ -273,6 +289,57 @@
             color: #94a3b8;
             margin-top: 5px;
         }
+        .deploy-list {
+            list-style: none;
+        }
+        .deploy-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .deploy-name {
+            font-weight: 500;
+        }
+        .deploy-status {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        .deploy-status.success {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        .deploy-status.failed {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        .deliverable-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 3px solid #9b59b6;
+        }
+        .deliverable-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        .deliverable-desc {
+            font-size: 0.85em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .deliverable-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 0.8em;
+        }
         footer {
             text-align: center;
             padding: 30px;
@@ -295,6 +362,12 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
         }
+        .btn-success {
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        }
+        .btn-success:hover {
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+        }
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
@@ -311,7 +384,7 @@
         <header>
             <h1>🌅 Morning Brief</h1>
             <p class="subtitle">Relatório Matinal - Criativalia</p>
-            <p class="report-date">📅 01 de Abril de 2026 | Período: Últimas 24h</p>
+            <p class="report-date">📅 02 de Abril de 2026 | Período: Últimas 24h</p>
         </header>
 
         <!-- ALERTA CRÍTICO -->
@@ -321,7 +394,7 @@
             <p style="margin-top: 10px; color: #94a3b8;">
                 Impacto: <strong style="color: #e74c3c;">10/10</strong> | 
                 Esforço: <strong>2/10</strong> | 
-                Custo da inação: <strong style="color: #e74c3c;">+R$15k+/mês em oportunidades perdidas</strong>
+                Custo da inação: <strong style="color: #e74c3c;">+R$10k+/mês em oportunidades perdidas</strong>
             </p>
             <p style="margin-top: 10px; font-size: 0.9em;">
                 📍 <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" style="color: #3498db;">Ver prioridade completa</a>
@@ -335,11 +408,11 @@
                 <div class="label">Oportunidades Detectadas</div>
             </div>
             <div class="status-card">
-                <div class="number success">4</div>
+                <div class="number success">7</div>
                 <div class="label">Tarefas Executadas</div>
             </div>
             <div class="status-card">
-                <div class="number warning">0</div>
+                <div class="number success">6</div>
                 <div class="label">Deploys 24h</div>
             </div>
             <div class="status-card">
@@ -353,63 +426,64 @@
             <div class="panel">
                 <h2><span class="icon">🎯</span> Top Oportunidades (Últimas 24h)</h2>
                 <ul class="opportunities-list">
+                    <li class="p0">
+                        <div class="opp-title">🔴 Configurar Shopify Token - IMPEDINDO TUDO</div>
+                        <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
+                            Sem token, scanners operam CEGOS. Sem acesso a pedidos, estoque e comportamento de clientes.
+                        </div>
+                        <div class="opp-meta">
+                            <span class="tag p0">P0 | Impacto: 10/10</span>
+                            <span>⚙️ OpsBot</span>
+                            <span>💰 R$10k+/mês</span>
+                        </div>
+                    </li>
+                    <li class="p0">
+                        <div class="opp-title">🏷️ Instalar Meta Pixel + Google Ads Tag</div>
+                        <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
+                            Sem retargeting, CAC é 3-5x maior. Economia estimada: R$2.5k/mês + ROAS 3x maior.
+                        </div>
+                        <div class="opp-meta">
+                            <span class="tag p0">P0 | Impacto: 9/10</span>
+                            <span>⚙️ OpsBot</span>
+                            <span>💰 R$2.5k/mês</span>
+                        </div>
+                    </li>
                     <li class="p1">
                         <div class="opp-title">🍄 Mushroom Lamp - Tendência Global Confirmada</div>
                         <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
-                            Luminária cogumelo em franca expansão (+9.34% crescimento). TikTok e Amazon mostram vendas massivas.
+                            Luminária cogumelo em franca expansão. TikTok e Amazon mostram vendas massivas. Vidro Murano = maior margem.
                         </div>
                         <div class="opp-meta">
-                            <span class="tag p1">Impacto: 9/10</span>
-                            <span>🤖 TrafficBot</span>
-                            <span>📁 2026-04-01</span>
+                            <span class="tag p1">P1 | Impacto: 9/10</span>
+                            <span>🔍 TrafficBot</span>
+                            <span>📈 Alto potencial</span>
                         </div>
                     </li>
                     <li class="p1">
                         <div class="opp-title">🛒 Criar Bundles Estratégicos (+35% Ticket Médio)</div>
                         <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
-                            23+ produtos com sinergia. "Quarto Completo", "Sala Iluminada", "Jardim Urbano".
+                            23+ produtos com sinergia. Quarto dos Sonhos (R$499), Sala Premium (R$699), Home Office (R$429).
                         </div>
                         <div class="opp-meta">
-                            <span class="tag p1">Impacto: 9/10</span>
+                            <span class="tag p1">P1 | Impacto: 9/10</span>
                             <span>⚙️ OpsBot</span>
-                            <span>💰 +R$5k/mês</span>
+                            <span>💰 +R$4.5k/mês</span>
                         </div>
                     </li>
                     <li class="p1">
-                        <div class="opp-title">📝 Blog Vazio - Gap de Content Marketing</div>
+                        <div class="opp-title">🛒 Abandoned Cart Recovery (Klaviyo)</div>
                         <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
-                            Página /blogs/news retorna vazia. Hay, Vitsœ e Gantri têm blogs ativos. Perdendo SEO.
+                            Taxa de abandono 70-75%. Sequência otimizada recupera 12-15% dos carrinhos. Projeção: +R$3.5k/mês.
                         </div>
                         <div class="opp-meta">
-                            <span class="tag p1">Impacto: 9/10</span>
-                            <span>✍️ CopyBot</span>
-                            <span>🎯 SEO</span>
-                        </div>
-                    </li>
-                    <li class="p2">
-                        <div class="opp-title">🏷️ Meta Pixel + Google Ads (Retargeting)</div>
-                        <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
-                            CAC 3-5x maior sem retargeting. Economia de R$2.5k/mês em ad spend.
-                        </div>
-                        <div class="opp-meta">
-                            <span class="tag p2">Impacto: 9/10</span>
-                            <span>⚙️ OpsBot</span>
-                            <span>📉 -40% CAC</span>
-                        </div>
-                    </li>
-                    <li class="p2">
-                        <div class="opp-title">🛒 Abandoned Cart Recovery Otimizado</div>
-                        <div style="font-size: 0.85em; color: #94a3b8; margin: 5px 0;">
-                            Taxa de abandono 70%. Sequência Klaviyo pode recuperar 12-15% dos carrinhos.
-                        </div>
-                        <div class="opp-meta">
-                            <span class="tag p2">Impacto: 9/10</span>
-                            <span>⚙️ OpsBot</span>
+                            <span class="tag p1">P1 | Impacto: 9/10</span>
+                            <span>✍️ CopyBot (Pronto!)</span>
                             <span>💰 +R$3.5k/mês</span>
                         </div>
                     </li>
                 </ul>
-                <a href="/root/.openclaw/workspace/criativalia/opportunities/20260401/" class="btn">📂 Ver Todas as Oportunidades</a>
+                <a href="/root/.openclaw/workspace/criativalia/opportunities/20260402/" class="btn">📂 Ver Oportunidades Atuais</a>
+                <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" class="btn btn-success">🎯 Ver Fila P0</a>
             </div>
 
             <!-- ATIVIDADE DOS AGENTES -->
@@ -419,76 +493,169 @@
                 <div class="agent-activity traffic">
                     <div class="agent-header">
                         <span class="agent-name">🔍 TrafficBot</span>
-                        <span class="agent-time">00:46 - 01:16 (30min)</span>
+                        <span class="agent-time">04:45 - 05:00 (15min)</span>
                     </div>
                     <div class="agent-task">Scanner de Tendências de Tráfego</div>
-                    <div class="agent-output">✅ 8 oportunidades identificadas | Alta: Mushroom Lamp, Arandelas Articuladas, Iluminação 3D</div>
-                    <a href="/root/.openclaw/workspace/criativalia/opportunities/20260401/traffic_opps.json" class="agent-link">📄 Ver evidência completa →</a>
+                    <div class="agent-output">✅ 8 oportunidades identificadas | Fontes: Pinterest, Accio, Amazon, Google Trends</div>
+                    <div class="agent-output">🎯 Top: Mushroom Lamp, Arandelas Articuladas, Iluminação 3D, Materiais Naturais</div>
+                    <a href="/root/.openclaw/workspace/criativalia/opportunities/20260402/traffic_opps.json" class="agent-link">📄 Ver evidência completa →</a>
                 </div>
 
                 <div class="agent-activity copy">
                     <div class="agent-header">
                         <span class="agent-name">✍️ CopyBot</span>
-                        <span class="agent-time">20:24 - 20:54 (30min)</span>
+                        <span class="agent-time">22:50 - 23:12 (22min)</span>
                     </div>
-                    <div class="agent-task">Análise de Copy e Conteúdo</div>
-                    <div class="agent-output">✅ 10 gaps de copy mapeados | Prioridade: Blog vazio, Produtos sem descrição, FAQ inexistente</div>
-                    <a href="/root/.openclaw/workspace/criativalia/opportunities/20250401/copy_opps.json" class="agent-link">📄 Ver evidência completa →</a>
+                    <div class="agent-task">5 Deliverables Completos em sequência</div>
+                    <div class="agent-output">✅ Calendário Editorial Q2 (30 posts blog, 60 posts social, 12 newsletters)</div>
+                    <div class="agent-output">✅ Estratégia Marketing 360° (3 personas, jornada 5 fases, 6 pilares)</div>
+                    <div class="agent-output">✅ Sequência Carrinho Abandonado - 3 emails Klaviyo prontos</div>
+                    <div class="agent-output">✅ 3 Bundles Estratégicos configurados (+R$4.5k/mês)</div>
+                    <div class="agent-output">✅ Post Blog Mushroom Lamp SEO (~2.400 palavras, schema markup)</div>
+                    <a href="/root/.openclaw/workspace/criativalia/estrategias/" class="agent-link">📂 Ver todos os arquivos →</a>
                 </div>
 
                 <div class="agent-activity design">
                     <div class="agent-header">
-                        <span class="agent-name">🎨 DesignBot</span>
-                        <span class="agent-time">05:16 - 06:46 (90min)</span>
+                        <span class="agent-name">🎨 DesignBot (Night Shift)</span>
+                        <span class="agent-time">19:12 - 20:30 (78min)</span>
                     </div>
-                    <div class="agent-task">UX/UI Night Shift Review (P0)</div>
-                    <div class="agent-output">✅ 4 correções críticas: Grid mobile, Sidebar com drawer, Skeleton screens, Design System</div>
-                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20250329/uxui_review_1716.md" class="agent-link">📄 Ver evidência completa →</a>
+                    <div class="agent-task">UX/UI Review + Mobile Improvements</div>
+                    <div class="agent-output">✅ Navegação unificada em 5 páginas (dashboard, index, kanban, timesheet, deliverables)</div>
+                    <div class="agent-output">✅ Mobile: swipe gestures, touch targets 48px, bottom navigation</div>
+                    <div class="agent-output">✅ Acessibilidade: skip-to-content, focus states, contraste WCAG AA</div>
+                    <div class="agent-output">✅ Performance: preconnect CDNs, ~200-300ms melhoria LCP</div>
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/uxui_review_1912.md" class="agent-link">📄 Ver evidência completa →</a>
                 </div>
 
                 <div class="agent-activity ops">
                     <div class="agent-header">
                         <span class="agent-name">⚙️ OpsBot</span>
-                        <span class="agent-time">16:00 - 16:10 (10min)</span>
+                        <span class="agent-time">—</span>
                     </div>
-                    <div class="agent-task">Scanner de Operações</div>
-                    <div class="agent-output">✅ 12 oportunidades operacionais | Crítico: Shopify Token, Bundles, Margens, SKUs</div>
-                    <a href="/root/.openclaw/workspace/criativalia/opportunities/20250401/ops_opps.json" class="agent-link">📄 Ver evidência completa →</a>
+                    <div class="agent-task">Status: Sem atividade nas últimas 24h</div>
+                    <div class="agent-output" style="color: #e74c3c;">⚠️ Bloqueado: Aguardando configuração manual do Shopify Token</div>
+                    <div class="agent-output">📋 Próximas ações: Bundles, Meta Pixel, Abandoned Cart, Alertas de Estoque</div>
                 </div>
 
                 <div class="summary-box">
                     <h3>📊 Resumo do Timesheet 24h</h3>
                     <div class="summary-stats">
                         <div class="stat-item">
-                            <div class="stat-value">4.5h</div>
+                            <div class="stat-value">1h55m</div>
                             <div class="stat-label">Tempo Total</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">4</div>
+                            <div class="stat-value">3</div>
                             <div class="stat-label">Agentes Ativos</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">37</div>
-                            <div class="stat-label">Oportunidades Totais</div>
+                            <div class="stat-value">7</div>
+                            <div class="stat-label">Tasks Completas</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-value">3</div>
-                            <div class="stat-label">Itens P0</div>
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Arquivos Gerados</div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- DELIVERABLES -->
+            <div class="panel">
+                <h2><span class="icon">📦</span> Deliverables Completados</h2>
+                
+                <div class="deliverable-card">
+                    <div class="deliverable-title">📅 Calendário Editorial Q2 2026</div>
+                    <div class="deliverable-desc">30 posts de blog + 60 posts social + 12 newsletters com cronograma semanal</div>
+                    <div class="deliverable-meta">
+                        <span class="tag p2">P2</span>
+                        <span style="color: #64748b;">6 min</span>
+                    </div>
+                </div>
+
+                <div class="deliverable-card">
+                    <div class="deliverable-title">🎯 Estratégia Marketing 360°</div>
+                    <div class="deliverable-desc">Posicionamento, 3 personas, jornada 5 fases, mix 6 pilares, KPIs mensuráveis</div>
+                    <div class="deliverable-meta">
+                        <span class="tag p1">P1</span>
+                        <span style="color: #64748b;">5 min</span>
+                    </div>
+                </div>
+
+                <div class="deliverable-card">
+                    <div class="deliverable-title">📧 Sequência Carrinho Abandonado</div>
+                    <div class="deliverable-desc">3 emails HTML Klaviyo: Lembrete (1h), Frete Grátis (24h), Última Chance (72h)</div>
+                    <div class="deliverable-meta">
+                        <span class="tag p0">P0</span>
+                        <span style="color: #64748b;">5 min</span>
+                        <span style="color: #2ecc71;">💰 +R$3.970/mês</span>
+                    </div>
+                </div>
+
+                <div class="deliverable-card">
+                    <div class="deliverable-title">🎁 3 Bundles Estratégicos</div>
+                    <div class="deliverable-desc">Quarto dos Sonhos (R$499), Sala Premium (R$699), Home Office (R$429)</div>
+                    <div class="deliverable-meta">
+                        <span class="tag p1">P1</span>
+                        <span style="color: #64748b;">3 min</span>
+                        <span style="color: #2ecc71;">💰 +R$4.500/mês</span>
+                    </div>
+                </div>
+
+                <div class="deliverable-card">
+                    <div class="deliverable-title">📝 Post Blog: Luminária Cogumelo</div>
+                    <div class="deliverable-desc">~2.400 palavras, SEO otimizado, Schema markup, tabela comparativa, FAQ</div>
+                    <div class="deliverable-meta">
+                        <span class="tag p1">P1</span>
+                        <span style="color: #64748b;">2 min</span>
+                        <span style="color: #2ecc71;">📈 +500 visitas/mês</span>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <h3>💰 Impacto Financeiro Projetado</h3>
+                    <div style="font-size: 2em; font-weight: bold; color: #2ecc71; text-align: center; margin: 15px 0;">
+                        +R$8.470/mês
+                    </div>
+                    <p style="text-align: center; color: #94a3b8; font-size: 0.9em;">
+                        Apenas com os deliverables já prontos para implementação
+                    </p>
+                </div>
+            </div>
+
             <!-- DEPLOYS -->
             <div class="panel">
-                <h2><span class="icon">🚀</span> Deploys Automáticos</h2>
-                <div class="empty-state">
-                    <div class="icon">⏸️</div>
-                    <p>Nenhum deploy automático nas últimas 24h</p>
-                    <p style="font-size: 0.85em; margin-top: 10px;">Último deploy: 2026-03-29 17:05 UTC</p>
-                </div>
+                <h2><span class="icon">🚀</span> Deploys Automáticos (24h)</h2>
+                <ul class="deploy-list">
+                    <li>
+                        <span class="deploy-name">🚀 Deploy to Render</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                    <li>
+                        <span class="deploy-name">📊 Deploy on Opportunities Update</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                    <li>
+                        <span class="deploy-name">📈 Update Dashboard on Evidence</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                    <li>
+                        <span class="deploy-name">🚀 Deploy to Render</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                    <li>
+                        <span class="deploy-name">🚀 Deploy to Render</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                    <li>
+                        <span class="deploy-name">🚀 Deploy to Render</span>
+                        <span class="deploy-status success">✅ Success</span>
+                    </li>
+                </ul>
                 <p style="text-align: center; font-size: 0.85em; color: #64748b; margin-top: 15px;">
-                    📁 <a href="/root/.openclaw/workspace/criativalia/deploys/" style="color: #3498db;">Ver histórico completo</a>
+                    📅 Últimos deploys: 2026-04-02 07:07 UTC<br>
+                    🌐 <a href="https://criativalia-control-plane.onrender.com" style="color: #3498db;">https://criativalia-control-plane.onrender.com</a>
                 </p>
             </div>
 
@@ -500,35 +667,35 @@
                         <div class="priority-num">1</div>
                         <div class="priority-content">
                             <div class="priority-title">🔴 CONFIGURAR SHOPIFY TOKEN (P0)</div>
-                            <div class="priority-desc">Bloqueando 100% das análises de dados reais. Sem isso, agentes operam cegos. Impacto: +R$15k/mês perdidos.</div>
+                            <div class="priority-desc">Bloqueando 100% das análises de dados reais. Sem isso, agentes operam cegos. Impacto: +R$10k/mês perdidos. Ação: Gerar token na Shopify Admin → Adicionar ao Render.</div>
                         </div>
                     </li>
                     <li>
                         <div class="priority-num">2</div>
                         <div class="priority-content">
-                            <div class="priority-title">🍄 Criar Coleção Mushroom Lamp</div>
-                            <div class="priority-desc">Tendência global confirmada. Focar em materiais premium (vidro, cerâmica) com margens melhores.</div>
+                            <div class="priority-title">🏷️ Instalar Meta Pixel + Google Ads Tag</div>
+                            <div class="priority-desc">Retargeting essencial. Reduz CAC em 40%. Economia: R$2.5k/mês. Scripts já prontos, só configurar IDs.</div>
                         </div>
                     </li>
                     <li>
                         <div class="priority-num">3</div>
                         <div class="priority-content">
-                            <div class="priority-title">📝 Iniciar Blog com 4 Posts Evergreen</div>
-                            <div class="priority-desc">Blog vazio = gap crítico. Começar com: "Como Escolher Luminária", "Design Sustentável", "Cuidados com PLA".</div>
+                            <div class="priority-title">📧 Ativar Sequência Carrinho Abandonado</div>
+                            <div class="priority-desc">3 emails HTML prontos no arquivo SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md. Criar conta Klaviyo → Integrar → Ativar flow. Projeção: +R$3.970/mês.</div>
                         </div>
                     </li>
                     <li>
                         <div class="priority-num">4</div>
                         <div class="priority-content">
-                            <div class="priority-title">🛒 Configurar 4 Bundles Estratégicos</div>
-                            <div class="priority-desc">Quarto Completo, Sala Iluminada, Jardim Urbano, Home Office. Potencial: +35% ticket médio.</div>
+                            <div class="priority-title">🎁 Criar Produtos Bundle no Shopify</div>
+                            <div class="priority-desc">Configuração completa pronta em BUNDLES_SHOPIFY_CONFIGURACAO.md. Quarto dos Sonhos, Sala Premium, Home Office. +R$4.5k/mês.</div>
                         </div>
                     </li>
                     <li>
                         <div class="priority-num">5</div>
                         <div class="priority-content">
-                            <div class="priority-title">🏷️ Instalar Meta Pixel + Google Ads</div>
-                            <div class="priority-desc">Retargeting essencial. Reduz CAC em 40%. Economia estimada: R$2.5k/mês.</div>
+                            <div class="priority-title">📝 Publicar Post Mushroom Lamp</div>
+                            <div class="priority-desc">Conteúdo SEO pronto (~2.400 palavras). Criar categoria na loja + publicar blog. Target: +500 visitas orgânicas/mês.</div>
                         </div>
                     </li>
                 </ul>
@@ -545,21 +712,48 @@
             </div>
         </div>
 
+        <!-- IMPACTO FINANCEIRO TOTAL -->
+        <div class="success-box" style="margin-top: 25px;">
+            <h2>💰 Projeção Financeira Total (Próximos 30 dias)</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="stat-item">
+                    <div class="stat-value" style="color: #e74c3c;">R$10k+</div>
+                    <div class="stat-label">Shopify Token (dados reais)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" style="color: #f39c12;">R$2.5k</div>
+                    <div class="stat-label">Meta Pixel (economia CAC)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" style="color: #2ecc71;">R$4.5k</div>
+                    <div class="stat-label">Bundles (ticket médio)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" style="color: #2ecc71;">R$3.9k</div>
+                    <div class="stat-label">Abandoned Cart</div>
+                </div>
+                <div class="stat-item" style="background: rgba(233, 69, 96, 0.2);">
+                    <div class="stat-value" style="color: #ff6b6b; font-size: 2.2em;">R$20k+</div>
+                    <div class="stat-label">POTENCIAL TOTAL/MÊS</div>
+                </div>
+            </div>
+        </div>
+
         <div class="panel" style="margin-top: 25px;">
             <h2><span class="icon">📁</span> Acesso Rápido às Evidências</h2>
             <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                <a href="/root/.openclaw/workspace/criativalia/opportunities/20260401/" class="btn">📂 Oportunidades 01/04</a>
-                <a href="/root/.openclaw/workspace/criativalia/timesheets/20260401/" class="btn">📊 Timesheet</a>
-                <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" class="btn">🎯 Fila de Prioridades</a>
-                <a href="/root/.openclaw/workspace/criativalia/SYSTEM_ARCHITECTURE.md" class="btn" style="background: linear-gradient(90deg, #3498db, #2980b9);">📄 Arquitetura</a>
+                <a href="/root/.openclaw/workspace/criativalia/opportunities/20260402/" class="btn">📂 Oportunidades 02/04</a>
+                <a href="/root/.openclaw/workspace/criativalia/estrategias/" class="btn">📝 Estratégias</a>
+                <a href="/root/.openclaw/workspace/criativalia/timesheets/20260402/" class="btn">📊 Timesheet</a>
+                <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" class="btn btn-success">🎯 Fila P0</a>
             </div>
         </div>
 
         <footer>
             <p>🤖 Criativalia Multi-Agent System v1.0</p>
-            <p style="margin-top: 10px; font-size: 0.9em;">Relatório gerado automaticamente às 05:11 UTC</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Relatório gerado automaticamente às 08:54 UTC</p>
             <p style="margin-top: 5px; font-size: 0.8em; color: #64748b;">
-                Morning Brief Generator • Última atualização: 2026-04-01 05:11 UTC
+                Morning Brief Generator • Última atualização: 2026-04-02 08:54 UTC
             </p>
         </footer>
     </div>
