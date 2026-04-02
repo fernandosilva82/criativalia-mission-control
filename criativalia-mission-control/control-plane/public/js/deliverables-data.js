@@ -789,6 +789,51 @@ Email 4 → Esperar 2 dias → Email 5
 - **Receita gerada: ~R$2.500/mês** (assumindo 100 novos cadastros/mês)`,
         size: '6.2 KB',
         created_at: '2026-04-02T04:25:00Z'
+    },
+    {
+        id: 'DEL-2026-0402-006',
+        title: '🎯 Ativos PMax Google Ads - Completo',
+        category: 'strategy',
+        type: 'md',
+        agent_id: 'copybot',
+        agent_name: 'COPYBOT',
+        priority: 'P0',
+        tags: ['google-ads', 'pmax', 'performance-max', 'ativos', 'campanhas'],
+        content: `# 🎯 Ativos para Campanhas PMax (Performance Max) - Google Ads
+
+## 📦 Pacote Completo Criado
+
+### ✅ Títulos e Descrições
+- 60+ títulos variados (30 caracteres)
+- 20+ descrições longas (90 caracteres)
+- 4 grupos de produtos
+- Arquivo CSV pronto para importação
+
+### ✅ Roteiros de Vídeo (5 vídeos)
+1. Mushroom Lamp (15s vertical)
+2. Arandela Articulada (15s quadrado)
+3. Bundle Sala Premium (20s horizontal)
+4. Home Office Produtivo (15s vertical)
+5. Testimonial/Social Proof (30s)
+
+### ✅ Brief de Fotografia
+- 40+ fotos planejadas
+- Especificações técnicas completas
+- Checklist de qualidade
+
+## 💰 Investimento
+- Produção: R$ 2.300-3.700
+- Mídia mensal: R$ 5.000
+- ROAS esperado: 4-6x
+
+## 📁 Arquivos
+- PMAX_GOOGLE_ADS_ATIVOS_COMPLETO.md
+- PMAX_ROTEIROS_VIDEO_DETALHADOS.md
+- PMAX_BRIEF_FOTOGRAFIA.md
+- pmax_titulos_descricoes.csv
+- PMAX_RESUMO_EXECUTIVO.md`,
+        size: '3.5 KB',
+        created_at: '2026-04-02T08:15:00Z'
     }
 ];
 
