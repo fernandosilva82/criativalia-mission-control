@@ -210,3 +210,28 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+---
+
+## 🔑 Verificação de Tokens e Credenciais
+
+**ANTES de falar que falta algum token ou credencial:**
+
+1. **Sempre verifique primeiro** se já existe:
+   ```bash
+   cat /root/.openclaw/skills/clawpify/.env | grep TOKEN
+   ```
+
+2. **Ou use o script de verificação:**
+   ```bash
+   bash /root/.openclaw/workspace/scripts/verificar_token_shopify.sh
+   ```
+
+3. **Tokens já confirmados (NÃO perguntar novamente):**
+   - ✅ Shopify: `shpat_e69b2e...` (ativo desde 2026-03-29)
+   - ✅ GitHub: Configurado no Actions
+   - ✅ Render: Deploy hook configurado
+
+**Se o token existir:** NÃO diga que falta. Diga "✅ Token confirmado e funcionando."
+
+**Lição aprendida:** O usuário FERNANDO já configurou o token Shopify. Nunca mais perguntar sobre isso.

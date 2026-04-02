@@ -1,5 +1,5 @@
 {
-  "last_checked": "2026-04-01T19:47:00Z",
+  "last_checked": "2026-04-02T10:43:51Z",
   "notified_runs": [
     {"run_id": 23701492867, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
     {"run_id": 23702420432, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
@@ -36,22 +36,30 @@
     {"run_id": 23714203615, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-04-01T05:35:00Z"},
     {"run_id": 23714203608, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T05:35:00Z"},
     {"run_id": 23714203345, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-04-01T11:36:00Z"},
-    {"run_id": 23858800506, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T18:49:00Z"}
+    {"run_id": 23858800506, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T18:49:00Z"},
+    {"run_id": 23869486395, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
+    {"run_id": 23869486341, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
+    {"run_id": 23869486326, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
+    {"run_id": 23876687620, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T00:10:00Z"},
+    {"run_id": 23876563174, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T00:10:00Z"},
+    {"run_id": 23880883152, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T02:40:00Z"},
+    {"run_id": 23885625857, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T05:34:21Z"},
+    {"run_id": 23885625848, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-04-02T05:34:21Z"},
+    {"run_id": 23894181638, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T09:49:00Z"}
   ],
   "last_check_summary": {
-    "checked_at": "2026-04-01T19:47:00Z",
-    "total_runs_found": 5,
+    "checked_at": "2026-04-02T10:43:51Z",
+    "total_runs_found": 10,
     "new_notifications": 0,
-    "message": "Nenhum deploy novo para notificar. Todos os workflows relevantes já foram processados.",
+    "message": "Nenhum novo deploy para notificar. Todos já foram notificados anteriormente.",
     "workflows_checked": ["Deploy to Render", "Deploy on Opportunities Update", "Update Dashboard on Evidence"],
     "in_progress": [],
-    "notification_sent_to": null,
     "recent_runs": [
-      {"id": 23858800506, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-04-01T16:17:08Z"},
-      {"id": 23858799682, "name": "notify-deploy.yml", "conclusion": "failure", "updated_at": "2026-04-01T16:16:59Z"},
-      {"id": 23714203616, "name": "Update Dashboard on Evidence", "conclusion": "success", "updated_at": "2026-03-29T16:58:32Z"},
-      {"id": 23714203615, "name": "Deploy on Opportunities Update", "conclusion": "success", "updated_at": "2026-03-29T16:58:27Z"},
-      {"id": 23714203608, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-03-29T16:58:30Z"}
+      {"id": 23894181638, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-04-02T09:38:50Z", "notified": true},
+      {"id": 23894180934, "name": "notify-deploy.yml", "conclusion": "failure", "updated_at": "2026-04-02T09:38:41Z", "notified": false, "ignored": "workflow_de_notificacao"},
+      {"id": 23885625857, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-04-02T05:33:04Z", "notified": true},
+      {"id": 23885625848, "name": "Update Dashboard on Evidence", "conclusion": "success", "updated_at": "2026-04-02T05:33:08Z", "notified": true},
+      {"id": 23885625479, "name": "notify-deploy.yml", "conclusion": "failure", "updated_at": "2026-04-02T05:32:54Z", "notified": false, "ignored": "workflow_de_notificacao"}
     ]
   }
 }
