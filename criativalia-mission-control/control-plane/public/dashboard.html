@@ -2,8 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#0a0a0b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Criativalia Control Plane - Dashboard de analytics da loja Shopify">
     <title>Shopify Dashboard - Criativalia Control Plane</title>
     
     <!-- Preconnect for performance -->
@@ -11,9 +14,31 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lazy load Chart.js -->
+    <script>
+        // Lazy load Chart.js only when needed
+        window.chartJsLoaded = false;
+        function loadChartJs() {
+            if (window.chartJsLoaded) return Promise.resolve();
+            return new Promise((resolve) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => {
+                    window.chartJsLoaded = true;
+                    resolve();
+                };
+                document.head.appendChild(script);
+            });
+        }
+    </script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -24,7 +49,9 @@
                             100: '#e3ebe3',
                             200: '#c5d8c5',
                             300: '#9ebf9e',
+                            350: '#8ab88a',
                             400: '#7a9e7a',
+                            450: '#6a9e6a',
                             500: '#5a825a',
                             600: '#456645',
                             700: '#3a523a',
@@ -33,6 +60,7 @@
                         },
                         terracotta: {
                             400: '#c17767',
+                            450: '#d48877',
                             500: '#d48877',
                             600: '#b56555',
                         },
@@ -55,17 +83,20 @@
         ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
         
         body { 
-            font-family: 'Inter', sans-serif; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
             background: #0a0a0b; 
             color: #fafafa; 
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overscroll-behavior-x: none; /* Previne swipe back no mobile */
         }
         
-        /* Sidebar Animation */
+        /* Sidebar Animation - Melhorada para swipe */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+            touch-action: pan-y; /* Permite scroll vertical, bloqueia horizontal */
         }
         .sidebar.open {
             transform: translateX(0);
@@ -74,21 +105,35 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
+            backdrop-filter: blur(4px);
         }
         .sidebar-overlay.open {
             opacity: 1;
             visibility: visible;
         }
         
-        /* Card Styles */
+        /* Swipe indicator for mobile */
+        .swipe-indicator {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+        
+        /* Card Styles - Melhorado contraste */
         .card { 
             background: #141414; 
             border: 1px solid #2a2a2a; 
             border-radius: 12px;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
         }
         .card:hover {
             border-color: #3a3a3a;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
         .metric-card { 
@@ -113,17 +158,25 @@
             background: linear-gradient(90deg, #c17767, #7a9e7a);
         }
         
+        /* Melhor contraste para texto em gradiente */
         .metric-value { 
-            background: linear-gradient(135deg, #fafafa 0%, #c17767 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #c17767 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: 700;
         }
         
+        /* Botões com touch target mínimo 44px */
         .btn-primary { 
             background: #c17767; 
             color: white;
             transition: all 0.2s;
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn-primary:hover { 
             background: #d48877;
@@ -131,14 +184,32 @@
             box-shadow: 0 4px 12px rgba(193, 119, 103, 0.3);
         }
         .btn-primary:active {
-            transform: translateY(0);
+            transform: translateY(0) scale(0.98);
         }
         
-        .trend-up { color: #7a9e7a; }
-        .trend-down { color: #c17767; }
+        /* Touch target mínimo para todos elementos clicáveis */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* Melhor contraste para tendências */
+        .trend-up { 
+            color: #8ab88a; /* Verde mais brilhante para melhor contraste WCAG AA */
+            font-weight: 500;
+        }
+        .trend-down { 
+            color: #e88a7a; /* Vermelho mais brilhante */
+            font-weight: 500;
+        }
         
         .product-row:hover { 
             background: rgba(193, 119, 103, 0.1); 
+        }
+        
+        .product-row:focus {
+            outline: 2px solid #c17767;
+            outline-offset: -2px;
         }
         
         .chart-container { 
@@ -146,7 +217,7 @@
             height: 300px; 
         }
         
-        /* Skeleton Loading Animation */
+        /* Skeleton Loading Animation - Suavizado */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -156,6 +227,68 @@
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
             border-radius: 4px;
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #1a1a1b;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
+            max-width: 320px;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            border-left: 3px solid #7a9e7a;
+        }
+        .toast.error {
+            border-left: 3px solid #c17767;
+        }
+        .toast.info {
+            border-left: 3px solid #5a9fd4;
+        }
+        
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #888;
+            flex-wrap: wrap;
+        }
+        .breadcrumb a {
+            color: #888;
+            transition: color 0.2s;
+        }
+        .breadcrumb a:hover {
+            color: #c17767;
+        }
+        .breadcrumb .current {
+            color: #fafafa;
+            font-weight: 500;
+        }
+        .breadcrumb-separator {
+            color: #555;
         }
         
         /* Touch-friendly improvements */
@@ -169,12 +302,28 @@
             .product-row:hover {
                 background: transparent;
             }
+            .product-row:active {
+                background: rgba(193, 119, 103, 0.1);
+            }
         }
         
         /* Mobile optimizations */
         @media (max-width: 640px) {
             .chart-container {
                 height: 200px;
+            }
+            .toast-container {
+                left: 16px;
+                right: 16px;
+                top: auto;
+                bottom: 20px;
+            }
+            .toast {
+                max-width: 100%;
+                transform: translateY(120%);
+            }
+            .toast.show {
+                transform: translateY(0);
             }
         }
         
@@ -185,75 +334,158 @@
             outline-offset: 2px;
         }
         
+        /* Skip link improvement */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 16px;
+            background: #c17767;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-weight: 500;
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 16px;
+        }
+        
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .sidebar,
             .metric-card,
             .btn-primary,
-            .skeleton {
+            .skeleton,
+            .toast {
                 transition: none;
                 animation: none;
             }
+        }
+        
+        /* Loading state fade transition */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        
+        /* Pull to refresh indicator */
+        .pull-refresh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #0a0a0b, transparent);
+            transform: translateY(-100%);
+            transition: transform 0.2s;
+            z-index: 25;
+        }
+        .pull-refresh.visible {
+            transform: translateY(0);
+        }
+        .pull-refresh-spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #2a2a2a;
+            border-top-color: #c17767;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Skip Navigation for Accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-terracotta-400 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
-        Pular para conteúdo
+    <a href="#main-content" class="skip-link">
+        Pular para conteúdo principal
     </a>
+    
+    <!-- Pull to refresh indicator -->
+    <div id="pullRefresh" class="pull-refresh">
+        <div class="pull-refresh-spinner"></div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
     <!-- Mobile Sidebar Overlay -->
-    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden" onclick="toggleSidebar()"></div>
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 z-40 lg:hidden" 
+         onclick="toggleSidebar()" 
+         role="button" 
+         aria-label="Fechar menu"
+         tabindex="0"></div>
     
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-gray-900 border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none">
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-gray-900 border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none"
+           role="navigation"
+           aria-label="Menu principal">
+        <div class="swipe-indicator lg:hidden"></div>
         <div class="p-6 border-b border-gray-800">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-                    <i class="fas fa-rocket text-white text-sm"></i>
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-rocket text-white text-sm" aria-hidden="true"></i>
                 </div>
-                <div>
-                    <h1 class="font-bold text-lg text-white">Criativalia</h1>
+                <div class="min-w-0">
+                    <h1 class="font-bold text-lg text-white truncate">Criativalia</h1>
                     <p class="text-xs text-gray-400">Control Plane</p>
                 </div>
             </div>
         </div>
         
-        <nav class="p-4 space-y-1">
-            <a href="/dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-terracotta-400/10 text-terracotta-400 border border-terracotta-400/20">
-                <i class="fas fa-chart-line w-5"></i>
+        <nav class="p-4 space-y-1" aria-label="Navegação principal">
+            <a href="/dashboard.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg bg-terracotta-400/10 text-terracotta-400 border border-terracotta-400/20 touch-target"
+               aria-current="page">
+                <i class="fas fa-chart-line w-5 text-center" aria-hidden="true"></i>
                 <span class="font-medium">Dashboard</span>
             </a>
-            <a href="/products.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-box w-5"></i>
+            <a href="/products.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-box w-5 text-center" aria-hidden="true"></i>
                 <span>Produtos</span>
             </a>
-            <a href="/orders.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-shopping-bag w-5"></i>
+            <a href="/orders.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-shopping-bag w-5 text-center" aria-hidden="true"></i>
                 <span>Pedidos</span>
             </a>
-            <a href="/customers.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-users w-5"></i>
+            <a href="/customers.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-users w-5 text-center" aria-hidden="true"></i>
                 <span>Clientes</span>
             </a>
-            <a href="/analytics.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-chart-pie w-5"></i>
+            <a href="/analytics.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-chart-pie w-5 text-center" aria-hidden="true"></i>
                 <span>Analytics</span>
             </a>
-            <a href="/agents.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-robot w-5"></i>
+            <a href="/agents.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-robot w-5 text-center" aria-hidden="true"></i>
                 <span>Agentes</span>
             </a>
         </nav>
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
-            <a href="/settings.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition">
-                <i class="fas fa-cog w-5"></i>
+            <a href="/settings.html" 
+               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+                <i class="fas fa-cog w-5 text-center" aria-hidden="true"></i>
                 <span>Configurações</span>
             </a>
             <div class="mt-4 px-4 py-3 rounded-lg bg-olive-900/50 border border-olive-700">
                 <div class="flex items-center gap-2 text-olive-300 text-xs">
-                    <i class="fas fa-circle text-[8px] animate-pulse"></i>
+                    <i class="fas fa-circle text-[8px] animate-pulse" aria-hidden="true"></i>
                     <span>Sistema Online</span>
                 </div>
                 <p class="text-xs text-gray-400 mt-1">v2.1.0 • Night Shift</p>
@@ -262,15 +494,25 @@
     </aside>
 
     <!-- Main Content -->
-    <div id="main-content" class="lg:ml-64">
+    <div id="main-content" class="lg:ml-72">
         <!-- Header -->
         <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-30">
             <div class="px-4 sm:px-6 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-800 transition" aria-label="Menu">
-                        <i class="fas fa-bars text-gray-400"></i>
+                    <button onclick="toggleSidebar()" 
+                            class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-800 transition touch-target" 
+                            aria-label="Abrir menu"
+                            aria-expanded="false"
+                            aria-controls="sidebar">
+                        <i class="fas fa-bars text-gray-400" aria-hidden="true"></i>
                     </button>
                     <div>
+                        <!-- Breadcrumb Navigation -->
+                        <nav class="breadcrumb mb-1" aria-label="Breadcrumb">
+                            <a href="/">Home</a>
+                            <span class="breadcrumb-separator">/</span>
+                            <span class="current" aria-current="page">Dashboard</span>
+                        </nav>
                         <h1 class="font-bold text-base sm:text-lg">Shopify Dashboard</h1>
                         <p class="text-xs text-gray-400 hidden sm:block">Real-time Store Analytics</p>
                     </div>
@@ -281,11 +523,17 @@
                         <div class="text-xs text-gray-400">Last Updated</div>
                         <div id="last-updated" class="text-sm font-medium">-</div>
                     </div>
-                    <button onclick="refreshDashboard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Atualizar">
-                        <i class="fas fa-sync-alt text-sm"></i>
+                    <button onclick="refreshDashboard()" 
+                            class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition touch-target" 
+                            title="Atualizar dados"
+                            aria-label="Atualizar dashboard">
+                        <i class="fas fa-sync-alt text-sm" aria-hidden="true"></i>
                     </button>
-                    <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition" title="Voltar">
-                        <i class="fas fa-arrow-left text-sm"></i>
+                    <a href="/" 
+                       class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition touch-target" 
+                       title="Voltar para home"
+                       aria-label="Voltar">
+                        <i class="fas fa-arrow-left text-sm" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -296,22 +544,22 @@
             <div id="loading-state" class="space-y-4">
                 <!-- Skeleton Metrics -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <div class="metric-card p-4 sm:p-5">
+                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
                         <div class="skeleton h-4 w-24 mb-3"></div>
                         <div class="skeleton h-8 w-32 mb-2"></div>
                         <div class="skeleton h-3 w-20"></div>
                     </div>
-                    <div class="metric-card p-4 sm:p-5">
+                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
                         <div class="skeleton h-4 w-20 mb-3"></div>
                         <div class="skeleton h-8 w-28 mb-2"></div>
                         <div class="skeleton h-3 w-16"></div>
                     </div>
-                    <div class="metric-card p-4 sm:p-5">
+                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
                         <div class="skeleton h-4 w-28 mb-3"></div>
                         <div class="skeleton h-8 w-32 mb-2"></div>
                         <div class="skeleton h-3 w-20"></div>
                     </div>
-                    <div class="metric-card p-4 sm:p-5">
+                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
                         <div class="skeleton h-4 w-24 mb-3"></div>
                         <div class="skeleton h-8 w-24 mb-2"></div>
                         <div class="skeleton h-3 w-16"></div>
@@ -341,105 +589,108 @@
             <!-- Content (hidden while loading) -->
             <div id="dashboard-content" class="space-y-4 sm:space-y-6 hidden">
                 <!-- Key Metrics -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" role="region" aria-label="Métricas principais">
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider">Receita MTD</span>
-                            <i class="fas fa-dollar-sign text-terracotta-400"></i>
+                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Receita MTD</span>
+                            <i class="fas fa-dollar-sign text-terracotta-400" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-revenue" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="metric-revenue" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
                         <div id="trend-revenue" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i>
-                            <span>-</span>
+                            <span aria-hidden="true">—</span>
+                            <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider">Pedidos</span>
-                            <i class="fas fa-shopping-bag text-blue-400"></i>
+                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Pedidos</span>
+                            <i class="fas fa-shopping-bag text-blue-400" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-orders" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="metric-orders" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
                         <div id="trend-orders" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i>
-                            <span>-</span>
+                            <span aria-hidden="true">—</span>
+                            <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider">Ticket Médio</span>
-                            <i class="fas fa-receipt text-olive-400"></i>
+                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Ticket Médio</span>
+                            <i class="fas fa-receipt text-olive-350" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-aov" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="metric-aov" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
                         <div id="trend-aov" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i>
-                            <span>-</span>
+                            <span aria-hidden="true">—</span>
+                            <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider">Taxa Recompra</span>
-                            <i class="fas fa-redo text-purple-400"></i>
+                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Taxa Recompra</span>
+                            <i class="fas fa-redo text-purple-400" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-repeat" class="text-xl sm:text-3xl font-bold metric-value truncate">-</div>
+                        <div id="metric-repeat" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
                         <div id="trend-repeat" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i>
-                            <span>-</span>
+                            <span aria-hidden="true">—</span>
+                            <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Revenue Chart -->
-                    <div class="lg:col-span-2 card p-4 sm:p-5">
+                    <section class="lg:col-span-2 card p-4 sm:p-5" aria-labelledby="chart-title">
                         <div class="flex items-center justify-between mb-4">
-                            <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
-                                <i class="fas fa-chart-bar text-terracotta-400"></i>
+                            <h2 id="chart-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                                <i class="fas fa-chart-bar text-terracotta-400" aria-hidden="true"></i>
                                 Receita - Últimos 7 Dias
                             </h2>
                             <div class="flex items-center gap-2 text-xs">
                                 <span class="flex items-center gap-1">
-                                    <span class="w-3 h-3 rounded bg-terracotta-400"></span> Receita
+                                    <span class="w-3 h-3 rounded bg-terracotta-400" aria-hidden="true"></span> 
+                                    <span>Receita</span>
                                 </span>
                             </div>
                         </div>
                         <div class="chart-container">
-                            <canvas id="revenueChart"></canvas>
+                            <canvas id="revenueChart" role="img" aria-label="Gráfico de receita dos últimos 7 dias"></canvas>
                         </div>
-                    </div>
+                    </section>
 
                     <!-- Top Products -->
-                    <div class="card">
+                    <section class="card" aria-labelledby="products-title">
                         <div class="p-4 border-b border-gray-800">
-                            <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
-                                <i class="fas fa-trophy text-yellow-400"></i>
+                            <h2 id="products-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                                <i class="fas fa-trophy text-yellow-400" aria-hidden="true"></i>
                                 Top Produtos
                             </h2>
                         </div>
-                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto">
+                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto" role="list">
                             <!-- Products loaded here -->
                         </div>
-                    </div>
+                    </section>
                 </div>
 
                 <!-- Recent Orders -->
-                <div class="card overflow-hidden">
+                <section class="card overflow-hidden" aria-labelledby="orders-title">
                     <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                        <h2 class="font-semibold flex items-center gap-2 text-sm sm:text-base">
-                            <i class="fas fa-list text-blue-400"></i>
+                        <h2 id="orders-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                            <i class="fas fa-list text-blue-400" aria-hidden="true"></i>
                             Pedidos Recentes
                         </h2>
-                        <a href="/orders.html" class="text-xs text-terracotta-400 hover:underline">Ver todos</a>
+                        <a href="/orders.html" class="text-xs text-terracotta-400 hover:underline focus:outline-none focus:ring-2 focus:ring-terracotta-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-2 py-1">
+                            Ver todos
+                        </a>
                     </div>
                     <div class="overflow-x-auto -mx-4 sm:mx-0">
                         <div class="min-w-[600px] sm:min-w-0 px-4 sm:px-0">
                             <table class="w-full">
                                 <thead class="bg-gray-900/50">
                                     <tr>
-                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">ID</th>
-                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Cliente</th>
-                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Data</th>
-                                        <th class="text-left p-3 text-xs font-medium text-gray-400 uppercase">Status</th>
-                                        <th class="text-right p-3 text-xs font-medium text-gray-400 uppercase">Total</th>
+                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
+                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Cliente</th>
+                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Data</th>
+                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="text-right p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody id="recent-orders" class="divide-y divide-gray-800">
@@ -448,7 +699,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </main>
     </div>
@@ -456,22 +707,134 @@
     <script>
         let revenueChart = null;
         let isSidebarOpen = false;
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-        // Sidebar toggle
+        // Toast Notification System
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.setAttribute('role', 'status');
+            toast.setAttribute('aria-live', 'polite');
+            
+            const icons = {
+                success: 'fa-check-circle text-olive-400',
+                error: 'fa-exclamation-circle text-red-400',
+                info: 'fa-info-circle text-blue-400'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-lg" aria-hidden="true"></i>
+                <span class="text-sm">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // Sidebar toggle with accessibility
         function toggleSidebar() {
             isSidebarOpen = !isSidebarOpen;
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
+            const menuButton = document.querySelector('button[aria-label="Abrir menu"]');
             
             if (isSidebarOpen) {
                 sidebar.classList.add('open');
                 overlay.classList.add('open');
                 document.body.style.overflow = 'hidden';
+                if (menuButton) {
+                    menuButton.setAttribute('aria-expanded', 'true');
+                    menuButton.setAttribute('aria-label', 'Fechar menu');
+                }
+                // Focus first link for accessibility
+                setTimeout(() => {
+                    const firstLink = sidebar.querySelector('a');
+                    if (firstLink) firstLink.focus();
+                }, 100);
             } else {
                 sidebar.classList.remove('open');
                 overlay.classList.remove('open');
                 document.body.style.overflow = '';
+                if (menuButton) {
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    menuButton.setAttribute('aria-label', 'Abrir menu');
+                }
             }
+        }
+
+        // Swipe gesture support for mobile sidebar
+        function initSwipeGestures() {
+            const sidebar = document.getElementById('sidebar');
+            
+            // Swipe to open (from left edge)
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const swipeDistance = touchEndX - touchStartX;
+                
+                // Swipe right from left edge to open
+                if (swipeDistance > swipeThreshold && touchStartX < 30 && !isSidebarOpen) {
+                    toggleSidebar();
+                }
+                
+                // Swipe left to close
+                if (swipeDistance < -swipeThreshold && isSidebarOpen) {
+                    toggleSidebar();
+                }
+            }
+        }
+
+        // Pull to refresh for mobile
+        function initPullToRefresh() {
+            let startY = 0;
+            let isPulling = false;
+            const pullIndicator = document.getElementById('pullRefresh');
+            
+            document.addEventListener('touchstart', (e) => {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].clientY;
+                    isPulling = true;
+                }
+            }, { passive: true });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isPulling) return;
+                const currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+                
+                if (diff > 60 && window.scrollY === 0) {
+                    pullIndicator.classList.add('visible');
+                }
+            }, { passive: true });
+            
+            document.addEventListener('touchend', () => {
+                if (pullIndicator.classList.contains('visible')) {
+                    refreshDashboard();
+                    setTimeout(() => {
+                        pullIndicator.classList.remove('visible');
+                    }, 500);
+                }
+                isPulling = false;
+            }, { passive: true });
         }
 
         // Close sidebar on resize to desktop
@@ -489,41 +852,68 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
+            initSwipeGestures();
+            initPullToRefresh();
             loadDashboard();
         });
 
         async function loadDashboard() {
             try {
-                // Show loading state
-                document.getElementById('loading-state').classList.remove('hidden');
-                document.getElementById('dashboard-content').classList.add('hidden');
+                // Show loading state with fade
+                const loadingState = document.getElementById('loading-state');
+                const content = document.getElementById('dashboard-content');
+                
+                loadingState.classList.remove('hidden');
+                content.classList.add('hidden');
                 
                 const res = await fetch('/api/shopify/stats');
                 const data = await res.json();
                 
-                // Hide loading, show content
-                document.getElementById('loading-state').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
+                // Lazy load Chart.js before rendering
+                await loadChartJs();
+                
+                // Smooth transition
+                loadingState.classList.add('hidden');
+                content.classList.remove('hidden');
+                content.classList.add('fade-enter');
+                
+                requestAnimationFrame(() => {
+                    content.classList.add('fade-enter-active');
+                    setTimeout(() => {
+                        content.classList.remove('fade-enter', 'fade-enter-active');
+                    }, 300);
+                });
                 
                 updateMetrics(data);
                 renderChart(data.revenue_7days || []);
                 renderTopProducts(data.top_products || []);
                 renderRecentOrders(data.recent_orders || []);
                 
-                // Mostrar indicador de dados reais vs mockados
+                // Mostrar indicador de dados
                 const sourceIndicator = document.getElementById('data-source-indicator');
                 if (sourceIndicator) {
                     if (data._source === 'shopify_api') {
-                        sourceIndicator.innerHTML = '<span class="text-olive-400 text-xs flex items-center gap-1"><i class="fas fa-check-circle"></i> Dados Reais Shopify</span>';
+                        sourceIndicator.innerHTML = `
+                            <span class="text-olive-350 text-xs flex items-center gap-1 font-medium">
+                                <i class="fas fa-check-circle" aria-hidden="true"></i> 
+                                Dados Reais Shopify
+                            </span>`;
                     } else {
-                        sourceIndicator.innerHTML = '<span class="text-yellow-400 text-xs flex items-center gap-1"><i class="fas fa-exclamation-triangle"></i> Dados Simulados</span>';
+                        sourceIndicator.innerHTML = `
+                            <span class="text-yellow-400 text-xs flex items-center gap-1 font-medium">
+                                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> 
+                                Dados Simulados
+                            </span>`;
                     }
                 }
                 
-                document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('pt-BR');
+                document.getElementById('last-updated').textContent = 
+                    new Date().toLocaleTimeString('pt-BR');
+                
             } catch (err) {
                 console.error('Error loading dashboard:', err);
-                // Hide loading, show content with fallback
+                showToast('Erro ao carregar dados. Usando fallback.', 'error');
+                
                 document.getElementById('loading-state').classList.add('hidden');
                 document.getElementById('dashboard-content').classList.remove('hidden');
                 loadFallbackData();
@@ -555,13 +945,21 @@
         function updateTrend(elementId, trend) {
             const el = document.getElementById(elementId);
             if (!trend) {
-                el.innerHTML = '<span class="text-gray-500">-</span>';
+                el.innerHTML = '<span class="text-gray-500">—</span>';
                 return;
             }
             const isUp = trend >= 0;
             const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
             const colorClass = isUp ? 'trend-up' : 'trend-down';
-            el.innerHTML = `<i class="fas ${icon} ${colorClass}"></i><span class="${colorClass} ml-1">${Math.abs(trend).toFixed(1)}% vs mês anterior</span>`;
+            const label = isUp ? 'aumento' : 'queda';
+            el.innerHTML = `
+                <i class="fas ${icon} ${colorClass}" aria-hidden="true"></i>
+                <span class="${colorClass} ml-1">
+                    ${Math.abs(trend).toFixed(1)}% 
+                    <span class="sr-only">${label}</span> 
+                    vs mês anterior
+                </span>
+            `;
         }
 
         function renderChart(revenueData) {
@@ -587,15 +985,20 @@
                     datasets: [{
                         label: 'Receita',
                         data: values,
-                        backgroundColor: 'rgba(193, 119, 103, 0.8)',
+                        backgroundColor: 'rgba(193, 119, 103, 0.85)',
                         borderColor: '#c17767',
                         borderWidth: 1,
-                        borderRadius: isMobile ? 2 : 4,
+                        borderRadius: isMobile ? 3 : 6,
+                        borderSkipped: false,
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
@@ -604,6 +1007,9 @@
                             bodyColor: '#fafafa',
                             borderColor: '#2a2a2a',
                             borderWidth: 1,
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false,
                             callbacks: {
                                 label: (context) => formatCurrency(context.raw)
                             }
@@ -612,11 +1018,15 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#1f1f1f' },
+                            grid: { 
+                                color: '#1f1f1f',
+                                drawBorder: false
+                            },
                             ticks: {
                                 color: '#888',
                                 callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k',
-                                font: { size: isMobile ? 10 : 12 }
+                                font: { size: isMobile ? 10 : 12 },
+                                padding: 8
                             }
                         },
                         x: {
@@ -624,9 +1034,14 @@
                             ticks: { 
                                 color: '#888',
                                 font: { size: isMobile ? 9 : 11 },
-                                maxRotation: isMobile ? 45 : 0
+                                maxRotation: isMobile ? 45 : 0,
+                                padding: 8
                             }
                         }
+                    },
+                    animation: {
+                        duration: 800,
+                        easing: 'easeOutQuart'
                     }
                 }
             });
@@ -635,17 +1050,23 @@
         function renderTopProducts(products) {
             const container = document.getElementById('top-products');
             if (products.length === 0) {
-                container.innerHTML = '<div class="p-4 text-center text-gray-500 text-sm">Nenhum dado de produtos</div>';
+                container.innerHTML = `
+                    <div class="p-4 text-center text-gray-500 text-sm">
+                        Nenhum dado de produtos disponível
+                    </div>`;
                 return;
             }
             
             container.innerHTML = products.slice(0, 10).map((product, index) => `
-                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer" tabindex="0" role="button">
-                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-terracotta-400' : 'text-gray-500'} flex-shrink-0">
+                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer touch-target" 
+                     role="listitem"
+                     tabindex="0"
+                     aria-label="${product.name}, ${product.sold} vendas, ${formatCurrency(product.revenue)}">
+                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-terracotta-400' : 'text-gray-500'} flex-shrink-0" aria-hidden="true">
                         ${index + 1}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-medium truncate">${product.name}</h4>
+                        <h4 class="text-sm font-medium truncate">${escapeHtml(product.name)}</h4>
                         <p class="text-xs text-gray-500">${product.sold} vendas</p>
                     </div>
                     <div class="text-right flex-shrink-0">
@@ -659,15 +1080,24 @@
         function renderRecentOrders(orders) {
             const container = document.getElementById('recent-orders');
             if (orders.length === 0) {
-                container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500 text-sm">Nenhum pedido</td></tr>';
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-4 text-center text-gray-500 text-sm">
+                            Nenhum pedido encontrado
+                        </td>
+                    </tr>`;
                 return;
             }
             
             container.innerHTML = orders.slice(0, 10).map(order => `
                 <tr class="hover:bg-gray-900/30 transition">
-                    <td class="p-3 text-sm font-mono">#${order.id.slice(-6)}</td>
-                    <td class="p-3 text-sm">${order.customer}</td>
-                    <td class="p-3 text-sm text-gray-400">${new Date(order.date).toLocaleDateString('pt-BR')}</td>
+                    <td class="p-3 text-sm font-mono">
+                        <span aria-label="Pedido número">#</span>${order.id.slice(-6)}
+                    </td>
+                    <td class="p-3 text-sm">${escapeHtml(order.customer)}</td>
+                    <td class="p-3 text-sm text-gray-400">
+                        ${new Date(order.date).toLocaleDateString('pt-BR')}
+                    </td>
                     <td class="p-3">
                         <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(order.status)}">
                             ${translateStatus(order.status)}
@@ -691,11 +1121,11 @@
 
         function getStatusClass(status) {
             const classes = {
-                'paid': 'bg-olive-900/50 text-olive-400',
-                'pending': 'bg-yellow-900/50 text-yellow-400',
-                'processing': 'bg-blue-900/50 text-blue-400',
-                'fulfilled': 'bg-purple-900/50 text-purple-400',
-                'cancelled': 'bg-red-900/50 text-red-400'
+                'paid': 'bg-olive-900/50 text-olive-350 border border-olive-700/50',
+                'pending': 'bg-yellow-900/50 text-yellow-400 border border-yellow-700/50',
+                'processing': 'bg-blue-900/50 text-blue-400 border border-blue-700/50',
+                'fulfilled': 'bg-purple-900/50 text-purple-400 border border-purple-700/50',
+                'cancelled': 'bg-red-900/50 text-red-400 border border-red-700/50'
             };
             return classes[status?.toLowerCase()] || 'bg-gray-800 text-gray-400';
         }
@@ -707,37 +1137,26 @@
             }).format(value || 0);
         }
 
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function loadFallbackData() {
             const fallbackData = {
-                revenue_mtd: 45678.90,
-                orders_mtd: 123,
-                aov: 371.37,
-                repeat_rate: 32.5,
-                revenue_trend: 12.5,
-                orders_trend: 8.3,
-                aov_trend: 3.7,
-                repeat_trend: -2.1,
-                revenue_7days: [
-                    { date: '2024-03-21', amount: 5234.50 },
-                    { date: '2024-03-22', amount: 7891.20 },
-                    { date: '2024-03-23', amount: 4567.80 },
-                    { date: '2024-03-24', amount: 6234.90 },
-                    { date: '2024-03-25', amount: 8912.40 },
-                    { date: '2024-03-26', amount: 7234.60 },
-                    { date: '2024-03-27', amount: 5423.70 }
-                ],
-                top_products: [
-                    { name: 'Camiseta Oversized', sold: 45, quantity: 89, revenue: 4455.50 },
-                    { name: 'Boné Dad Hat', sold: 38, quantity: 52, revenue: 1899.00 },
-                    { name: 'Calça Jogger', sold: 32, quantity: 41, revenue: 3196.80 },
-                    { name: 'Moletom Essential', sold: 28, quantity: 35, revenue: 3916.00 },
-                    { name: 'Tote Bag', sold: 25, quantity: 48, revenue: 997.50 }
-                ],
-                recent_orders: [
-                    { id: 'order_001', customer: 'João Silva', date: '2024-03-27T10:30:00', status: 'paid', total: 234.50 },
-                    { id: 'order_002', customer: 'Maria Santos', date: '2024-03-27T09:15:00', status: 'processing', total: 189.90 },
-                    { id: 'order_003', customer: 'Pedro Costa', date: '2024-03-26T18:45:00', status: 'fulfilled', total: 567.80 }
-                ]
+                revenue_mtd: 0,
+                orders_mtd: 0,
+                aov: 0,
+                repeat_rate: 0,
+                revenue_trend: 0,
+                orders_trend: 0,
+                aov_trend: 0,
+                repeat_trend: 0,
+                revenue_7days: [],
+                top_products: [],
+                recent_orders: []
             };
             
             updateMetrics(fallbackData);
@@ -747,7 +1166,12 @@
         }
 
         function refreshDashboard() {
-            loadDashboard();
+            showToast('Atualizando dados...', 'info', 1500);
+            loadDashboard().then(() => {
+                showToast('Dados atualizados!', 'success');
+            }).catch(() => {
+                showToast('Falha ao atualizar', 'error');
+            });
         }
     </script>
 </body>
