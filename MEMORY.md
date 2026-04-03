@@ -52,6 +52,15 @@ Verificar com: cat /root/.openclaw/skills/clawpify/.env | grep TOKEN
 | 📊 Timesheet Generator | A cada 1h | ✅ Rodando |
 | 🔔 Deploy Monitor Notifier | A cada 5m | ✅ Rodando |
 | 🌅 Morning Brief Generator | 7h da manhã (BRT) | ✅ Agendado |
+| 🔄 Sync Agent State to Render | A cada 5 min | ✅ Ativo |
+| 👁️ Post-Deploy Visual Check | A cada 1h | ✅ Ativo |
+
+### Rotina de Verificação Visual Pós-Deploy
+Após cada deploy no Render, o agente deve:
+1. Acessar https://criativalia-control-plane.onrender.com
+2. Verificar todas as páginas: /, /kanban, /timesheet, /deliverables
+3. Tirar screenshots e reportar problemas
+4. Auto-ajustar quando possível
 
 ### Workflows GitHub Actions
 1. **Deploy on Opportunities** - Trigger quando novas oportunidades são geradas
