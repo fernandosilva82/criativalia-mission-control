@@ -625,9 +625,23 @@ app.get('/api/shopify/stats', async (req, res) => {
         
         const orders = ordersData.orders || [];
         
-        // Calcular métricas MTD
-        const revenueMTD = orders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
-        const ordersMTD = orders.length;
+        // Calcular métricas MTD (Month to Date) - filtrar apenas pedidos do mês atual
+        // Usar timezone do Brasil (BRT = UTC-3)
+        const now = new Date();
+        const brtOffset = -3 * 60 * 60 * 1000; // BRT offset em ms
+        const brtNow = new Date(now.getTime() + brtOffset);
+        const currentMonth = brtNow.getUTCMonth();
+        const currentYear = brtNow.getUTCFullYear();
+        
+        const mtdOrders = orders.filter(o => {
+            const orderDate = new Date(o.created_at);
+            const brtOrderDate = new Date(orderDate.getTime() + brtOffset);
+            return brtOrderDate.getUTCMonth() === currentMonth && 
+                   brtOrderDate.getUTCFullYear() === currentYear;
+        });
+        
+        const revenueMTD = mtdOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
+        const ordersMTD = mtdOrders.length;
         const aov = ordersMTD > 0 ? revenueMTD / ordersMTD : 0;
         
         // Clientes únicos e taxa de recompra
