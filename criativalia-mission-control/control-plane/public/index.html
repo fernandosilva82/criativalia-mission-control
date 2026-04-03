@@ -1,236 +1,371 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Criativalia Control Plane</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/criativalia-theme.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criativalia Control Plane</title>
+  <link rel="stylesheet" href="css/criativalia-theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      background: linear-gradient(135deg, var(--olive-dark) 0%, var(--olive-primary) 100%);
+      color: var(--cream);
+      padding: var(--space-2xl) var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .page-header h1 {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .page-header p {
+      opacity: 0.8;
+      font-size: var(--text-lg);
+    }
+    
+    .section-title {
+      font-family: var(--font-display);
+      color: var(--olive-dark);
+      font-size: var(--text-2xl);
+      margin: var(--space-2xl) 0 var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--beige-dark);
+    }
+    
+    .component-showcase {
+      background: var(--beige);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+    
+    .color-swatch {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .color-swatch span {
+      opacity: 0.8;
+      margin-top: var(--space-xs);
+    }
+
+    /* Logo SVG Styles */
+    .nav__brand-logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .nav__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+  </style>
 </head>
 <body>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-    
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="logo-container">
-            <div class="logo-icon">
-                <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Criativalia Logo - Olive Leaf -->
-                    <path d="M50 5C50 5 20 25 20 55C20 75 35 90 50 90C65 90 80 75 80 55C80 25 50 5 50 5Z" 
-                          fill="url(#oliveGradient)" stroke="#F5F5DC" stroke-width="2"/>
-                    <path d="M50 15C50 15 30 30 30 55C30 70 40 80 50 80C60 80 70 70 70 55C70 30 50 15 50 15Z" 
-                          fill="url(#innerGradient)" opacity="0.6"/>
-                    <line x1="50" y1="15" x2="50" y2="85" stroke="#D4A853" stroke-width="1.5"/>
-                    <ellipse cx="35" cy="45" rx="8" ry="4" fill="#5A6D33" transform="rotate(-30 35 45)"/>
-                    <ellipse cx="65" cy="50" rx="8" ry="4" fill="#5A6D33" transform="rotate(30 65 50)"/>
-                    <ellipse cx="40" cy="65" rx="6" ry="3" fill="#5A6D33" transform="rotate(-45 40 65)"/>
-                    <defs>
-                        <linearGradient id="oliveGradient" x1="20%" y1="0%" x2="80%" y2="100%">
-                            <stop offset="0%" stop-color="#4A5D23"/>
-                            <stop offset="100%" stop-color="#D4A853"/>
-                        </linearGradient>
-                        <linearGradient id="innerGradient" x1="30%" y1="0%" x2="70%" y2="100%">
-                            <stop offset="0%" stop-color="#5A6D33"/>
-                            <stop offset="100%" stop-color="#4A5D23"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-            </div>
-            <div class="logo-text">
-                <div class="logo-brand">Criativalia</div>
-                <div class="logo-tagline">Control Plane</div>
-            </div>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__container">
+      <a href="#" class="nav__brand">
+        <img src="images/criativalia-logo.svg" alt="Criativalia" class="nav__brand-logo">
+      </a>
+      <ul class="nav__links">
+        <li><a href="index.html" class="nav__link nav__link--active">Design System</a></li>
+        <li><a href="dashboard.html" class="nav__link">Dashboard</a></li>
+        <li><a href="deliverables.html" class="nav__link">Entregáveis</a></li>
+        <li><a href="kanban.html" class="nav__link">Kanban</a></li>
+        <li><a href="timesheet.html" class="nav__link">Timesheet</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="container">
+      <h1>Control Plane</h1>
+      <p>Sistema de gerenciamento multi-agente da Criativalia</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Brand Logo Component -->
+    <h2 class="section-title">Logo & Identidade</h2>
+    <div class="component-showcase">
+      <div class="brand-logo">
+        <div class="brand-logo__icon">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 35C20 35 5 20 5 10C5 4 10 0 15 0C20 0 25 5 25 12C25 22 20 35 20 35Z" fill="#F5F5DC"/>
+            <path d="M20 35V5" stroke="#3A4A1C" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
-        
-        <nav class="sidebar-nav">
-            <a href="/" class="sidebar-item active">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/kanban.html" class="sidebar-item">
-                <i class="fas fa-columns"></i>
-                <span>Kanban</span>
-            </a>
-            <a href="/timesheet.html" class="sidebar-item">
-                <i class="fas fa-clock"></i>
-                <span>Timesheet</span>
-            </a>
-            <a href="/deliverables.html" class="sidebar-item">
-                <i class="fas fa-box"></i>
-                <span>Entregas</span>
-            </a>
-            <a href="/dashboard.html" class="sidebar-item">
-                <i class="fas fa-store"></i>
-                <span>Shopify</span>
-            </a>
-        </nav>
-        
-        <div class="sidebar-footer">
-            <div class="agent-status">
-                <div class="agent-avatar">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div class="agent-info">
-                    <div class="agent-name">Multi-Agent</div>
-                    <div class="agent-version">v2.0 • Online</div>
-                </div>
-            </div>
+        <div>
+          <div class="brand-logo__text">Criativalia</div>
+          <div class="brand-logo__tagline">Decoração & Interiores</div>
         </div>
-    </aside>
+      </div>
+      <div style="margin-top: var(--space-lg); padding: var(--space-md); background: white; border-radius: var(--radius-md); display: inline-block;">
+        <img src="images/criativalia-logo.svg" alt="Criativalia Logo" style="height: 50px;">
+      </div>
+    </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="header-left">
-                    <div class="hamburger" onclick="toggleSidebar()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div>
-                        <h1 class="header-title">
-                            <i class="fas fa-home"></i>
-                            Dashboard
-                        </h1>
-                        <p class="header-subtitle">Multi-Agent Runtime v2.0</p>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div id="runtime-status" class="flex items-center gap-sm" style="color: var(--text-primary);">
-                        <span class="status-dot online"></span>
-                        <span>Running</span>
-                    </div>
-                    <button onclick="refreshData()" class="btn btn-primary btn-icon">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
-                </div>
-            </div>
-        </header>
+    <!-- Color Palette -->
+    <h2 class="section-title">Paleta de Cores</h2>
+    <div class="color-palette">
+      <div class="color-swatch" style="background: #4A5D23; color: #F5F5DC;">
+        Verde Oliva<br><span>#4A5D23</span>
+      </div>
+      <div class="color-swatch" style="background: #3A4A1C; color: #F5F5DC;">
+        Oliva Escuro<br><span>#3A4A1C</span>
+      </div>
+      <div class="color-swatch" style="background: #2A3615; color: #F5F5DC;">
+        Oliva Mais Escuro<br><span>#2A3615</span>
+      </div>
+      <div class="color-swatch" style="background: #6B7B3D; color: #F5F5DC;">
+        Oliva Claro<br><span>#6B7B3D</span>
+      </div>
+      <div class="color-swatch" style="background: #8C9A5A; color: #2C2C2C;">
+        Oliva Mais Claro<br><span>#8C9A5A</span>
+      </div>
+      <div class="color-swatch" style="background: #F5F5DC; color: #2C2C2C; border: 1px solid #D4CDB5;">
+        Off-White<br><span>#F5F5DC</span>
+      </div>
+      <div class="color-swatch" style="background: #E8E4C9; color: #2C2C2C;">
+        Bege<br><span>#E8E4C9</span>
+      </div>
+      <div class="color-swatch" style="background: #D4CDB5; color: #2C2C2C;">
+        Bege Escuro<br><span>#D4CDB5</span>
+      </div>
+      <div class="color-swatch" style="background: #2C2C2C; color: #F5F5DC;">
+        Charcoal<br><span>#2C2C2C</span>
+      </div>
+    </div>
 
-        <!-- Content -->
-        <div class="container">
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-4 mb-lg">
-                <div class="stat-card success">
-                    <div class="stat-label">Active Agents</div>
-                    <div id="stat-agents" class="stat-value">-</div>
-                </div>
-                <div class="stat-card warning">
-                    <div class="stat-label">Active Tasks</div>
-                    <div id="stat-tasks" class="stat-value">-</div>
-                </div>
-                <div class="stat-card info">
-                    <div class="stat-label">Sessions</div>
-                    <div id="stat-sessions" class="stat-value">-</div>
-                </div>
-                <div class="stat-card error">
-                    <div class="stat-label">Pending Review</div>
-                    <div id="stat-review" class="stat-value" style="color: var(--status-error);">-</div>
-                </div>
-            </div>
-            
-            <!-- Agent List Section -->
-            <div class="card mb-lg">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        <i class="fas fa-robot"></i>
-                        Agents
-                    </h2>
-                    <button onclick="loadAgents()" class="btn btn-primary btn-sm">
-                        <i class="fas fa-sync-alt"></i>
-                        Refresh
-                    </button>
-                </div>
-                <div id="agents-list" class="grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-                    <!-- Agents loaded here -->
-                </div>
-            </div>
+    <!-- Stats Cards -->
+    <h2 class="section-title">Estatísticas</h2>
+    <div class="grid grid--4">
+      <div class="stat-card animate-fadeIn">
+        <div class="stat-card__value">12</div>
+        <div class="stat-card__label">Agentes Ativos</div>
+      </div>
+      <div class="stat-card animate-fadeIn" style="animation-delay: 0.1s;">
+        <div class="stat-card__value">847</div>
+        <div class="stat-card__label">Produtos</div>
+      </div>
+      <div class="stat-card animate-fadeIn" style="animation-delay: 0.2s;">
+        <div class="stat-card__value">2.4k</div>
+        <div class="stat-card__label">Visualizações</div>
+      </div>
+      <div class="stat-card animate-fadeIn" style="animation-delay: 0.3s;">
+        <div class="stat-card__value">96%</div>
+        <div class="stat-card__label">Uptime</div>
+      </div>
+    </div>
 
-            <!-- Footer -->
-            <div class="app-footer">
-                <i class="fas fa-leaf"></i>
-                Criativalia Control Plane v2.0 — Sistema Multi-Agente Autônomo
-            </div>
+    <!-- Cards -->
+    <h2 class="section-title">Cards</h2>
+    <div class="grid grid--3">
+      <!-- Card Padrão -->
+      <div class="card">
+        <div class="card__header">
+          <h3 class="card__title">Card Padrão</h3>
+          <span class="badge badge--active">● Ativo</span>
         </div>
-    </main>
+        <div class="card__body">
+          <p>Este é um card padrão com bordas suaves e sombra sutil. Ideal para exibir informações gerais.</p>
+        </div>
+        <div class="card__footer">
+          <button class="btn btn--secondary btn--sm">Cancelar</button>
+          <button class="btn btn--primary btn--sm">Confirmar</button>
+        </div>
+      </div>
 
-    <script>
-        function toggleSidebar() { 
-            const s = document.getElementById('sidebar'), o = document.getElementById('sidebarOverlay'); 
-            s.classList.toggle('open'); 
-            o.classList.toggle('open'); 
-        }
-        
-        async function refreshData() { 
-            try { 
-                const r = await fetch('/api/state'); 
-                const d = await r.json(); 
-                document.getElementById('stat-agents').textContent = d.active_agents || 0; 
-                document.getElementById('stat-tasks').textContent = d.active_tasks || 0; 
-                document.getElementById('stat-sessions').textContent = d.active_sessions || 0; 
-                document.getElementById('stat-review').textContent = d.pending_review || 0; 
-            } catch(e) {
-                console.error('Error refreshing data:', e);
-            } 
-        }
-        
-        async function loadAgents() {
-            try {
-                const r = await fetch('/api/agents');
-                const data = await r.json();
-                const agents = data.agents || [];
-                const container = document.getElementById('agents-list');
-                
-                if (agents.length === 0) {
-                    container.innerHTML = `
-                        <div class="empty-state" style="grid-column: 1/-1;">
-                            <i class="fas fa-robot"></i>
-                            <p>Nenhum agente encontrado</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                container.innerHTML = agents.map(agent => `
-                    <div class="card agent-card ${agent.status}">
-                        <div class="agent-card-header">
-                            <div class="agent-card-name">${agent.name}</div>
-                            <span class="agent-card-status ${agent.status}">
-                                ${agent.status === 'running' ? '🔥 RUNNING' : '⏳ IDLE'}
-                            </span>
-                        </div>
-                        <div class="agent-card-role">${agent.role}</div>
-                        <div class="agent-card-meta">
-                            ${agent.time_until_next_min ? `Next in ${agent.time_until_next_min}min` : 'Waiting...'}
-                        </div>
-                    </div>
-                `).join('');
-            } catch(e) {
-                document.getElementById('agents-list').innerHTML = `
-                    <div class="empty-state" style="grid-column: 1/-1; color: var(--status-error);">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p>Erro ao carregar agents</p>
-                    </div>
-                `;
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            refreshData();
-            loadAgents();
-            
-            // Auto-refresh every 30 seconds
-            setInterval(refreshData, 30000);
-        });
-    </script>
+      <!-- Card Dark -->
+      <div class="card card--dark">
+        <div class="card__header">
+          <h3 class="card__title">Card Dark</h3>
+          <span class="badge badge--neutral">Info</span>
+        </div>
+        <div class="card__body">
+          <p>Variante escura para destacar conteúdo importante ou criar contraste visual.</p>
+        </div>
+        <div class="card__footer">
+          <button class="btn btn--ghost btn--sm" style="color: var(--cream);">Detalhes</button>
+        </div>
+      </div>
+
+      <!-- Card Outlined -->
+      <div class="card card--outlined">
+        <div class="card__header">
+          <h3 class="card__title">Card Outlined</h3>
+          <span class="badge badge--pending">⏳ Pendente</span>
+        </div>
+        <div class="card__body">
+          <p>Card com borda destacada para estados especiais ou ações em andamento.</p>
+        </div>
+        <div class="card__footer">
+          <button class="btn btn--outline btn--sm">Ver Mais</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <h2 class="section-title">Botões</h2>
+    <div class="component-showcase">
+      <div class="flex gap-md" style="flex-wrap: wrap; align-items: center;">
+        <button class="btn btn--primary">Primário</button>
+        <button class="btn btn--secondary">Secundário</button>
+        <button class="btn btn--outline">Outline</button>
+        <button class="btn btn--ghost">Ghost</button>
+      </div>
+      <div class="flex gap-md" style="flex-wrap: wrap; align-items: center; margin-top: var(--space-md);">
+        <button class="btn btn--primary btn--sm">Pequeno</button>
+        <button class="btn btn--primary">Padrão</button>
+        <button class="btn btn--primary btn--lg">Grande</button>
+        <button class="btn btn--primary" disabled>Desabilitado</button>
+      </div>
+    </div>
+
+    <!-- Form Inputs -->
+    <h2 class="section-title">Formulários</h2>
+    <div class="component-showcase">
+      <div class="grid grid--2">
+        <div class="form-group">
+          <label class="form-label">Nome do Agente</label>
+          <input type="text" class="form-input" placeholder="Ex: Scanner de Produtos">
+          <span class="form-hint">Nome descritivo para identificação</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <select class="form-select">
+            <option>Selecione...</option>
+            <option>Scanner</option>
+            <option>Sync</option>
+            <option>Analyzer</option>
+            <option>Reporter</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Intervalo (minutos)</label>
+          <input type="number" class="form-input" value="60">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <input type="text" class="form-input form-input--success" value="Ativo">
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label class="form-label">Descrição</label>
+          <textarea class="form-textarea" placeholder="Descreva a função deste agente..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <h2 class="section-title">Badges</h2>
+    <div class="component-showcase">
+      <div class="flex gap-md" style="flex-wrap: wrap;">
+        <span class="badge badge--active">● Ativo</span>
+        <span class="badge badge--pending">⏳ Pendente</span>
+        <span class="badge badge--error">✕ Erro</span>
+        <span class="badge badge--neutral">○ Inativo</span>
+      </div>
+    </div>
+
+    <!-- Metrics -->
+    <h2 class="section-title">Métricas</h2>
+    <div class="component-showcase">
+      <div class="grid grid--3">
+        <div class="metric">
+          <span class="metric__value">R$ 12.5k</span>
+          <span class="metric__change metric__change--positive">↑ 23%</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">1,847</span>
+          <span class="metric__change metric__change--positive">↑ 8%</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">3.2%</span>
+          <span class="metric__change metric__change--negative">↓ 1%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <h2 class="section-title">Tabela de Agentes</h2>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Agente</th>
+            <th>Tipo</th>
+            <th>Status</th>
+            <th>Última Execução</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Product Scanner</strong></td>
+            <td>Scanner</td>
+            <td><span class="badge badge--active">● Ativo</span></td>
+            <td>2 min atrás</td>
+            <td>
+              <button class="btn btn--ghost btn--sm">Editar</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Price Sync</strong></td>
+            <td>Sync</td>
+            <td><span class="badge badge--active">● Ativo</span></td>
+            <td>15 min atrás</td>
+            <td>
+              <button class="btn btn--ghost btn--sm">Editar</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Inventory Check</strong></td>
+            <td>Analyzer</td>
+            <td><span class="badge badge--pending">⏳ Pendente</span></td>
+            <td>1 hora atrás</td>
+            <td>
+              <button class="btn btn--ghost btn--sm">Editar</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Daily Report</strong></td>
+            <td>Reporter</td>
+            <td><span class="badge badge--error">✕ Erro</span></td>
+            <td>3 horas atrás</td>
+            <td>
+              <button class="btn btn--ghost btn--sm">Editar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer style="text-align: center; padding: var(--space-2xl); color: var(--olive-light); margin-top: var(--space-2xl);">
+    <p><img src="images/criativalia-logo.svg" alt="Criativalia" style="height: 24px; opacity: 0.7;"></p>
+    <p style="margin-top: var(--space-sm);">Control Plane · 2026</p>
+  </footer>
 </body>
 </html>
