@@ -1126,23 +1126,26 @@
             const columns = ['inbox', 'opportunity', 'ready', 'inprogress', 'review', 'deploy', 'done'];
             
             try {
-                const response = await fetch('/api/cron/tasks');
-                const tasks = response.ok ? await response.json() : [];
+                // Load from static JSON file
+                const response = await fetch('/data/agents-data.json?t=' + Date.now());
+                const data = response.ok ? await response.json() : { tasks: {} };
+                
+                const tasks = data.tasks || {};
                 
                 columns.forEach(col => {
-                    const colTasks = tasks.filter(t => t.status?.toLowerCase().replace(' ', '') === col) || [];
+                    const colTasks = tasks[col] || [];
                     document.getElementById(`count-${col}`).textContent = colTasks.length;
                     
                     const container = document.getElementById(`kanban-${col}`);
                     if (colTasks.length === 0) {
-                        container.innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>';
+                        container.innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Nenhuma tarefa</div>';
                     } else {
                         container.innerHTML = colTasks.map(task => `
                             <div class="kanban-card">
                                 <div class="font-medium text-sm mb-2">${task.title || 'Sem título'}</div>
                                 <div class="flex items-center justify-between text-xs">
                                     <span class="text-[#D4A853]">${task.agent || 'N/A'}</span>
-                                    <span class="text-gray-400">${task.priority || 'normal'}</span>
+                                    <span class="badge ${task.priority === 'high' ? 'badge-red' : task.priority === 'medium' ? 'badge-yellow' : 'badge-green'}">${task.priority || 'normal'}</span>
                                 </div>
                             </div>
                         `).join('');
@@ -1151,7 +1154,7 @@
             } catch (err) {
                 console.error('Error loading kanban:', err);
                 columns.forEach(col => {
-                    document.getElementById(`kanban-${col}`).innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Erro ao carregar</div>';
+                    document.getElementById(`kanban-${col}`).innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Erro ao carregar dados</div>';
                 });
             }
         }
@@ -1159,44 +1162,44 @@
         // ==================== TIMESHEET SECTION ====================
         async function loadTimesheetData() {
             try {
-                const response = await fetch('/api/agents/timesheet');
-                const data = response.ok ? await response.json() : { entries: [] };
+                // Load from static JSON file
+                const response = await fetch('/data/agents-data.json?t=' + Date.now());
+                const data = response.ok ? await response.json() : { timesheet: [] };
                 
-                const entries = data.entries || [];
+                const entries = data.timesheet || [];
                 const container = document.getElementById('timesheet-container');
                 
                 if (entries.length === 0) {
                     container.innerHTML = '<div class="text-center text-gray-500 py-8">Sem atividades registradas</div>';
                 } else {
-                    // Group by hour
-                    const byHour = {};
-                    entries.forEach(e => {
-                        const hour = e.hour || '00:00';
-                        if (!byHour[hour]) byHour[hour] = [];
-                        byHour[hour].push(e);
-                    });
-                    
-                    const hours = Object.keys(byHour).sort();
-                    container.innerHTML = hours.map(hour => `
+                    container.innerHTML = entries.map(e => `
                         <div class="timesheet-row">
-                            <div class="timesheet-hour">${hour}</div>
-                            <div>
-                                ${byHour[hour].map(e => `
-                                    <div class="flex items-center gap-2 mb-1 text-sm">
-                                        <i class="fas fa-robot text-[#4A5D23] text-xs"></i>
-                                        <span class="text-[#D4A853]">${e.agent}</span>
-                                        <span class="text-gray-400">-</span>
-                                        <span>${e.activity}</span>
-                                        <span class="text-xs text-gray-500 ml-auto">${e.duration || 0}min</span>
-                                    </div>
-                                `).join('')}
+                            <div class="timesheet-hour">${e.agent}</div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-4 mb-1 text-sm">
+                                    <span class="text-[#D4A853]">${e.sessions} sessões</span>
+                                    <span class="text-gray-400">|</span>
+                                    <span>${e.tasks} tarefas</span>
+                                    <span class="text-gray-400">|</span>
+                                    <span>${e.logs} logs</span>
+                                    <span class="text-xs text-gray-500 ml-auto">${formatTimeAgo(e.lastActive)}</span>
+                                </div>
                             </div>
                         </div>
                     `).join('');
                 }
                 
                 // Update summary
-                document.getElementById('ts-total-hours').textContent = (data.total_hours || 0).toFixed(1) + 'h';
+                const totalSessions = entries.reduce((sum, e) => sum + (e.sessions || 0), 0);
+                const totalTasks = entries.reduce((sum, e) => sum + (e.tasks || 0), 0);
+                document.getElementById('ts-total-hours').textContent = totalSessions + ' sessões';
+                document.getElementById('ts-total-tasks').textContent = totalTasks + ' tarefas';
+                
+            } catch (err) {
+                console.error('Error loading timesheet:', err);
+                document.getElementById('timesheet-container').innerHTML = '<div class="text-center text-gray-500 py-8">Erro ao carregar dados</div>';
+            }
+        }
                 document.getElementById('ts-tasks-completed').textContent = data.tasks_completed || 0;
                 document.getElementById('ts-commits').textContent = data.commits || 0;
                 document.getElementById('ts-deploys').textContent = data.deploys || 0;
@@ -1368,7 +1371,8 @@
         // ==================== DELIVERABLES SECTION ====================
         async function loadDeliverablesData() {
             try {
-                const response = await fetch('/api/agents/deliverables');
+                // Load from static JSON file
+                const response = await fetch('/data/agents-data.json?t=' + Date.now());
                 const data = response.ok ? await response.json() : { deliverables: [] };
                 
                 const deliverables = data.deliverables || [];
@@ -1392,9 +1396,9 @@
                                 <td class="font-medium">${d.name}</td>
                                 <td>${d.agent}</td>
                                 <td><span class="badge ${statusColors[d.status] || 'badge-gold'}">${d.status}</span></td>
-                                <td class="text-xs text-gray-400">${d.start_date || '-'}</td>
-                                <td class="text-xs text-gray-400">${d.end_date || '-'}</td>
-                                <td>${d.duration || '-'}</td>
+                                <td class="text-xs text-gray-400">${d.created || '-'}</td>
+                                <td class="text-xs text-gray-400">${d.completed || '-'}</td>
+                                <td>${d.type || '-'}</td>
                                 <td>
                                     ${d.url ? `<a href="${d.url}" target="_blank" class="text-[#D4A853] hover:underline"><i class="fas fa-external-link-alt"></i></a>` : '-'}
                                 </td>
@@ -1407,11 +1411,11 @@
                 document.getElementById('del-total').textContent = deliverables.length;
                 document.getElementById('del-completed').textContent = deliverables.filter(d => d.status === 'completed').length;
                 document.getElementById('del-inprogress').textContent = deliverables.filter(d => d.status === 'in_progress').length;
-                document.getElementById('del-avg-time').textContent = data.avg_duration || '-';
+                document.getElementById('del-avg-time').textContent = deliverables.length > 0 ? Math.round(deliverables.reduce((sum, d) => sum + (d.duration || 0), 0) / deliverables.length) + ' dias' : '-';
                 
             } catch (err) {
                 console.error('Error loading deliverables:', err);
-                document.getElementById('deliverables-body').innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">Erro ao carregar</td></tr>';
+                document.getElementById('deliverables-body').innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">Erro ao carregar dados</td></tr>';
             }
         }
 

@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-04-03T14:30:00Z",
+  "total_jobs": 187,
+  "summary": {
+    "running": 0,
+    "enabled": 187,
+    "errors": 0
+  },
+  "jobs": [
+    {"id": "ceo-agent", "name": "CEO Agent - Orquestrador", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "traffic-scanner", "name": "TrafficBot Scanner", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "copy-scanner", "name": "CopyBot Scanner", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "ops-scanner", "name": "OpsBot Scanner", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "timesheet-generator", "name": "Timesheet Generator", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "deploy-monitor", "name": "Deploy Monitor Notifier", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "morning-brief", "name": "Morning Brief Generator", "enabled": true, "running": false, "lastRun": null, "errors": 0},
+    {"id": "sync-agent-state", "name": "Sync Agent State to Render", "enabled": true, "running": false, "lastRun": null, "errors": 0}
+  ],
+  "tasks": {
+    "inbox": [],
+    "opportunity": [],
+    "ready": [
+      {"id": "task-1", "title": "Analisar tráfego do site", "agent": "TrafficBot", "priority": "high", "created": "2026-04-03T10:00:00Z"},
+      {"id": "task-2", "title": "Revisar copy de produtos", "agent": "CopyBot", "priority": "medium", "created": "2026-04-03T09:00:00Z"}
+    ],
+    "in_progress": [
+      {"id": "task-3", "title": "Otimizar performance", "agent": "OpsBot", "priority": "high", "created": "2026-04-03T08:00:00Z"}
+    ],
+    "review": [],
+    "deploy": [],
+    "done": [
+      {"id": "task-4", "title": "Gerar timesheet", "agent": "Timesheet Generator", "priority": "low", "created": "2026-04-03T07:00:00Z", "completed": "2026-04-03T07:05:00Z"}
+    ]
+  },
+  "timesheet": [
+    {"agent": "CEO Agent", "sessions": 5, "tasks": 12, "logs": 45, "lastActive": "2026-04-03T14:00:00Z"},
+    {"agent": "TrafficBot", "sessions": 3, "tasks": 8, "logs": 23, "lastActive": "2026-04-03T13:30:00Z"},
+    {"agent": "CopyBot", "sessions": 2, "tasks": 5, "logs": 18, "lastActive": "2026-04-03T12:00:00Z"},
+    {"agent": "OpsBot", "sessions": 4, "tasks": 10, "logs": 32, "lastActive": "2026-04-03T14:15:00Z"}
+  ],
+  "deliverables": [
+    {"id": "del-1", "name": "Relatório de Tráfego - Março", "agent": "TrafficBot", "status": "completed", "created": "2026-03-31", "completed": "2026-04-01", "type": "pdf"},
+    {"id": "del-2", "name": "Copy para Campanha Páscoa", "agent": "CopyBot", "status": "in_progress", "created": "2026-04-02", "type": "doc"},
+    {"id": "del-3", "name": "Otimização de Imagens", "agent": "OpsBot", "status": "pending", "created": "2026-04-03", "type": "image"}
+  ]
+}
