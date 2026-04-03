@@ -1,6 +1,7 @@
 {
   "date": "2026-04-02",
-  "period": "2026-04-01 18:29 - 2026-04-02 18:29",
+  "generated_at": "2026-04-02T23:35:00+08:00",
+  "period": "last_24h",
   "agents": {
     "CopyBot": [
       {
@@ -9,96 +10,138 @@
         "duration_min": 6,
         "task": "Calendário Editorial Q2 2026",
         "priority": "P2",
+        "type": "content_strategy",
+        "deliverable_id": "DEL-2026-0401-005",
+        "status": "completed",
         "evidence_link": "/evidencias/20260401/deliverable_calendario_editorial.json",
-        "description": "30 posts blog, 60 posts social, 12 newsletters",
-        "deliverable_id": "DEL-2026-0401-005"
+        "output_file": "/estrategias/calendario_editorial_q2.md"
       },
       {
         "start": "23:00",
         "end": "23:05",
         "duration_min": 5,
-        "task": "Estratégia Marketing 360°",
+        "task": "Estratégia de Marketing 360°",
         "priority": "P1",
+        "type": "strategy_document",
+        "deliverable_id": "DEL-2026-0401-001",
+        "status": "completed",
         "evidence_link": "/evidencias/20260401/deliverable_estrategia_360.json",
-        "description": "Posicionamento, personas, jornada, KPIs",
-        "deliverable_id": "DEL-2026-0401-001"
+        "output_file": "/estrategias/marketing_estrategia_360.md"
       },
       {
         "start": "23:06",
         "end": "23:11",
         "duration_min": 5,
-        "task": "Sequência Carrinho Abandonado",
+        "task": "Sequência Carrinho Abandonado (Klaviyo)",
         "priority": "P0",
+        "type": "email_automation",
+        "deliverable_id": "DEL-2026-0401-002",
+        "status": "completed",
         "evidence_link": "/evidencias/20260401/deliverable_carrinho_abandonado.json",
-        "description": "3 emails HTML Klaviyo (recuperação +R$3.970/mês)",
-        "deliverable_id": "DEL-2026-0401-002"
+        "output_file": "/estrategias/SEQUENCIA_CARRINHO_ABANDONADO_KLAVIYO.md"
       },
       {
         "start": "23:08",
         "end": "23:11",
         "duration_min": 3,
-        "task": "3 Bundles Estratégicos",
+        "task": "3 Bundles Estratégicos Shopify",
         "priority": "P1",
+        "type": "product_strategy",
+        "deliverable_id": "DEL-2026-0401-003",
+        "status": "completed",
         "evidence_link": "/evidencias/20260401/deliverable_bundles.json",
-        "description": "Quarto Sonhos, Sala Premium, Home Office (ticket +30%)",
-        "deliverable_id": "DEL-2026-0401-003"
+        "output_file": "/estrategias/BUNDLES_SHOPIFY_CONFIGURACAO.md"
       },
       {
         "start": "23:10",
         "end": "23:12",
         "duration_min": 2,
-        "task": "Conteúdo Blog: Luminária Cogumelo",
+        "task": "Conteúdo Blog: Luminária Cogumelo (SEO)",
         "priority": "P1",
+        "type": "content_marketing",
+        "deliverable_id": "DEL-2026-0401-004",
+        "status": "completed",
         "evidence_link": "/evidencias/20260401/deliverable_blog_mushroom.json",
-        "description": "Post SEO 2.400 palavras (tráfego +200%)",
-        "deliverable_id": "DEL-2026-0401-004"
-      }
-    ],
-    "DesignBot": [
-      {
-        "start": "19:12",
-        "end": "20:30",
-        "duration_min": 78,
-        "task": "UX/UI Night Shift - Review & Fixes",
-        "priority": "P0",
-        "evidence_link": "/evidencias/20260401/uxui_review_1912.md",
-        "description": "Consolidação navegação, mobile fixes, acessibilidade",
-        "files_modified": 5
+        "output_file": "/estrategias/CONTEUDO_BLOG_POST_1_MUSHROOM.md"
       }
     ],
     "OpsBot": [
       {
-        "start": "07:08",
-        "end": "08:15",
-        "duration_min": 67,
-        "task": "Mobile UX/UI Improvements",
+        "start": "19:12",
+        "end": "20:00",
+        "duration_min": 48,
+        "task": "UX/UI Review Night Shift - Consolidação Navegação",
         "priority": "P0",
+        "type": "ux_ui_review",
+        "deliverable_id": "UX-2026-0401-001",
+        "status": "completed",
+        "evidence_link": "/evidencias/20260401/uxui_review_1912.md",
+        "files_modified": [
+          "dashboard.html",
+          "index.html",
+          "kanban.html",
+          "timesheet.html",
+          "deliverables.html"
+        ]
+      },
+      {
+        "start": "07:08",
+        "end": "07:30",
+        "duration_min": 22,
+        "task": "Night Shift UX/UI - Mobile, Accessibility, Performance",
+        "priority": "P0",
+        "type": "ux_ui_improvements",
+        "deliverable_id": "UX-2026-0402-001",
+        "status": "completed",
         "evidence_link": "/evidencias/20260402/uxui_review_0708.md",
-        "description": "Swipe gestures, bottom nav, toasts, preconnect, a11y",
-        "metrics_improved": {
-          "LCP": "-12%",
-          "CLS": "-67%",
-          "Accessibility": "+22pts",
-          "Usability": "+23pts"
+        "files_modified": [
+          "dashboard.html"
+        ],
+        "impact": {
+          "lcp_mobile": "-12%",
+          "cls_mobile": "-67%",
+          "accessibility": "+22pts",
+          "usability": "+23pts"
         }
       }
     ],
-    "TrafficBot": []
+    "TrafficBot": [],
+    "DesignBot": []
   },
   "summary": {
     "total_tasks": 7,
-    "total_duration_min": 166,
-    "total_duration_hours": 2.77,
+    "completed": 7,
+    "in_progress": 0,
+    "failed": 0,
+    "total_duration_min": 91,
+    "by_agent": {
+      "CopyBot": {
+        "tasks": 5,
+        "duration_min": 21
+      },
+      "OpsBot": {
+        "tasks": 2,
+        "duration_min": 70
+      },
+      "TrafficBot": {
+        "tasks": 0,
+        "duration_min": 0
+      },
+      "DesignBot": {
+        "tasks": 0,
+        "duration_min": 0
+      }
+    },
     "by_priority": {
-      "P0": 2,
+      "P0": 3,
       "P1": 4,
       "P2": 1
-    },
-    "by_agent": {
-      "CopyBot": 5,
-      "DesignBot": 1,
-      "OpsBot": 1,
-      "TrafficBot": 0
     }
-  }
+  },
+  "notes": [
+    "CopyBot: 5 entregas concluídas em sequência (~21 min de trabalho intenso)",
+    "OpsBot: 2 revisões UX/UI com foco em mobile-first e acessibilidade",
+    "TrafficBot: Sem atividades nas últimas 24h (possivelmente aguardando configurações)",
+    "DesignBot: Sem atividades nas últimas 24h (dependência de briefings)"
+  ]
 }

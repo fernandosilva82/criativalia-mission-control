@@ -23,7 +23,6 @@
     
     <!-- Lazy load Chart.js -->
     <script>
-        // Lazy load Chart.js only when needed
         window.chartJsLoaded = false;
         function loadChartJs() {
             if (window.chartJsLoaded) return Promise.resolve();
@@ -88,15 +87,15 @@
             color: #fafafa; 
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overscroll-behavior-x: none; /* Previne swipe back no mobile */
+            overscroll-behavior-x: none;
         }
         
-        /* Sidebar Animation - Melhorada para swipe */
+        /* Sidebar Animation */
         .sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: transform;
-            touch-action: pan-y; /* Permite scroll vertical, bloqueia horizontal */
+            touch-action: pan-y;
         }
         .sidebar.open {
             transform: translateX(0);
@@ -112,7 +111,7 @@
             visibility: visible;
         }
         
-        /* Swipe indicator for mobile */
+        /* Enhanced Swipe indicator for mobile */
         .swipe-indicator {
             position: absolute;
             right: 8px;
@@ -120,11 +119,16 @@
             transform: translateY(-50%);
             width: 4px;
             height: 40px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             border-radius: 2px;
+            transition: opacity 0.3s;
         }
         
-        /* Card Styles - Melhorado contraste */
+        .sidebar:hover .swipe-indicator {
+            opacity: 0.6;
+        }
+        
+        /* Card Styles */
         .card { 
             background: #141414; 
             border: 1px solid #2a2a2a; 
@@ -142,11 +146,12 @@
             border-radius: 12px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
         }
         .metric-card:hover {
             transform: translateY(-2px);
             border-color: #c17767;
+            box-shadow: 0 8px 30px rgba(193, 119, 103, 0.15);
         }
         .metric-card::before {
             content: '';
@@ -158,16 +163,21 @@
             background: linear-gradient(90deg, #c17767, #7a9e7a);
         }
         
-        /* Melhor contraste para texto em gradiente */
+        /* Enhanced Metric Value with better contrast */
         .metric-value { 
-            background: linear-gradient(135deg, #ffffff 0%, #c17767 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 1.875rem;
             font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         
-        /* Botões com touch target mínimo 44px */
+        @media (min-width: 640px) {
+            .metric-value {
+                font-size: 2.25rem;
+            }
+        }
+        
+        /* Enhanced Buttons */
         .btn-primary { 
             background: #c17767; 
             color: white;
@@ -177,6 +187,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            border-radius: 8px;
+            font-weight: 500;
         }
         .btn-primary:hover { 
             background: #d48877;
@@ -187,26 +199,37 @@
             transform: translateY(0) scale(0.98);
         }
         
-        /* Touch target mínimo para todos elementos clicáveis */
+        /* Touch target minimum */
         .touch-target {
             min-height: 44px;
             min-width: 44px;
         }
         
-        /* Melhor contraste para tendências */
+        /* Enhanced Trends with better contrast */
         .trend-up { 
-            color: #8ab88a; /* Verde mais brilhante para melhor contraste WCAG AA */
-            font-weight: 500;
+            color: #7acc7a;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
         .trend-down { 
-            color: #e88a7a; /* Vermelho mais brilhante */
-            font-weight: 500;
+            color: #ff8a7a;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
         
+        /* Enhanced Product Row */
+        .product-row { 
+            transition: all 0.15s;
+            border-radius: 8px;
+            margin: 0 8px;
+        }
         .product-row:hover { 
-            background: rgba(193, 119, 103, 0.1); 
+            background: rgba(193, 119, 103, 0.08);
         }
-        
         .product-row:focus {
             outline: 2px solid #c17767;
             outline-offset: -2px;
@@ -217,7 +240,7 @@
             height: 300px; 
         }
         
-        /* Skeleton Loading Animation - Suavizado */
+        /* Enhanced Skeleton Loading */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -229,7 +252,7 @@
             border-radius: 4px;
         }
         
-        /* Toast Notifications */
+        /* Enhanced Toast Notifications */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -258,16 +281,16 @@
             transform: translateX(0);
         }
         .toast.success {
-            border-left: 3px solid #7a9e7a;
+            border-left: 3px solid #7acc7a;
         }
         .toast.error {
-            border-left: 3px solid #c17767;
+            border-left: 3px solid #ff6b6b;
         }
         .toast.info {
             border-left: 3px solid #5a9fd4;
         }
         
-        /* Breadcrumb Navigation */
+        /* Enhanced Breadcrumb Navigation */
         .breadcrumb {
             display: flex;
             align-items: center;
@@ -279,6 +302,7 @@
         .breadcrumb a {
             color: #888;
             transition: color 0.2s;
+            text-decoration: none;
         }
         .breadcrumb a:hover {
             color: #c17767;
@@ -291,20 +315,52 @@
             color: #555;
         }
         
-        /* Touch-friendly improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .metric-card:hover {
-                transform: none;
-            }
-            .btn-primary:hover {
-                transform: none;
-            }
-            .product-row:hover {
-                background: transparent;
-            }
-            .product-row:active {
-                background: rgba(193, 119, 103, 0.1);
-            }
+        /* Enhanced Navigation Items */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+            margin-bottom: 4px;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: #c17767;
+            border-radius: 0 2px 2px 0;
+            transition: height 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #ffffff;
+        }
+        
+        .nav-item:hover::before {
+            height: 20px;
+        }
+        
+        .nav-item.active {
+            background: rgba(193, 119, 103, 0.1);
+            color: #c17767;
+            border: 1px solid rgba(193, 119, 103, 0.2);
+        }
+        
+        .nav-item.active::before {
+            height: 24px;
         }
         
         /* Mobile optimizations */
@@ -324,6 +380,25 @@
             }
             .toast.show {
                 transform: translateY(0);
+            }
+            .metric-value {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .metric-card:hover {
+                transform: none;
+            }
+            .btn-primary:hover {
+                transform: none;
+            }
+            .product-row:hover {
+                background: transparent;
+            }
+            .product-row:active {
+                background: rgba(193, 119, 103, 0.1);
             }
         }
         
@@ -346,6 +421,7 @@
             z-index: 9999;
             font-weight: 500;
             transition: top 0.2s;
+            text-decoration: none;
         }
         .skip-link:focus {
             top: 16px;
@@ -403,6 +479,44 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Status badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+        }
+        
+        .badge--paid {
+            background: rgba(122, 204, 122, 0.15);
+            color: #7acc7a;
+            border-color: rgba(122, 204, 122, 0.3);
+        }
+        
+        .badge--pending {
+            background: rgba(232, 184, 122, 0.15);
+            color: #e8b87a;
+            border-color: rgba(232, 184, 122, 0.3);
+        }
+        
+        .badge--processing {
+            background: rgba(90, 159, 212, 0.15);
+            color: #5a9fd4;
+            border-color: rgba(90, 159, 212, 0.3);
+        }
+        
+        .badge--cancelled {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+            border-color: rgba(255, 107, 107, 0.3);
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -427,51 +541,51 @@
          tabindex="0"></div>
     
     <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-gray-900 border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none"
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-[#141414] border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none"
            role="navigation"
            aria-label="Menu principal">
         <div class="swipe-indicator lg:hidden"></div>
         <div class="p-6 border-b border-gray-800">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center flex-shrink-0">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange-500/20">
                     <i class="fas fa-rocket text-white text-sm" aria-hidden="true"></i>
                 </div>
                 <div class="min-w-0">
                     <h1 class="font-bold text-lg text-white truncate">Criativalia</h1>
-                    <p class="text-xs text-gray-400">Control Plane</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider">Control Plane</p>
                 </div>
             </div>
         </div>
         
         <nav class="p-4 space-y-1" aria-label="Navegação principal">
             <a href="/dashboard.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg bg-terracotta-400/10 text-terracotta-400 border border-terracotta-400/20 touch-target"
+               class="nav-item active touch-target"
                aria-current="page">
                 <i class="fas fa-chart-line w-5 text-center" aria-hidden="true"></i>
-                <span class="font-medium">Dashboard</span>
+                <span>Dashboard</span>
             </a>
             <a href="/products.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-box w-5 text-center" aria-hidden="true"></i>
                 <span>Produtos</span>
             </a>
             <a href="/orders.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-shopping-bag w-5 text-center" aria-hidden="true"></i>
                 <span>Pedidos</span>
             </a>
             <a href="/customers.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-users w-5 text-center" aria-hidden="true"></i>
                 <span>Clientes</span>
             </a>
             <a href="/analytics.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-chart-pie w-5 text-center" aria-hidden="true"></i>
                 <span>Analytics</span>
             </a>
             <a href="/agents.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-robot w-5 text-center" aria-hidden="true"></i>
                 <span>Agentes</span>
             </a>
@@ -479,16 +593,16 @@
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
             <a href="/settings.html" 
-               class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800/50 hover:text-white transition touch-target">
+               class="nav-item touch-target">
                 <i class="fas fa-cog w-5 text-center" aria-hidden="true"></i>
                 <span>Configurações</span>
             </a>
-            <div class="mt-4 px-4 py-3 rounded-lg bg-olive-900/50 border border-olive-700">
-                <div class="flex items-center gap-2 text-olive-300 text-xs">
-                    <i class="fas fa-circle text-[8px] animate-pulse" aria-hidden="true"></i>
+            <div class="mt-4 px-4 py-3 rounded-lg bg-[#1a2a1a] border border-[#2a4a2a]">
+                <div class="flex items-center gap-2 text-[#7acc7a] text-xs font-medium">
+                    <span class="w-2 h-2 rounded-full bg-[#7acc7a] animate-pulse" aria-hidden="true"></span>
                     <span>Sistema Online</span>
                 </div>
-                <p class="text-xs text-gray-400 mt-1">v2.1.0 • Night Shift</p>
+                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift</p>
             </div>
         </div>
     </aside>
@@ -496,7 +610,7 @@
     <!-- Main Content -->
     <div id="main-content" class="lg:ml-72">
         <!-- Header -->
-        <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-30">
+        <header class="border-b border-gray-800 bg-[#0a0a0b]/80 backdrop-blur sticky top-0 z-30">
             <div class="px-4 sm:px-6 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <button onclick="toggleSidebar()" 
@@ -513,27 +627,27 @@
                             <span class="breadcrumb-separator">/</span>
                             <span class="current" aria-current="page">Dashboard</span>
                         </nav>
-                        <h1 class="font-bold text-base sm:text-lg">Shopify Dashboard</h1>
-                        <p class="text-xs text-gray-400 hidden sm:block">Real-time Store Analytics</p>
+                        <h1 class="font-bold text-base sm:text-lg text-white">Shopify Dashboard</h1>
+                        <p class="text-xs text-gray-500 hidden sm:block">Real-time Store Analytics</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 sm:gap-4">
                     <div id="data-source-indicator" class="hidden sm:block mr-2"></div>
                     <div class="text-right hidden sm:block">
-                        <div class="text-xs text-gray-400">Last Updated</div>
-                        <div id="last-updated" class="text-sm font-medium">-</div>
+                        <div class="text-xs text-gray-500">Last Updated</div>
+                        <div id="last-updated" class="text-sm font-medium text-white">-</div>
                     </div>
                     <button onclick="refreshDashboard()" 
                             class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition touch-target" 
                             title="Atualizar dados"
                             aria-label="Atualizar dashboard">
-                        <i class="fas fa-sync-alt text-sm" aria-hidden="true"></i>
+                        <i class="fas fa-sync-alt text-sm text-gray-300" aria-hidden="true"></i>
                     </button>
                     <a href="/" 
                        class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition touch-target" 
                        title="Voltar para home"
                        aria-label="Voltar">
-                        <i class="fas fa-arrow-left text-sm" aria-hidden="true"></i>
+                        <i class="fas fa-arrow-left text-sm text-gray-300" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>
@@ -593,11 +707,11 @@
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Receita MTD</span>
-                            <i class="fas fa-dollar-sign text-terracotta-400" aria-hidden="true"></i>
+                            <i class="fas fa-dollar-sign text-[#c17767]" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-revenue" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-revenue" class="text-xs mt-2 flex items-center gap-1">
-                            <span aria-hidden="true">—</span>
+                        <div id="metric-revenue" class="metric-value truncate" aria-live="polite">-</div>
+                        <div id="trend-revenue" class="text-xs mt-2">
+                            <span class="text-gray-500">—</span>
                             <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
@@ -606,20 +720,20 @@
                             <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Pedidos</span>
                             <i class="fas fa-shopping-bag text-blue-400" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-orders" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-orders" class="text-xs mt-2 flex items-center gap-1">
-                            <span aria-hidden="true">—</span>
+                        <div id="metric-orders" class="metric-value truncate" aria-live="polite">-</div>
+                        <div id="trend-orders" class="text-xs mt-2">
+                            <span class="text-gray-500">—</span>
                             <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
                     <div class="metric-card p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Ticket Médio</span>
-                            <i class="fas fa-receipt text-olive-350" aria-hidden="true"></i>
+                            <i class="fas fa-receipt text-[#8ab88a]" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-aov" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-aov" class="text-xs mt-2 flex items-center gap-1">
-                            <span aria-hidden="true">—</span>
+                        <div id="metric-aov" class="metric-value truncate" aria-live="polite">-</div>
+                        <div id="trend-aov" class="text-xs mt-2">
+                            <span class="text-gray-500">—</span>
                             <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
@@ -628,9 +742,9 @@
                             <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Taxa Recompra</span>
                             <i class="fas fa-redo text-purple-400" aria-hidden="true"></i>
                         </div>
-                        <div id="metric-repeat" class="text-xl sm:text-3xl metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-repeat" class="text-xs mt-2 flex items-center gap-1">
-                            <span aria-hidden="true">—</span>
+                        <div id="metric-repeat" class="metric-value truncate" aria-live="polite">-</div>
+                        <div id="trend-repeat" class="text-xs mt-2">
+                            <span class="text-gray-500">—</span>
                             <span class="sr-only">Carregando tendência</span>
                         </div>
                     </div>
@@ -640,13 +754,13 @@
                     <!-- Revenue Chart -->
                     <section class="lg:col-span-2 card p-4 sm:p-5" aria-labelledby="chart-title">
                         <div class="flex items-center justify-between mb-4">
-                            <h2 id="chart-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
-                                <i class="fas fa-chart-bar text-terracotta-400" aria-hidden="true"></i>
+                            <h2 id="chart-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
+                                <i class="fas fa-chart-bar text-[#c17767]" aria-hidden="true"></i>
                                 Receita - Últimos 7 Dias
                             </h2>
                             <div class="flex items-center gap-2 text-xs">
-                                <span class="flex items-center gap-1">
-                                    <span class="w-3 h-3 rounded bg-terracotta-400" aria-hidden="true"></span> 
+                                <span class="flex items-center gap-1 text-gray-400">
+                                    <span class="w-3 h-3 rounded bg-[#c17767]" aria-hidden="true"></span> 
                                     <span>Receita</span>
                                 </span>
                             </div>
@@ -659,12 +773,12 @@
                     <!-- Top Products -->
                     <section class="card" aria-labelledby="products-title">
                         <div class="p-4 border-b border-gray-800">
-                            <h2 id="products-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                            <h2 id="products-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
                                 <i class="fas fa-trophy text-yellow-400" aria-hidden="true"></i>
                                 Top Produtos
                             </h2>
                         </div>
-                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto" role="list">
+                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto py-2" role="list">
                             <!-- Products loaded here -->
                         </div>
                     </section>
@@ -673,18 +787,18 @@
                 <!-- Recent Orders -->
                 <section class="card overflow-hidden" aria-labelledby="orders-title">
                     <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                        <h2 id="orders-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base">
+                        <h2 id="orders-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
                             <i class="fas fa-list text-blue-400" aria-hidden="true"></i>
                             Pedidos Recentes
                         </h2>
-                        <a href="/orders.html" class="text-xs text-terracotta-400 hover:underline focus:outline-none focus:ring-2 focus:ring-terracotta-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-2 py-1">
+                        <a href="/orders.html" class="text-xs text-[#c17767] hover:underline focus:outline-none focus:ring-2 focus:ring-[#c17767] focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-2 py-1 transition">
                             Ver todos
                         </a>
                     </div>
                     <div class="overflow-x-auto -mx-4 sm:mx-0">
                         <div class="min-w-[600px] sm:min-w-0 px-4 sm:px-0">
                             <table class="w-full">
-                                <thead class="bg-gray-900/50">
+                                <thead class="bg-[#0f0f10]">
                                     <tr>
                                         <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
                                         <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Cliente</th>
@@ -719,19 +833,18 @@
             toast.setAttribute('aria-live', 'polite');
             
             const icons = {
-                success: 'fa-check-circle text-olive-400',
+                success: 'fa-check-circle text-[#7acc7a]',
                 error: 'fa-exclamation-circle text-red-400',
                 info: 'fa-info-circle text-blue-400'
             };
             
             toast.innerHTML = `
                 <i class="fas ${icons[type]} text-lg" aria-hidden="true"></i>
-                <span class="text-sm">${message}</span>
+                <span class="text-sm text-gray-200">${message}</span>
             `;
             
             container.appendChild(toast);
             
-            // Trigger animation
             requestAnimationFrame(() => {
                 toast.classList.add('show');
             });
@@ -757,7 +870,6 @@
                     menuButton.setAttribute('aria-expanded', 'true');
                     menuButton.setAttribute('aria-label', 'Fechar menu');
                 }
-                // Focus first link for accessibility
                 setTimeout(() => {
                     const firstLink = sidebar.querySelector('a');
                     if (firstLink) firstLink.focus();
@@ -773,11 +885,8 @@
             }
         }
 
-        // Swipe gesture support for mobile sidebar
+        // Swipe gesture support
         function initSwipeGestures() {
-            const sidebar = document.getElementById('sidebar');
-            
-            // Swipe to open (from left edge)
             document.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
             }, { passive: true });
@@ -791,19 +900,17 @@
                 const swipeThreshold = 50;
                 const swipeDistance = touchEndX - touchStartX;
                 
-                // Swipe right from left edge to open
                 if (swipeDistance > swipeThreshold && touchStartX < 30 && !isSidebarOpen) {
                     toggleSidebar();
                 }
                 
-                // Swipe left to close
                 if (swipeDistance < -swipeThreshold && isSidebarOpen) {
                     toggleSidebar();
                 }
             }
         }
 
-        // Pull to refresh for mobile
+        // Pull to refresh
         function initPullToRefresh() {
             let startY = 0;
             let isPulling = false;
@@ -837,14 +944,12 @@
             }, { passive: true });
         }
 
-        // Close sidebar on resize to desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 1024 && isSidebarOpen) {
                 toggleSidebar();
             }
         });
 
-        // Close sidebar on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isSidebarOpen) {
                 toggleSidebar();
@@ -859,7 +964,6 @@
 
         async function loadDashboard() {
             try {
-                // Show loading state with fade
                 const loadingState = document.getElementById('loading-state');
                 const content = document.getElementById('dashboard-content');
                 
@@ -869,10 +973,8 @@
                 const res = await fetch('/api/shopify/stats');
                 const data = await res.json();
                 
-                // Lazy load Chart.js before rendering
                 await loadChartJs();
                 
-                // Smooth transition
                 loadingState.classList.add('hidden');
                 content.classList.remove('hidden');
                 content.classList.add('fade-enter');
@@ -889,12 +991,11 @@
                 renderTopProducts(data.top_products || []);
                 renderRecentOrders(data.recent_orders || []);
                 
-                // Mostrar indicador de dados
                 const sourceIndicator = document.getElementById('data-source-indicator');
                 if (sourceIndicator) {
                     if (data._source === 'shopify_api') {
                         sourceIndicator.innerHTML = `
-                            <span class="text-olive-350 text-xs flex items-center gap-1 font-medium">
+                            <span class="text-[#7acc7a] text-xs flex items-center gap-1 font-medium">
                                 <i class="fas fa-check-circle" aria-hidden="true"></i> 
                                 Dados Reais Shopify
                             </span>`;
@@ -921,22 +1022,18 @@
         }
 
         function updateMetrics(data) {
-            // Revenue MTD
             const revenue = data.revenue_mtd || 0;
             document.getElementById('metric-revenue').textContent = formatCurrency(revenue);
             updateTrend('trend-revenue', data.revenue_trend);
             
-            // Orders
             const orders = data.orders_mtd || 0;
             document.getElementById('metric-orders').textContent = orders.toLocaleString('pt-BR');
             updateTrend('trend-orders', data.orders_trend);
             
-            // AOV
             const aov = data.aov || 0;
             document.getElementById('metric-aov').textContent = formatCurrency(aov);
             updateTrend('trend-aov', data.aov_trend);
             
-            // Repeat rate
             const repeatRate = data.repeat_rate || 0;
             document.getElementById('metric-repeat').textContent = repeatRate.toFixed(1) + '%';
             updateTrend('trend-repeat', data.repeat_trend);
@@ -953,8 +1050,8 @@
             const colorClass = isUp ? 'trend-up' : 'trend-down';
             const label = isUp ? 'aumento' : 'queda';
             el.innerHTML = `
-                <i class="fas ${icon} ${colorClass}" aria-hidden="true"></i>
-                <span class="${colorClass} ml-1">
+                <span class="${colorClass}">
+                    <i class="fas ${icon} text-xs" aria-hidden="true"></i>
                     ${Math.abs(trend).toFixed(1)}% 
                     <span class="sr-only">${label}</span> 
                     vs mês anterior
@@ -975,7 +1072,6 @@
                 revenueChart.destroy();
             }
             
-            // Detect mobile for chart options
             const isMobile = window.innerWidth < 640;
             
             revenueChart = new Chart(ctx, {
@@ -1058,19 +1154,19 @@
             }
             
             container.innerHTML = products.slice(0, 10).map((product, index) => `
-                <div class="product-row p-3 flex items-center gap-3 transition cursor-pointer touch-target" 
+                <div class="product-row p-3 flex items-center gap-3 cursor-pointer touch-target" 
                      role="listitem"
                      tabindex="0"
                      aria-label="${product.name}, ${product.sold} vendas, ${formatCurrency(product.revenue)}">
-                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-terracotta-400' : 'text-gray-500'} flex-shrink-0" aria-hidden="true">
+                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-[#c17767]' : 'text-gray-500'} flex-shrink-0" aria-hidden="true">
                         ${index + 1}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-medium truncate">${escapeHtml(product.name)}</h4>
+                        <h4 class="text-sm font-medium text-gray-200 truncate">${escapeHtml(product.name)}</h4>
                         <p class="text-xs text-gray-500">${product.sold} vendas</p>
                     </div>
                     <div class="text-right flex-shrink-0">
-                        <div class="text-sm font-medium">${formatCurrency(product.revenue)}</div>
+                        <div class="text-sm font-medium text-white">${formatCurrency(product.revenue)}</div>
                         <div class="text-xs text-gray-500">${product.quantity} unid.</div>
                     </div>
                 </div>
@@ -1091,19 +1187,19 @@
             
             container.innerHTML = orders.slice(0, 10).map(order => `
                 <tr class="hover:bg-gray-900/30 transition">
-                    <td class="p-3 text-sm font-mono">
+                    <td class="p-3 text-sm font-mono text-gray-300">
                         <span aria-label="Pedido número">#</span>${order.id.slice(-6)}
                     </td>
-                    <td class="p-3 text-sm">${escapeHtml(order.customer)}</td>
+                    <td class="p-3 text-sm text-gray-200">${escapeHtml(order.customer)}</td>
                     <td class="p-3 text-sm text-gray-400">
                         ${new Date(order.date).toLocaleDateString('pt-BR')}
                     </td>
                     <td class="p-3">
-                        <span class="text-xs px-2 py-1 rounded-full ${getStatusClass(order.status)}">
+                        <span class="badge badge--${order.status?.toLowerCase() || 'pending'}">
                             ${translateStatus(order.status)}
                         </span>
                     </td>
-                    <td class="p-3 text-sm text-right font-medium">${formatCurrency(order.total)}</td>
+                    <td class="p-3 text-sm text-right font-medium text-white">${formatCurrency(order.total)}</td>
                 </tr>
             `).join('');
         }
@@ -1117,17 +1213,6 @@
                 'cancelled': 'Cancelado'
             };
             return translations[status?.toLowerCase()] || status;
-        }
-
-        function getStatusClass(status) {
-            const classes = {
-                'paid': 'bg-olive-900/50 text-olive-350 border border-olive-700/50',
-                'pending': 'bg-yellow-900/50 text-yellow-400 border border-yellow-700/50',
-                'processing': 'bg-blue-900/50 text-blue-400 border border-blue-700/50',
-                'fulfilled': 'bg-purple-900/50 text-purple-400 border border-purple-700/50',
-                'cancelled': 'bg-red-900/50 text-red-400 border border-red-700/50'
-            };
-            return classes[status?.toLowerCase()] || 'bg-gray-800 text-gray-400';
         }
 
         function formatCurrency(value) {

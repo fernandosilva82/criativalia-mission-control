@@ -1,65 +1,30 @@
 {
-  "last_checked": "2026-04-02T10:43:51Z",
-  "notified_runs": [
-    {"run_id": 23701492867, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
-    {"run_id": 23702420432, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
-    {"run_id": 23702379283, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:40:00Z"},
-    {"run_id": 23702458783, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T05:58:00Z"},
-    {"run_id": 23702458551, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T06:06:00Z"},
-    {"run_id": 23702420224, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T06:17:00Z"},
-    {"run_id": 23702249166, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
-    {"run_id": 23702249161, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
-    {"run_id": 23702249160, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-03-29T07:54:00Z"},
-    {"run_id": 23708716740, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
-    {"run_id": 23708479820, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
-    {"run_id": 23708441037, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T12:55:00Z"},
-    {"run_id": 23706033265, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:10:00Z"},
-    {"run_id": 23706033251, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-03-29T13:10:00Z"},
-    {"run_id": 23710490985, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
-    {"run_id": 23710454588, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
-    {"run_id": 23710389930, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T13:50:00Z"},
-    {"run_id": 23710490704, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T14:42:00Z"},
-    {"run_id": 23710454270, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T14:42:00Z"},
-    {"run_id": 23710305440, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T15:12:00Z"},
-    {"run_id": 23713890207, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T17:05:00Z"},
-    {"run_id": 23713889975, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T17:05:00Z"},
-    {"run_id": 23713830807, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-03-29T17:05:00Z"},
-    {"run_id": 23713830586, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-03-29T17:05:00Z"},
-    {"run_id": 23713522193, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23713521797, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23713232296, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23713232044, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23712594037, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23712593762, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23712539826, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T13:06:00Z"},
-    {"run_id": 23714203616, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-04-01T05:35:00Z"},
-    {"run_id": 23714203615, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-04-01T05:35:00Z"},
-    {"run_id": 23714203608, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T05:35:00Z"},
-    {"run_id": 23714203345, "workflow": "notify-deploy.yml", "conclusion": "failure", "notified_at": "2026-04-01T11:36:00Z"},
-    {"run_id": 23858800506, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-01T18:49:00Z"},
-    {"run_id": 23869486395, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
-    {"run_id": 23869486341, "workflow": "Deploy on Opportunities Update", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
-    {"run_id": 23869486326, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-04-02T07:07:00Z"},
-    {"run_id": 23876687620, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T00:10:00Z"},
-    {"run_id": 23876563174, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T00:10:00Z"},
-    {"run_id": 23880883152, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T02:40:00Z"},
-    {"run_id": 23885625857, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T05:34:21Z"},
-    {"run_id": 23885625848, "workflow": "Update Dashboard on Evidence", "conclusion": "success", "notified_at": "2026-04-02T05:34:21Z"},
-    {"run_id": 23894181638, "workflow": "Deploy to Render", "conclusion": "success", "notified_at": "2026-04-02T09:49:00Z"}
-  ],
-  "last_check_summary": {
-    "checked_at": "2026-04-02T10:43:51Z",
-    "total_runs_found": 10,
-    "new_notifications": 0,
-    "message": "Nenhum novo deploy para notificar. Todos já foram notificados anteriormente.",
-    "workflows_checked": ["Deploy to Render", "Deploy on Opportunities Update", "Update Dashboard on Evidence"],
-    "in_progress": [],
-    "recent_runs": [
-      {"id": 23894181638, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-04-02T09:38:50Z", "notified": true},
-      {"id": 23894180934, "name": "notify-deploy.yml", "conclusion": "failure", "updated_at": "2026-04-02T09:38:41Z", "notified": false, "ignored": "workflow_de_notificacao"},
-      {"id": 23885625857, "name": "Deploy to Render", "conclusion": "success", "updated_at": "2026-04-02T05:33:04Z", "notified": true},
-      {"id": 23885625848, "name": "Update Dashboard on Evidence", "conclusion": "success", "updated_at": "2026-04-02T05:33:08Z", "notified": true},
-      {"id": 23885625479, "name": "notify-deploy.yml", "conclusion": "failure", "updated_at": "2026-04-02T05:32:54Z", "notified": false, "ignored": "workflow_de_notificacao"}
-    ]
-  }
+  "notified_runs": {
+    "23918851000": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T05:17:00Z"
+    },
+    "23899584709": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T05:17:00Z"
+    },
+    "23899584706": {
+      "workflow": "Deploy on Opportunities Update",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T05:17:00Z"
+    },
+    "23899584698": {
+      "workflow": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T05:17:00Z"
+    },
+    "23894181638": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T05:17:00Z"
+    }
+  },
+  "last_check": "2026-04-03T05:17:00Z"
 }
