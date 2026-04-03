@@ -10,24 +10,54 @@ RENDER_URL="https://criativalia-control-plane.onrender.com"
 
 echo "🔄 Sync para Render iniciado: $(date)"
 
-# Verifica se arquivo existe e tem conteúdo
-if [ ! -f "$STATE_FILE" ] || [ ! -s "$STATE_FILE" ]; then
-    echo "❌ Arquivo $STATE_FILE não existe ou está vazio"
+# Verifica se arquivo existe
+if [ ! -f "$STATE_FILE" ]; then
+    echo "❌ Arquivo $STATE_FILE não existe"
     exit 1
 fi
 
-# Valida JSON
-if ! python3 -c "import json; json.load(open('$STATE_FILE'))" 2>/dev/null; then
-    echo "❌ Arquivo JSON inválido"
-    exit 1
-fi
+# Cria resumo compacto com Python
+python3 << EOF
+import json, datetime
 
-# Envia para o Render
+try:
+    with open("$STATE_FILE", 'r') as f:
+        data = json.load(f)
+    
+    # Cria resumo compacto (apenas essencial)
+    summary = {
+        "timestamp": data.get("timestamp", datetime.datetime.now().isoformat()),
+        "total_jobs": data.get("total_jobs", 0),
+        "summary": data.get("summary", {}),
+        "jobs": [
+            {
+                "id": j.get("jobId", j.get("id", "unknown")),
+                "name": j.get("name", "Unnamed"),
+                "enabled": j.get("enabled", True),
+                "running": bool(j.get("state", {}).get("runningAtMs")),
+                "lastRun": j.get("state", {}).get("lastRunAtMs"),
+                "errors": j.get("state", {}).get("consecutiveErrors", 0)
+            }
+            for j in data.get("jobs", [])[:50]  # Limita a 50 jobs
+        ]
+    }
+    
+    # Salva resumo temporário
+    with open("/tmp/agent_summary.json", 'w') as f:
+        json.dump(summary, f)
+    
+    print(f"✅ Resumo criado: {summary['total_jobs']} jobs")
+    
+except Exception as e:
+    print(f"❌ Erro: {e}")
+    exit(1)
+EOF
+
+# Envia resumo para o Render
 curl -s -X POST \
     -H "Content-Type: application/json" \
-    -d "@$STATE_FILE" \
-    "$RENDER_URL/api/sync/agents" 2>/dev/null || {
-    echo "⚠️ API de sync não disponível, dados ficam no arquivo"
-}
+    -d @/tmp/agent_summary.json \
+    "$RENDER_URL/api/sync/agents" 2>/dev/null || echo "⚠️ API não disponível"
 
+rm -f /tmp/agent_summary.json
 echo "✅ Sync concluído: $(date)"
