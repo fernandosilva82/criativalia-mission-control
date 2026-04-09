@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2026-04-09 16:25:41",
+    "wangyu_index": 56,
+    "trend_score": 84,
+    "volume_score": 79,
+    "momentum_score": 39,
+    "sentiment_score": 25,
+    "trend": "震荡偏多",
+    "signal": "🟡",
+    "current_position": "空仓",
+    "decision": "继续观望",
+    "reason": "指数未达开仓阈值(65)",
+    "suggested_position": "0%"
+  }
+]
