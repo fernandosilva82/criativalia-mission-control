@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet Criativalia - Últimas 24h</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f100c;
+            --bg-secondary: #181914;
+            --bg-tertiary: #1e1f1a;
+            --olive-primary: #4A5D23;
+            --olive-light: #6B7B3D;
+            --olive-dark: #3A4A1C;
+            --cream: #F5F5DC;
+            --cream-secondary: #D8D8C0;
+            --gold: #D4A853;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --success: #27ae60;
+            --border-color: rgba(74, 93, 35, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--cream);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header h1 .icon {
+            font-size: 1.5rem;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .date-range {
+            font-size: 0.875rem;
+            color: var(--cream-secondary);
+        }
+
+        .timestamp {
+            font-size: 0.75rem;
+            color: var(--olive-light);
+            margin-top: 0.25rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--agent-color);
+        }
+
+        .summary-card.trafficbot::before { background: #3498db; }
+        .summary-card.copybot::before { background: #9b59b6; }
+        .summary-card.designbot::before { background: var(--olive-primary); }
+        .summary-card.opsbot::before { background: var(--gold); }
+
+        .summary-card h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cream-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-card .subtitle {
+            font-size: 0.75rem;
+            color: var(--olive-light);
+        }
+
+        .timeline-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-color.trafficbot { background: #3498db; }
+        .legend-color.copybot { background: #9b59b6; }
+        .legend-color.designbot { background: var(--olive-primary); }
+        .legend-color.opsbot { background: var(--gold); }
+        .legend-color.p0 { background: var(--danger); }
+
+        .timeline {
+            position: relative;
+            min-width: 1000px;
+        }
+
+        .time-axis {
+            display: flex;
+            justify-content: space-between;
+            padding-left: 120px;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .time-label {
+            font-size: 0.625rem;
+            color: var(--cream-secondary);
+            position: relative;
+        }
+
+        .time-label::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 1px;
+            height: 8px;
+            background: var(--border-color);
+        }
+
+        .agent-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .agent-label {
+            width: 120px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .agent-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .agent-icon.trafficbot { background: rgba(52, 152, 219, 0.2); }
+        .agent-icon.copybot { background: rgba(155, 89, 182, 0.2); }
+        .agent-icon.designbot { background: rgba(74, 93, 35, 0.4); }
+        .agent-icon.opsbot { background: rgba(212, 168, 83, 0.2); }
+
+        .agent-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .agent-name .status {
+            display: block;
+            font-size: 0.625rem;
+            color: var(--olive-light);
+            font-weight: 400;
+            margin-top: 0.125rem;
+        }
+
+        .agent-timeline {
+            flex: 1;
+            height: 48px;
+            position: relative;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .time-block {
+            position: absolute;
+            height: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 0.625rem;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            overflow: hidden;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .time-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .time-block.trafficbot { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .time-block.copybot { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .time-block.designbot { background: linear-gradient(135deg, var(--olive-primary), var(--olive-dark)); }
+        .time-block.opsbot { background: linear-gradient(135deg, var(--gold), #b8941f); }
+        .time-block.p0 { 
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+        }
+
+        .time-block .duration {
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .gap-indicator {
+            position: absolute;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--border-color),
+                var(--border-color) 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .activity-list {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .activity-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .activity-section h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .activity-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-time {
+            font-size: 0.625rem;
+            color: var(--olive-light);
+            font-family: monospace;
+            white-space: nowrap;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            margin-bottom: 0.125rem;
+        }
+
+        .activity-desc {
+            font-size: 0.6875rem;
+            color: var(--cream-secondary);
+            line-height: 1.4;
+        }
+
+        .activity-badge {
+            font-size: 0.5625rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .activity-badge.p0 { background: rgba(231, 76, 60, 0.2); color: var(--danger); }
+        .activity-badge.p1 { background: rgba(243, 156, 18, 0.2); color: var(--warning); }
+        .activity-badge.p2 { background: rgba(39, 174, 96, 0.2); color: var(--success); }
+        .activity-badge.ops { background: rgba(212, 168, 83, 0.2); color: var(--gold); }
+
+        .no-activity {
+            text-align: center;
+            padding: 2rem;
+            color: var(--cream-secondary);
+            font-size: 0.875rem;
+        }
+
+        .no-activity .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .header-info {
+                text-align: left;
+            }
+
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .activity-list {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>
+                <span class="icon">📊</span>
+                Timesheet Criativalia - Últimas 24h
+            </h1>
+            <div class="header-info">
+                <div class="date-range">09/04/2026 - 10:30 BRT</div>
+                <div class="timestamp">Gerado em: 2026-04-09 07:52 UTC</div>
+            </div>
+        </header>
+
+        <div class="summary-cards">
+            <div class="summary-card trafficbot">
+                <h3>TrafficBot</h3>
+                <div class="value">0</div>
+                <div class="subtitle">tarefas executadas</div>
+            </div>
+            <div class="summary-card copybot">
+                <h3>CopyBot</h3>
+                <div class="value">0</div>
+                <div class="subtitle">tarefas executadas</div>
+            </div>
+            <div class="summary-card designbot">
+                <div class="value">1</div>
+                <div class="subtitle">tarefa executada</div>
+            </div>
+            <div class="summary-card opsbot">
+                <h3>OpsBot</h3>
+                <div class="value">~144</div>
+                <div class="subtitle">keep-alive pings</div>
+            </div>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-header">
+                <h2>📈 Timeline de Atividades</h2>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color trafficbot"></div>
+                        <span>TrafficBot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color copybot"></div>
+                        <span>CopyBot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color designbot"></div>
+                        <span>DesignBot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color opsbot"></div>
+                        <span>OpsBot</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color p0" style="border-radius: 50%;"></div>
+                        <span>P0 (Crítico)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="time-axis">
+                    <span class="time-label">00:00</span>
+                    <span class="time-label">03:00</span>
+                    <span class="time-label">06:00</span>
+                    <span class="time-label">09:00</span>
+                    <span class="time-label">12:00</span>
+                    <span class="time-label">15:00</span>
+                    <span class="time-label">18:00</span>
+                    <span class="time-label">21:00</span>
+                    <span class="time-label">23:59</span>
+                </div>
+
+                <!-- TrafficBot Row -->
+                <div class="agent-row">
+                    <div class="agent-label">
+                        <div class="agent-icon trafficbot">🚀</div>
+                        <div class="agent-name">
+                            TrafficBot
+                            <span class="status">Sem atividade</span>
+                        </div>
+                    </div>
+                    <div class="agent-timeline">
+                        <div class="gap-indicator" style="left: 0; right: 0;"></div>
+                    </div>
+                </div>
+
+                <!-- CopyBot Row -->
+                <div class="agent-row">
+                    <div class="agent-label">
+                        <div class="agent-icon copybot">✍️</div>
+                        <div class="agent-name">
+                            CopyBot
+                            <span class="status">Sem atividade</span>
+                        </div>
+                    </div>
+                    <div class="agent-timeline">
+                        <div class="gap-indicator" style="left: 0; right: 0;"></div>
+                    </div>
+                </div>
+
+                <!-- DesignBot Row -->
+                <div class="agent-row">
+                    <div class="agent-label">
+                        <div class="agent-icon designbot">🎨</div>
+                        <div class="agent-name">
+                            DesignBot
+                            <span class="status">1 atividade</span>
+                        </div>
+                    </div>
+                    <div class="agent-timeline">
+                        <a href="/evidencias/20260409/design_update_1030.md" class="time-block designbot" style="left: 43.75%; width: 4.17%;">
+                            <span class="duration">10:30</span>
+                            Design System Update
+                        </a>
+                    </div>
+                </div>
+
+                <!-- OpsBot Row -->
+                <div class="agent-row">
+                    <div class="agent-label">
+                        <div class="agent-icon opsbot">⚙️</div>
+                        <div class="agent-name">
+                            OpsBot
+                            <span class="status">~144 execuções</span>
+                        </div>
+                    </div>
+                    <div class="agent-timeline">
+                        <!-- Keep Render Awake - execuções contínuas a cada 10 min -->
+                        <div class="time-block opsbot" style="left: 0%; width: 100%;">
+                            <span class="duration">24h</span>
+                            Keep Render Awake (contínuo)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-list">
+            <div class="activity-section">
+                <h3>🎨 Atividades DesignBot</h3>
+                <div class="activity-item">
+                    <div class="activity-time">10:30 BRT</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Design System Update - Night Shift</div>
+                        <div class="activity-desc">Refinamento do tema visual Criativalia com paleta verde oliva (#4A5D23) e textos off-white (#F5F5DC)</div>
+                    </div>
+                    <span class="activity-badge p2">P2</span>
+                </div>
+                <div style="margin-top: 1rem; padding: 0.75rem; background: var(--bg-tertiary); border-radius: 8px; font-size: 0.6875rem; color: var(--cream-secondary);">
+                    <strong>Arquivos modificados:</strong><br>
+                    • css/criativalia-theme.css (refinado)<br>
+                    • index.html, dashboard.html, unified-dashboard.html<br>
+                    • deliverables.html, kanban.html, timesheet.html
+                </div>
+            </div>
+
+            <div class="activity-section">
+                <h3>⚙️ Atividades OpsBot</h3>
+                <div class="activity-item">
+                    <div class="activity-time">Contínuo</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Keep Render Awake</div>
+                        <div class="activity-desc">Ping a cada 10 minutos para manter backend ativo em https://criativalia-runtime.onrender.com</div>
+                    </div>
+                    <span class="activity-badge ops">OPS</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">Última execução</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Deploy Monitor</div>
+                        <div class="activity-desc">Monitoramento de deploys no GitHub Actions (em execução)</div>
+                    </div>
+                    <span class="activity-badge ops">OPS</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-section" style="margin-top: 1rem;">
+            <h3>📋 Histórico Recente (últimos 7 dias)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.75rem; margin-top: 0.75rem;">
+                <div class="activity-item" style="background: var(--bg-tertiary);">
+                    <div class="activity-time">2026-04-09 10:30</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Design System Update</div>
+                        <div class="activity-desc">Night Shift Design Agent - Paleta verde oliva refinada</div>
+                    </div>
+                </div>
+                <div class="activity-item" style="background: var(--bg-tertiary);">
+                    <div class="activity-time">2026-04-03 13:10</div>
+                    <div class="activity-content">
+                        <div class="activity-title">UX/UI Review</div>
+                        <div class="activity-desc">Night Shift UX/UI Agent - Melhorias mobile e acessibilidade</div>
+                    </div>
+                </div>
+                <div class="activity-item" style="background: var(--bg-tertiary);">
+                    <div class="activity-time">2026-04-03 05:08</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Design System Refinement</div>
+                        <div class="activity-desc">Night Shift Design Agent - Logo e componentes</div>
+                    </div>
+                </div>
+                <div class="activity-item" style="background: var(--bg-tertiary);">
+                    <div class="activity-time">2026-04-03 04:42</div>
+                    <div class="activity-content">
+                        <div class="activity-title">Design System Update</div>
+                        <div class="activity-desc">Night Shift Design Agent - Tema CSS inicial</div>
+                    </div>
+                </div>
+                <div class="activity-item" style="background: var(--bg-tertiary);">
+                    <div class="activity-time">2026-04-02 07:08</div>
+                    <div class="activity-content">
+                        <div class="activity-title">UX/UI Review</div>
+                        <div class="activity-desc">UX/UI Night Shift Agent - Mobile, a11y, performance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Adicionar interatividade aos blocos de tempo
+        document.querySelectorAll('.time-block').forEach(block => {
+            block.addEventListener('click', function(e) {
+                if (this.getAttribute('href')) {
+                    // Deixar o link funcionar normalmente
+                    return;
+                }
+                e.preventDefault();
+            });
+        });
+
+        // Atualizar timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const timestamp = now.toISOString().replace('T', ' ').slice(0, 16) + ' UTC';
+            document.querySelector('.timestamp').textContent = 'Atualizado em: ' + timestamp;
+        }
+        updateTimestamp();
+    </script>
+</body>
+</html>

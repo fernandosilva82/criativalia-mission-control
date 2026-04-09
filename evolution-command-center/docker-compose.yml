@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Evolution Command Center - Backend
+  ecc-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecc-backend
+    restart: always
+    ports:
+      - "3333:3333"
+      - "3334:3334"  # Webhook port
+    environment:
+      - NODE_ENV=production
+      - PORT=3333
+      - EVOLUTION_BASE_URL=${EVOLUTION_BASE_URL:-http://evolution-api:8080}
+      - EVOLUTION_API_KEY=${EVOLUTION_API_KEY:-your_api_key}
+      - JWT_SECRET=${JWT_SECRET:-change_this_secret}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    networks:
+      - ecc-network
+
+  # Evolution API (optional - can be external)
+  evolution-api:
+    image: atendai/evolution-api:v2.0.0
+    container_name: ecc-evolution
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY:-ecc_api_key}
+      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+      - LANGUAGE=pt-BR
+    volumes:
+      - evolution_data:/evolution/instances
+    networks:
+      - ecc-network
+    profiles:
+      - full  # Only start with --profile full
+
+  # Static frontend (optional - can use backend directly)
+  # ecc-frontend:
+  #   image: nginx:alpine
+  #   container_name: ecc-frontend
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./frontend:/usr/share/nginx/html:ro
+  #   depends_on:
+  #     - ecc-backend
+  #   networks:
+  #     - ecc-network
+
+volumes:
+  evolution_data:
+
+networks:
+  ecc-network:
+    driver: bridge

@@ -1,0 +1,1 @@
+: //criativalia-runtime.onrender.com/api/stats"

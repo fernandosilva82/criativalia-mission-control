@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  evolution-api:
+    image: atendai/evolution-api:v2.0.0
+    container_name: evolution-api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - AUTHENTICATION_API_KEY=${EVOLUTION_API_KEY:-sua_chave_aqui}
+      - AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=true
+      - LANGUAGE=pt-BR
+      - CONFIG_SESSION_PHONE_VERSION=2.3000.1015901307
+      - CONFIG_SESSION_PHONE_PLATFORM=Chrome
+    volumes:
+      - evolution_data:/evolution/instances
+    networks:
+      - evolution-network
+
+  # Redis opcional para persistência
+  redis:
+    image: redis:7-alpine
+    container_name: evolution-redis
+    restart: always
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - evolution-network
+
+volumes:
+  evolution_data:
+  redis_data:
+
+networks:
+  evolution-network:
+    driver: bridge

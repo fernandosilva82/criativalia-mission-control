@@ -1,0 +1,14 @@
+[2026-04-08T21:37:32Z] Ping successful ✅
+URL: https://criativalia-runtime.onrender.com/api/stats
+HTTP Status: 200
+Response Time: 539ms
+
+Runtime Status:
+- Status: Running (active mode)
+- Total Agents: 21 (all idle)
+- Recent Activity: Shopify Specialist (21:34), Copywriter (21:04), Designer (21:18)
+
+Database:
+- Agents: 21
+- Tasks: 1,578
+- Opportunities: 41,652

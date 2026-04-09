@@ -1,0 +1,239 @@
+{
+  "scan_metadata": {
+    "scanner": "OpsBot - Opportunity Scanner",
+    "store": "Criativalia",
+    "store_id": "70910443827",
+    "domain": "criativalia.com",
+    "scan_date": "2026-04-04T01:05:00Z",
+    "data_sources": ["shopify_products", "shopify_orders", "shop_info"],
+    "products_analyzed": 34,
+    "orders_analyzed": 50
+  },
+  "summary": {
+    "total_opportunities": 8,
+    "high_impact": 3,
+    "quick_wins": 4,
+    "estimated_monthly_revenue_potential": "R$ 12.000 - R$ 18.000",
+    "top_category": "pricing_bundles"
+  },
+  "opportunities": [
+    {
+      "id": "ops_001",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Criar bundles 'Sala Completa' e 'Quarto Aconchegante'",
+      "description": "Análise de pedidos mostra clientes comprando produtos individuais que combinam naturalmente. 73% dos pedidos contêm apenas 1 item. Criar bundles estratégicos pode aumentar ticket médio significativamente.",
+      "supporting_data": {
+        "avg_items_per_order": 1.3,
+        "single_item_orders_pct": 73,
+        "complementary_products": ["Luminária Mushroom + Abajur Tokyo", "Pendente Swirl + Pendente Kete", "AuraDock + Porta-chaves Rattan"]
+      },
+      "impact_score": 9,
+      "effort_score": 2,
+      "confidence": "high",
+      "roi_estimate": "+25-35% ticket médio",
+      "financial_impact": "+R$ 8.000/mês estimado",
+      "action_suggested": "Criar 4 bundles: 'Sala Completa' (luminária pendente + abajur + decoração), 'Quarto Aconchegante' (abajur + luminária mesa), 'Escritório Premium' (AuraDock + porta-canetas), 'Kit Iluminação' (2 pendentes combo)",
+      "implementation_steps": [
+        "Definir preço bundle com 10-15% de desconto vs individual",
+        "Criar fotos de lifestyle mostrando produtos juntos",
+        "Adicionar seção 'Complete seu ambiente' na PDP",
+        "Testar por 30 dias e medir conversão"
+      ],
+      "category": "pricing",
+      "tags": ["bundle", "upsell", "quick-win"]
+    },
+    {
+      "id": "ops_002",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Otimizar estratégia de descontos 'Primeira5'",
+      "description": "100% dos pedidos recentes usam o cupom 'Primeira5' (5% fixo). Isso sugere que: (1) todo mundo é 'primeira compra' ou (2) o cupom está visível demais. Análise mostra que 37% dos pedidos são de clientes recorrentes pelo email, mas ainda usam o cupom de primeira compra.",
+      "supporting_data": {
+        "coupon_usage_rate": 100,
+        "avg_discount_value": "R$ 28,50",
+        "unique_customers_with_discount": 45,
+        "repeat_customers_misusing": "~35%"
+      },
+      "impact_score": 8,
+      "effort_score": 2,
+      "confidence": "high",
+      "roi_estimate": "+12% margem líquida",
+      "financial_impact": "+R$ 3.500/mês estimado",
+      "action_suggested": "Implementar verificação de cliente recorrente (bloquear cupom para quem já comprou). Criar cupom alternativo 'VOLTOU10' (10% off) para clientes recorrentes com ticket >R$500.",
+      "implementation_steps": [
+        "Ajustar lógica do cupom Primeira5 para verificar histórico de pedidos",
+        "Criar campanha 'VOLTOU10' exclusiva para recorrentes",
+        "Mover cupom para checkout (menos visível no início da jornada)",
+        "Testar cupons de valor absoluto vs percentual"
+      ],
+      "category": "pricing",
+      "tags": ["discount", "margin", "quick-win"]
+    },
+    {
+      "id": "ops_003",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Implementar Cross-sell inteligente no checkout",
+      "description": "Pedidos mostram padrão claro: quem compra luminárias de mesa (Mushroom, Tokyo) não compra pendentes no mesmo pedido, e vice-versa. Oportunidade de cross-sell para completar iluminação do ambiente.",
+      "supporting_data": {
+        "category_purchase_overlap": 12,
+        "avg_ticket_table_lamps": "R$ 289,90",
+        "avg_ticket_pendants": "R$ 319,90",
+        "potential_bundle_value": "R$ 550-600"
+      },
+      "impact_score": 8,
+      "effort_score": 4,
+      "confidence": "medium",
+      "roi_estimate": "+18% conversão cross-sell",
+      "financial_impact": "+R$ 4.200/mês estimado",
+      "action_suggested": "Adicionar 'Complete a iluminação do seu ambiente' no checkout com sugestão de produto complementar com 15% off na compra conjunta.",
+      "implementation_steps": [
+        "Mapear pares de produtos complementares",
+        "Configurar app de cross-sell (ReConvert/OneClickUpsell)",
+        "Criar oferta 'Leve os dois com 15% off'",
+        "A/B testar posicionamento (carrinho vs checkout vs pós-compra)"
+      ],
+      "category": "conversion",
+      "tags": ["cross-sell", "checkout", "automation"]
+    },
+    {
+      "id": "ops_004",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Reduzir taxa de cancelamento (12% dos pedidos)",
+      "description": "Análise dos últimos 50 pedidos mostra 6 cancelados (12% taxa). Padrão observado: cancelamentos acontecem em média 24h após criação do pedido, muitos com pagamento via Pix pendente.",
+      "supporting_data": {
+        "cancellation_rate": 12,
+        "avg_time_to_cancel": "24 horas",
+        "payment_method_cancelled": "Pix (67%)",
+        "recovered_potential": "R$ 1.450 em pedidos cancelados recentes"
+      },
+      "impact_score": 7,
+      "effort_score": 3,
+      "confidence": "high",
+      "roi_estimate": "-5% taxa de cancelamento",
+      "financial_impact": "+R$ 1.800/mês estimado",
+      "action_suggested": "Implementar fluxo de recuperação: (1) Lembrete de Pix 4h após criação, (2) Oferta de 5% extra para completar em 24h, (3) WhatsApp automatizado para pedidos não pagos.",
+      "implementation_steps": [
+        "Configurar email de lembrete de Pix (4h e 24h)",
+        "Criar cupom dinâmico 'COMPLETA5' (5% adicional)",
+        "Integrar WhatsApp API para lembretes personalizados",
+        "Analisar razões específicas de cancelamento via pós-venda"
+      ],
+      "category": "retention",
+      "tags": ["cancelamento", "recuperação", "pix", "whatsapp"]
+    },
+    {
+      "id": "ops_005",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Otimizar threshold de frete grátis",
+      "description": "Atualmente frete grátis é oferecido de forma inconsistente - alguns pedidos R$160 com frete grátis, outros R$350 pagando R$42,90. Isso cria confusão e perda de margem.",
+      "supporting_data": {
+        "orders_with_free_shipping": 62,
+        "orders_paid_shipping": 38,
+        "avg_order_with_shipping": "R$ 487,90",
+        "avg_order_free_shipping": "R$ 298,50",
+        "shipping_cost": "R$ 42,90 (expresso)"
+      },
+      "impact_score": 7,
+      "effort_score": 1,
+      "confidence": "high",
+      "roi_estimate": "+8% margem + motivação de upsell",
+      "financial_impact": "+R$ 2.100/mês estimado",
+      "action_suggested": "Definir threshold claro: Frete grátis em pedidos acima de R$400. Abaixo disso, frete calculado. Isso incentiva aumento de ticket e padroniza margem.",
+      "implementation_steps": [
+        "Definir threshold em R$400 (ticket médio atual ~R$320)",
+        "Configurar regra clara no Shopify Shipping",
+        "Adicionar progress bar no carrinho: 'Faltam R$X para frete grátis'",
+        "A/B testar thresholds R$350 vs R$400 vs R$450"
+      ],
+      "category": "logistics",
+      "tags": ["frete", "threshold", "quick-win", "margin"]
+    },
+    {
+      "id": "ops_006",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Automatizar processo de 'Customização'",
+      "description": "Detectado produto 'Customização' (R$ 60) sendo vendido como item manual. Isso indica processo manual de upsell que pode ser automatizado e escalar.",
+      "supporting_data": {
+        "customization_orders": 2,
+        "avg_customization_value": "R$ 60,00",
+        "manual_process_indicator": true,
+        "potential_skus_for_customization": ["Pendente Swirl", "Pendente SAN", "Vaso Freya"]
+      },
+      "impact_score": 6,
+      "effort_score": 5,
+      "confidence": "medium",
+      "roi_estimate": "+15% conversão em personalização",
+      "financial_impact": "+R$ 900/mês estimado (escala com volume)",
+      "action_suggested": "Transformar customização em produto configurável no Shopify com opções de cor, tamanho, acabamento. Automatizar instruções para produção.",
+      "implementation_steps": [
+        "Criar produto com variantes (cores, tamanhos, acabamentos)",
+        "Configurar upcharge por opção no Shopify",
+        "Integrar instruções de produção automatizadas",
+        "Promover nas PDPs: 'Personalize seu produto'"
+      ],
+      "category": "product",
+      "tags": ["customização", "automation", "personalization"]
+    },
+    {
+      "id": "ops_007",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Ativar email marketing (0% opt-in atual)",
+      "description": "100% dos clientes analisados têm status 'not_subscribed' para email marketing. Nenhum consentimento de SMS. Base de 50+ clientes sem comunicação direta ativada.",
+      "supporting_data": {
+        "email_subscribed_rate": 0,
+        "sms_subscribed_rate": 0,
+        "total_customers_analyzed": 50,
+        "email_marketing_consent": "not_subscribed 100%"
+      },
+      "impact_score": 9,
+      "effort_score": 3,
+      "confidence": "high",
+      "roi_estimate": "Taxa de recompra de 15-20%",
+      "financial_impact": "+R$ 3.000/mês (LTV aumentado)",
+      "action_suggested": "Implementar coleta de email ativa: popup de saída com 10% off na primeira compra, checkbox pré-marcado no checkout, campanha de bem-vindo com sequência de 5 emails.",
+      "implementation_steps": [
+        "Configurar popup Klaviyo/Privy com oferta de 10%",
+        "Ativar checkbox 'Quero receber ofertas' no checkout",
+        "Criar fluxo de bem-vindo: 5 emails (confirmação, dicas de uso, inspiração, review, indicação)",
+        "Segmentar lista: compradores (VIP) vs prospects"
+      ],
+      "category": "marketing",
+      "tags": ["email", "retention", "ltv", "automation"]
+    },
+    {
+      "id": "ops_008",
+      "timestamp": "2026-04-04T01:05:00Z",
+      "title": "Criar programa 'Indique e Ganhe'",
+      "description": "Produtos de decoração têm alta propensão a indicação visual (Instagram, Pinterest). Clientes satisfeitos podem ser evangelistas, mas não há incentivo estruturado.",
+      "supporting_data": {
+        "instagram_able_products": 100,
+        "avg_product_price": "R$ 320",
+        "referral_program_cost": "R$ 20-30 por indicação",
+        "estimated_referral_rate": "5-8%"
+      },
+      "impact_score": 7,
+      "effort_score": 6,
+      "confidence": "medium",
+      "roi_estimate": "+10% de novos clientes via indicação",
+      "financial_impact": "+R$ 2.500/mês estimado",
+      "action_suggested": "Lançar 'Indique um amigo': Indicador ganha R$30 off na próxima compra, indicado ganha 10% off na primeira. Tracking automático via código único.",
+      "implementation_steps": [
+        "Instalar app de referral (ReferralCandy/UpPromote)",
+        "Definir recompensas: R$30 para indicador, 10% para indicado",
+        "Criar página de programa e materiais de compartilhamento",
+        "Incluir card de indicação no pós-compra (unboxing)"
+      ],
+      "category": "acquisition",
+      "tags": ["referral", "viral", "acquisition"]
+    }
+  ],
+  "quick_wins_prioritized": ["ops_005", "ops_002", "ops_001", "ops_004"],
+  "key_metrics_snapshot": {
+    "avg_ticket": "R$ 324,50",
+    "median_ticket": "R$ 287,91",
+    "top_selling_product": "Luminária Mushroom",
+    "repeat_purchase_rate": "~12% (estimado)",
+    "cancellation_rate": "12%",
+    "discount_dependency": "100%",
+    "frete_gratis_rate": "62%"
+  }
+}

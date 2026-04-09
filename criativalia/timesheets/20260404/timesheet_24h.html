@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet - Últimas 24h | Criativalia Agents</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #252525;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #f5f5dc;
+            --text-secondary: #a0a0a0;
+            --designbot: #4A5D23;
+            --copybot: #5a9fd4;
+            --opsbot: #e8b87a;
+            --trafficbot: #7acc7a;
+            --uxuibot: #9b59b6;
+            --p0-color: #ff4444;
+            --border-color: #3a3a3a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #4A5D23, #7acc7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        
+        .summary-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        .summary-card .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .timeline-container {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-header h2 {
+            font-size: 1.3rem;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        
+        .timeline {
+            position: relative;
+            min-width: 1000px;
+        }
+        
+        .time-axis {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            margin-left: 120px;
+        }
+        
+        .time-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        
+        .time-label::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 1px;
+            height: calc(100% + 400px);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .agent-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+            height: 50px;
+        }
+        
+        .agent-label {
+            width: 110px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding-right: 15px;
+            text-align: right;
+        }
+        
+        .agent-timeline {
+            flex: 1;
+            height: 40px;
+            position: relative;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .activity-block {
+            position: absolute;
+            height: 34px;
+            top: 3px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: none;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .activity-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
+        
+        .activity-block.p0 {
+            border-left: 3px solid var(--p0-color);
+        }
+        
+        .designbot { background: var(--designbot); }
+        .copybot { background: var(--copybot); }
+        .opsbot { background: var(--opsbot); }
+        .trafficbot { background: var(--trafficbot); }
+        .uxuibot { background: var(--uxuibot); }
+        
+        .gap-indicator {
+            position: absolute;
+            height: 2px;
+            background: repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .activity-details {
+            margin-top: 30px;
+        }
+        
+        .activity-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+            transition: transform 0.2s;
+        }
+        
+        .activity-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .activity-card.designbot { border-left-color: var(--designbot); }
+        .activity-card.copybot { border-left-color: var(--copybot); }
+        .activity-card.opsbot { border-left-color: var(--opsbot); }
+        .activity-card.uxuibot { border-left-color: var(--uxuibot); }
+        
+        .activity-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+        
+        .activity-card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .activity-card-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-p0 { background: rgba(255,68,68,0.2); color: #ff6b6b; }
+        .badge-p1 { background: rgba(232,184,122,0.2); color: #e8b87a; }
+        .badge-p2 { background: rgba(122,204,122,0.2); color: #7acc7a; }
+        
+        .time-badge {
+            background: var(--bg-secondary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .activity-card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .activity-card-link {
+            margin-top: 10px;
+        }
+        
+        .activity-card-link a {
+            color: #5a9fd4;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        
+        .activity-card-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .no-activity {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .no-activity-agent {
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-container {
+                padding: 15px;
+            }
+            
+            .legend {
+                gap: 10px;
+            }
+            
+            .agent-label {
+                width: 80px;
+                font-size: 0.8rem;
+            }
+            
+            .activity-block {
+                font-size: 0.65rem;
+                padding: 0 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Timesheet - Últimas 24h</h1>
+        <p class="subtitle">Criativalia Multi-Agent System | Gerado em 04/04/2026</p>
+    </div>
+    
+    <div class="summary-cards">
+        <div class="summary-card">
+            <div class="value">4</div>
+            <div class="label">Agentes Ativos</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">8</div>
+            <div class="label">Tarefas Executadas</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">2.2h</div>
+            <div class="label">Tempo Total</div>
+        </div>
+        <div class="summary-card">
+            <div class="value" style="color: #ff6b6b;">3</div>
+            <div class="label">Tarefas P0</div>
+        </div>
+    </div>
+    
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <h2>🕐 Timeline Visual</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--designbot);"></div>
+                    <span>DesignBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--uxuibot);"></div>
+                    <span>UX/UIBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--copybot);"></div>
+                    <span>CopyBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--opsbot);"></div>
+                    <span>OpsBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--trafficbot);"></div>
+                    <span>TrafficBot</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <div class="time-axis">
+                <span class="time-label">00:00</span>
+                <span class="time-label">04:00</span>
+                <span class="time-label">08:00</span>
+                <span class="time-label">12:00</span>
+                <span class="time-label">16:00</span>
+                <span class="time-label">20:00</span>
+                <span class="time-label">23:59</span>
+            </div>
+            
+            <!-- DesignBot Row -->
+            <div class="agent-row">
+                <div class="agent-label" style="color: var(--designbot);">DesignBot</div>
+                <div class="agent-timeline">
+                    <a href="/evidencias/20260403/design_update_0442.md" class="activity-block designbot" style="left: 86%; width: 1.2%;" title="Design System Update - 20:42">
+                        🎨 Design System
+                    </a>
+                    <a href="/evidencias/20260403/design_update_0508.md" class="activity-block designbot" style="left: 21.2%; width: 1.5%;" title="Design Refinement - 05:08">
+                        🎨 Logo & Paleta
+                    </a>
+                </div>
+            </div>
+            
+            <!-- UX/UIBot Row -->
+            <div class="agent-row">
+                <div class="agent-label" style="color: var(--uxuibot);">UX/UIBot</div>
+                <div class="agent-timeline">
+                    <a href="/evidencias/20260403/uxui_review_0210.md" class="activity-block uxuibot p0" style="left: 9%; width: 2.4%;" title="UX/UI Review - 02:10">
+                        🔴 UX Review P0
+                    </a>
+                    <a href="/evidencias/20260402/uxui_review_0708.md" class="activity-block uxuibot p0" style="left: 83.9%; width: 2.6%;" title="Night Shift UX - 20:08">
+                        🔴 Night Shift
+                    </a>
+                </div>
+            </div>
+            
+            <!-- CopyBot Row -->
+            <div class="agent-row">
+                <div class="agent-label" style="color: var(--copybot);">CopyBot</div>
+                <div class="agent-timeline">
+                    <a href="/evidencias/20260401/deliverable_calendario_editorial.json" class="activity-block copybot" style="left: 95.4%; width: 0.4%;" title="Calendário Q2 - 22:50">
+                        📝 Calendário
+                    </a>
+                    <a href="/evidencias/20260401/deliverable_bundles.json" class="activity-block copybot" style="left: 96.2%; width: 0.2%;" title="Bundles - 23:08">
+                        📝 Bundles
+                    </a>
+                    <a href="/evidencias/20260401/deliverable_blog_mushroom.json" class="activity-block copybot" style="left: 96.5%; width: 0.1%;" title="Blog Mushroom - 23:10">
+                        📝 Blog SEO
+                    </a>
+                </div>
+            </div>
+            
+            <!-- OpsBot Row -->
+            <div class="agent-row">
+                <div class="agent-label" style="color: var(--opsbot);">OpsBot</div>
+                <div class="agent-timeline">
+                    <a href="/evidencias/20260329/opsbot/ops_scan_evidence.json" class="activity-block opsbot p0" style="left: 33.3%; width: 0.7%;" title="Ops Scanner - 08:00">
+                        🔍 Scanner P0
+                    </a>
+                </div>
+            </div>
+            
+            <!-- TrafficBot Row -->
+            <div class="agent-row no-activity-agent">
+                <div class="agent-label" style="color: var(--trafficbot);">TrafficBot</div>
+                <div class="agent-timeline">
+                    <span style="color: var(--text-secondary); font-size: 0.85rem; padding-left: 10px; line-height: 40px;">Sem atividade nas últimas 24h</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="activity-details">
+        <h2 style="margin-bottom: 20px;">📋 Detalhes das Atividades</h2>
+        
+        <div class="activity-card designbot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">🎨 Design System Update - Tema Visual Verde Oliva</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="time-badge">20:42 - 21:00</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Criou CSS variables completas, componentes (cards, botões, inputs, badges), página de demonstração do design system. Paleta: Verde Oliva (#4A5D23) + Off-White (#F5F5DC).
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260403/design_update_0442.md">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card designbot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">🎨 Design System Refinement - Logo SVG & Paleta</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="time-badge">05:08 - 05:30</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Criou logo vetorial em SVG com ícone de folhas estilizadas, refinou tema CSS com escala completa de cores, atualizou navegação entre páginas, aplicou responsividade mobile.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260403/design_update_0508.md">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card uxuibot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">🔴 UX/UI Review - Mobile, Acessibilidade, Performance</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="time-badge">02:10 - 02:45</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Corrigiu contraste de cores para WCAG AA, melhorou navegação sidebar com indicadores, ajustou indicadores de tendência, criou sistema de badges de status, implementou mobile swipe, adicionou hover effects.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260403/uxui_review_0210.md">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card uxuibot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">🔴 Night Shift UX/UI - Mobile-First Improvements</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="time-badge">20:08 - 20:45</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Implementou sidebar swipe para fechar, corrigiu contraste de acessibilidade (P0), adicionou preconnect para CDNs (~200ms melhoria LCP), implementou pull-to-refresh nativo, adicionou sistema de toast notifications, criou bottom navigation bar.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260402/uxui_review_0708.md">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card copybot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">📝 Calendário Editorial Q2 2026</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p2">P2</span>
+                    <span class="time-badge">22:50 - 22:56</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Produziu calendário editorial completo: 30 posts de blog, 60 posts Instagram/Pinterest, 12 newsletters com temas e datas definidas, hashtags estratégicas por categoria, cronograma semanal de publicação.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260401/deliverable_calendario_editorial.json">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card copybot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">📝 3 Bundles Estratégicos - Configuração Shopify</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="time-badge">23:08 - 23:11</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Configurou 3 bundles estratégicos: Quarto dos Sonhos (R$499), Sala Premium (R$699), Home Office Produtivo (R$429). Projeção: +R$4.500/mês, aumento de 30% no ticket médio.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260401/deliverable_bundles.json">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card copybot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">📝 Conteúdo Blog: Luminária Cogumelo (SEO)</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p1">P1</span>
+                    <span class="time-badge">23:10 - 23:12</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Artigo completo ~2.400 palavras otimizado para SEO, Schema markup JSON-LD, tabela comparativa de materiais, FAQ com 4 perguntas. Target: +500 visitas orgânicas/mês, ranking #1-3 Google.
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260401/deliverable_blog_mushroom.json">→ Ver evidência completa</a>
+            </div>
+        </div>
+        
+        <div class="activity-card opsbot">
+            <div class="activity-card-header">
+                <span class="activity-card-title">🔍 Scanner de Oportunidades Operacionais</span>
+                <div class="activity-card-meta">
+                    <span class="badge badge-p0">P0</span>
+                    <span class="time-badge">08:00 - 08:10</span>
+                </div>
+            </div>
+            <p class="activity-card-desc">
+                Scanner identificou 10 oportunidades reais. TOP 3 prioridades: (1) Configurar Shopify Token (impacto 10/10), (2) Criar bundles (impacto 9/10, +R$4.5k/mês), (3) Retargeting pixel (impacto 9/10, -40% CAC).
+            </p>
+            <div class="activity-card-link">
+                <a href="/evidencias/20260329/opsbot/ops_scan_evidence.json">→ Ver evidência completa</a>
+            </div>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9rem;">
+        <p>⚠️ <strong>TrafficBot</strong> não registrou atividade nas últimas 24h</p>
+        <p style="margin-top: 10px;">📁 JSON: <code>/criativalia/timesheets/20260404/timesheet_24h.json</code></p>
+    </div>
+</body>
+</html>

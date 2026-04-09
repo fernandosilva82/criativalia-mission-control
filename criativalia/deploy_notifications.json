@@ -64,7 +64,40 @@
       "workflow": "Deploy to Render",
       "conclusion": "success",
       "notified_at": "2026-04-03T13:56:00Z"
+    },
+    "23949594672": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T15:08:00Z"
+    },
+    "23949594663": {
+      "workflow": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-03T15:08:00Z"
+    },
+    "23953469411": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-08T04:18:00Z"
+    },
+    "23948743524": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-08T05:34:00Z"
+    },
+    "23948725744": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-08T05:34:00Z"
     }
   },
-  "last_check": "2026-04-03T13:56:00Z"
+  "last_check": "2026-04-08T15:02:00Z",
+  "pending_notifications": [],
+  "last_check_summary": {
+    "checked_at": "2026-04-08T15:02:00Z",
+    "runs_checked": 5,
+    "new_notifications": 0,
+    "status": "completed",
+    "note": "Nenhum deploy novo para notificar. Todos os workflows principais já foram notificados anteriormente."
+  }
 }

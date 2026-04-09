@@ -1,1 +1,1 @@
-: 2>&1 | head -c 500
+: curl -s --connect-timeout 60 --max-time 120 -w "\nHTTP_CODE:%{http_code}\nTIME_TOTAL:%{time_total}\n" https://criativalia-runtime.onrender.com/api/stats 2>&1

@@ -1,0 +1,1 @@
+: "https://criativalia-runtime.onrender.com/api/stats" -s -w "HTTP Status: %{http_code}\n"

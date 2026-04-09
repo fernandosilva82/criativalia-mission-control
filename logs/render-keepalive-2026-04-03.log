@@ -1,6 +1,7 @@
-[2026-04-03T08:16:00Z] Keep Render Awake - SUCCESS
-Status: 200 OK
-Response Time: 548ms
-Runtime Status: Running (21 agents, all idle)
-Database: 1883 tasks, 53923 opportunities
-URL: https://criativalia-runtime.onrender.com/api/stats
+[2026-04-03T14:18:00Z] Keep Render Awake - SUCCESS
+- URL: https://criativalia-runtime.onrender.com/api/stats
+- Status: 200 OK
+- Response Time: 239ms
+- Runtime Status: isRunning=true, mode=active
+- Agents: 21 agents idle
+- Database: 47 tasks, 1664 opportunities

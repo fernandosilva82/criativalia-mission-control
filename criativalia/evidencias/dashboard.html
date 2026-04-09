@@ -3,379 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌅 Morning Brief - Criativalia | Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Criativalia - Dashboard Matinal</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%); min-height: 100vh; }
-        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease; }
-        .glass-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.05); }
-        .gradient-text { background: linear-gradient(135deg, #7dd3fc 0%, #a78bfa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .status-active { background: rgba(34,197,94,0.2); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-        .status-pending { background: rgba(234,179,8,0.2); color: #facc15; border: 1px solid rgba(234,179,8,0.3); }
-        .status-blocking { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-        .agent-card { border-left: 4px solid; }
-        .agent-design { border-color: #a78bfa; }
-        .agent-uxui { border-color: #7dd3fc; }
-        .agent-traffic { border-color: #fbbf24; }
-        .agent-ops { border-color: #4ade80; }
-        .metric-box { background: linear-gradient(135deg, rgba(74,93,35,0.3) 0%, rgba(58,74,28,0.2) 100%); }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(74,93,35,0.3); } 50% { box-shadow: 0 0 40px rgba(74,93,35,0.5); } }
-        .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        :root {
+            --primary: #4A5D23;
+            --primary-dark: #3d4d1d;
+            --primary-light: #8fa06d;
+            --off-white: #F5F5DC;
+            --off-white-sec: #D8D8C0;
+            --gold: #D4A853;
+            --bg: #0f100c;
+            --bg-card: #181914;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--off-white);
+            line-height: 1.6;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header .date {
+            color: var(--off-white-sec);
+            font-size: 1.1rem;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.2s;
+        }
+        .metric-card:hover { transform: translateY(-4px); }
+        .metric-card.success { border-left-color: var(--success); }
+        .metric-card.warning { border-left-color: var(--warning); }
+        .metric-card.danger { border-left-color: var(--danger); }
+        .metric-card.info { border-left-color: var(--info); }
+        .metric-card .label {
+            color: var(--off-white-sec);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .metric-card .value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--off-white);
+            margin: 0.5rem 0;
+        }
+        .metric-card .change {
+            font-size: 0.9rem;
+            color: var(--primary-light);
+        }
+        .section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(74, 93, 35, 0.3);
+        }
+        .section h2 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+        .opportunity-list {
+            list-style: none;
+        }
+        .opportunity-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(74, 93, 35, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .opportunity-item:last-child { border-bottom: none; }
+        .opp-title {
+            font-weight: 600;
+            color: var(--off-white);
+            margin-bottom: 0.25rem;
+        }
+        .opp-desc {
+            font-size: 0.9rem;
+            color: var(--off-white-sec);
+        }
+        .opp-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-p0 { background: var(--danger); color: white; }
+        .badge-p1 { background: var(--warning); color: black; }
+        .badge-p2 { background: var(--info); color: white; }
+        .badge-p3 { background: var(--primary-light); color: var(--bg); }
+        .badge-impact {
+            background: var(--gold);
+            color: var(--bg);
+        }
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .agent-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(74, 93, 35, 0.3);
+        }
+        .agent-card.active {
+            border-color: var(--success);
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.1);
+        }
+        .agent-card.idle {
+            border-color: var(--warning);
+            opacity: 0.8;
+        }
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .agent-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .agent-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-active { background: var(--success); color: white; }
+        .status-idle { background: var(--warning); color: black; }
+        .task-list {
+            list-style: none;
+        }
+        .task-item {
+            padding: 0.75rem;
+            background: rgba(74, 93, 35, 0.1);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .task-item a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+        .task-item a:hover { text-decoration: underline; }
+        .no-tasks {
+            color: var(--off-white-sec);
+            font-style: italic;
+            padding: 1rem;
+            text-align: center;
+        }
+        .deploy-list {
+            list-style: none;
+        }
+        .deploy-item {
+            padding: 1rem;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--success);
+        }
+        .deploy-time {
+            font-size: 0.85rem;
+            color: var(--off-white-sec);
+        }
+        .priority-list {
+            list-style: none;
+        }
+        .priority-item {
+            padding: 1rem;
+            border-left: 4px solid;
+            margin-bottom: 0.75rem;
+            background: rgba(74, 93, 35, 0.1);
+            border-radius: 0 8px 8px 0;
+        }
+        .priority-item.p0 { border-left-color: var(--danger); }
+        .priority-item.p1 { border-left-color: var(--warning); }
+        .priority-item.p2 { border-left-color: var(--info); }
+        .priority-item.p3 { border-left-color: var(--primary-light); }
+        .priority-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .priority-meta {
+            font-size: 0.85rem;
+            color: var(--off-white-sec);
+        }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--off-white-sec);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(74, 93, 35, 0.3);
+            margin-top: 2rem;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .alert-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+        .alert-info {
+            background: rgba(23, 162, 184, 0.1);
+            border: 1px solid var(--info);
+            color: var(--info);
+        }
     </style>
 </head>
-<body class="text-gray-100">
-    <div class="max-w-7xl mx-auto p-6">
-        
-        <!-- Header -->
-        <header class="mb-8">
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-olive-500 to-olive-700 flex items-center justify-center pulse-glow" style="background: linear-gradient(135deg, #4A5D23, #3A4A1C);">
-                    <span class="text-3xl">🌅</span>
-                </div>
-                <div>
-                    <h1 class="text-4xl font-bold gradient-text">Morning Brief</h1>
-                    <p class="text-gray-400">Relatório Matinal Criativalia • 02-03 Abril 2026</p>
-                </div>
-                <div class="ml-auto text-right">
-                    <div class="text-2xl font-bold text-green-400">18</div>
-                    <div class="text-sm text-gray-400">Oportunidades Qualificadas</div>
-                </div>
-            </div>
-        </header>
+<body>
+    <header class="header">
+        <h1>🌅 Morning Brief - Criativalia</h1>
+        <p class="date">Relatório das Últimas 24h | 09 de Abril de 2026</p>
+    </header>
 
+    <div class="container">
         <!-- Resumo Executivo -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>📊</span> Resumo Executivo
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="metric-box rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-green-400">18</div>
-                    <div class="text-sm text-gray-300">Oportunidades Detectadas</div>
-                </div>
-                <div class="metric-box rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-blue-400">4</div>
-                    <div class="text-sm text-gray-300">Tarefas Executadas</div>
-                </div>
-                <div class="metric-box rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-purple-400">0</div>
-                    <div class="text-sm text-gray-300">Deploys Automáticos</div>
-                </div>
-                <div class="metric-box rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-yellow-400">4</div>
-                    <div class="text-sm text-gray-300">P0 - Aguardando Ação</div>
-                </div>
+        <div class="metrics-grid">
+            <div class="metric-card success">
+                <div class="label">Oportunidades Detectadas</div>
+                <div class="value">12</div>
+                <div class="change">+12 nas últimas 24h</div>
             </div>
-        </section>
+            <div class="metric-card info">
+                <div class="label">Tarefas Executadas</div>
+                <div class="value">6</div>
+                <div class="change">45 min de atividade</div>
+            </div>
+            <div class="metric-card success">
+                <div class="label">Deploys Automáticos</div>
+                <div class="value">2</div>
+                <div class="change">Render - 08/04</div>
+            </div>
+            <div class="metric-card warning">
+                <div class="label">Aguardando Aprovação</div>
+                <div class="value">0</div>
+                <div class="change">Nada pendente</div>
+            </div>
+        </div>
+
+        <!-- Alertas -->
+        <div class="alert alert-warning">
+            ⚠️ <strong>Atenção:</strong> 3 agentes estão idle há vários dias. OpsBot: 11 dias sem atividade. CopyBot: 8 dias. DesignBot: 6 dias.
+        </div>
+
+        <div class="alert alert-info">
+            💡 <strong>Insight do Dia:</strong> TrafficBot identificou 12 oportunidades de tendências 2026 em iluminação, incluindo gaps de concorrência estratégicos para posicionamento da Criativalia.
+        </div>
 
         <!-- Top Oportunidades -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>🎯</span> Top Oportunidades (Últimas 24h)
-            </h2>
-            <div class="space-y-3">
-                <div class="glass-card rounded-xl p-4 flex items-center gap-4">
-                    <span class="text-2xl">🚨</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-red-400">Configurar Shopify Token</div>
-                        <div class="text-sm text-gray-400">Impacto: R$15k+/mês | Status: <span class="status-blocking px-2 py-0.5 rounded text-xs">BLOQUEANTE</span></div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold">P0</div>
-                        <div class="text-xs text-gray-500">Dias sem dados: 4</div>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 flex items-center gap-4">
-                    <span class="text-2xl">💰</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-yellow-400">Meta Pixel - Quick Win</div>
-                        <div class="text-sm text-gray-400">Impacto: Economia R$2k/mês | Status: <span class="status-pending px-2 py-0.5 rounded text-xs">15 MIN</span></div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold">P0</div>
-                        <div class="text-xs text-gray-500">ROI: 9x</div>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 flex items-center gap-4">
-                    <span class="text-2xl">📈</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-yellow-400">Google Analytics 4</div>
-                        <div class="text-sm text-gray-400">Impacto: Evita R$1.5k/mês | Status: <span class="status-pending px-2 py-0.5 rounded text-xs">10 MIN</span></div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold">P0</div>
-                        <div class="text-xs text-gray-500">ROI: 8x</div>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 flex items-center gap-4">
-                    <span class="text-2xl">🛒</span>
-                    <div class="flex-1">
-                        <div class="font-semibold text-blue-400">Klaviyo - Carrinho Abandonado</div>
-                        <div class="text-sm text-gray-400">Impacto: +R$3.5k/mês | Status: <span class="status-pending px-2 py-0.5 rounded text-xs">30 MIN</span></div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold">P0</div>
-                        <div class="text-xs text-gray-500">Recupera 12-15%</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Atividades dos Agentes -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>✅</span> O Que Foi Feito Autonomamente
-            </h2>
-            
-            <!-- DesignBot -->
-            <div class="agent-card agent-design glass-card rounded-xl p-4 mb-4">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center">
-                        <span class="text-xl">🎨</span>
-                    </div>
+        <div class="section">
+            <h2>🎯 Top Oportunidades (Últimas 24h)</h2>
+            <ul class="opportunity-list">
+                <li class="opportunity-item">
                     <div>
-                        <div class="font-semibold text-purple-400">DesignBot</div>
-                        <div class="text-xs text-gray-400">2 tarefas • 56 minutos</div>
+                        <div class="opp-title">Luminária 3D Inteligente - Produto Top em Dropshipping 2026</div>
+                        <div class="opp-desc">TOP 2 oportunidade de produtos vencedores para 2026. Design minimalista, projeção 3D realista, altamente 'instagramável'.</div>
                     </div>
-                    <span class="ml-auto status-active px-3 py-1 rounded-full text-xs">✅ ATIVO</span>
-                </div>
-                <ul class="space-y-2 text-sm text-gray-300">
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>Criado Design System completo com tema Criativalia (verde oliva #4A5D23)</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>Logo SVG oficial criado e implementado</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>Componentes: cards, botões, inputs, badges, tabelas, estatísticas</span>
-                    </li>
-                </ul>
-                <div class="mt-3 text-xs text-gray-500">
-                    📁 <a href="/evidencias/20260403/design_update_0442.md" class="text-blue-400 hover:underline">design_update_0442.md</a> | 
-                    <a href="/evidencias/20260403/design_update_0508.md" class="text-blue-400 hover:underline">design_update_0508.md</a>
-                </div>
-            </div>
-
-            <!-- UX/UI Bot -->
-            <div class="agent-card agent-uxui glass-card rounded-xl p-4 mb-4">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                        <span class="text-xl">🖼️</span>
+                    <div class="opp-meta">
+                        <span class="badge badge-impact">Impacto 9</span>
+                        <span class="badge badge-p2">Detectada</span>
                     </div>
+                </li>
+                <li class="opportunity-item">
                     <div>
-                        <div class="font-semibold text-blue-400">UX/UI Bot</div>
-                        <div class="text-xs text-gray-400">2 tarefas • 2 horas</div>
+                        <div class="opp-title">GAP: Larmary é premium/luxo - oportunidade mid-market</div>
+                        <div class="opp-desc">Larmary opera no segmento premium (R$ 400 a R$ 15.000+). Gap no mercado mid-market: design sofisticado com preço acessível.</div>
                     </div>
-                    <span class="ml-auto status-active px-3 py-1 rounded-full text-xs">✅ ATIVO</span>
-                </div>
-                <ul class="space-y-2 text-sm text-gray-300">
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>[P0] Mobile: Sidebar swipe gestures implementado</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>[P0] Acessibilidade: Contraste WCAG AA em todos textos</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>[P0] Performance: Preconnect para CDNs (~200-300ms melhoria LCP)</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>[P1] Mobile: Bottom navigation + Pull-to-refresh + Toast notifications</span>
-                    </li>
-                    <li class="flex items-start gap-2">
-                        <span class="text-green-400">✓</span>
-                        <span>[P1] Sistema de badges padronizado + hover effects</span>
-                    </li>
-                </ul>
-                <div class="mt-3 text-xs text-gray-500">
-                    📁 <a href="/evidencias/20260402/uxui_review_0708.md" class="text-blue-400 hover:underline">uxui_review_0708.md</a> | 
-                    <a href="/evidencias/20260403/uxui_review_0210.md" class="text-blue-400 hover:underline">uxui_review_0210.md</a>
-                </div>
-            </div>
-
-            <!-- TrafficBot -->
-            <div class="agent-card agent-traffic glass-card rounded-xl p-4 mb-4 opacity-60">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <span class="text-xl">🚦</span>
+                    <div class="opp-meta">
+                        <span class="badge badge-impact">Impacto 9</span>
+                        <span class="badge badge-p2">Detectada</span>
                     </div>
+                </li>
+                <li class="opportunity-item">
                     <div>
-                        <div class="font-semibold text-yellow-400">TrafficBot</div>
-                        <div class="text-xs text-gray-400">0 tarefas • 0 minutos</div>
+                        <div class="opp-title">Arandela de Parede - 'Novo Acessório de Luxo' em 2026</div>
+                        <div class="opp-desc">Em 2026, a arandela se consolidou como o 'novo acessório de luxo'. Modelos orgânicos e inteligentes nunca estiveram tão em alta.</div>
                     </div>
-                    <span class="ml-auto px-3 py-1 rounded-full text-xs bg-gray-700 text-gray-400">⏸️ IDLE</span>
-                </div>
-                <p class="text-sm text-gray-500 italic">Nenhuma atividade registrada nas últimas 24h. Análise de 8 oportunidades de tráfego realizada em 02/04.</p>
-            </div>
+                    <div class="opp-meta">
+                        <span class="badge badge-impact">Impacto 8</span>
+                        <span class="badge badge-p2">Detectada</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-            <!-- OpsBot -->
-            <div class="agent-card agent-ops glass-card rounded-xl p-4 opacity-60">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                        <span class="text-xl">⚙️</span>
+        <!-- O Que Foi Feito -->
+        <div class="section">
+            <h2>✅ O Que Foi Feito Autonomamente</h2>
+            <div class="agent-grid">
+                <div class="agent-card active">
+                    <div class="agent-header">
+                        <span class="agent-name">🚦 TrafficBot</span>
+                        <span class="agent-status status-active">ATIVO</span>
                     </div>
-                    <div>
-                        <div class="font-semibold text-green-400">OpsBot</div>
-                        <div class="text-xs text-gray-400">0 tarefas • 0 minutos</div>
-                    </div>
-                    <span class="ml-auto px-3 py-1 rounded-full text-xs bg-gray-700 text-gray-400">⏸️ IDLE</span>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <strong>Scanner de Tendências 2026</strong><br>
+                            Análise de 12 fontes sobre iluminação<br>
+                            <small>⏱️ 4 min | 📄 <a href="/root/.openclaw/workspace/criativalia/opportunities/20260409/traffic_opps.json">Ver oportunidades</a></small>
+                        </li>
+                    </ul>
                 </div>
-                <p class="text-sm text-gray-500 italic">Nenhuma atividade registrada nas últimas 24h. Scanner de 12 oportunidades operacionais realizado em 02/04.</p>
+                <div class="agent-card idle">
+                    <div class="agent-header">
+                        <span class="agent-name">✍️ CopyBot</span>
+                        <span class="agent-status status-idle">IDLE</span>
+                    </div>
+                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 01/04/2026</small></div>
+                </div>
+                <div class="agent-card idle">
+                    <div class="agent-header">
+                        <span class="agent-name">🎨 DesignBot</span>
+                        <span class="agent-status status-idle">IDLE</span>
+                    </div>
+                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 03/04/2026</small></div>
+                </div>
+                <div class="agent-card idle">
+                    <div class="agent-header">
+                        <span class="agent-name">⚙️ OpsBot</span>
+                        <span class="agent-status status-idle">IDLE</span>
+                    </div>
+                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 29/03/2026</small></div>
+                </div>
             </div>
-        </section>
+        </div>
 
         <!-- Deploys -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>🚀</span> Deploys Automáticos
-            </h2>
-            <div class="text-center py-8 text-gray-500">
-                <div class="text-4xl mb-2">📭</div>
-                <p>Nenhum deploy automático nas últimas 24h</p>
-                <p class="text-sm mt-2">Próximo deploy agendado: após aprovação de P0s</p>
-            </div>
-        </section>
-
-        <!-- Aguardando Aprovação -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>⏳</span> Aguardando Sua Aprovação
-            </h2>
-            <div class="space-y-3">
-                <div class="glass-card rounded-xl p-4 border-l-4 border-red-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="font-semibold text-red-400">🚨 Shopify Token - ACESSO BLOQUEADO</div>
-                            <div class="text-sm text-gray-400">Todos os agentes operam às cegas. Sem dados reais de vendas.</div>
-                        </div>
-                        <span class="status-blocking px-3 py-1 rounded text-sm">P0 CRÍTICO</span>
-                    </div>
-                    <div class="mt-2 text-xs text-gray-500">
-                        📁 <a href="/criativalia/priorities_queue.json" class="text-blue-400 hover:underline">Ver detalhes em priorities_queue.json</a>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 border-l-4 border-yellow-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="font-semibold text-yellow-400">💰 Meta Pixel - Quick Win (15 min)</div>
-                            <div class="text-sm text-gray-400">Economia R$2k/mês em ad spend quando campanhas ativarem</div>
-                        </div>
-                        <span class="status-pending px-3 py-1 rounded text-sm">P0</span>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 border-l-4 border-yellow-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="font-semibold text-yellow-400">📊 Google Analytics 4 - Quick Win (10 min)</div>
-                            <div class="text-sm text-gray-400">Dados comportamentais gratuitos: bounce rate, origem do tráfego</div>
-                        </div>
-                        <span class="status-pending px-3 py-1 rounded text-sm">P0</span>
-                    </div>
-                </div>
-                <div class="glass-card rounded-xl p-4 border-l-4 border-yellow-500">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <div class="font-semibold text-yellow-400">📧 Klaviyo - Carrinho Abandonado (30 min)</div>
-                            <div class="text-sm text-gray-400">Recupera 12-15% dos carrinhos = +R$3.5k/mês</div>
-                        </div>
-                        <span class="status-pending px-3 py-1 rounded text-sm">P0</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Timesheet -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>📈</span> Timesheet 24h
-            </h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="text-gray-400 border-b border-gray-700">
-                            <th class="text-left py-2">Agente</th>
-                            <th class="text-left py-2">Tarefas</th>
-                            <th class="text-left py-2">Tempo</th>
-                            <th class="text-left py-2">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-gray-800">
-                            <td class="py-3 text-purple-400">🎨 DesignBot</td>
-                            <td>Design System + Logo</td>
-                            <td>56 min</td>
-                            <td><span class="status-active px-2 py-0.5 rounded text-xs">✅</span></td>
-                        </tr>
-                        <tr class="border-b border-gray-800">
-                            <td class="py-3 text-blue-400">🖼️ UX/UI Bot</td>
-                            <td>Mobile UX + Acessibilidade</td>
-                            <td>2h</td>
-                            <td><span class="status-active px-2 py-0.5 rounded text-xs">✅</span></td>
-                        </tr>
-                        <tr class="border-b border-gray-800 opacity-50">
-                            <td class="py-3 text-yellow-400">🚦 TrafficBot</td>
-                            <td>—</td>
-                            <td>0h</td>
-                            <td><span class="px-2 py-0.5 rounded text-xs bg-gray-700">⏸️</span></td>
-                        </tr>
-                        <tr class="opacity-50">
-                            <td class="py-3 text-green-400">⚙️ OpsBot</td>
-                            <td>—</td>
-                            <td>0h</td>
-                            <td><span class="px-2 py-0.5 rounded text-xs bg-gray-700">⏸️</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="mt-4 text-xs text-gray-500">
-                📁 <a href="/timesheets/20260403/timesheet_24h.html" class="text-blue-400 hover:underline">Ver visualização gráfica completa</a>
-            </div>
-        </section>
+        <div class="section">
+            <h2>🚀 Deploys Automáticos</h2>
+            <ul class="deploy-list">
+                <li class="deploy-item">
+                    <strong>Deploy to Render</strong> - Workflow executado com sucesso<br>
+                    <span class="deploy-time">🕐 08/04/2026 05:34 UTC</span>
+                </li>
+                <li class="deploy-item">
+                    <strong>Deploy to Render</strong> - Workflow executado com sucesso<br>
+                    <span class="deploy-time">🕐 08/04/2026 04:18 UTC</span>
+                </li>
+            </ul>
+        </div>
 
         <!-- Prioridades do Dia -->
-        <section class="glass rounded-2xl p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
-                <span>🎯</span> Prioridades do Dia
-            </h2>
-            <div class="space-y-3">
-                <div class="flex items-start gap-3">
-                    <span class="text-red-400 font-bold">1.</span>
-                    <div>
-                        <div class="font-semibold text-red-400">Configurar Shopify Token (BLOQUEANTE)</div>
-                        <div class="text-sm text-gray-400">Sem isso, nenhum agente pode acessar dados reais. Impacto: R$15k+/mês perdidos.</div>
-                    </div>
+        <div class="section">
+            <h2>📋 Prioridades na Fila (23 oportunidades)</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                <div style="text-align: center; padding: 1rem; background: var(--danger); border-radius: 8px;">
+                    <div style="font-size: 2rem; font-weight: bold;">6</div>
+                    <div>P0 - Crítico</div>
                 </div>
-                <div class="flex items-start gap-3">
-                    <span class="text-yellow-400 font-bold">2.</span>
-                    <div>
-                        <div class="font-semibold text-yellow-400">Instalar Meta Pixel (15 min)</div>
-                        <div class="text-sm text-gray-400">Quick win que reduzirá CAC em 40% quando campanhas ativarem.</div>
-                    </div>
+                <div style="text-align: center; padding: 1rem; background: var(--warning); color: var(--bg); border-radius: 8px;">
+                    <div style="font-size: 2rem; font-weight: bold;">9</div>
+                    <div>P1 - Alto</div>
                 </div>
-                <div class="flex items-start gap-3">
-                    <span class="text-blue-400 font-bold">3.</span>
-                    <div>
-                        <div class="font-semibold text-blue-400">Criar Bundles Estratégicos</div>
-                        <div class="text-sm text-gray-400">Aumentar ticket médio de R$202 para R$320+ com combos lógicos.</div>
-                    </div>
+                <div style="text-align: center; padding: 1rem; background: var(--info); border-radius: 8px;">
+                    <div style="font-size: 2rem; font-weight: bold;">6</div>
+                    <div>P2 - Médio</div>
+                </div>
+                <div style="text-align: center; padding: 1rem; background: var(--primary-light); color: var(--bg); border-radius: 8px;">
+                    <div style="font-size: 2rem; font-weight: bold;">3</div>
+                    <div>P3 - Baixo</div>
                 </div>
             </div>
-        </section>
+            <p style="text-align: center; color: var(--gold); font-size: 1.1rem; margin-top: 1rem;">
+                💰 Potencial de receita: <strong>R$ 52.500+/mês</strong> | ROI médio: <strong>3.2x</strong>
+            </p>
+        </div>
 
-        <!-- Footer -->
-        <footer class="text-center text-gray-500 text-sm py-8">
-            <p>🤖 Relatório gerado automaticamente pelo Morning Brief Generator</p>
-            <p class="mt-1">Criativalia Control Plane • Última atualização: 03 Abril 2026, 21:30 CST</p>
-        </footer>
+        <!-- Top 3 Prioridades -->
+        <div class="section">
+            <h2>🎯 Top 3 Ações Recomendadas</h2>
+            <ul class="priority-list">
+                <li class="priority-item p0">
+                    <div class="priority-title">1. Cadastrar SKUs em 100% dos produtos (OpsBot)</div>
+                    <div class="priority-meta">Impacto 10/10 | Esforço 3/10 | ROI 3.33x | 💰 Evita R$5k+/mês em erros</div>
+                </li>
+                <li class="priority-item p0">
+                    <div class="priority-title">2. Criar planilha de custos e calcular margens reais (OpsBot)</div>
+                    <div class="priority-meta">Impacto 10/10 | Esforço 4/10 | ROI 2.50x | 💰 Evita R$6k/mês em vendas com margem &lt;30%</div>
+                </li>
+                <li class="priority-item p0">
+                    <div class="priority-title">3. Instalar Meta Pixel (TrafficBot)</div>
+                    <div class="priority-meta">Impacto 9/10 | Esforço 1/10 | ROI 9.00x | 💰 Economia R$3k/mês + ROAS 3x maior</div>
+                </li>
+            </ul>
+        </div>
 
+        <!-- Links -->
+        <div class="section">
+            <h2>📁 Links Rápidos</h2>
+            <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.5rem;">
+                <li>📊 <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" style="color: var(--primary-light);">Fila de Prioridades (JSON)</a></li>
+                <li>📈 <a href="/root/.openclaw/workspace/criativalia/timesheets/20260409/timesheet_24h.html" style="color: var(--primary-light);">Timesheet Completo</a></li>
+                <li>🎯 <a href="/root/.openclaw/workspace/criativalia/opportunities/20260409/traffic_opps.json" style="color: var(--primary-light);">Oportunidades de Tráfego (JSON)</a></li>
+                <li>🎨 <a href="/root/.openclaw/workspace/criativalia/evidencias/20260409/design_update_1030.md" style="color: var(--primary-light);">Design System Update</a></li>
+            </ul>
+        </div>
     </div>
+
+    <footer class="footer">
+        <p>🤖 Relatório gerado automaticamente pelo Morning Brief Generator</p>
+        <p>Criativalia Autonomous System | 09 de Abril de 2026</p>
+    </footer>
 </body>
 </html>

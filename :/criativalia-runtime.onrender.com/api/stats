@@ -1,0 +1,25 @@
+://criativalia-runtime.onrender.com/api/stats
+import urllib.request
+import ssl
+
+# Construct URL
+protocol = "https"
+host = "criativalia-runtime.onrender.com"
+path = "/api/stats"
+url = f"{protocol}://{host}{path}"
+
+try:
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    
+    req = urllib.request.Request(url, method='GET')
+    req.add_header('User-Agent', 'Mozilla/5.0 (Keep-Alive Bot)')
+    
+    with urllib.request.urlopen(req, context=ctx, timeout=30) as response:
+        status = response.getcode()
+        content = response.read().decode('utf-8', errors='ignore')
+        print(f"HTTP Status: {status}")
+        print(f"Response: {content[:500]}")
+except Exception as e:
+    print(f"Error: {e}")

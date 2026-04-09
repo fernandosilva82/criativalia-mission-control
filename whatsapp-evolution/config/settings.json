@@ -1,0 +1,61 @@
+{
+  "antiBlock": {
+    "delayBetweenMessages": {
+      "min": 3000,
+      "max": 8000,
+      "unit": "ms"
+    },
+    "messagesPerBatch": {
+      "max": 10,
+      "cooldownMinutes": 15
+    },
+    "dailyLimits": {
+      "maxMessages": 200,
+      "resetAt": "00:00"
+    },
+    "businessHours": {
+      "enabled": true,
+      "start": "09:00",
+      "end": "18:00",
+      "timezone": "America/Sao_Paulo",
+      "skipWeekends": true
+    },
+    "numberRotation": {
+      "enabled": false,
+      "instances": []
+    },
+    "humanLike": {
+      "typingDelay": {
+        "enabled": true,
+        "charsPerSecond": 5
+      },
+      "randomPauses": {
+        "enabled": true,
+        "probability": 0.1,
+        "durationSeconds": [5, 10, 15]
+      }
+    }
+  },
+  "messages": {
+    "templates": [
+      "Olá {nome}! 👋 Tudo bem? {mensagem}",
+      "Oi {nome}, como vai? {mensagem}",
+      "E aí {nome}! {mensagem}",
+      "Olá {nome}! {mensagem}"
+    ],
+    "spinTax": {
+      "enabled": true,
+      "variations": [
+        ["Olá", "Oi", "E aí", "Hey"],
+        ["tudo bem", "como vai", "beleza", "tudo certo"],
+        ["!", "?", " 👋", ""]
+      ]
+    }
+  },
+  "logging": {
+    "level": "info",
+    "saveResponses": true,
+    "trackDelivered": true,
+    "trackRead": true
+  }
+}

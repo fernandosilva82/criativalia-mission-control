@@ -1,0 +1,17 @@
+{
+  "name": "evolution-command-center",
+  "version": "2.0.0",
+  "description": "Centro de Comando para Evolution API",
+  "private": true,
+  "scripts": {
+    "start": "cd backend && node server.js",
+    "dev": "cd backend && nodemon server.js",
+    "setup": "bash setup.sh",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "keywords": ["whatsapp", "evolution-api", "command-center"],
+  "author": "Criativalia",
+  "license": "MIT"
+}

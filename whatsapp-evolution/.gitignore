@@ -1,0 +1,20 @@
+# Dependências
+node_modules/
+package-lock.json
+
+# Configurações sensíveis
+config/.env
+config/*.key
+
+# Dados
+logs/*.jsonl
+data/sent-today.txt
+data/*.csv
+!data/contatos-exemplo.csv
+
+# Sessões
+sessions/
+
+# OS
+.DS_Store
+Thumbs.db

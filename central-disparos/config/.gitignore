@@ -1,0 +1,7 @@
+# Ignorar tudo
+*
+
+# Exceto
+!.gitignore
+!.env.example
+!nginx.conf

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet 24h - Criativalia Agents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e4c9;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #4A5D23 0%, #8C9A5A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header .date {
+            color: #8C9A5A;
+            font-size: 1.1rem;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-card {
+            background: rgba(74, 93, 35, 0.15);
+            border: 1px solid rgba(74, 93, 35, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 93, 35, 0.2);
+        }
+        
+        .summary-card .agent-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .summary-card .metric {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4A5D23;
+        }
+        
+        .summary-card .label {
+            color: #8C9A5A;
+            font-size: 0.875rem;
+        }
+        
+        .timeline-container {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            overflow-x: auto;
+        }
+        
+        .timeline {
+            position: relative;
+            min-width: 1200px;
+        }
+        
+        .time-header {
+            display: flex;
+            border-bottom: 2px solid rgba(74, 93, 35, 0.3);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 0;
+            background: rgba(26, 26, 46, 0.95);
+            z-index: 10;
+        }
+        
+        .agent-label {
+            width: 120px;
+            font-weight: 600;
+            color: #8C9A5A;
+        }
+        
+        .hours-row {
+            display: flex;
+            flex: 1;
+        }
+        
+        .hour-mark {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6B7B3D;
+            border-left: 1px solid rgba(107, 123, 61, 0.2);
+            padding: 0.25rem;
+        }
+        
+        .agent-row {
+            display: flex;
+            align-items: center;
+            min-height: 80px;
+            border-bottom: 1px solid rgba(107, 123, 61, 0.1);
+            position: relative;
+        }
+        
+        .agent-row:last-child {
+            border-bottom: none;
+        }
+        
+        .agent-name-cell {
+            width: 120px;
+            font-weight: 600;
+            padding-right: 1rem;
+        }
+        
+        .trafficbot { color: #5a9fd4; }
+        .copybot { color: #e8b87a; }
+        .designbot { color: #c17767; }
+        .opsbot { color: #7acc7a; }
+        
+        .timeline-track {
+            flex: 1;
+            position: relative;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .activity-block {
+            position: absolute;
+            height: 50px;
+            top: 5px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .activity-block:hover {
+            transform: scaleY(1.1);
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .activity-block.trafficbot {
+            background: linear-gradient(135deg, rgba(90, 159, 212, 0.8), rgba(90, 159, 212, 0.6));
+        }
+        
+        .activity-block.copybot {
+            background: linear-gradient(135deg, rgba(232, 184, 122, 0.8), rgba(232, 184, 122, 0.6));
+            color: #1a1a1a;
+        }
+        
+        .activity-block.designbot {
+            background: linear-gradient(135deg, rgba(193, 119, 103, 0.8), rgba(193, 119, 103, 0.6));
+        }
+        
+        .activity-block.opsbot {
+            background: linear-gradient(135deg, rgba(122, 204, 122, 0.8), rgba(122, 204, 122, 0.6));
+            color: #1a1a1a;
+        }
+        
+        .activity-block.p0 {
+            border: 2px solid #ff6b6b;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+        }
+        
+        .activity-block::after {
+            content: attr(data-duration);
+            position: absolute;
+            right: 4px;
+            bottom: 2px;
+            font-size: 0.65rem;
+            opacity: 0.8;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .legend-color.trafficbot { background: #5a9fd4; }
+        .legend-color.copybot { background: #e8b87a; }
+        .legend-color.designbot { background: #c17767; }
+        .legend-color.opsbot { background: #7acc7a; }
+        .legend-color.p0 { background: #ff6b6b; }
+        
+        .gaps-section {
+            margin-top: 2rem;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .gaps-section h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+        }
+        
+        .gap-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 107, 107, 0.1);
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid #4A5D23;
+            border-radius: 8px;
+            padding: 1rem;
+            z-index: 1000;
+            max-width: 300px;
+            display: none;
+            pointer-events: none;
+        }
+        
+        .tooltip h4 {
+            color: #4A5D23;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tooltip p {
+            font-size: 0.875rem;
+            color: #e8e4c9;
+            margin-bottom: 0.25rem;
+        }
+        
+        .no-activity {
+            text-align: center;
+            color: #6B7B3D;
+            font-style: italic;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Timesheet 24h - Criativalia Agents</h1>
+        <p class="date">Período: 2026-04-07 00:00 → 2026-04-08 00:00</p>
+    </div>
+    
+    <div class="summary-cards">
+        <div class="summary-card">
+            <div class="agent-name" style="color: #5a9fd4;">TrafficBot</div>
+            <div class="metric">0</div>
+            <div class="label">tarefas</div>
+        </div>
+        <div class="summary-card">
+            <div class="agent-name" style="color: #e8b87a;">CopyBot</div>
+            <div class="metric">5</div>
+            <div class="label">tarefas</div>
+        </div>
+        <div class="summary-card">
+            <div class="agent-name" style="color: #c17767;">DesignBot</div>
+            <div class="metric">4</div>
+            <div class="label">tarefas</div>
+        </div>
+        <div class="summary-card">
+            <div class="agent-name" style="color: #7acc7a;">OpsBot</div>
+            <div class="metric">0</div>
+            <div class="label">tarefas</div>
+        </div>
+    </div>
+    
+    <div class="timeline-container">
+        <div class="timeline">
+            <div class="time-header">
+                <div class="agent-label">Agente</div>
+                <div class="hours-row">
+                    <div class="hour-mark">00</div>
+                    <div class="hour-mark">02</div>
+                    <div class="hour-mark">04</div>
+                    <div class="hour-mark">06</div>
+                    <div class="hour-mark">08</div>
+                    <div class="hour-mark">10</div>
+                    <div class="hour-mark">12</div>
+                    <div class="hour-mark">14</div>
+                    <div class="hour-mark">16</div>
+                    <div class="hour-mark">18</div>
+                    <div class="hour-mark">20</div>
+                    <div class="hour-mark">22</div>
+                </div>
+            </div>
+            
+            <!-- TrafficBot -->
+            <div class="agent-row">
+                <div class="agent-name-cell trafficbot">TrafficBot 🤖</div>
+                <div class="timeline-track">
+                    <div class="no-activity">Sem atividades registradas nas últimas 24h</div>
+                </div>
+            </div>
+            
+            <!-- CopyBot -->
+            <div class="agent-row">
+                <div class="agent-name-cell copybot">CopyBot ✍️</div>
+                <div class="timeline-track">
+                    <!-- Calendário Editorial: 22:50-22:56 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/deliverable_calendario_editorial.json" class="activity-block copybot" 
+                       style="left: 95.83%; width: 0.42%;" data-duration="6min"
+                       title="Calendário Editorial Q2 2026">
+                        Calendário Editorial
+                    </a>
+                    <!-- Estratégia 360: 23:00-23:05 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/deliverable_estrategia_360.json" class="activity-block copybot" 
+                       style="left: 95.83%; width: 0.35%;" data-duration="5min"
+                       title="Estratégia Marketing 360°">
+                        Estratégia 360°
+                    </a>
+                    <!-- Carrinho Abandonado: 23:06-23:11 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/deliverable_carrinho_abandonado.json" class="activity-block copybot p0" 
+                       style="left: 96.25%; width: 0.35%;" data-duration="5min"
+                       title="Sequência Carrinho Abandonado [P0]">
+                        Carrinho Aband.
+                    </a>
+                    <!-- Bundles: 23:08-23:11 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/deliverable_bundles.json" class="activity-block copybot" 
+                       style="left: 96.11%; width: 0.21%;" data-duration="3min"
+                       title="3 Bundles Estratégicos">
+                        Bundles
+                    </a>
+                    <!-- Blog Mushroom: 23:10-23:12 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260401/deliverable_blog_mushroom.json" class="activity-block copybot" 
+                       style="left: 96.39%; width: 0.14%;" data-duration="2min"
+                       title="Conteúdo Blog: Mushroom Lamp">
+                        Blog Mushroom
+                    </a>
+                </div>
+            </div>
+            
+            <!-- DesignBot -->
+            <div class="agent-row">
+                <div class="agent-name-cell designbot">DesignBot 🎨</div>
+                <div class="timeline-track">
+                    <!-- UX/UI Review Night Shift: 02:10 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260403/uxui_review_0210.md" class="activity-block designbot" 
+                       style="left: 9.03%; width: 2.08%;" data-duration="Night Shift"
+                       title="UX/UI Review Night Shift - Mobile & Acessibilidade">
+                        UX/UI Night Shift
+                    </a>
+                    <!-- Design System Update: 04:42 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260403/design_update_0442.md" class="activity-block designbot" 
+                       style="left: 19.58%; width: 1.67%;" data-duration="Design System"
+                       title="Design System Update - CSS Variables">
+                        Design System v1
+                    </a>
+                    <!-- Design System Refinement: 05:08 -->
+                    <a href="/root/.openclaw/workspace/criativalia/evidencias/20260403/design_update_0508.md" class="activity-block designbot" 
+                       style="left: 21.11%; width: 1.67%;" data-duration="Refinement"
+                       title="Design System Refinement - Logo & Tema">
+                        Design System v2
+                    </a>
+                </div>
+            </div>
+            
+            <!-- OpsBot -->
+            <div class="agent-row">
+                <div class="agent-name-cell opsbot">OpsBot ⚙️</div>
+                <div class="timeline-track">
+                    <div class="no-activity">Sem atividades nas últimas 24h (última atividade: 2026-03-29)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color trafficbot"></div>
+            <span>TrafficBot</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color copybot"></div>
+            <span>CopyBot</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color designbot"></div>
+            <span>DesignBot</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color opsbot"></div>
+            <span>OpsBot</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color p0"></div>
+            <span>Prioridade P0</span>
+        </div>
+    </div>
+    
+    <div class="gaps-section">
+        <h3>⚠️ Gaps Identificados</h3>
+        <div class="gap-item">
+            <span>TrafficBot</span>
+            <span>Sem atividades há +7 dias</span>
+        </div>
+        <div class="gap-item">
+            <span>OpsBot</span>
+            <span>Última atividade: 2026-03-29 (10 dias atrás)</span>
+        </div>
+        <div class="gap-item">
+            <span>Horário 00:00-22:00</span>
+            <span>Sem atividades registradas (Night Shift concentra atividades entre 02:00-05:00)</span>
+        </div>
+    </div>
+    
+    <div class="tooltip" id="tooltip"></div>
+    
+    <script>
+        // Interatividade dos blocos de atividade
+        document.querySelectorAll('.activity-block').forEach(block => {
+            block.addEventListener('mouseenter', function(e) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.innerHTML = `
+                    <h4>${this.getAttribute('title')}</h4>
+                    <p><strong>Duração:</strong> ${this.getAttribute('data-duration')}</p>
+                    <p style="color: #8C9A5A; font-size: 0.75rem;">Clique para ver evidência</p>
+                `;
+                tooltip.style.display = 'block';
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY + 10 + 'px';
+            });
+            
+            block.addEventListener('mouseleave', function() {
+                document.getElementById('tooltip').style.display = 'none';
+            });
+            
+            block.addEventListener('mousemove', function(e) {
+                const tooltip = document.getElementById('tooltip');
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY + 10 + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
