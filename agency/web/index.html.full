@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control | Criativalia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">C</div>
+        <div class="brand">
+          <h1>Criativalia</h1>
+          <p>Mission Control</p>
+        </div>
+      </div>
+      
+      <nav class="nav">
+        <div class="nav-section">
+          <p class="nav-label">Principal</p>
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="#" class="nav-item" data-page="kanban">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M14 14h7v7h-7z"/><path d="M3 14h7v7H3z"/></svg>
+            Kanban
+          </a>
+          <a href="#" class="nav-item" data-page="timesheet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Timesheet
+          </a>
+          <a href="#" class="nav-item" data-page="reports">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+            Reports
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <p class="nav-label">Sistema</p>
+          <a href="#" class="nav-item" data-page="products">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Produtos
+          </a>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user">
+          <div class="user-avatar">FS</div>
+          <div class="user-info">
+            <p class="user-name">Fernando Silva</p>
+            <p class="user-role">Administrador</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Dashboard Page -->
+      <div id="page-dashboard" class="page active">
+        <header class="page-header">
+          <h1>Dashboard</h1>
+          <p>Visão geral do desempenho da loja</p>
+        </header>
+        
+        <div class="stats-grid" id="dashboard-stats">
+          <div class="stat-card loading">
+            <p class="stat-label">Receita (30d)</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Pedidos</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Clientes</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Ticket Médio</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+        </div>
+        
+        <div class="quick-links">
+          <a href="#" class="quick-card" data-nav="kanban">
+            <div class="quick-icon">📋</div>
+            <div>
+              <h3>Kanban</h3>
+              <p>Gerenciar tarefas dos agentes</p>
+            </div>
+          </a>
+          <a href="#" class="quick-card" data-nav="timesheet">
+            <div class="quick-icon">⏱️</div>
+            <div>
+              <h3>Timesheet</h3>
+              <p>Log de atividades dos agentes</p>
+            </div>
+          </a>
+          <a href="#" class="quick-card" data-nav="reports">
+            <div class="quick-icon">📊</div>
+            <div>
+              <h3>Reports</h3>
+              <p>Relatórios semanais</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Kanban Page -->
+      <div id="page-kanban" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Kanban</h1>
+            <p>Gestão visual de tarefas dos agentes</p>
+          </div>
+          <button class="btn btn-primary" onclick="addTask()">+ Nova Tarefa</button>
+        </header>
+        
+        <div class="kanban-board">
+          <div class="kanban-column" data-column="inbox">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #64748b;"></span>
+              <h3>Inbox</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="opportunity_review">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #3b82f6;"></span>
+              <h3>Opportunity Review</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="ready">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #10b981;"></span>
+              <h3>Ready</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="in_progress">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #f59e0b;"></span>
+              <h3>In Progress</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="review">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #8b5cf6;"></span>
+              <h3>Review</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="ready_to_deploy">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #06b6d4;"></span>
+              <h3>Ready to Deploy</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+          
+          <div class="kanban-column" data-column="done">
+            <div class="kanban-header">
+              <span class="kanban-dot" style="background: #22c55e;"></span>
+              <h3>Done</h3>
+              <span class="kanban-count">0</span>
+            </div>
+            <div class="kanban-tasks"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Timesheet Page -->
+      <div id="page-timesheet" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Timesheet</h1>
+            <p>Log de atividades hora a hora dos agentes</p>
+          </div>
+          <div class="date-display">
+            <span id="current-date">—</span>
+          </div>
+        </header>
+        
+        <div class="timesheet-container">
+          <div class="timesheet-grid" id="timesheet-grid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+        
+        <div class="timesheet-legend">
+          <h3>Categorias</h3>
+          <div class="legend-items" id="legend-items">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reports Page -->
+      <div id="page-reports" class="page">
+        <header class="page-header">
+          <h1>Weekly Report</h1>
+          <p>Relatório semanal com dados reais do Shopify</p>
+        </header>
+        
+        <div class="stats-grid" id="reports-stats">
+          <div class="stat-card loading">
+            <p class="stat-label">Receita Total</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Total de Pedidos</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Ticket Médio</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+          <div class="stat-card loading">
+            <p class="stat-label">Clientes</p>
+            <p class="stat-value">—</p>
+            <div class="loading-skeleton"></div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card-header">
+            <h2>Top Produtos</h2>
+            <span class="card-subtitle">Por quantidade vendida</span>
+          </div>
+          
+          <div id="top-products-list">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Carregando dados reais do Shopify...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Products Page -->
+      <div id="page-products" class="page">
+        <header class="page-header">
+          <div>
+            <h1>Produtos</h1>
+            <p>Catálogo do Shopify</p>
+          </div>
+          <input type="text" class="search-input" placeholder="Buscar produtos..." id="product-search">
+        </header>
+        
+        <div class="products-grid" id="products-grid">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Carregando produtos do Shopify...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>

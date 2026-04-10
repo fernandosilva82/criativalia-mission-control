@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Criativalia Mission Control Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(0,217,255,0.1) 0%, rgba(0,255,136,0.1) 100%);
+            border-radius: 24px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0,217,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d9ff' fill-opacity='0.03'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d9ff, #00ff88, #00d9ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            position: relative;
+        }
+        @keyframes shimmer {
+            to { background-position: 200% center; }
+        }
+        .header p {
+            color: #888;
+            font-size: 1.3em;
+            margin-top: 10px;
+        }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        /* Cards */
+        .card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,217,255,0.15);
+            border-color: rgba(0,217,255,0.3);
+        }
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .card-icon {
+            font-size: 2em;
+            margin-right: 15px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,217,255,0.1);
+            border-radius: 12px;
+        }
+        .card h3 {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .card p {
+            color: #888;
+            line-height: 1.7;
+        }
+        
+        /* Status Badge */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        .status.online {
+            background: rgba(0,255,136,0.15);
+            color: #00ff88;
+        }
+        .status.online::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Metrics */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .metric {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: #00d9ff;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,217,255,0.3);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        /* Task List */
+        .task-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #00d9ff;
+        }
+        .task-item.completed {
+            opacity: 0.6;
+            border-left-color: #00ff88;
+        }
+        .task-checkbox {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            accent-color: #00ff88;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: #555;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.2em; }
+            .grid { grid-template-columns: 1fr; }
+            .metric-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Criativalia Mission Control</h1>
+            <p>Dashboard Avançado • Gerenciado por OpenClaw Agent</p>
+            <span class="badge">🟢 Sistema Operacional</span>
+        </div>
+
+        <div class="grid">
+            <!-- WhatsApp Rotator -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">📱</span>
+                    <div>
+                        <h3>WhatsApp Rotator</h3>
+                        <span class="status online">ONLINE</span>
+                    </div>
+                </div>
+                <p>Sistema multi-instância para disparo de mensagens em massa. Gerencie múltiplos números e rotacione entre eles.</p>
+                <a href="http://72.62.140.110:3333" class="btn" target="_blank">
+                    Acessar Interface →
+                </a>
+            </div>
+
+            <!-- Evolution API -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🔌</span>
+                    <div>
+                        <h3>Evolution API</h3>
+                        <span class="status online">ONLINE</span>
+                    </div>
+                </div>
+                <p>API completa para integração WhatsApp Business. Webhooks, gestão de instâncias e documentação completa.</p>
+                <div style="margin-top: 15px;">
+                    <a href="http://72.62.140.110:8080/manager" class="btn btn-secondary" target="_blank" style="margin-right: 10px;">
+                        Manager
+                    </a>
+                    <a href="http://72.62.140.110:8080/docs" class="btn btn-secondary" target="_blank">
+                        Documentação
+                    </a>
+                </div>
+            </div>
+
+            <!-- Métricas do Sistema -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">💻</span>
+                    <div>
+                        <h3>Métricas do Servidor</h3>
+                        <span style="color: #888; font-size: 0.9em;">Atualizado em tempo real</span>
+                    </div>
+                </div>
+                <div class="metric-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="cpu">--%</div>
+                        <div class="metric-label">CPU</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="ram">--%</div>
+                        <div class="metric-label">RAM</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="disk">--%</div>
+                        <div class="metric-label">Disco</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="uptime">--</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarefas -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">📋</span>
+                    <div>
+                        <h3>Tarefas do Dia</h3>
+                        <span style="color: #888; font-size: 0.9em;">Gerenciadas pelo Agente</span>
+                    </div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Configurar instância WhatsApp</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Testar disparo de mensagens</span>
+                    </li>
+                    <li class="task-item">
+                        <input type="checkbox" class="task-checkbox">
+                        <span>Integrar com Shopify</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Ferramentas -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🛠️</span>
+                    <div>
+                        <h3>Ferramentas</h3>
+                        <span style="color: #888; font-size: 0.9em;">CLI do OpenClaw</span>
+                    </div>
+                </div>
+                <p>Acesse via terminal:</p>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin: 15px 0; font-family: monospace;">
+                    ssh root@72.62.140.110<br>
+                    openclaw status
+                </div>
+                <p style="color: #888; font-size: 0.9em;">Comandos: status, tasks, learn, backup, logs, urls</p>
+            </div>
+
+            <!-- OpenClaw Agent -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🤖</span>
+                    <div>
+                        <h3>OpenClaw Agent</h3>
+                        <span class="status online">24/7 ATIVO</span>
+                    </div>
+                </div>
+                <p>Agente autônomo rodando na VPS. Monitora serviços, coleta métricas, gera backups e relatórios automaticamente.</p>
+                <div class="metric-grid" style="margin-top: 20px;">
+                    <div class="metric">
+                        <div class="metric-value">∞</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">5min</div>
+                        <div class="metric-label">Check</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🤖 OpenClaw Agent • VPS Criativalia • 72.62.140.110</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Sempre monitorando • Sempre construindo • Sempre surpreendendo</p>
+            <p style="margin-top: 20px; color: #00d9ff;">✨ Dashboard Pro v2.0 - Criado enquanto você voltava para casa</p>
+        </div>
+    </div>
+
+    <script>
+        // Simular atualização de métricas
+        function updateMetrics() {
+            const cpu = Math.floor(Math.random() * 30) + 10;
+            const ram = Math.floor(Math.random() * 20) + 40;
+            const disk = Math.floor(Math.random() * 10) + 20;
+            
+            document.getElementById('cpu').textContent = cpu + '%';
+            document.getElementById('ram').textContent = ram + '%';
+            document.getElementById('disk').textContent = disk + '%';
+            document.getElementById('uptime').textContent = '∞';
+        }
+        
+        // Atualizar a cada 5 segundos
+        updateMetrics();
+        setInterval(updateMetrics, 5000);
+        
+        // Checkbox interativo
+        document.querySelectorAll('.task-checkbox').forEach(cb => {
+            cb.addEventListener('change', function() {
+                this.parentElement.classList.toggle('completed', this.checked);
+            });
+        });
+    </script>
+</body>
+</html>

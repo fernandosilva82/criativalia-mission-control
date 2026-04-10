@@ -1,0 +1,6 @@
+: 35}  <|tool_calls_section_end|> ) curl -s -o /dev/null -w "%{http_code}" https://criativalia-runtime.onrender.com/api/stats
+if [ $? -eq 0 ]; then
+  exit 0
+else
+  exit 1
+fi

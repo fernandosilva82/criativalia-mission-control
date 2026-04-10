@@ -1,353 +1,369 @@
 {
-  "generated_at": "2026-04-09T06:28:00+08:00",
+  "generated_at": "2026-04-09T14:26:00Z",
   "generated_by": "CEO Agent - Orquestrador",
-  "period_analyzed": "2026-04-01 a 2026-04-04",
-  "sources": [
-    "OpsBot Scanner",
-    "TrafficBot Scanner"
-  ],
-  "total_opportunities_analyzed": 44,
-  "total_after_dedup": 23,
-  "total_high_impact": 18,
+  "total_opportunities": 32,
+  "filtered_opportunities": 27,
   "priorities": {
     "P0": [
       {
         "id": "ops_20260402_001",
         "agent": "OpsBot",
-        "task": "Cadastrar SKUs em 100% dos produtos",
-        "why": "CRÍTICO: 100% dos produtos sem SKU impede controle de estoque, rastreamento e integração com ERP. Risco operacional máximo.",
+        "task": "Cadastrar SKUs em 100 produtos sem identificação",
         "impact_score": 10,
         "effort_score": 3,
         "roi": 3.33,
-        "financial_impact": "Evita R$5k+/mês em erros logísticos",
-        "time_estimate": "4-6 horas",
-        "source": "20260402/ops_opps.json"
+        "financial_impact": "Evita perda de R$5k+/mês em erros operacionais",
+        "why": "Risco operacional crítico - todos os produtos sem SKU impedem controle de estoque, rastreamento e integração com ERP",
+        "deadline": "2026-04-11"
       },
       {
         "id": "ops_20260402_004",
         "agent": "OpsBot",
-        "task": "Criar planilha de custos e calcular margens reais",
-        "why": "Vendendo no escuro: ticket médio R$202 mas margem desconhecida. Risco de prejuízo ou margem insuficiente.",
+        "task": "Criar planilha de custos e calcular margens reais de todos os produtos",
         "impact_score": 10,
         "effort_score": 4,
         "roi": 2.50,
-        "financial_impact": "Evita R$6k/mês em vendas com margem <30%",
-        "time_estimate": "3-4 horas",
-        "source": "20260402/ops_opps.json"
+        "financial_impact": "Evita perda de R$6k/mês em vendas com margem <30%",
+        "why": "Vendendo no escuro - sem saber margens reais, risco de prejuízo ou margem insuficiente",
+        "deadline": "2026-04-12"
       },
       {
-        "id": "ops_002",
+        "id": "ops_001",
         "agent": "OpsBot",
-        "task": "Fixar estratégia de cupom Primeira5 (bloquear recorrentes)",
-        "why": "37% de clientes recorrentes usando cupom de primeira compra. Perdendo 12% de margem líquida.",
-        "impact_score": 8,
-        "effort_score": 2,
-        "roi": 4.00,
-        "financial_impact": "+R$3.500/mês",
-        "time_estimate": "1-2 horas",
-        "source": "20260404/ops_opps.json"
-      },
-      {
-        "id": "ops_20260402_002",
-        "agent": "OpsBot",
-        "task": "Adicionar compare_at_price em 90 produtos (preço de comparação)",
-        "why": "90% dos produtos sem efeito âncora de preço. Perdendo 15-25% de conversão.",
-        "impact_score": 8,
-        "effort_score": 2,
-        "roi": 4.00,
-        "financial_impact": "+R$4k/mês",
-        "time_estimate": "1 hora",
-        "source": "20260402/ops_opps.json"
-      },
-      {
-        "id": "ops_20260402_006",
-        "agent": "TrafficBot",
-        "task": "Instalar Meta Pixel (Facebook Pixel)",
-        "why": "Zero rastreamento de audiência. Quando campanhas ativarem, CAC será 3-5x maior sem audiências warm.",
+        "task": "Criar 4 bundles estratégicos para aumentar ticket médio",
         "impact_score": 9,
-        "effort_score": 1,
-        "roi": 9.00,
-        "financial_impact": "Economia R$3k/mês + ROAS 3x maior",
-        "time_estimate": "15 minutos",
-        "source": "20260402/ops_opps.json"
+        "effort_score": 2,
+        "roi": 4.50,
+        "financial_impact": "+R$ 8.000/mês estimado (+25-35% ticket médio)",
+        "why": "73% dos pedidos têm apenas 1 item. Quick win de alto impacto com baixo esforço",
+        "deadline": "2026-04-14"
       },
       {
         "id": "ops_007",
         "agent": "OpsBot",
-        "task": "Implementar coleta de email marketing (popup de saída + checkout)",
-        "why": "0% de opt-in de email marketing. Base de 50+ clientes sem comunicação direta. LTV completamente perdido.",
+        "task": "Implementar coleta de email marketing (popup + fluxo de bem-vindo)",
         "impact_score": 9,
         "effort_score": 3,
         "roi": 3.00,
-        "financial_impact": "+R$3k/mês (LTV aumentado)",
-        "time_estimate": "2 horas",
-        "source": "20260404/ops_opps.json"
+        "financial_impact": "+R$ 3.000/mês (LTV aumentado)",
+        "why": "100% dos clientes não estão inscritos. Base de 50+ clientes sem comunicação ativada",
+        "deadline": "2026-04-15"
+      },
+      {
+        "id": "traffic_001",
+        "agent": "TrafficBot",
+        "task": "Adicionar luminária 3D ao catálogo - produto top em dropshipping 2026",
+        "impact_score": 9,
+        "effort_score": 6,
+        "roi": 1.50,
+        "financial_impact": "Alta - produto trending com alto potencial viral",
+        "why": "TOP 2 oportunidade de produtos vencedores para 2026. Altamente 'instagramável' e funciona bem em UGC",
+        "deadline": "2026-04-20"
       }
     ],
     "P1": [
       {
-        "id": "ops_001_consolidated",
+        "id": "ops_002",
         "agent": "OpsBot",
-        "task": "Criar bundles estratégicos (Sala Completa, Quarto Aconchegante)",
-        "why": "73% dos pedidos com apenas 1 item. Ticket médio pode subir de R$202 para R$320+ com bundles.",
-        "impact_score": 9,
-        "effort_score": 2,
-        "roi": 4.50,
-        "financial_impact": "+R$8k/mês",
-        "time_estimate": "3-4 horas",
-        "source": "Consolidado: 20260404 + 20260402"
-      },
-      {
-        "id": "ops_20260402_008",
-        "agent": "CopyBot",
-        "task": "Configurar Klaviyo - Fluxo de carrinho abandonado",
-        "why": "Setor decoração tem 70-75% abandono. Sem recuperação = perdendo 70% das vendas potenciais.",
-        "impact_score": 9,
-        "effort_score": 3,
-        "roi": 3.00,
-        "financial_impact": "+R$5k/mês em recuperação",
-        "time_estimate": "2-3 horas",
-        "source": "20260402/ops_opps.json"
-      },
-      {
-        "id": "ops_20260402_011",
-        "agent": "CopyBot",
-        "task": "Criar página 'Por que PLA?' e destacar diferencial sustentável",
-        "why": "100% dos produtos são PLA (biopolímero) mas ninguém sabe. Gap estratégico enorme vs concorrentes.",
-        "impact_score": 9,
-        "effort_score": 3,
-        "roi": 3.00,
-        "financial_impact": "+R$7k/mês com posicionamento eco-premium",
-        "time_estimate": "3 horas",
-        "source": "20260402/ops_opps.json"
-      },
-      {
-        "id": "traffic_001_consolidated",
-        "agent": "TrafficBot",
-        "task": "Criar categoria dedicada 'Luminária Mushroom/Cogumelo'",
-        "why": "Tendência global consolidada. Pinterest +77%, TikTok milhões de views. Gap de conteúdo no Brasil.",
-        "impact_score": 9,
-        "effort_score": 4,
-        "roi": 2.25,
-        "financial_impact": "Alto potencial de tráfego orgânico",
-        "time_estimate": "4-5 horas",
-        "source": "Consolidado: 20260404 + 20260402 + 20260401"
-      },
-      {
-        "id": "ops_20260402_005",
-        "agent": "OpsBot",
-        "task": "Implementar cross-sell inteligente no checkout",
-        "why": "Zero cross-sell atual. Clientes compram produtos individuais que combinam naturalmente.",
+        "task": "Otimizar estratégia de descontos 'Primeira5' (bloquear para recorrentes)",
         "impact_score": 8,
         "effort_score": 2,
         "roi": 4.00,
-        "financial_impact": "+R$5k/mês em vendas adicionais",
-        "time_estimate": "2 horas",
-        "source": "20260402/ops_opps.json"
+        "financial_impact": "+R$ 3.500/mês estimado (+12% margem)",
+        "why": "100% dos pedidos usam cupom de primeira compra, inclusive 35% de clientes recorrentes",
+        "deadline": "2026-04-13"
       },
       {
         "id": "ops_003",
         "agent": "OpsBot",
-        "task": "Implementar cross-sell 'Complete a iluminação' no checkout",
-        "why": "Sobreposição de categoria apenas 12%. Quem compra mesa não compra pendente no mesmo pedido.",
+        "task": "Implementar cross-sell inteligente no checkout",
         "impact_score": 8,
         "effort_score": 4,
         "roi": 2.00,
-        "financial_impact": "+R$4.200/mês",
-        "time_estimate": "3-4 horas",
-        "source": "20260404/ops_opps.json"
+        "financial_impact": "+R$ 4.200/mês estimado",
+        "why": "Sobreposição de categoria de apenas 12% - grande oportunidade de upsell",
+        "deadline": "2026-04-18"
       },
       {
-        "id": "ops_20260402_007",
+        "id": "traffic_011",
         "agent": "TrafficBot",
-        "task": "Instalar Google Analytics 4",
-        "why": "Zero visibilidade comportamental. Não sabemos bounce rate, páginas mais visitadas, origem do tráfego.",
-        "impact_score": 8,
-        "effort_score": 1,
-        "roi": 8.00,
-        "financial_impact": "Evita R$2k/mês em tráfego não qualificado",
-        "time_estimate": "10 minutos",
-        "source": "20260402/ops_opps.json"
+        "task": "Posicionar Criativalia como 'Design Acessível' no gap mid-market",
+        "impact_score": 9,
+        "effort_score": 5,
+        "roi": 1.80,
+        "financial_impact": "Alta - captação de mercado mid-market desatendido",
+        "why": "Larmary opera em premium (R$400-15k+). Gap enorme no mid-market (R$150-600)",
+        "deadline": "2026-04-25"
       },
       {
-        "id": "ops_004",
+        "id": "ops_20260402_006",
         "agent": "OpsBot",
-        "task": "Implementar fluxo de recuperação de Pix (WhatsApp + email)",
-        "why": "12% taxa de cancelamento, 67% via Pix. Pedidos cancelados = R$1.450 em receita perdida recente.",
-        "impact_score": 7,
+        "task": "Instalar Meta Pixel no Shopify",
+        "impact_score": 9,
+        "effort_score": 1,
+        "roi": 9.00,
+        "financial_impact": "Economia de R$3k/mês em ad spend + ROAS 3x maior",
+        "why": "Sem Pixel, cada visitante é perdido para sempre. CAC será 3-5x maior quando campanhas ativarem",
+        "deadline": "2026-04-10"
+      },
+      {
+        "id": "ops_20260402_008",
+        "agent": "OpsBot",
+        "task": "Configurar recuperação de carrinho abandonado (Klaviyo)",
+        "impact_score": 9,
         "effort_score": 3,
-        "roi": 2.33,
-        "financial_impact": "+R$1.800/mês",
-        "time_estimate": "3-4 horas",
-        "source": "20260404/ops_opps.json"
+        "roi": 3.00,
+        "financial_impact": "+R$5k/mês em recuperação de vendas",
+        "why": "Taxa de abandono de 70-75% no setor. Sem recuperação, deixamos 70% do dinheiro na mesa",
+        "deadline": "2026-04-16"
       },
       {
-        "id": "ops_005",
-        "agent": "OpsBot",
-        "task": "Padronizar threshold de frete grátis (R$400)",
-        "why": "Frete grátis inconsistente: pedidos R$160 com frete grátis, outros R$350 pagando R$42,90.",
-        "impact_score": 7,
-        "effort_score": 1,
-        "roi": 7.00,
-        "financial_impact": "+R$2.100/mês",
-        "time_estimate": "30 minutos",
-        "source": "20260404/ops_opps.json"
+        "id": "ops_20260402_011",
+        "agent": "CopyBot",
+        "task": "Criar página 'Por que PLA?' e posicionar diferencial sustentável",
+        "impact_score": 9,
+        "effort_score": 3,
+        "roi": 3.00,
+        "financial_impact": "+R$7k/mês com posicionamento eco-premium",
+        "why": "100% dos produtos são PLA (biopolímero) mas diferencial não está explorado. Gap estratégico enorme",
+        "deadline": "2026-04-22"
+      },
+      {
+        "id": "traffic_006",
+        "agent": "TrafficBot",
+        "task": "Destacar produtos dimerizáveis e criar landing page 'Iluminação Inteligente 2026'",
+        "impact_score": 9,
+        "effort_score": 7,
+        "roi": 1.29,
+        "financial_impact": "Alto - tendência de smart home crescente",
+        "why": "Iluminação inteligente e dimerizável é tendência consolidada com alta demanda",
+        "deadline": "2026-04-28"
       }
     ],
     "P2": [
       {
-        "id": "traffic_002_consolidated",
+        "id": "ops_004",
+        "agent": "OpsBot",
+        "task": "Implementar fluxo de recuperação de pedidos cancelados (Pix + WhatsApp)",
+        "impact_score": 7,
+        "effort_score": 3,
+        "roi": 2.33,
+        "financial_impact": "+R$ 1.800/mês estimado",
+        "why": "12% taxa de cancelamento, principalmente Pix pendente. 67% dos cancelados usam Pix",
+        "deadline": "2026-04-20"
+      },
+      {
+        "id": "ops_005",
+        "agent": "OpsBot",
+        "task": "Definir threshold de frete grátis em R$400 e adicionar progress bar",
+        "impact_score": 7,
+        "effort_score": 1,
+        "roi": 7.00,
+        "financial_impact": "+R$ 2.100/mês estimado",
+        "why": "Frete grátis aplicado inconsistentemente. Padronização protege margem e motiva upsell",
+        "deadline": "2026-04-11"
+      },
+      {
+        "id": "traffic_002",
         "agent": "TrafficBot",
-        "task": "Criar coleção 'Neo Deco / Art Deco Moderno'",
-        "why": "Pinterest Predicts 2026: +40% em pendant lamps, +35% brass aesthetic. Tendência retornando.",
+        "task": "Desenvolver coleção 'Neo Deco' com pendentes geométricos",
         "impact_score": 8,
         "effort_score": 4,
         "roi": 2.00,
-        "financial_impact": "Potencial de tráfego segmentado",
-        "time_estimate": "3-4 horas",
-        "source": "Consolidado: 20260404 + 20260402"
+        "financial_impact": "Médio-Alto - tendência Pinterest +40%",
+        "why": "Pinterest Predicts 2026: +40% em pendant lamps, +35% brass aesthetic, +100% antique bar carts",
+        "deadline": "2026-04-30"
       },
       {
-        "id": "traffic_004_consolidated",
-        "agent": "CopyBot",
-        "task": "Criar filtros por material + coleção 'Materiais Nobres'",
-        "why": "Vidro Murano, cerâmica, alabastro em alta. Consumidor paga premium por diferenciação.",
+        "id": "traffic_005",
+        "agent": "TrafficBot",
+        "task": "Criar guia 'Como criar camadas de luz na sua casa'",
         "impact_score": 8,
-        "effort_score": 5,
-        "roi": 1.60,
-        "financial_impact": "Margem premium 20%+",
-        "time_estimate": "4-5 horas",
-        "source": "Consolidado: 20260404 + 20260402 + 20260401"
+        "effort_score": 4,
+        "roi": 2.00,
+        "financial_impact": "Médio - SEO e autoridade de marca",
+        "why": "Tendência consolidada: uso de camadas de luz substituindo ponto central. Reduz ofuscamento",
+        "deadline": "2026-04-26"
       },
       {
-        "id": "traffic_006_consolidated",
-        "agent": "CopyBot",
-        "task": "Criar categoria 'Arandelas Articuladas' + guia completo",
-        "why": "Substituindo abajures em quartos. Keyword de cauda longa com alta intenção de compra.",
+        "id": "traffic_008",
+        "agent": "TrafficBot",
+        "task": "Criar editorial 'Luminárias que são obras de arte'",
         "impact_score": 8,
-        "effort_score": 3,
-        "roi": 2.67,
-        "financial_impact": "Tráfego qualificado quarto/cabeceira",
-        "time_estimate": "3 horas",
-        "source": "Consolidado: 20260404 + 20260402 + 20260401"
+        "effort_score": 4,
+        "roi": 2.00,
+        "financial_impact": "Médio - branding e posicionamento premium",
+        "why": "Tendência clara: luminárias se exibem como peças de design, não se escondem",
+        "deadline": "2026-04-24"
       },
       {
-        "id": "ops_20260402_010",
-        "agent": "OpsBot",
-        "task": "Criar campanha 'Páscoa Criativalia' (limpar estoque sazonal)",
-        "why": "R$546 em produtos de Páscoa. Timing crítico: Páscoa 2026 em abril. Ação em 7 dias ou obsoleto por 1 ano.",
+        "id": "traffic_010",
+        "agent": "TrafficBot",
+        "task": "Posicionar Criativalia como D2C lifestyle (vs B2B técnico da Cristallux)",
         "impact_score": 8,
-        "effort_score": 2,
-        "roi": 4.00,
-        "financial_impact": "Venda imediata R$546+ ou estoque parado 1 ano",
-        "time_estimate": "2 horas",
-        "source": "20260402/ops_opps.json"
-      },
-      {
-        "id": "traffic_008_consolidated",
-        "agent": "CopyBot",
-        "task": "Criar seção 'Consultoria de Iluminação' + quiz",
-        "why": "Gap de conteúdo educativo: nenhum concorrente oferece consultoria. Oportunidade de autoridade.",
-        "impact_score": 8,
-        "effort_score": 5,
-        "roi": 1.60,
-        "financial_impact": "Diferenciação competitiva",
-        "time_estimate": "5-6 horas",
-        "source": "Consolidado: 20260404 + 20260401"
+        "effort_score": 4,
+        "roi": 2.00,
+        "financial_impact": "Alto - diferenciação de concorrente majoritário",
+        "why": "Cristallux foca B2B/atacado. Oportunidade de capturar consumidor final com linguagem emocional",
+        "deadline": "2026-04-27"
       },
       {
         "id": "ops_008",
         "agent": "OpsBot",
-        "task": "Implementar programa 'Indique e Ganhe'",
-        "why": "Produtos de decoração têm alta propensão a indicação visual (Instagram, Pinterest).",
+        "task": "Criar programa 'Indique e Ganhe'",
         "impact_score": 7,
         "effort_score": 6,
         "roi": 1.17,
-        "financial_impact": "+R$2.500/mês",
-        "time_estimate": "6-8 horas",
-        "source": "20260404/ops_opps.json"
+        "financial_impact": "+R$ 2.500/mês estimado",
+        "why": "Produtos decorativos têm alta propensão a indicação visual. Clientes satisfeitos podem ser evangelistas",
+        "deadline": "2026-05-05"
+      },
+      {
+        "id": "ops_20260402_002",
+        "agent": "OpsBot",
+        "task": "Adicionar preço de comparação (compare_at_price) em 90 produtos",
+        "impact_score": 8,
+        "effort_score": 2,
+        "roi": 4.00,
+        "financial_impact": "+R$4k/mês estimado",
+        "why": "90% dos produtos sem preço de comparação. Efeito âncora aumenta conversão em 15-25%",
+        "deadline": "2026-04-12"
+      },
+      {
+        "id": "ops_20260402_007",
+        "agent": "OpsBot",
+        "task": "Instalar Google Analytics 4 no Shopify",
+        "impact_score": 8,
+        "effort_score": 1,
+        "roi": 8.00,
+        "financial_impact": "Evita desperdício de R$2k/mês em tráfego não qualificado",
+        "why": "Zero visibilidade comportamental. Sem dados, não sabemos o que otimizar",
+        "deadline": "2026-04-10"
       }
     ],
     "P3": [
       {
         "id": "ops_006",
         "agent": "OpsBot",
-        "task": "Automatizar processo de customização",
-        "why": "Produto 'Customização' sendo vendido manualmente. Pode ser escalado com produto configurável.",
+        "task": "Automatizar processo de customização de produtos",
         "impact_score": 6,
         "effort_score": 5,
         "roi": 1.20,
-        "financial_impact": "+R$900/mês (escala com volume)",
-        "time_estimate": "4-6 horas",
-        "source": "20260404/ops_opps.json"
+        "financial_impact": "+R$ 900/mês estimado (escala com volume)",
+        "why": "Produto 'Customização' vendido manualmente. Processo pode ser automatizado",
+        "deadline": "2026-05-10"
       },
       {
-        "id": "traffic_003_consolidated",
+        "id": "traffic_003",
         "agent": "TrafficBot",
-        "task": "Testar categoria 'Iluminação 3D / Efeito Visual'",
-        "why": "Nicho emergente com baixa concorrência. Mercado ainda pouco explorado no Brasil.",
+        "task": "Adicionar luminárias mushroom/cogumelo ao catálogo",
         "impact_score": 7,
-        "effort_score": 6,
-        "roi": 1.17,
-        "financial_impact": "Nicho dominável rapidamente",
-        "time_estimate": "5-6 horas",
-        "source": "Consolidado: 20260402 + 20260401"
+        "effort_score": 4,
+        "roi": 1.75,
+        "financial_impact": "Médio - tendência orgânica/escultural",
+        "why": "Luminárias mushroom em alta. Estilo Japandi e escandinavo minimalista",
+        "deadline": "2026-04-23"
       },
       {
-        "id": "traffic_007_consolidated",
-        "agent": "CopyBot",
-        "task": "Criar conteúdo 'Maximalismo Curado'",
-        "why": "Tendência Pinterest 2026. Luminárias como ponto de equilíbrio em decorações ousadas.",
+        "id": "traffic_004",
+        "agent": "TrafficBot",
+        "task": "Criar conteúdo educativo sobre trilhos magnéticos",
+        "impact_score": 7,
+        "effort_score": 5,
+        "roi": 1.40,
+        "financial_impact": "Médio - conteúdo educativo",
+        "why": "Trilhos magnéticos permanecem relevantes em 2026. Solução versátil",
+        "deadline": "2026-04-29"
+      },
+      {
+        "id": "traffic_007",
+        "agent": "TrafficBot",
+        "task": "Criar coleção 'Natureza & Luz' com materiais sustentáveis",
+        "impact_score": 7,
+        "effort_score": 5,
+        "roi": 1.40,
+        "financial_impact": "Médio - segmento sustentabilidade",
+        "why": "Sustentabilidade marca design de interiores. Materiais naturais em alta",
+        "deadline": "2026-05-02"
+      },
+      {
+        "id": "traffic_009",
+        "agent": "TrafficBot",
+        "task": "Diferenciar Criativalia como marca de iluminação decorativa (vs técnica)",
+        "impact_score": 7,
+        "effort_score": 5,
+        "roi": 1.40,
+        "financial_impact": "Médio - posicionamento de nicho",
+        "why": "Lume Decor foca em técnico/LED. Gap de posicionamento para decorativo",
+        "deadline": "2026-04-21"
+      },
+      {
+        "id": "traffic_012",
+        "agent": "TrafficBot",
+        "task": "Monitorar Expolux 2026 para oportunidades de PR e backlinks",
         "impact_score": 6,
-        "effort_score": 3,
-        "roi": 2.00,
-        "financial_impact": "SEO de nicho",
-        "time_estimate": "2-3 horas",
-        "source": "Consolidado: 20260404 + 20260402"
+        "effort_score": 8,
+        "roi": 0.75,
+        "financial_impact": "Baixo-Médio - PR e backlinks",
+        "why": "Maior feira internacional de iluminação da América Latina. Oportunidade de PR",
+        "deadline": "2026-09-01"
+      },
+      {
+        "id": "ops_20260402_005",
+        "agent": "OpsBot",
+        "task": "Instalar app de cross-sell e configurar pares de produtos",
+        "impact_score": 8,
+        "effort_score": 2,
+        "roi": 4.00,
+        "financial_impact": "+R$5k/mês em vendas adicionais",
+        "why": "Cross-selling inexistente. Cliente não vê 'Complete o look' ou produtos relacionados",
+        "deadline": "2026-04-14"
+      },
+      {
+        "id": "ops_20260402_009",
+        "agent": "OpsBot",
+        "task": "Testar Core Web Vitals e otimizar se necessário",
+        "impact_score": 7,
+        "effort_score": 2,
+        "roi": 3.50,
+        "financial_impact": "+R$3k/mês sem aumentar tráfego",
+        "why": "Produtos têm 5-7 imagens em alta resolução. Risco de LCP > 4s",
+        "deadline": "2026-04-17"
+      },
+      {
+        "id": "ops_20260402_010",
+        "agent": "OpsBot",
+        "task": "Criar campanha de limpeza de estoque de produtos de Páscoa",
+        "impact_score": 8,
+        "effort_score": 2,
+        "roi": 4.00,
+        "financial_impact": "R$546 em produtos que precisam de ação",
+        "why": "Páscoa 2026 próxima. Produtos precisam de estratégia imediata ou serão obsoletos",
+        "deadline": "2026-04-10"
       }
     ]
   },
-  "summary": "Análise consolidada de 44 oportunidades revela 23 iniciativas únicas de alto valor. Prioridades P0 focam em fundamentos operacionais críticos (SKUs, margens, tracking) que estão impedindo a escala. P1 combina otimizações de conversão rápidas (bundles, cross-sell, email) com oportunidades de tráfego (Mushroom, Neo Deco). P2-P3 são diferenciações competitivas e nichos emergentes. Foco recomendado: resolver P0 em 48h para desbloquear crescimento sustentável.",
-  "top_3_recommendations": [
+  "summary": "Análise de 32 oportunidades identificadas nos últimos 7 dias. Após filtragem (impact >= 6), 27 oportunidades foram priorizadas. TOP 3: (1) Cadastro de SKUs (P0) - risco operacional crítico, (2) Planilha de custos/margens (P0) - vendendo no escuro, (3) Bundles estratégicos (P0) - quick win de +R$8k/mês. Foco imediato deve ser em fundamentos operacionais (SKUs, margens, analytics) antes de acelerar tráfego. Potencial combinado estimado: R$ 35k-50k/mês em receita adicional ou protegida.",
+  "agents_workload": {
+    "OpsBot": 20,
+    "TrafficBot": 12,
+    "CopyBot": 1
+  },
+  "next_actions": [
     {
-      "rank": 1,
-      "id": "ops_20260402_001",
-      "title": "Cadastrar SKUs em 100% dos produtos",
       "agent": "OpsBot",
-      "impact": 10,
-      "effort": 3,
-      "roi": 3.33,
-      "why": "Bloqueio operacional total. Sem SKU não há escala possível."
+      "task": "Cadastrar SKUs em 100 produtos",
+      "when": "Imediato - até 11/04"
     },
     {
-      "rank": 2,
-      "id": "ops_20260402_004",
-      "title": "Criar planilha de custos e calcular margens",
       "agent": "OpsBot",
-      "impact": 10,
-      "effort": 4,
-      "roi": 2.50,
-      "why": "Vendendo no escuro. Risco real de prejuízo."
+      "task": "Criar planilha de custos",
+      "when": "Imediato - até 12/04"
     },
     {
-      "rank": 3,
-      "id": "ops_20260402_006",
-      "title": "Instalar Meta Pixel",
-      "agent": "TrafficBot",
-      "impact": 9,
-      "effort": 1,
-      "roi": 9.00,
-      "why": "15 minutos de trabalho = economia de R$3k/mês futuros."
+      "agent": "OpsBot",
+      "task": "Instalar Meta Pixel",
+      "when": "Hoje - 10 minutos"
     }
-  ],
-  "metrics": {
-    "P0_count": 6,
-    "P1_count": 9,
-    "P2_count": 6,
-    "P3_count": 3,
-    "total_potential_revenue": "R$ 52.500+/mês",
-    "avg_roi": "3.2x",
-    "quick_wins_available": 8,
-    "critical_blockers": 2
-  }
+  ]
 }

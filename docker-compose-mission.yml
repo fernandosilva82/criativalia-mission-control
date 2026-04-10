@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  dashboard:
+    image: nginx:alpine
+    container_name: criativalia-dashboard
+    restart: always
+    ports:
+      - "3000:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    networks:
+      - mission-network
+
+networks:
+  mission-network:
+    driver: bridge

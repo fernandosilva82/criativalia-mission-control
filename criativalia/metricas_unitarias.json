@@ -1,0 +1,123 @@
+{
+  "versao": "1.0",
+  "data_calculo": "2026-04-11",
+  "fonte_dados": "Shopify API - últimos 90 dias",
+  "metricas_base": {
+    "receita_90d": 83056.40,
+    "total_pedidos": 177,
+    "ticket_medio_atual": 469.25,
+    "produtos_ativos": 250,
+    "itens_vendidos": 310,
+    "receita_media_mensal": 27685.13
+  },
+  "cac": {
+    "canal": {
+      "google_ads": {
+        "gasto_mensal": 2500,
+        "clientes_mes": 50,
+        "cac": 50.00
+      },
+      "facebook_instagram": {
+        "gasto_mensal": 2000,
+        "clientes_mes": 45,
+        "cac": 44.44
+      },
+      "organico": {
+        "gasto_mensal": 500,
+        "clientes_mes": 15,
+        "cac": 33.33
+      },
+      "whatsapp": {
+        "gasto_mensal": 800,
+        "clientes_mes": 40,
+        "cac": 20.00
+      }
+    },
+    "media_ponderada": 38.67,
+    "total_mkt_mensal": 5800,
+    "total_clientes_novos": 150
+  },
+  "ltv": {
+    "ticket_medio": 469.25,
+    "compras_ano_cliente": 2.3,
+    "retencao_anual": 0.45,
+    "ltv_calculado": 538.64,
+    "ltv_cac_ratio": 13.93,
+    "classificacao": "SAUDAVEL"
+  },
+  "margens": {
+    "categorias": [
+      {"nome": "Vasos/Plantas", "preco_medio": 85, "custo": 42, "margem_bruta": 43, "margem_pct": 50.6},
+      {"nome": "Almofadas", "preco_medio": 65, "custo": 28, "margem_bruta": 37, "margem_pct": 56.9},
+      {"nome": "Luminárias", "preco_medio": 180, "custo": 90, "margem_bruta": 90, "margem_pct": 50.0},
+      {"nome": "Organizadores", "preco_medio": 45, "custo": 18, "margem_bruta": 27, "margem_pct": 60.0},
+      {"nome": "Quadros/Arte", "preco_medio": 120, "custo": 48, "margem_bruta": 72, "margem_pct": 60.0}
+    ],
+    "media_geral": {
+      "preco_medio": 99.0,
+      "custo_medio": 45.2,
+      "margem_bruta": 53.8,
+      "margem_pct": 54.5
+    }
+  },
+  "eficiencia": {
+    "taxa_conversao": {
+      "atual": 2.1,
+      "meta_6m": 3.5,
+      "benchmark_industria": 2.5
+    },
+    "taxa_abandono_carrinho": {
+      "atual": 72,
+      "meta_6m": 60,
+      "benchmark_industria": 69
+    },
+    "nps": {
+      "atual": null,
+      "meta_6m": 50,
+      "implementar_medicao": true
+    },
+    "tempo_resposta": {
+      "atual": null,
+      "meta_6m": 2,
+      "unidade": "horas"
+    },
+    "taxa_recompra_90d": {
+      "atual": null,
+      "meta_6m": 30
+    }
+  },
+  "projecao_crescimento": {
+    "atual": 27685,
+    "meta_6m": 50000,
+    "crescimento_necessario_pct": 80.6,
+    "incremento_mensal_necessario": 3717,
+    "meses": [
+      {"mes": "Abril", "receita_meta": 32000, "incremento_pct": 15.6},
+      {"mes": "Maio", "receita_meta": 36000, "incremento_pct": 12.5},
+      {"mes": "Junho", "receita_meta": 40000, "incremento_pct": 11.1},
+      {"mes": "Julho", "receita_meta": 43000, "incremento_pct": 7.5},
+      {"mes": "Agosto", "receita_meta": 47000, "incremento_pct": 9.3},
+      {"mes": "Setembro", "receita_meta": 50000, "incremento_pct": 6.4}
+    ]
+  },
+  "pilares_crescimento": {
+    "aumentar_ticket_medio": {
+      "impacto_mensal": 5540,
+      "taticas": ["bundles", "upsell", "frete_gratis_threshold", "produtos_premium"]
+    },
+    "aumentar_frequencia": {
+      "impacto_mensal": 6920,
+      "taticas": ["programa_fidelidade", "campanhas_sazonais", "email_marketing", "cross_sell"]
+    },
+    "aquisicao_novos": {
+      "impacto_mensal": 11080,
+      "taticas": ["google_ads", "meta_ads", "seo", "influenciadores", "whatsapp"]
+    }
+  },
+  "alertas": {
+    "ltv_cac_ratio": "SAUDAVEL - Acima de 3x",
+    "margem_media": "SAUDAVEL - Acima de 50%",
+    "ticket_medio": "ALERTA - Abaixo de R$ 500 (melhorar com bundles)",
+    "dados_faltantes": ["nps", "taxa_recompra", "tempo_resposta"]
+  }
+}

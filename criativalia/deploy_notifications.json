@@ -89,15 +89,55 @@
       "workflow": "Deploy to Render",
       "conclusion": "success",
       "notified_at": "2026-04-08T05:34:00Z"
+    },
+    "24187673530": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T11:26:00Z"
+    },
+    "24187673518": {
+      "workflow": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T11:26:00Z"
+    },
+    "24187672658": {
+      "workflow": ".github/workflows/notify-deploy.yml",
+      "conclusion": "failure",
+      "notified_at": "2026-04-09T11:26:00Z"
+    },
+    "24180073753": {
+      "workflow": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T08:18:00Z"
+    },
+    "24180073744": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T08:18:00Z"
+    },
+    "24180073735": {
+      "workflow": "Deploy on Opportunities Update",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T08:18:00Z"
+    },
+    "24180072794": {
+      "workflow": ".github/workflows/notify-deploy.yml",
+      "conclusion": "failure",
+      "notified_at": "2026-04-09T08:18:00Z"
+    },
+    "24169608600": {
+      "workflow": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-09T02:43:00Z"
     }
   },
-  "last_check": "2026-04-08T15:02:00Z",
+  "last_check": "2026-04-10T20:15:00Z",
   "pending_notifications": [],
   "last_check_summary": {
-    "checked_at": "2026-04-08T15:02:00Z",
+    "checked_at": "2026-04-10T20:15:00Z",
     "runs_checked": 5,
     "new_notifications": 0,
     "status": "completed",
-    "note": "Nenhum deploy novo para notificar. Todos os workflows principais já foram notificados anteriormente."
+    "message": "Nenhum novo deploy para notificar. Todos os 5 runs verificados já foram notificados anteriormente."
   }
 }

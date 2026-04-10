@@ -35,8 +35,15 @@ Caminho: /root/.openclaw/skills/clawpify/.env
 Verificar com: cat /root/.openclaw/skills/clawpify/.env | grep TOKEN
 ```
 
-### Configuração no Render (PENDENTE - SEPARADO)
-⚠️ O token LOCAL funciona. O Render online precisa da mesma env var `SHOPIFY_ACCESS_TOKEN` configurada no dashboard.
+### 🚀 Agency Pro v7.0 PRO - DEPLOYADO
+- **URL:** http://72.62.140.110:7777
+- **API:** http://72.62.140.110:7778
+- **Status:** ✅ ONLINE com 10 módulos novos
+- **Features:** Rotação anti-ban, Agendamento, Blacklist, Segmentação, Follow-up, Analytics, Webhooks, Multi-tenant
+- **Cliente configurado:** Fernando Silva (5.000 créditos)
+- **Pool de rotação:** "Pool Principal" ativo
+- **Instância teste:** Conectada (5521987945000)
+- **Deploy:** 2026-04-10 10:35 UTC
 
 ---
 

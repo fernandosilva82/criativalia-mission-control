@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  memory-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.memory-api
+    container_name: openclaw-memory-api
+    restart: always
+    ports:
+      - "4444:4444"
+    volumes:
+      - /home/openclaw/memory/brain.db:/app/brain.db:ro
+    networks:
+      - memory-network
+
+networks:
+  memory-network:
+    driver: bridge

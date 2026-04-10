@@ -3,455 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criativalia - Dashboard Matinal</title>
+    <title>🌅 Morning Brief - Criativalia | 11/04/2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4A5D23;
-            --primary-dark: #3d4d1d;
-            --primary-light: #8fa06d;
-            --off-white: #F5F5DC;
-            --off-white-sec: #D8D8C0;
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1a1a1b;
+            --olive-primary: #4A5D23;
+            --olive-light: #5A6D33;
+            --olive-dark: #3A4D13;
             --gold: #D4A853;
-            --bg: #0f100c;
-            --bg-card: #181914;
-            --danger: #dc3545;
-            --success: #28a745;
-            --warning: #ffc107;
-            --info: #17a2b8;
+            --cream: #F5F5DC;
+            --cream-secondary: #A8A890;
+            --danger: #ff6b6b;
+            --warning: #f39c12;
+            --success: #27ae60;
+            --info: #3498db;
+            --border-color: rgba(74, 93, 35, 0.3);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            color: var(--off-white);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--cream);
+            min-height: 100vh;
             line-height: 1.6;
         }
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--olive-primary) 0%, var(--olive-dark) 100%);
             padding: 2rem;
-            text-align: center;
             border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
         }
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        .header::before {
+            content: '🌅';
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            opacity: 0.3;
         }
-        .header .date {
-            color: var(--off-white-sec);
-            font-size: 1.1rem;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .metric-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border-left: 4px solid var(--primary);
-            transition: transform 0.2s;
-        }
-        .metric-card:hover { transform: translateY(-4px); }
-        .metric-card.success { border-left-color: var(--success); }
-        .metric-card.warning { border-left-color: var(--warning); }
-        .metric-card.danger { border-left-color: var(--danger); }
-        .metric-card.info { border-left-color: var(--info); }
-        .metric-card .label {
-            color: var(--off-white-sec);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .metric-card .value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--off-white);
-            margin: 0.5rem 0;
-        }
-        .metric-card .change {
-            font-size: 0.9rem;
-            color: var(--primary-light);
-        }
-        .section {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(74, 93, 35, 0.3);
-        }
-        .section h2 {
+        .header-content { max-width: 1400px; margin: 0 auto; }
+        .header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .header p { color: var(--cream-secondary); font-size: 1rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .section { margin-bottom: 2rem; }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
             color: var(--gold);
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .section h2::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: var(--gold);
-            border-radius: 2px;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
-        .opportunity-list {
-            list-style: none;
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 93, 35, 0.2);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--cream-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
         }
         .opportunity-item {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--olive-primary);
+            border-radius: 8px;
             padding: 1rem;
-            border-bottom: 1px solid rgba(74, 93, 35, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            margin-bottom: 1rem;
         }
-        .opportunity-item:last-child { border-bottom: none; }
-        .opp-title {
+        .opportunity-title {
             font-weight: 600;
-            color: var(--off-white);
-            margin-bottom: 0.25rem;
+            color: var(--cream);
+            margin-bottom: 0.5rem;
         }
-        .opp-desc {
-            font-size: 0.9rem;
-            color: var(--off-white-sec);
-        }
-        .opp-meta {
+        .opportunity-meta {
             display: flex;
-            gap: 0.5rem;
-            flex-shrink: 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.875rem;
+            color: var(--cream-secondary);
         }
         .badge {
+            display: inline-block;
             padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
         }
-        .badge-p0 { background: var(--danger); color: white; }
-        .badge-p1 { background: var(--warning); color: black; }
-        .badge-p2 { background: var(--info); color: white; }
-        .badge-p3 { background: var(--primary-light); color: var(--bg); }
-        .badge-impact {
-            background: var(--gold);
-            color: var(--bg);
-        }
-        .agent-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        .agent-card {
-            background: var(--bg-card);
+        .badge-p0 { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.3); }
+        .badge-p1 { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.3); }
+        .badge-p2 { background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
+        .badge-completed { background: rgba(39, 174, 96, 0.2); color: #27ae60; border: 1px solid rgba(39, 174, 96, 0.3); }
+        .badge-pending { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.3); }
+        .agent-section {
+            background: var(--bg-secondary);
             border-radius: 12px;
             padding: 1.5rem;
-            border: 1px solid rgba(74, 93, 35, 0.3);
-        }
-        .agent-card.active {
-            border-color: var(--success);
-            box-shadow: 0 0 20px rgba(40, 167, 69, 0.1);
-        }
-        .agent-card.idle {
-            border-color: var(--warning);
-            opacity: 0.8;
+            margin-bottom: 1rem;
         }
         .agent-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 0.75rem;
             margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
         }
         .agent-name {
-            font-size: 1.2rem;
             font-weight: 600;
+            font-size: 1.1rem;
         }
-        .agent-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .status-active { background: var(--success); color: white; }
-        .status-idle { background: var(--warning); color: black; }
-        .task-list {
+        .activity-list {
             list-style: none;
         }
-        .task-item {
-            padding: 0.75rem;
-            background: rgba(74, 93, 35, 0.1);
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+        .activity-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .task-item a {
-            color: var(--primary-light);
-            text-decoration: none;
+        .activity-item:last-child { border-bottom: none; }
+        .activity-desc { color: var(--cream); }
+        .activity-time {
+            color: var(--cream-secondary);
+            font-size: 0.875rem;
         }
-        .task-item a:hover { text-decoration: underline; }
-        .no-tasks {
-            color: var(--off-white-sec);
-            font-style: italic;
-            padding: 1rem;
+        .empty-state {
             text-align: center;
+            padding: 3rem;
+            color: var(--cream-secondary);
         }
-        .deploy-list {
-            list-style: none;
-        }
-        .deploy-item {
-            padding: 1rem;
-            background: rgba(40, 167, 69, 0.1);
+        .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .link-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--olive-primary) 0%, var(--olive-dark) 100%);
+            color: var(--cream);
+            padding: 0.5rem 1rem;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
-            border-left: 3px solid var(--success);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: opacity 0.2s;
         }
-        .deploy-time {
-            font-size: 0.85rem;
-            color: var(--off-white-sec);
-        }
+        .link-button:hover { opacity: 0.9; }
         .priority-list {
             list-style: none;
         }
         .priority-item {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
             padding: 1rem;
-            border-left: 4px solid;
             margin-bottom: 0.75rem;
-            background: rgba(74, 93, 35, 0.1);
-            border-radius: 0 8px 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-        .priority-item.p0 { border-left-color: var(--danger); }
-        .priority-item.p1 { border-left-color: var(--warning); }
-        .priority-item.p2 { border-left-color: var(--info); }
-        .priority-item.p3 { border-left-color: var(--primary-light); }
+        .priority-info { flex: 1; }
         .priority-title {
             font-weight: 600;
             margin-bottom: 0.25rem;
         }
         .priority-meta {
-            font-size: 0.85rem;
-            color: var(--off-white-sec);
+            font-size: 0.875rem;
+            color: var(--cream-secondary);
         }
         .footer {
             text-align: center;
             padding: 2rem;
-            color: var(--off-white-sec);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(74, 93, 35, 0.3);
-            margin-top: 2rem;
+            color: var(--cream-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
         }
         .alert {
-            padding: 1rem;
+            background: rgba(212, 168, 83, 0.1);
+            border: 1px solid var(--gold);
             border-radius: 8px;
+            padding: 1rem;
             margin-bottom: 1rem;
         }
-        .alert-warning {
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid var(--warning);
-            color: var(--warning);
+        .alert-title {
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
         }
-        .alert-info {
-            background: rgba(23, 162, 184, 0.1);
-            border: 1px solid var(--info);
-            color: var(--info);
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.5rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .opportunity-meta { flex-direction: column; gap: 0.5rem; }
+            .priority-item { flex-direction: column; }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>🌅 Morning Brief - Criativalia</h1>
-        <p class="date">Relatório das Últimas 24h | 09 de Abril de 2026</p>
+        <div class="header-content">
+            <h1>🌅 Morning Brief - Criativalia</h1>
+            <p>Relatório Matinal de Atividades | 11 de Abril de 2026</p>
+        </div>
     </header>
 
     <div class="container">
         <!-- Resumo Executivo -->
-        <div class="metrics-grid">
-            <div class="metric-card success">
-                <div class="label">Oportunidades Detectadas</div>
-                <div class="value">12</div>
-                <div class="change">+12 nas últimas 24h</div>
-            </div>
-            <div class="metric-card info">
-                <div class="label">Tarefas Executadas</div>
-                <div class="value">6</div>
-                <div class="change">45 min de atividade</div>
-            </div>
-            <div class="metric-card success">
-                <div class="label">Deploys Automáticos</div>
-                <div class="value">2</div>
-                <div class="change">Render - 08/04</div>
-            </div>
-            <div class="metric-card warning">
-                <div class="label">Aguardando Aprovação</div>
-                <div class="value">0</div>
-                <div class="change">Nada pendente</div>
+        <div class="section">
+            <h2 class="section-title">📊 Resumo Executivo</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">22</div>
+                    <div class="stat-label">Oportunidades Detectadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Tarefas Executadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Deploys 24h</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">P0 - Prioridade Máxima</div>
+                </div>
             </div>
         </div>
 
-        <!-- Alertas -->
-        <div class="alert alert-warning">
-            ⚠️ <strong>Atenção:</strong> 3 agentes estão idle há vários dias. OpsBot: 11 dias sem atividade. CopyBot: 8 dias. DesignBot: 6 dias.
-        </div>
-
-        <div class="alert alert-info">
-            💡 <strong>Insight do Dia:</strong> TrafficBot identificou 12 oportunidades de tendências 2026 em iluminação, incluindo gaps de concorrência estratégicos para posicionamento da Criativalia.
+        <!-- Alerta Importante -->
+        <div class="alert">
+            <div class="alert-title">⚠️ Atenção: Deploys Pendentes</div>
+            <p>O DesignBot finalizou atualizações do Design System que estão <strong>aguardando commit e deploy</strong>. Último deploy bem-sucedido foi em 09/04/2026.</p>
         </div>
 
         <!-- Top Oportunidades -->
         <div class="section">
-            <h2>🎯 Top Oportunidades (Últimas 24h)</h2>
-            <ul class="opportunity-list">
-                <li class="opportunity-item">
-                    <div>
-                        <div class="opp-title">Luminária 3D Inteligente - Produto Top em Dropshipping 2026</div>
-                        <div class="opp-desc">TOP 2 oportunidade de produtos vencedores para 2026. Design minimalista, projeção 3D realista, altamente 'instagramável'.</div>
+            <h2 class="section-title">🎯 Top Oportunidades (Últimas 24h)</h2>
+            <div class="card">
+                <div class="opportunity-item">
+                    <div class="opportunity-title">1. Luminária 3D - Produto TOP em Dropshipping 2026</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">TOP 2 de produtos vencedores para 2026. Design minimalista com projeção 3D, altamente "instagramável".</p>
+                    <div class="opportunity-meta">
+                        <span class="badge badge-p0">Impacto: 9/10</span>
+                        <span class="badge badge-p1">Esforço: 6/10</span>
+                        <span>🤖 TrafficBot</span>
+                        <span>📅 10/04/2026</span>
                     </div>
-                    <div class="opp-meta">
-                        <span class="badge badge-impact">Impacto 9</span>
-                        <span class="badge badge-p2">Detectada</span>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-title">2. Luminárias Pendentes - +40% nas Buscas Pinterest</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Aumento de 40% nas buscas por "luminária pendente". Movimento para casas mais acolhedoras.</p>
+                    <div class="opportunity-meta">
+                        <span class="badge badge-p1">Impacto: 8/10</span>
+                        <span class="badge badge-p2">Esforço: 4/10</span>
+                        <span>🤖 TrafficBot</span>
+                        <span>📅 10/04/2026</span>
                     </div>
-                </li>
-                <li class="opportunity-item">
-                    <div>
-                        <div class="opp-title">GAP: Larmary é premium/luxo - oportunidade mid-market</div>
-                        <div class="opp-desc">Larmary opera no segmento premium (R$ 400 a R$ 15.000+). Gap no mercado mid-market: design sofisticado com preço acessível.</div>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-title">3. Arandela de Parede - "Novo Acessório de Luxo"</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Arandelas orgânicas e inteligentes em alta. Materiais nobres: latão escovado, mármore, vidro soprado.</p>
+                    <div class="opportunity-meta">
+                        <span class="badge badge-p1">Impacto: 8/10</span>
+                        <span class="badge badge-p1">Esforço: 5/10</span>
+                        <span>🤖 TrafficBot</span>
+                        <span>📅 09/04/2026</span>
                     </div>
-                    <div class="opp-meta">
-                        <span class="badge badge-impact">Impacto 9</span>
-                        <span class="badge badge-p2">Detectada</span>
-                    </div>
-                </li>
-                <li class="opportunity-item">
-                    <div>
-                        <div class="opp-title">Arandela de Parede - 'Novo Acessório de Luxo' em 2026</div>
-                        <div class="opp-desc">Em 2026, a arandela se consolidou como o 'novo acessório de luxo'. Modelos orgânicos e inteligentes nunca estiveram tão em alta.</div>
-                    </div>
-                    <div class="opp-meta">
-                        <span class="badge badge-impact">Impacto 8</span>
-                        <span class="badge badge-p2">Detectada</span>
-                    </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
 
         <!-- O Que Foi Feito -->
         <div class="section">
-            <h2>✅ O Que Foi Feito Autonomamente</h2>
-            <div class="agent-grid">
-                <div class="agent-card active">
-                    <div class="agent-header">
-                        <span class="agent-name">🚦 TrafficBot</span>
-                        <span class="agent-status status-active">ATIVO</span>
-                    </div>
-                    <ul class="task-list">
-                        <li class="task-item">
-                            <strong>Scanner de Tendências 2026</strong><br>
-                            Análise de 12 fontes sobre iluminação<br>
-                            <small>⏱️ 4 min | 📄 <a href="/root/.openclaw/workspace/criativalia/opportunities/20260409/traffic_opps.json">Ver oportunidades</a></small>
-                        </li>
-                    </ul>
+            <h2 class="section-title">✅ O Que Foi Feito Autonomamente</h2>
+            
+            <!-- DesignBot -->
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span>🎨</span>
+                    <span class="agent-name">DesignBot</span>
+                    <span class="badge badge-completed">215 min ativos</span>
                 </div>
-                <div class="agent-card idle">
-                    <div class="agent-header">
-                        <span class="agent-name">✍️ CopyBot</span>
-                        <span class="agent-status status-idle">IDLE</span>
-                    </div>
-                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 01/04/2026</small></div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <span class="activity-desc">🎯 <strong>[P0] UX/UI Review</strong> - Correções críticas: remoção de JS inválido, feedback tátil mobile, animações de loading</span>
+                        <span class="activity-time">60 min | ✅ Deployed</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">🎨 <strong>Design System Update</strong> - Tema Criativalia com paleta verde oliva #4A5D23, textos off-white</span>
+                        <span class="activity-time">60 min | ✅ Completo</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">✨ <strong>Design System Night</strong> - Logo SVG criado, consistência em 6 páginas verificada</span>
+                        <span class="activity-time">75 min | ⏳ Aguardando commit</span>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="/criativalia/evidencias/20260409/uxui_review_0405.md" class="link-button">Ver evidência UX/UI</a>
+                    <a href="/criativalia/evidencias/20260409/design_update_1030.md" class="link-button">Ver Design System</a>
                 </div>
-                <div class="agent-card idle">
-                    <div class="agent-header">
-                        <span class="agent-name">🎨 DesignBot</span>
-                        <span class="agent-status status-idle">IDLE</span>
-                    </div>
-                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 03/04/2026</small></div>
+            </div>
+
+            <!-- TrafficBot -->
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span>🚦</span>
+                    <span class="agent-name">TrafficBot</span>
+                    <span class="badge badge-pending">Aguardando ativação</span>
                 </div>
-                <div class="agent-card idle">
-                    <div class="agent-header">
-                        <span class="agent-name">⚙️ OpsBot</span>
-                        <span class="agent-status status-idle">IDLE</span>
-                    </div>
-                    <div class="no-tasks">Sem atividades nas últimas 24h<br><small>Última ação: 29/03/2026</small></div>
+                <div class="empty-state">
+                    <div class="empty-state-icon">💤</div>
+                    <p>TrafficBot não executou atividades nas últimas 24h</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">10 oportunidades detectadas no dia 10/04 aguardam análise</p>
+                </div>
+            </div>
+
+            <!-- CopyBot -->
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span>✍️</span>
+                    <span class="agent-name">CopyBot</span>
+                    <span class="badge badge-pending">Aguardando ativação</span>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-state-icon">💤</div>
+                    <p>CopyBot não executou atividades nas últimas 24h</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">1 tarefa P1 na fila: "Criar página 'Por que PLA?'"</p>
+                </div>
+            </div>
+
+            <!-- OpsBot -->
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span>⚙️</span>
+                    <span class="agent-name">OpsBot</span>
+                    <span class="badge badge-pending">Aguardando ativação</span>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-state-icon">💤</div>
+                    <p>OpsBot não executou atividades nas últimas 24h</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">20 tarefas na fila, incluindo 5 P0 críticas</p>
                 </div>
             </div>
         </div>
 
         <!-- Deploys -->
         <div class="section">
-            <h2>🚀 Deploys Automáticos</h2>
-            <ul class="deploy-list">
-                <li class="deploy-item">
-                    <strong>Deploy to Render</strong> - Workflow executado com sucesso<br>
-                    <span class="deploy-time">🕐 08/04/2026 05:34 UTC</span>
-                </li>
-                <li class="deploy-item">
-                    <strong>Deploy to Render</strong> - Workflow executado com sucesso<br>
-                    <span class="deploy-time">🕐 08/04/2026 04:18 UTC</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Prioridades do Dia -->
-        <div class="section">
-            <h2>📋 Prioridades na Fila (23 oportunidades)</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                <div style="text-align: center; padding: 1rem; background: var(--danger); border-radius: 8px;">
-                    <div style="font-size: 2rem; font-weight: bold;">6</div>
-                    <div>P0 - Crítico</div>
-                </div>
-                <div style="text-align: center; padding: 1rem; background: var(--warning); color: var(--bg); border-radius: 8px;">
-                    <div style="font-size: 2rem; font-weight: bold;">9</div>
-                    <div>P1 - Alto</div>
-                </div>
-                <div style="text-align: center; padding: 1rem; background: var(--info); border-radius: 8px;">
-                    <div style="font-size: 2rem; font-weight: bold;">6</div>
-                    <div>P2 - Médio</div>
-                </div>
-                <div style="text-align: center; padding: 1rem; background: var(--primary-light); color: var(--bg); border-radius: 8px;">
-                    <div style="font-size: 2rem; font-weight: bold;">3</div>
-                    <div>P3 - Baixo</div>
+            <h2 class="section-title">🚀 Deploys Automáticos</h2>
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📦</div>
+                    <p>Nenhum deploy novo nas últimas 24h</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Último deploy: 09/04/2026 às 08:18 UTC</p>
+                    <p style="font-size: 0.875rem;">Design System atualizado aguardando commit e deploy</p>
                 </div>
             </div>
-            <p style="text-align: center; color: var(--gold); font-size: 1.1rem; margin-top: 1rem;">
-                💰 Potencial de receita: <strong>R$ 52.500+/mês</strong> | ROI médio: <strong>3.2x</strong>
-            </p>
         </div>
 
-        <!-- Top 3 Prioridades -->
+        <!-- Prioridades P0 -->
         <div class="section">
-            <h2>🎯 Top 3 Ações Recomendadas</h2>
-            <ul class="priority-list">
-                <li class="priority-item p0">
-                    <div class="priority-title">1. Cadastrar SKUs em 100% dos produtos (OpsBot)</div>
-                    <div class="priority-meta">Impacto 10/10 | Esforço 3/10 | ROI 3.33x | 💰 Evita R$5k+/mês em erros</div>
-                </li>
-                <li class="priority-item p0">
-                    <div class="priority-title">2. Criar planilha de custos e calcular margens reais (OpsBot)</div>
-                    <div class="priority-meta">Impacto 10/10 | Esforço 4/10 | ROI 2.50x | 💰 Evita R$6k/mês em vendas com margem &lt;30%</div>
-                </li>
-                <li class="priority-item p0">
-                    <div class="priority-title">3. Instalar Meta Pixel (TrafficBot)</div>
-                    <div class="priority-meta">Impacto 9/10 | Esforço 1/10 | ROI 9.00x | 💰 Economia R$3k/mês + ROAS 3x maior</div>
-                </li>
-            </ul>
+            <h2 class="section-title">🔥 Prioridades P0 (Ação Imediata)</h2>
+            <div class="card">
+                <ul class="priority-list">
+                    <li class="priority-item">
+                        <div class="priority-info">
+                            <div class="priority-title">1. Cadastrar SKUs em 100 produtos sem identificação</div>
+                            <div class="priority-meta">⚙️ OpsBot | Impacto: 10/10 | Deadline: 11/04/2026</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Risco operacional crítico - produtos sem SKU impedem controle de estoque</p>
+                        </div>
+                        <span class="badge badge-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <div class="priority-info">
+                            <div class="priority-title">2. Criar planilha de custos e calcular margens reais</div>
+                            <div class="priority-meta">⚙️ OpsBot | Impacto: 10/10 | Deadline: 12/04/2026</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Vendendo no escuro - sem saber margens reais, risco de prejuízo</p>
+                        </div>
+                        <span class="badge badge-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <div class="priority-info">
+                            <div class="priority-title">3. Criar 4 bundles estratégicos para aumentar ticket médio</div>
+                            <div class="priority-meta">⚙️ OpsBot | Impacto: 9/10 | ROI: 4.5x | Deadline: 14/04/2026</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">73% dos pedidos têm apenas 1 item. Potencial: +R$ 8.000/mês</p>
+                        </div>
+                        <span class="badge badge-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <div class="priority-info">
+                            <div class="priority-title">4. Implementar coleta de email marketing</div>
+                            <div class="priority-meta">⚙️ OpsBot | Impacto: 9/10 | Deadline: 15/04/2026</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">100% dos clientes não inscritos. Base de 50+ clientes sem comunicação</p>
+                        </div>
+                        <span class="badge badge-p0">P0</span>
+                    </li>
+                    <li class="priority-item">
+                        <div class="priority-info">
+                            <div class="priority-title">5. Adicionar luminária 3D ao catálogo</div>
+                            <div class="priority-meta">🚦 TrafficBot | Impacto: 9/10 | Deadline: 20/04/2026</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">TOP 2 produto vencedor 2026. Alto potencial viral</p>
+                        </div>
+                        <span class="badge badge-p0">P0</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <!-- Links -->
+        <!-- Aguardando Aprovação -->
         <div class="section">
-            <h2>📁 Links Rápidos</h2>
-            <ul style="list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0.5rem;">
-                <li>📊 <a href="/root/.openclaw/workspace/criativalia/priorities_queue.json" style="color: var(--primary-light);">Fila de Prioridades (JSON)</a></li>
-                <li>📈 <a href="/root/.openclaw/workspace/criativalia/timesheets/20260409/timesheet_24h.html" style="color: var(--primary-light);">Timesheet Completo</a></li>
-                <li>🎯 <a href="/root/.openclaw/workspace/criativalia/opportunities/20260409/traffic_opps.json" style="color: var(--primary-light);">Oportunidades de Tráfego (JSON)</a></li>
-                <li>🎨 <a href="/root/.openclaw/workspace/criativalia/evidencias/20260409/design_update_1030.md" style="color: var(--primary-light);">Design System Update</a></li>
-            </ul>
+            <h2 class="section-title">⏳ Aguardando Sua Aprovação</h2>
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📭</div>
+                    <p>Nenhum item aguardando aprovação manual</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Diretório /pending_approval/ está vazio</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Próximas Ações -->
+        <div class="section">
+            <h2 class="section-title">🎯 Próximas Ações Recomendadas</h2>
+            <div class="card">
+                <ol style="padding-left: 1.5rem; color: var(--cream);">
+                    <li style="margin-bottom: 1rem;"><strong>Commit e deploy das alterações do DesignBot</strong> - Logo e tema atualizados prontos para produção</li>
+                    <li style="margin-bottom: 1rem;"><strong>Ativar OpsBot para tarefas P0</strong> - Cadastro de SKUs é crítico e vence hoje (11/04)</li>
+                    <li style="margin-bottom: 1rem;"><strong>Revisar oportunidades de produto</strong> - 22 oportunidades detectadas, priorizar implementação</li>
+                    <li style="margin-bottom: 1rem;"><strong>Verificar integração Meta Pixel</strong> - Configurado mas precisa de validação</li>
+                    <li><strong>Ativar TrafficBot para análise contínua</strong> - Gap de 24h sem atividade</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Links Úteis -->
+        <div class="section">
+            <h2 class="section-title">📁 Links Rápidos</h2>
+            <div class="card">
+                <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <a href="https://criativalia-control-plane.onrender.com" class="link-button" target="_blank">🌐 Control Plane</a>
+                    <a href="https://github.com/fernandosilva82/criativalia-mission-control" class="link-button" target="_blank">📦 GitHub Repo</a>
+                    <a href="/criativalia/timesheets/20260410/timesheet_24h.html" class="link-button">📊 Timesheet Completo</a>
+                    <a href="/criativalia/priorities_queue.json" class="link-button">🎯 Fila de Prioridades</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer class="footer">
-        <p>🤖 Relatório gerado automaticamente pelo Morning Brief Generator</p>
-        <p>Criativalia Autonomous System | 09 de Abril de 2026</p>
+        <p>🌅 Morning Brief Generator - Criativalia Autonomous System</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Gerado em: 11/04/2026 02:51 AM (Asia/Shanghai) | Próximo brief: 12/04/2026</p>
     </footer>
 </body>
 </html>

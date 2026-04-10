@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Timesheet 24h - Criativalia</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141414;
+            --bg-card: #181914;
+            --border: #2a2a2a;
+            --text-primary: #F5F5DC;
+            --text-secondary: #A8A890;
+            --color-design: #4A5D23;
+            --color-design-light: #5A6D33;
+            --color-ux: #D4A853;
+            --color-traffic: #5a9fd4;
+            --color-copy: #c17767;
+            --color-ops: #8B5CF6;
+            --color-p0: #ff6b6b;
+            --color-gap: #1a1a1b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--color-design) 0%, var(--color-ux) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .date {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .header .summary {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-item .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-ux);
+        }
+
+        .summary-item .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .timeline {
+            min-width: 1200px;
+            position: relative;
+        }
+
+        /* Header das horas */
+        .time-header {
+            display: flex;
+            margin-left: 120px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .time-slot {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 4px;
+        }
+
+        /* Grid de agentes */
+        .agent-row {
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            border-bottom: 1px dashed var(--border);
+            position: relative;
+        }
+
+        .agent-row:last-child {
+            border-bottom: none;
+        }
+
+        .agent-label {
+            width: 120px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .agent-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .agent-dot.design { background: var(--color-design); }
+        .agent-dot.ux { background: var(--color-ux); }
+        .agent-dot.traffic { background: var(--color-traffic); }
+        .agent-dot.copy { background: var(--color-copy); }
+        .agent-dot.ops { background: var(--color-ops); }
+
+        .agent-timeline {
+            flex: 1;
+            display: flex;
+            position: relative;
+            height: 48px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent calc(4.166% - 1px),
+                var(--border) calc(4.166% - 1px),
+                var(--border) 4.166%
+            );
+            border-radius: 8px;
+        }
+
+        .activity-block {
+            position: absolute;
+            height: 36px;
+            top: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 0 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .activity-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .activity-block.p0 {
+            border: 2px solid var(--color-p0);
+            box-shadow: 0 0 8px rgba(255,107,107,0.3);
+        }
+
+        .activity-block.design {
+            background: linear-gradient(135deg, var(--color-design) 0%, var(--color-design-light) 100%);
+            color: var(--text-primary);
+        }
+
+        .activity-block.ux {
+            background: linear-gradient(135deg, var(--color-ux) 0%, #B89843 100%);
+            color: #1a1a15;
+        }
+
+        .activity-block.traffic {
+            background: linear-gradient(135deg, var(--color-traffic) 0%, #3d7ab5 100%);
+            color: white;
+        }
+
+        .activity-block.copy {
+            background: linear-gradient(135deg, var(--color-copy) 0%, #9c5f50 100%);
+            color: white;
+        }
+
+        .activity-block.ops {
+            background: linear-gradient(135deg, var(--color-ops) 0%, #6D28D9 100%);
+            color: white;
+        }
+
+        .gap-block {
+            position: absolute;
+            height: 36px;
+            top: 6px;
+            background: var(--color-gap);
+            border-radius: 6px;
+            border: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        /* Legenda */
+        .legend {
+            margin-top: 32px;
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .legend h3 {
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .legend-color.design { background: var(--color-design); }
+        .legend-color.ux { background: var(--color-ux); }
+        .legend-color.traffic { background: var(--color-traffic); }
+        .legend-color.copy { background: var(--color-copy); }
+        .legend-color.ops { background: var(--color-ops); }
+        .legend-color.p0 { 
+            background: var(--color-p0); 
+            border: 2px solid var(--color-p0);
+        }
+        .legend-color.gap { 
+            background: var(--color-gap); 
+            border: 1px dashed var(--border);
+        }
+
+        /* Detalhes das atividades */
+        .activity-details {
+            margin-top: 32px;
+        }
+
+        .activity-details h3 {
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .activity-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .activity-time {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--color-ux);
+            font-weight: bold;
+        }
+
+        .activity-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .activity-info p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .activity-meta {
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.design {
+            background: rgba(74, 93, 35, 0.2);
+            color: #7acc7a;
+            border: 1px solid rgba(74, 93, 35, 0.3);
+        }
+
+        .badge.ux {
+            background: rgba(212, 168, 83, 0.2);
+            color: var(--color-ux);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+        }
+
+        .badge.p0 {
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--color-p0);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .evidence-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--color-traffic);
+            text-decoration: none;
+        }
+
+        .evidence-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.8rem;
+            z-index: 100;
+            display: none;
+            max-width: 300px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .tooltip h4 {
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .tooltip p {
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Timesheet 24h - Criativalia</h1>
+        <div class="date">Período: 09/04/2026 00:00 - 10/04/2026 00:00 (BRT)</div>
+        <div class="summary">
+            <div class="summary-item">
+                <div class="value">3</div>
+                <div class="label">Atividades</div>
+            </div>
+            <div class="summary-item">
+                <div class="value">2</div>
+                <div class="label">Agentes Ativos</div>
+            </div>
+            <div class="summary-item">
+                <div class="value">1</div>
+                <div class="label">Tarefas P0</div>
+            </div>
+            <div class="summary-item">
+                <div class="value">3h 35m</div>
+                <div class="label">Tempo Total</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline">
+            <!-- Header de horas -->
+            <div class="time-header">
+                <div class="time-slot">00:00</div>
+                <div class="time-slot">02:00</div>
+                <div class="time-slot">04:00</div>
+                <div class="time-slot">06:00</div>
+                <div class="time-slot">08:00</div>
+                <div class="time-slot">10:00</div>
+                <div class="time-slot">12:00</div>
+                <div class="time-slot">14:00</div>
+                <div class="time-slot">16:00</div>
+                <div class="time-slot">18:00</div>
+                <div class="time-slot">20:00</div>
+                <div class="time-slot">22:00</div>
+            </div>
+
+            <!-- TrafficBot -->
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-dot traffic"></div>
+                    TrafficBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="gap-block" style="left: 0%; width: 100%;">
+                        Sem atividade
+                    </div>
+                </div>
+            </div>
+
+            <!-- CopyBot -->
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-dot copy"></div>
+                    CopyBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="gap-block" style="left: 0%; width: 100%;">
+                        Sem atividade
+                    </div>
+                </div>
+            </div>
+
+            <!-- DesignBot -->
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-dot design"></div>
+                    DesignBot
+                </div>
+                <div class="agent-timeline">
+                    <!-- UX/UI Review - 04:05 UTC = 01:05 BRT -->
+                    <div class="activity-block ux p0" style="left: 5.2%; width: 8.3%;" onclick="window.open('/evidencias/20260409/uxui_review_0405.md', '_blank')">
+                        UX/UI Review [P0]
+                    </div>
+                    <!-- Gap -->
+                    <div class="gap-block" style="left: 13.5%; width: 37.5%;">
+                        Aguardando
+                    </div>
+                    <!-- Design System Update - 10:30 BRT -->
+                    <div class="activity-block design" style="left: 51%; width: 8.3%;" onclick="window.open('/evidencias/20260409/design_update_1030.md', '_blank')">
+                        Design System
+                    </div>
+                    <!-- Gap -->
+                    <div class="gap-block" style="left: 59.3%; width: 32.7%;">
+                        Aguardando
+                    </div>
+                    <!-- Design System Update Night - 19:17 Asia/Shanghai = 08:17 BRT = 36.7% -->
+                    <div class="activity-block design" style="left: 92%; width: 8%;" onclick="window.open('/evidencias/20260409/design_update_1917.md', '_blank')">
+                        Design Night
+                    </div>
+                </div>
+            </div>
+
+            <!-- OpsBot -->
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-dot ops"></div>
+                    OpsBot
+                </div>
+                <div class="agent-timeline">
+                    <div class="gap-block" style="left: 0%; width: 100%;">
+                        Sem atividade
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <h3>🎨 Legenda</h3>
+        <div class="legend-grid">
+            <div class="legend-item">
+                <div class="legend-color design"></div>
+                <span>DesignBot - Design System & UI</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color ux"></div>
+                <span>UX/UI Night Shift - Review & Melhorias</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color traffic"></div>
+                <span>TrafficBot - Análise de Tráfego</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color copy"></div>
+                <span>CopyBot - Conteúdo & Copywriting</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color ops"></div>
+                <span>OpsBot - Operações & Deploy</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color p0"></div>
+                <span>Tarefa Prioridade P0 (Crítica)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color gap"></div>
+                <span>Período sem atividade / Aguardando</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="activity-details">
+        <h3>📋 Detalhes das Atividades</h3>
+        
+        <div class="activity-card">
+            <div class="activity-time">01:05<br>↓<br>02:05</div>
+            <div class="activity-info">
+                <h4>🚨 UX/UI Review Night Shift</h4>
+                <p>Correções críticas P0: Remoção de código JS inválido, melhorias de feedback tátil mobile, animações de loading, toast notifications</p>
+            </div>
+            <div class="activity-meta">
+                <span class="badge ux">UX/UI</span>
+                <span class="badge p0">P0</span>
+                <br>
+                <a href="/evidencias/20260409/uxui_review_0405.md" class="evidence-link" target="_blank">📄 Ver Evidência →</a>
+            </div>
+        </div>
+
+        <div class="activity-card">
+            <div class="activity-time">10:30<br>↓<br>11:30</div>
+            <div class="activity-info">
+                <h4>🎨 Design System Update</h4>
+                <p>Refinamento completo do tema visual: paleta verde oliva #4A5D23, textos off-white, componentes reutilizáveis em todas as páginas</p>
+            </div>
+            <div class="activity-meta">
+                <span class="badge design">Design</span>
+                <br>
+                <a href="/evidencias/20260409/design_update_1030.md" class="evidence-link" target="_blank">📄 Ver Evidência →</a>
+            </div>
+        </div>
+
+        <div class="activity-card">
+            <div class="activity-time">20:17<br>↓<br>21:17</div>
+            <div class="activity-info">
+                <h4>🌙 Design System Update Night</h4>
+                <p>Verificação de consistência em todas as páginas, criação de logo SVG, documentação de componentes e guia de estilo</p>
+            </div>
+            <div class="activity-meta">
+                <span class="badge design">Design</span>
+                <br>
+                <a href="/evidencias/20260409/design_update_1917.md" class="evidence-link" target="_blank">📄 Ver Evidência →</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Tooltip interativo
+        const tooltip = document.getElementById('tooltip');
+        const activityBlocks = document.querySelectorAll('.activity-block:not(.gap-block)');
+
+        activityBlocks.forEach(block => {
+            block.addEventListener('mouseenter', (e) => {
+                const text = e.target.textContent.trim();
+                tooltip.innerHTML = `
+                    <h4>${text}</h4>
+                    <p>⏱️ Duração: Aprox. 60 minutos</p>
+                    <p>🖱️ Clique para abrir evidência</p>
+                `;
+                tooltip.classList.add('show');
+            });
+
+            block.addEventListener('mousemove', (e) => {
+                tooltip.style.left = e.pageX + 10 + 'px';
+                tooltip.style.top = e.pageY + 10 + 'px';
+            });
+
+            block.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  webhook-hub:
+    build: .
+    container_name: criativalia-webhook
+    restart: always
+    ports:
+      - "5555:5555"
+    volumes:
+      - /home/openclaw/memory/brain.db:/app/brain.db:ro
+    networks:
+      - criativalia-network
+
+networks:
+  criativalia-network:
+    driver: bridge

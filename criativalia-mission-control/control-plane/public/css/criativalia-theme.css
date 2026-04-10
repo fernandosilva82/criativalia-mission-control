@@ -1,9 +1,12 @@
 /* ========================================
-   CRIATIVALIA DESIGN SYSTEM v3.0
-   Paleta Refinada: Verde Oliva + Off-White
+   CRIATIVALIA DESIGN SYSTEM v3.1 - REFINED
+   Paleta: Verde Oliva #4A5D23 + Off-White #F5F5DC
+   Atualizado: Night Shift - 2026-04-09
    ======================================== */
 
-/* CSS Variables - Design Tokens */
+/* ========================================
+   CSS VARIABLES - DESIGN TOKENS
+   ======================================== */
 :root {
   /* Palette - Verde Oliva Base #4A5D23 */
   --olive-50: #f6f8f3;
@@ -27,6 +30,11 @@
   --gold-400: #D4A853;
   --gold-500: #C49A4A;
   --gold-600: #B48B41;
+  
+  /* Terracotta (Dashboard alternativo) */
+  --terracotta-400: #c17767;
+  --terracotta-500: #d48877;
+  --terracotta-600: #b56555;
   
   /* Backgrounds - Dark Mode */
   --bg-primary: #0f100c;
@@ -69,6 +77,7 @@
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-display: Georgia, 'Playfair Display', serif;
   
   /* Font Sizes */
   --text-xs: 0.75rem;
@@ -194,6 +203,60 @@ h6 { font-size: var(--text-base); }
   gap: var(--space-3);
 }
 
+/* Logo Criativalia - Estilos Reutilizáveis */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logo__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--olive-500), var(--olive-700));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-glow-olive);
+}
+
+.logo__icon svg,
+.logo__icon img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logo__icon i {
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+}
+
+.logo__text {
+  min-width: 0;
+}
+
+.logo__title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-display);
+  letter-spacing: -0.5px;
+}
+
+.logo__tagline {
+  font-size: var(--text-xs);
+  color: var(--gold-400);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* Legacy logo styles (for backwards compatibility) */
 .sidebar__logo {
   width: 44px;
   height: 44px;
@@ -1144,30 +1207,87 @@ h6 { font-size: var(--text-base); }
 }
 
 /* ========================================
-   LOGO UTILITIES
+   UTILITY CLASSES
    ======================================== */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
+.text-olive { color: var(--olive-500); }
+.text-olive-light { color: var(--olive-400); }
+.text-gold { color: var(--gold-400); }
+.text-terracotta { color: var(--terracotta-400); }
+
+.bg-olive { background-color: var(--olive-500); }
+.bg-olive-dark { background-color: var(--olive-600); }
+.bg-gold { background-color: var(--gold-400); }
+
+.border-olive { border-color: var(--olive-500); }
+.border-gold { border-color: var(--gold-400); }
+
+/* Glow Effects */
+.glow-olive {
+  box-shadow: 0 0 20px rgba(74, 93, 35, 0.3);
 }
 
-.logo__image {
-  width: 40px;
-  height: 40px;
+.glow-gold {
+  box-shadow: 0 0 20px rgba(212, 168, 83, 0.2);
 }
 
-.logo__text {
-  font-family: Georgia, 'Playfair Display', serif;
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--olive-500);
-  letter-spacing: -0.5px;
+/* ========================================
+   NIGHT SHIFT ENHANCEMENTS
+   ======================================== */
+
+/* Touch Feedback */
+.touch-feedback {
+  position: relative;
+  overflow: hidden;
 }
 
-.logo__tagline {
-  font-size: var(--text-xs);
-  color: var(--text-tertiary);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+.touch-feedback::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.touch-feedback:active::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-elevated) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-stagger-1 { animation-delay: 0ms; }
+.skeleton-stagger-2 { animation-delay: 100ms; }
+.skeleton-stagger-3 { animation-delay: 200ms; }
+.skeleton-stagger-4 { animation-delay: 300ms; }
+
+/* Status Indicators */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+.status-dot--online {
+  background: var(--success);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.status-dot--offline {
+  background: var(--text-muted);
+}
+
+.status-dot--busy {
+  background: var(--warning);
 }

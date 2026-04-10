@@ -215,19 +215,195 @@
         }
         
         /* Enhanced Trends with better contrast */
-        .trend-up { 
+        .trend-up {
             color: #7acc7a;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 4px;
         }
-        .trend-down { 
+        .trend-down {
             color: #ff8a7a;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 4px;
+        }
+
+        /* [P0] IMPROVED: Better contrast for secondary text */
+        .text-secondary-improved {
+            color: #A8A890 !important;
+        }
+
+        /* [P0] Scroll to Top Button for Mobile */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #c17767, #7a9e7a);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(193, 119, 103, 0.4);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .scroll-top-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (min-width: 1024px) {
+            .scroll-top-btn {
+                display: none;
+            }
+        }
+
+        /* [P0] Enhanced Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .empty-state__icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(193, 119, 103, 0.1), rgba(122, 158, 122, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed rgba(193, 119, 103, 0.3);
+        }
+
+        .empty-state__icon i {
+            font-size: 32px;
+            color: #c17767;
+            opacity: 0.7;
+        }
+
+        .empty-state__title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fafafa;
+            margin-bottom: 8px;
+        }
+
+        .empty-state__desc {
+            font-size: 14px;
+            color: #A8A890;
+            max-width: 280px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        /* [P0] Improved Mobile Table Experience */
+        @media (max-width: 640px) {
+            .table-responsive-wrapper {
+                position: relative;
+            }
+
+            .table-responsive-wrapper::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 30px;
+                background: linear-gradient(to right, transparent, #0a0a0b);
+                pointer-events: none;
+            }
+
+            table tbody tr {
+                min-height: 56px;
+            }
+
+            table tbody td {
+                padding: 16px 12px;
+                font-size: 14px;
+            }
+
+            table th {
+                padding: 14px 12px;
+                white-space: nowrap;
+            }
+        }
+
+        /* [P0] Enhanced Swipe Hint for Sidebar */
+        .swipe-hint-overlay {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 35;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .swipe-hint-overlay.show {
+            opacity: 1;
+            animation: swipeHintPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes swipeHintPulse {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(5px); }
+        }
+
+        .swipe-hint-arrow {
+            width: 40px;
+            height: 60px;
+            background: linear-gradient(90deg, rgba(193, 119, 103, 0.3), transparent);
+            border-radius: 0 30px 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swipe-hint-arrow i {
+            color: #c17767;
+            font-size: 20px;
+            margin-left: -5px;
+        }
+
+        @media (min-width: 1024px) {
+            .swipe-hint-overlay {
+                display: none;
+            }
+        }
+
+        /* [P0] Better Focus Rings for Accessibility */
+        .focus-ring:focus-visible {
+            outline: 2px solid #c17767;
+            outline-offset: 2px;
+        }
+
+        /* [P0] Improved Loading State */
+        .loading-pulse {
+            animation: loadingPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
         }
         
         /* Enhanced Product Row */
@@ -881,6 +1057,18 @@ table tbody tr:active {
     <!-- Toast Container -->
     <div id="toastContainer" class="toast-container"></div>
     
+    <!-- [P0] Scroll to Top Button (Mobile) -->
+    <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()" aria-label="Voltar ao topo">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+    </button>
+    
+    <!-- [P0] Swipe Hint for Mobile -->
+    <div id="swipeHint" class="swipe-hint-overlay" onclick="toggleSidebar()">
+        <div class="swipe-hint-arrow">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </div>
+    </div>
+    
     <!-- Mobile Sidebar Overlay -->
     <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 z-40 lg:hidden" 
          onclick="toggleSidebar()" 
@@ -912,45 +1100,60 @@ table tbody tr:active {
                 <i class="fas fa-chart-line w-5 text-center" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="/products.html" 
+            <a href="/unified-dashboard.html" 
                class="nav-item touch-target">
+                <i class="fas fa-th-large w-5 text-center" aria-hidden="true"></i>
+                <span>Visão Geral</span>
+            </a>
+            <a href="/kanban.html" 
+               class="nav-item touch-target">
+                <i class="fas fa-columns w-5 text-center" aria-hidden="true"></i>
+                <span>Kanban</span>
+            </a>
+            <a href="/timesheet.html" 
+               class="nav-item touch-target">
+                <i class="fas fa-clock w-5 text-center" aria-hidden="true"></i>
+                <span>Timesheet</span>
+            </a>
+            <a href="/deliverables.html" 
+               class="nav-item touch-target">
+                <i class="fas fa-tasks w-5 text-center" aria-hidden="true"></i>
+                <span>Entregáveis</span>
+            </a>
+            <a href="/coming-soon.html?page=produtos" 
+               class="nav-item touch-target opacity-75">
                 <i class="fas fa-box w-5 text-center" aria-hidden="true"></i>
                 <span>Produtos</span>
+                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
             </a>
-            <a href="/orders.html" 
-               class="nav-item touch-target">
+            <a href="/coming-soon.html?page=pedidos" 
+               class="nav-item touch-target opacity-75">
                 <i class="fas fa-shopping-bag w-5 text-center" aria-hidden="true"></i>
                 <span>Pedidos</span>
-            </a>
-            <a href="/customers.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-users w-5 text-center" aria-hidden="true"></i>
-                <span>Clientes</span>
-            </a>
-            <a href="/analytics.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-chart-pie w-5 text-center" aria-hidden="true"></i>
-                <span>Analytics</span>
-            </a>
-            <a href="/agents.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-robot w-5 text-center" aria-hidden="true"></i>
-                <span>Agentes</span>
+                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
             </a>
         </nav>
         
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
-            <a href="/settings.html" 
-               class="nav-item touch-target">
+            <a href="/index.html" 
+               class="nav-item touch-target"
+               title="Voltar para Home">
+                <i class="fas fa-home w-5 text-center" aria-hidden="true"></i>
+                <span>Home</span>
+            </a>
+            <a href="/coming-soon.html?page=configuracoes" 
+               class="nav-item touch-target opacity-75"
+               title="Configurações (em breve)">
                 <i class="fas fa-cog w-5 text-center" aria-hidden="true"></i>
                 <span>Configurações</span>
+                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
             </a>
             <div class="mt-4 px-4 py-3 rounded-lg bg-[#1a2a1a] border border-[#2a4a2a]">
                 <div class="flex items-center gap-2 text-[#7acc7a] text-xs font-medium">
                     <span class="w-2 h-2 rounded-full bg-[#7acc7a] animate-pulse" aria-hidden="true"></span>
                     <span>Sistema Online</span>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift</p>
+                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift Active</p>
             </div>
         </div>
     </aside>
@@ -1156,7 +1359,7 @@ table tbody tr:active {
                             Ver todos
                         </a>
                     </div>
-                    <div class="overflow-x-auto -mx-4 sm:mx-0">
+                    <div class="overflow-x-auto table-responsive-wrapper -mx-4 sm:mx-0">
                         <div class="min-w-[600px] sm:min-w-0 px-4 sm:px-0">
                             <table class="w-full">
                                 <thead class="bg-[#0f0f10]">
@@ -1224,7 +1427,92 @@ table tbody tr:active {
             }, duration);
         }
 
-        // Sidebar toggle with accessibility
+        // [P0] Scroll to Top functionality
+        function scrollToTop() {
+            hapticFeedback(10);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // [P0] Show/hide scroll to top button
+        function initScrollToTop() {
+            const btn = document.getElementById('scrollTopBtn');
+            let lastScrollY = window.scrollY;
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                // Show button after scrolling 300px
+                if (currentScrollY > 300) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+                
+                lastScrollY = currentScrollY;
+            }, { passive: true });
+        }
+
+        // [P0] Show swipe hint on first load (mobile only)
+        function initSwipeHint() {
+            if (window.innerWidth >= 1024) return;
+            
+            const hint = document.getElementById('swipeHint');
+            const hasSeenHint = localStorage.getItem('criativalia_swipe_hint_seen');
+            
+            if (!hasSeenHint) {
+                setTimeout(() => {
+                    hint.classList.add('show');
+                    
+                    // Hide after 5 seconds or on interaction
+                    setTimeout(() => {
+                        hint.classList.remove('show');
+                        localStorage.setItem('criativalia_swipe_hint_seen', 'true');
+                    }, 5000);
+                }, 1000);
+                
+                // Hide on any click
+                document.addEventListener('click', () => {
+                    hint.classList.remove('show');
+                    localStorage.setItem('criativalia_swipe_hint_seen', 'true');
+                }, { once: true });
+            }
+        }
+
+        // [P0] Enhanced Sidebar toggle with animation
+        const originalToggleSidebar = toggleSidebar;
+        toggleSidebar = function() {
+            hapticFeedback(10);
+            isSidebarOpen = !isSidebarOpen;
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const hint = document.getElementById('swipeHint');
+            const menuButton = document.querySelector('button[aria-label^="Abrir"], button[aria-label^="Fechar"]');
+            
+            // Hide swipe hint when opening
+            if (hint) hint.classList.remove('show');
+            
+            if (isSidebarOpen) {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                if (menuButton) {
+                    menuButton.setAttribute('aria-expanded', 'true');
+                    menuButton.setAttribute('aria-label', 'Fechar menu');
+                }
+                setTimeout(() => {
+                    const firstLink = sidebar.querySelector('a');
+                    if (firstLink) firstLink.focus();
+                }, 100);
+            } else {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+                if (menuButton) {
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    menuButton.setAttribute('aria-label', 'Abrir menu');
+                }
+            }
+        };
         function toggleSidebar() {
             hapticFeedback(10);
             isSidebarOpen = !isSidebarOpen;
@@ -1329,6 +1617,8 @@ table tbody tr:active {
         document.addEventListener('DOMContentLoaded', () => {
             initSwipeGestures();
             initPullToRefresh();
+            initScrollToTop(); // [P0] Initialize scroll to top
+            initSwipeHint();   // [P0] Initialize swipe hint
             loadDashboard();
         });
 
@@ -1530,20 +1820,21 @@ table tbody tr:active {
             
             if (!displayProducts || displayProducts.length === 0) {
                 container.innerHTML = searchTerm ? `
-                    <div class="p-8 text-center">
-                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center">
-                            <i class="fas fa-search text-2xl text-gray-600" aria-hidden="true"></i>
+                    <div class="empty-state">
+                        <div class="empty-state__icon">
+                            <i class="fas fa-search" aria-hidden="true"></i>
                         </div>
-                        <p class="text-gray-500 text-sm">Nenhum produto encontrado para "${escapeHtml(searchTerm)}"</p>
+                        <h4 class="empty-state__title">Nenhum produto encontrado</h4>
+                        <p class="empty-state__desc">Não encontramos produtos correspondentes a "${escapeHtml(searchTerm)}". Tente outro termo.</p>
                     </div>` : `
-                    <div class="p-8 text-center">
-                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center">
-                            <i class="fas fa-box-open text-2xl text-gray-600" aria-hidden="true"></i>
+                    <div class="empty-state">
+                        <div class="empty-state__icon">
+                            <i class="fas fa-box-open" aria-hidden="true"></i>
                         </div>
-                        <p class="text-gray-500 text-sm mb-2">Nenhum produto vendido ainda</p>
-                        <a href="/products.html" class="inline-flex items-center gap-2 text-sm text-[#c17767] hover:underline focus:outline-none focus:ring-2 focus:ring-[#c17767] focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-3 py-1 transition">
-                            <i class="fas fa-external-link-alt text-xs"></i>
-                            Ver produtos
+                        <h4 class="empty-state__title">Nenhuma venda ainda</h4>
+                        <p class="empty-state__desc">Seus produtos aparecerão aqui assim que começarem as vendas. O sistema está monitorando 24/7.</p>
+                        <a href="/products.html" class="btn-primary px-4 py-2 text-sm">
+                            <i class="fas fa-external-link-alt mr-2"></i>Ver produtos
                         </a>
                     </div>`;
                 return;
@@ -1574,15 +1865,17 @@ table tbody tr:active {
             if (!orders || orders.length === 0) {
                 container.innerHTML = `
                     <tr>
-                        <td colspan="5" class="p-8 text-center">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center">
-                                <i class="fas fa-shopping-bag text-2xl text-gray-600" aria-hidden="true"></i>
+                        <td colspan="5" class="p-0">
+                            <div class="empty-state py-12">
+                                <div class="empty-state__icon">
+                                    <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                                </div>
+                                <h4 class="empty-state__title">Nenhum pedido encontrado</h4>
+                                <p class="empty-state__desc">Os pedidos da sua loja aparecerão aqui automaticamente. Estamos sincronizando com a Shopify.</p>
+                                <a href="/orders.html" class="text-[#c17767] hover:underline text-sm font-medium">
+                                    Ver todos os pedidos →
+                                </a>
                             </div>
-                            <p class="text-gray-500 text-sm mb-3">Nenhum pedido encontrado</p>
-                            <a href="/orders.html" class="inline-flex items-center gap-2 text-sm text-[#c17767] hover:underline focus:outline-none focus:ring-2 focus:ring-[#c17767] focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-3 py-1 transition">
-                                <i class="fas fa-external-link-alt text-xs"></i>
-                                Ver todos os pedidos
-                            </a>
                         </td>
                     </tr>`;
                 return;

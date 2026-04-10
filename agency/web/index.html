@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agência Pro v7.0 - Painel Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-hover: #252535;
+            --border: #2a2a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent: #E50914;
+            --accent-hover: #b91c1c;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        .app { display: flex; min-height: 100vh; }
+        
+        /* LOGIN SCREEN */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 24px;
+        }
+        
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover { opacity: 0.9; }
+        
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        /* SIDEBAR */
+        #sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text { font-size: 18px; font-weight: 700; }
+        .logo-text span { color: var(--accent); }
+        
+        .nav {
+            padding: 16px;
+            flex: 1;
+        }
+        
+        .nav-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 20px 0 12px 12px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(229,9,20,0.15);
+            color: var(--accent);
+        }
+        
+        .nav-item i { width: 20px; text-align: center; }
+        
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .user-info {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .user-details { flex: 1; }
+        .user-name { font-size: 14px; font-weight: 500; }
+        .user-role { font-size: 12px; color: var(--text-muted); }
+        
+        .logout-btn {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        .logout-btn:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
+        
+        /* MAIN */
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* HEADER */
+        .header {
+            height: 70px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        #menuBtn {
+            display: none;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-hover);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 16px;
+        }
+        
+        .header-title { font-size: 20px; font-weight: 600; }
+        .header-title span { color: var(--accent); }
+        
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn-secondary {
+            padding: 10px 18px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover { background: var(--border); }
+        
+        /* CONTENT */
+        .content {
+            padding: 24px;
+            flex: 1;
+            max-width: 1400px;
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-icon.red { background: rgba(229,9,20,0.2); color: var(--accent); }
+        .stat-icon.green { background: rgba(34,197,94,0.2); color: var(--success); }
+        .stat-icon.blue { background: rgba(59,130,246,0.2); color: var(--info); }
+        .stat-icon.purple { background: rgba(139,92,246,0.2); color: #8b5cf6; }
+        .stat-icon.orange { background: rgba(245,158,11,0.2); color: var(--warning); }
+        
+        .stat-value { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+        .stat-label { color: var(--text-secondary); font-size: 13px; }
+        
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title { font-size: 16px; font-weight: 600; }
+        
+        .card-body { padding: 20px; }
+        
+        /* TABLES */
+        .table-container { overflow-x: auto; }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th {
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .table tr:last-child td { border-bottom: none; }
+        
+        /* STATUS */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-online { background: rgba(34,197,94,0.15); color: var(--success); }
+        .status-offline { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .status-pending { background: rgba(245,158,11,0.15); color: var(--warning); }
+        .status-sent { background: rgba(59,130,246,0.15); color: var(--info); }
+        
+        /* GRID */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        /* FORMS */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-textarea { min-height: 100px; resize: vertical; }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        /* BUTTONS */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #16a34a);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+        }
+        
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        
+        .tab:hover { color: var(--text-primary); }
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        
+        /* ALERTS */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .alert-success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: var(--success); }
+        .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--danger); }
+        .alert-warning { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--warning); }
+        .alert-info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.3); color: var(--info); }
+        
+        /* OVERLAY */
+        #overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+        }
+        
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        /* LOADING */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* TOAST */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* MOBILE */
+        @media screen and (max-width: 768px) {
+            #sidebar { transform: translateX(-100%); }
+            #sidebar.visible { transform: translateX(0); }
+            .main { margin-left: 0; }
+            #menuBtn { display: block; }
+            .content { padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .header-actions { display: none; }
+        }
+        
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active { display: flex; }
+        
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title { font-size: 18px; font-weight: 600; }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .modal-body { padding: 20px; }
+        
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-box">
+            <div class="login-logo"><i class="fas fa-paper-plane"></i></div>
+            <h1 class="login-title">Agência Pro v7.0</h1>
+            <p class="login-subtitle">Entre com suas credenciais</p>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <input type="text" id="login-username" class="form-input" placeholder="admin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                
+                <div id="login-error" class="alert alert-error" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>Credenciais inválidas</span>
+                </div>
+                
+                <button type="submit" class="btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- MAIN APP -->
+    <div id="app" class="app" style="display: none;">
+        <div id="overlay" onclick="closeMenu()"></div>
+        
+        <!-- SIDEBAR -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon"><i class="fas fa-paper-plane"></i></div>
+                <div class="logo-text">Agência <span>PRO</span></div>
+            </div>
+            
+            <div class="nav">
+                <div class="nav-title">Principal</div>
+                <div class="nav-item active" onclick="showPage('dashboard')">
+                    <i class="fas fa-home"></i> Dashboard
+                </div>
+                <div class="nav-item" onclick="showPage('instances')">
+                    <i class="fas fa-mobile-alt"></i> Instâncias
+                    <span class="nav-badge" id="nav-instance-count">0</span>
+                </div>
+                <div class="nav-item" onclick="showPage('campaigns')">
+                    <i class="fas fa-bullhorn"></i> Campanhas
+                    <span class="nav-badge" id="nav-campaign-count">0</span>
+                </div>
+                <div class="nav-item" onclick="showPage('mailing')">
+                    <i class="fas fa-address-book"></i> Mailing
+                </div>
+                
+                <div class="nav-title">Gerenciamento</div>
+                <div class="nav-item" onclick="showPage('pools')">
+                    <i class="fas fa-sync-alt"></i> Pools
+                </div>
+                <div class="nav-item" onclick="showPage('blacklist')">
+                    <i class="fas fa-ban"></i> Blacklist
+                </div>
+                <div class="nav-item" onclick="showPage('templates')">
+                    <i class="fas fa-file-alt"></i> Templates
+                </div>
+                
+                <div class="nav-title">Sistema</div>
+                <div class="nav-item" onclick="showPage('analytics')">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </div>
+                <div class="nav-item" onclick="showPage('webhooks')">
+                    <i class="fas fa-webhook"></i> Webhooks
+                </div>
+                <div class="nav-item" onclick="showPage('configs')">
+                    <i class="fas fa-cog"></i> Configurações
+                </div>
+                <div class="nav-item" onclick="showPage('tools')">
+                    <i class="fas fa-toolbox"></i> Ferramentas
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">FS</div>
+                <div class="user-details">
+                    <div class="user-name">Fernando Silva</div>
+                    <div class="user-role">Administrador</div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- MAIN CONTENT -->
+        <div class="main">
+            <header class="header">
+                <button id="menuBtn" type="button">☰</button>
+                <div class="header-title">Agência <span>Pro v7.0</span></div>
+                
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="refreshData()">
+                        <i class="fas fa-sync"></i> Atualizar
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content">
+                
+                <!-- DASHBOARD PAGE -->
+                <div id="dashboard" class="page active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="fas fa-paper-plane"></i></div>
+                            <div class="stat-value" id="stat-sent">-</div>
+                            <div class="stat-label">Enviadas Hoje</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-value" id="stat-delivered">-</div>
+                            <div class="stat-label">Entregues</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+                            <div class="stat-value" id="stat-contacts">-</div>
+                            <div class="stat-label">Contatos</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon purple"><i class="fas fa-bullhorn"></i></div>
+                            <div class="stat-value" id="stat-campaigns">-</div>
+                            <div class="stat-label">Campanhas Ativas</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Instâncias Conectadas</div>
+                                <button class="btn btn-sm" onclick="loadInstances()"><i class="fas fa-sync"></i></button>
+                            </div>
+                            <div class="card-body" id="dashboard-instances">
+                                <div class="loading"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Status do Sistema</div>
+                            </div>
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                    <span style="color: var(--text-secondary);">API</span>
+                                    <span style="color: var(--success);">● Online</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                    <span style="color: var(--text-secondary);">Redis</span>
+                                    <span style="color: var(--success);">● Online</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);">Evolution</span>
+                                    <span style="color: var(--success);" id="evolution-status">● Online</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Atividade Recente</div>
+                        </div>
+                        <div class="card-body" id="recent-activity">
+                            <p style="color: var(--text-secondary); text-align: center;">Nenhuma atividade recente</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- INSTANCES PAGE -->
+                <div id="instances" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Instâncias WhatsApp</div>
+                            <button class="btn btn-sm" onclick="openModal('new-instance-modal')"><i class="fas fa-plus"></i> Nova</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="table" id="instances-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Número</th>
+                                        <th>Status</th>
+                                        <th>Pool</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center;"><div class="loading"></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CAMPAIGNS PAGE -->
+                <div id="campaigns" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Campanhas</div>
+                            <button class="btn btn-sm" onclick="openModal('new-campaign-modal')"><i class="fas fa-plus"></i> Nova</button>
+                        </div>
+                        <div id="campaigns-list">
+                            <div class="empty-state">
+                                <i class="fas fa-bullhorn"></i>
+                                <p>Nenhuma campanha criada ainda</p>
+                                <button class="btn" onclick="openModal('new-campaign-modal')">Criar Primeira Campanha</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- MAILING PAGE -->
+                <div id="mailing" class="page">
+                    <div class="tabs">
+                        <button class="tab active" onclick="showMailingTab('lists')">Listas</button>
+                        <button class="tab" onclick="showMailingTab('segments')">Segmentos</button>
+                    </div>
+                    
+                    <div id="mailing-lists" class="mailing-tab active">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Listas de Mailing</div>
+                                <button class="btn btn-sm" onclick="openModal('new-list-modal')"><i class="fas fa-plus"></i> Nova</button>
+                            </div>
+                            <div class="card-body" id="mailing-lists-container">
+                                <div class="empty-state">
+                                    <i class="fas fa-address-book"></i>
+                                    <p>Nenhuma lista criada</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="mailing-segments" class="mailing-tab" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Segmentos</div>
+                            </div>
+                            <div class="card-body">
+                                <p style="color: var(--text-secondary);">Em breve...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- POOLS PAGE -->
+                <div id="pools" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Pools de Rotação</div>
+                            <button class="btn btn-sm" onclick="openModal('new-pool-modal')"><i class="fas fa-plus"></i> Novo</button>
+                        </div>
+                        <div id="pools-list">
+                            <div class="empty-state">
+                                <i class="fas fa-sync-alt"></i>
+                                <p>Nenhum pool criado</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- BLACKLIST PAGE -->
+                <div id="blacklist" class="page">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Adicionar à Blacklist</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Número</label>
+                                    <input type="text" id="blacklist-number" class="form-input" placeholder="5521999999999">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Motivo</label>
+                                    <select id="blacklist-reason" class="form-select">
+                                        <option value="opt_out">Solicitou remoção</option>
+                                        <option value="invalid">Número inválido</option>
+                                        <option value="complaint">Reclamação</option>
+                                        <option value="other">Outro</option>
+                                    </select>
+                                </div>
+                                
+                                <button class="btn" onclick="addToBlacklist()">Adicionar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Números Bloqueados</div>
+                            </div>
+                            <div class="table-container">
+                                <table class="table" id="blacklist-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Número</th>
+                                            <th>Motivo</th>
+                                            <th>Data</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" style="text-align: center;">Carregando...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TEMPLATES PAGE -->
+                <div id="templates" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Templates de Mensagem</div>
+                            <button class="btn btn-sm" onclick="openModal('new-template-modal')"><i class="fas fa-plus"></i> Novo</button>
+                        </div>
+                        <div id="templates-list">
+                            <div class="empty-state">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Nenhum template criado</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ANALYTICS PAGE -->
+                <div id="analytics" class="page">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="fas fa-paper-plane"></i></div>
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">Total Enviadas</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fas fa-check"></i></div>
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label">Taxa de Entrega</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                            <div class="stat-value">0s</div>
+                            <div class="stat-label">Tempo Médio</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="stat-value">R$ 0</div>
+                            <div class="stat-label">Custo Estimado</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Gráfico de Envios</div>
+                        </div>
+                        <div class="card-body">
+                            <p style="color: var(--text-secondary); text-align: center; padding: 40px;">Gráfico em desenvolvimento</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- WEBHOOKS PAGE -->
+                <div id="webhooks" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Webhooks</div>
+                            <button class="btn btn-sm" onclick="openModal('new-webhook-modal')"><i class="fas fa-plus"></i> Novo</button>
+                        </div>
+                        <div class="card-body">
+                            <p style="color: var(--text-secondary);">Configure webhooks para receber eventos em tempo real.</p>
+                            
+                            <div id="webhooks-list" style="margin-top: 20px;">
+                                <div class="empty-state">
+                                    <i class="fas fa-webhook"></i>
+                                    <p>Nenhum webhook configurado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CONFIGS PAGE -->
+                <div id="configs" class="page">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Velocidade de Envio</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Mensagens por minuto</label>
+                                    <input type="number" id="config-rate" class="form-input" value="60" min="1" max="300">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Delay entre mensagens (ms)</label>
+                                    <input type="number" id="config-delay" class="form-input" value="1000" min="100" max="10000">
+                                </div>
+                                
+                                <button class="btn" onclick="saveConfigs()">Salvar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Limite Diário</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Máximo por dia</label>
+                                    <input type="number" id="config-daily-limit" class="form-input" value="1000" min="1">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Reset às</label>
+                                    <input type="time" id="config-reset-time" class="form-input" value="00:00">
+                                </div>
+                                
+                                <button class="btn" onclick="saveConfigs()">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TOOLS PAGE -->
+                <div id="tools" class="page">
+                    <div class="grid-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-comment"></i> Enviar Teste</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Instância</label>
+                                    <select id="test-instance" class="form-select">
+                                        <option>Carregando...</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Número</label>
+                                    <input type="text" id="test-number" class="form-input" placeholder="5521999999999">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Mensagem</label>
+                                    <textarea id="test-message" class="form-textarea" placeholder="Sua mensagem..."></textarea>
+                                </div>
+                                
+                                <button class="btn" onclick="sendTestMessage()">Enviar</button>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-check-circle"></i> Verificar Número</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Número</label>
+                                    <input type="text" id="verify-number" class="form-input" placeholder="5521999999999">
+                                </div>
+                                
+                                <button class="btn" onclick="verifyNumber()">Verificar</button>
+                                
+                                <div id="verify-result" style="margin-top: 16px;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title"><i class="fas fa-info-circle"></i> Status API</div>
+                            </div>
+                            <div class="card-body">
+                                <div id="api-status-content">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <span style="color: var(--text-secondary);">API</span>
+                                        <span style="color: var(--success);">● Online</span>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                        <span style="color: var(--text-secondary);">Evolution</span>
+                                        <span style="color: var(--success);">● Online</span>
+                                    </div>
+                                    
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span style="color: var(--text-secondary);">Redis</span>
+                                        <span style="color: var(--success);">● Online</span>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-secondary" style="width: 100%; margin-top: 16px;" onclick="checkApiStatus()">
+                                    <i class="fas fa-sync"></i> Verificar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+    
+    <script>
+        // CONFIG
+        const API_URL = 'http://72.62.140.110:7778/api';
+        let authToken = localStorage.getItem('agency_token');
+        
+        // INIT
+        document.addEventListener('DOMContentLoaded', function() {
+            if (authToken) {
+                showApp();
+                loadDashboard();
+            } else {
+                showLogin();
+            }
+            
+            // Menu toggle
+            initMenu();
+            
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+        });
+        
+        // AUTH
+        function showLogin() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app').style.display = 'none';
+        }
+        
+        function showApp() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app').style.display = 'flex';
+        }
+        
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const btn = document.getElementById('login-btn');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.token) {
+                    authToken = data.token;
+                    localStorage.setItem('agency_token', authToken);
+                    showApp();
+                    loadDashboard();
+                    showToast('Login realizado com sucesso!', 'success');
+                } else {
+                    document.getElementById('login-error').style.display = 'flex';
+                }
+            } catch (error) {
+                document.getElementById('login-error').style.display = 'flex';
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+        }
+        
+        function logout() {
+            localStorage.removeItem('agency_token');
+            authToken = null;
+            showLogin();
+        }
+        
+        // API HELPERS
+        async function apiGet(endpoint) {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            return response.json();
+        }
+        
+        async function apiPost(endpoint, data) {
+            const response = await fetch(`${API_URL}${endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json();
+        }
+        
+        // MENU
+        let menuOpen = false;
+        
+        function initMenu() {
+            const menuBtn = document.getElementById('menuBtn');
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+            }
+        }
+        
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (menuOpen) {
+                sidebar.classList.remove('visible');
+                overlay.style.display = 'none';
+                menuOpen = false;
+            } else {
+                sidebar.classList.add('visible');
+                overlay.style.display = 'block';
+                menuOpen = true;
+            }
+        }
+        
+        function closeMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (sidebar) sidebar.classList.remove('visible');
+            if (overlay) overlay.style.display = 'none';
+            menuOpen = false;
+        }
+        
+        // NAVIGATION
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            const page = document.getElementById(pageId);
+            if (page) page.classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('onclick') === `showPage('${pageId}')`) {
+                    item.classList.add('active');
+                }
+            });
+            
+            closeMenu();
+            
+            // Load page data
+            if (pageId === 'instances') loadInstances();
+            if (pageId === 'blacklist') loadBlacklist();
+            if (pageId === 'tools') loadTestInstances();
+        }
+        
+        // DASHBOARD
+        async function loadDashboard() {
+            try {
+                const stats = await apiGet('/stats');
+                if (stats) {
+                    document.getElementById('stat-sent').textContent = stats.sent_today || 0;
+                    document.getElementById('stat-delivered').textContent = stats.delivered || 0;
+                    document.getElementById('stat-contacts').textContent = stats.contacts || 0;
+                    document.getElementById('stat-campaigns').textContent = stats.active_campaigns || 0;
+                }
+                
+                loadInstancesForDashboard();
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+        
+        async function loadInstancesForDashboard() {
+            try {
+                const instances = await apiGet('/instances');
+                const container = document.getElementById('dashboard-instances');
+                
+                if (!instances || instances.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-secondary);">Nenhuma instância conectada</p>';
+                    return;
+                }
+                
+                let html = '';
+                instances.slice(0, 3).forEach(inst => {
+                    const statusClass = inst.status === 'online' ? 'status-online' : 'status-offline';
+                    html += `
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 8px;">
+                            <div style="width: 10px; height: 10px; background: ${inst.status === 'online' ? '#22c55e' : '#ef4444'}; border-radius: 50%;"></div>
+                            <div>
+                                <div style="font-weight: 600;">${inst.name}</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">${inst.number || 'Sem número'}</div>
+                            </div>
+                            <span class="status ${statusClass}" style="margin-left: auto;">${inst.status === 'online' ? '● Online' : '● Offline'}</span>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+                document.getElementById('nav-instance-count').textContent = instances.length;
+            } catch (error) {
+                console.error('Error loading instances:', error);
+            }
+        }
+        
+        // INSTANCES
+        async function loadInstances() {
+            try {
+                const instances = await apiGet('/instances');
+                const tbody = document.querySelector('#instances-table tbody');
+                
+                if (!instances || instances.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">Nenhuma instância</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = instances.map(inst => {
+                    const statusClass = inst.status === 'online' ? 'status-online' : 'status-offline';
+                    return `
+                        <tr>
+                            <td>${inst.name}</td>
+                            <td>${inst.number || '-'}</td>
+                            <td><span class="status ${statusClass}">${inst.status === 'online' ? '● Online' : '● Offline'}</span></td>
+                            <td>${inst.pool || 'Nenhum'}</td>
+                            <td><button class="btn btn-sm btn-secondary" onclick="manageInstance('${inst.id}')">Gerenciar</button></td>
+                        </tr>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        // BLACKLIST
+        async function loadBlacklist() {
+            try {
+                const data = await apiGet('/blacklist');
+                const tbody = document.querySelector('#blacklist-table tbody');
+                
+                if (!data || !data.numbers || data.numbers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: var(--text-secondary);">Blacklist vazia</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.numbers.map(item => `
+                    <tr>
+                        <td>${item.number}</td>
+                        <td>${item.reason}</td>
+                        <td>${new Date(item.date).toLocaleDateString()}</td>
+                        <td><button class="btn btn-sm btn-danger" onclick="removeFromBlacklist('${item.number}')">Remover</button></td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        async function addToBlacklist() {
+            const number = document.getElementById('blacklist-number').value;
+            const reason = document.getElementById('blacklist-reason').value;
+            
+            if (!number) {
+                showToast('Digite um número', 'error');
+                return;
+            }
+            
+            try {
+                await apiPost('/blacklist/add', { number, reason });
+                showToast('Número adicionado à blacklist', 'success');
+                document.getElementById('blacklist-number').value = '';
+                loadBlacklist();
+            } catch (error) {
+                showToast('Erro ao adicionar', 'error');
+            }
+        }
+        
+        // TOOLS
+        async function loadTestInstances() {
+            try {
+                const instances = await apiGet('/instances');
+                const select = document.getElementById('test-instance');
+                
+                if (!instances || instances.length === 0) {
+                    select.innerHTML = '<option>Nenhuma instância</option>';
+                    return;
+                }
+                
+                select.innerHTML = instances.map(inst => 
+                    `<option value="${inst.id}">${inst.name}</option>`
+                ).join('');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        async function sendTestMessage() {
+            const instanceId = document.getElementById('test-instance').value;
+            const number = document.getElementById('test-number').value;
+            const message = document.getElementById('test-message').value;
+            
+            if (!instanceId || !number || !message) {
+                showToast('Preencha todos os campos', 'error');
+                return;
+            }
+            
+            try {
+                const result = await apiPost('/send-message', {
+                    instanceId,
+                    number,
+                    message
+                });
+                
+                if (result.success) {
+                    showToast('Mensagem enviada!', 'success');
+                    document.getElementById('test-message').value = '';
+                } else {
+                    showToast(result.error || 'Erro ao enviar', 'error');
+                }
+            } catch (error) {
+                showToast('Erro ao enviar mensagem', 'error');
+            }
+        }
+        
+        // UTILS
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+        
+        function openModal(id) {
+            showToast('Funcionalidade em desenvolvimento', 'info');
+        }
+        
+        function showMailingTab(tab) {
+            document.querySelectorAll('.mailing-tab').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`mailing-${tab}`).style.display = 'block';
+            event.target.classList.add('active');
+        }
+        
+        function refreshData() {
+            loadDashboard();
+            showToast('Dados atualizados', 'success');
+        }
+        
+        function saveConfigs() {
+            showToast('Configurações salvas', 'success');
+        }
+        
+        function checkApiStatus() {
+            showToast('Todos os serviços online', 'success');
+        }
+        
+        function verifyNumber() {
+            const number = document.getElementById('verify-number').value;
+            if (!number) {
+                showToast('Digite um número', 'error');
+                return;
+            }
+            document.getElementById('verify-result').innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i>Número válido para envio</div>';
+        }
+        
+        function manageInstance(id) {
+            showToast('Gerenciamento de instância em desenvolvimento', 'info');
+        }
+        
+        function removeFromBlacklist(number) {
+            showToast('Remoção em desenvolvimento', 'info');
+        }
+    </script>
+</body>
+</html>

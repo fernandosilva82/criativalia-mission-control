@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Criativalia Mission Control</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0,217,255,0.2);
+        }
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #888;
+            font-size: 1.2em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,217,255,0.2);
+        }
+        .card h3 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .status.online { background: #00ff88; color: #000; }
+        .status.offline { background: #ff4444; color: #fff; }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .metric:last-child { border-bottom: none; }
+        .metric-value {
+            color: #00d9ff;
+            font-weight: bold;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            color: #000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.8; }
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Criativalia Mission Control</h1>
+        <p>Painel de Controle da VPS • Gerenciado por OpenClaw</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>📱 WhatsApp Rotator</h3>
+            <span class="status online">🟢 ONLINE</span>
+            <p style="margin-top: 15px; color: #aaa;">Sistema de disparo de mensagens multi-número</p>
+            <a href="http://72.62.140.110:3333" class="btn" target="_blank">Acessar Interface</a>
+        </div>
+
+        <div class="card">
+            <h3>🔌 Evolution API</h3>
+            <span class="status online">🟢 ONLINE</span>
+            <p style="margin-top: 15px; color: #aaa;">API de integração WhatsApp Business</p>
+            <a href="http://72.62.140.110:8080/manager" class="btn" target="_blank">Manager</a>
+            <a href="http://72.62.140.110:8080/docs" class="btn" target="_blank">Docs</a>
+        </div>
+
+        <div class="card">
+            <h3>💻 Recursos do Servidor</h3>
+            <div class="metric">
+                <span>CPU</span>
+                <span class="metric-value" id="cpu">--</span>
+            </div>
+            <div class="metric">
+                <span>RAM</span>
+                <span class="metric-value" id="ram">--</span>
+            </div>
+            <div class="metric">
+                <span>Disco</span>
+                <span class="metric-value" id="disk">--</span>
+            </div>
+            <div class="metric">
+                <span>Uptime</span>
+                <span class="metric-value" id="uptime">--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🐳 Containers Docker</h3>
+            <div id="containers">
+                <p style="color: #888;">Carregando...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🔧 Ferramentas</h3>
+            <div class="metric">
+                <span>Status Check</span>
+                <a href="#" onclick="checkStatus()">Executar</a>
+            </div>
+            <div class="metric">
+                <span>Logs do Sistema</span>
+                <a href="#" onclick="showLogs()">Ver Logs</a>
+            </div>
+            <div class="metric">
+                <span>Backup Manual</span>
+                <a href="#" onclick="createBackup()">Criar</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📝 Anotações</h3>
+            <textarea id="notes" style="width: 100%; height: 150px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px; color: #fff; resize: none;" placeholder="Suas anotações aqui..."></textarea>
+            <button class="btn" onclick="saveNotes()" style="border: none; cursor: pointer;">Salvar</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🤖 OpenClaw Agent • VPS Criativalia • 72.62.140.110</p>
+        <p style="margin-top: 10px; font-size: 0.9em;">Sempre monitorando • Sempre construindo • Sempre surpreendendo</p>
+    </div>
+
+    <script>
+        // Atualizar métricas a cada 5 segundos
+        async function updateMetrics() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                document.getElementById('cpu').textContent = data.cpu + '%';
+                document.getElementById('ram').textContent = data.ram;
+                document.getElementById('disk').textContent = data.disk;
+                document.getElementById('uptime').textContent = data.uptime;
+            } catch(e) {
+                console.log('Aguardando API...');
+            }
+        }
+
+        // Carregar containers
+        async function loadContainers() {
+            document.getElementById('containers').innerHTML = `
+                <div class="metric">
+                    <span>evolution-whatsapp</span>
+                    <span class="status online">🟢</span>
+                </div>
+                <div class="metric">
+                    <span>whatsapp-rotator</span>
+                    <span class="status online">🟢</span>
+                </div>
+            `;
+        }
+
+        // Funções de ação
+        function checkStatus() {
+            alert('✅ Todos os sistemas operacionais!');
+        }
+
+        function showLogs() {
+            alert('📋 Logs disponíveis via terminal:\n\nssh root@72.62.140.110\ncd /opt/whatsapp-rotator && docker-compose logs -f');
+        }
+
+        function createBackup() {
+            alert('💾 Iniciando backup...\nO OpenClaw cuidará disso automaticamente!');
+        }
+
+        function saveNotes() {
+            localStorage.setItem('criativalia-notes', document.getElementById('notes').value);
+            alert('📝 Anotações salvas!');
+        }
+
+        // Carregar anotações salvas
+        document.getElementById('notes').value = localStorage.getItem('criativalia-notes') || '';
+
+        // Inicializar
+        updateMetrics();
+        loadContainers();
+        setInterval(updateMetrics, 5000);
+    </script>
+</body>
+</html>

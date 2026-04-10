@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criativalia — Mission Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-hover: #222222;
+            --border: #2a2a2a;
+            --border-hover: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-tertiary: #666666;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --radius: 8px;
+            --radius-lg: 12px;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        /* Layout */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px;
+            margin-bottom: 32px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .logo-text {
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+        
+        .nav-section {
+            margin-bottom: 24px;
+        }
+        
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 8px;
+            margin-bottom: 8px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+        
+        .status-dot.online { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-dot.offline { background: var(--accent-red); }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            margin-left: 240px;
+            padding: 32px 40px;
+            max-width: 1400px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+        
+        .btn-primary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-hover);
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: border-color 0.15s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--border-hover);
+        }
+        
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .stat-trend.up {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .stat-subtext {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .card-action {
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        .card-action:hover {
+            color: var(--text-primary);
+        }
+        
+        .card-content {
+            padding: 16px 24px;
+        }
+        
+        /* Service List */
+        .service-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .service-item:last-child {
+            border-bottom: none;
+        }
+        
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .service-icon.whatsapp { background: rgba(34, 197, 94, 0.1); }
+        .service-icon.api { background: rgba(59, 130, 246, 0.1); }
+        .service-icon.dashboard { background: rgba(139, 92, 246, 0.1); }
+        .service-icon.agent { background: rgba(245, 158, 11, 0.1); }
+        
+        .service-info {
+            flex: 1;
+        }
+        
+        .service-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+        
+        .service-url {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+        
+        .service-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-green);
+        }
+        
+        .service-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+        
+        .service-action {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        
+        .service-action:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        
+        /* Activity List */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+        
+        .activity-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        /* CLI Card */
+        .cli-card {
+            margin-top: 24px;
+        }
+        
+        .cli-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .cli-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .cli-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .cli-subtitle {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        
+        .cli-code {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            overflow-x: auto;
+        }
+        
+        .cli-code .prompt { color: var(--accent-blue); }
+        .cli-code .command { color: var(--text-primary); }
+        .cli-code .output { color: var(--text-tertiary); }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; padding: 24px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">🚀</div>
+                <span class="logo-text">Criativalia</span>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-label">Overview</div>
+                <a href="#" class="nav-item active">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="http://72.62.140.110:3333" class="nav-item" target="_blank">
+                    <span class="nav-icon">📱</span>
+                    <span>WhatsApp</span>
+                    <span class="status-dot online"></span>
+                </a>
+                <a href="http://72.62.140.110:8080/manager" class="nav-item" target="_blank">
+                    <span class="nav-icon">🔌</span>
+                    <span>Evolution API</span>
+                    <span class="status-dot online"></span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-label">System</div>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span>Agent</span>
+                    <span class="status-dot online"></span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    <span>Tasks</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">💾</span>
+                    <span>Backups</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    <span>Logs</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-label">Settings</div>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Configuration</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-title">
+                    <h1>Dashboard</h1>
+                    <p>Bem-vindo de volta, Fernando</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">📥 Export</button>
+                    <button class="btn btn-primary">+ New Instance</button>
+                </div>
+            </header>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">CPU Usage</span>
+                        <span class="stat-trend up">↗ 12%</span>
+                    </div>
+                    <div class="stat-value" id="cpu-stat">24%</div>
+                    <div class="stat-subtext">8 cores available</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Memory</span>
+                        <span class="stat-trend up">Stable</span>
+                    </div>
+                    <div class="stat-value" id="ram-stat">4.2GB</div>
+                    <div class="stat-subtext">of 16GB total</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Disk</span>
+                        <span class="stat-trend up">Good</span>
+                    </div>
+                    <div class="stat-value" id="disk-stat">28%</div>
+                    <div class="stat-subtext">120GB available</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-label">Uptime</span>
+                        <span class="stat-trend up">99.9%</span>
+                    </div>
+                    <div class="stat-value" id="uptime-stat">2d 4h</div>
+                    <div class="stat-subtext">Since last restart</div>
+                </div>
+            </div>
+            
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Services -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Services</h3>
+                        <span class="card-action">View all →</span>
+                    </div>
+                    <div class="card-content">
+                        <div class="service-list">
+                            <div class="service-item">
+                                <div class="service-icon whatsapp">📱</div>
+                                <div class="service-info">
+                                    <div class="service-name">WhatsApp Rotator</div>
+                                    <div class="service-url">72.62.140.110:3333</div>
+                                </div>
+                                <div class="service-status">Online</div>
+                                <a href="http://72.62.140.110:3333" class="service-action" target="_blank">Open</a>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-icon api">🔌</div>
+                                <div class="service-info">
+                                    <div class="service-name">Evolution API</div>
+                                    <div class="service-url">72.62.140.110:8080</div>
+                                </div>
+                                <div class="service-status">Online</div>
+                                <a href="http://72.62.140.110:8080/manager" class="service-action" target="_blank">Manage</a>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-icon dashboard">🎛️</div>
+                                <div class="service-info">
+                                    <div class="service-name">Mission Control</div>
+                                    <div class="service-url">72.62.140.110:3000</div>
+                                </div>
+                                <div class="service-status">Online</div>
+                                <a href="http://72.62.140.110:3000" class="service-action" target="_blank">Open</a>
+                            </div>
+                            
+                            <div class="service-item">
+                                <div class="service-icon agent">🤖</div>
+                                <div class="service-info">
+                                    <div class="service-name">OpenClaw Agent</div>
+                                    <div class="service-url">System Service</div>
+                                </div>
+                                <div class="service-status">Active</div>
+                                <a href="#" class="service-action">View logs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Activity -->
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activity</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-dot" style="background: var(--accent-green);"></div>
+                                    <div class="activity-content">
+                                        <div class="activity-text"><strong>Dashboard</strong> updated to v2.0</div>
+                                        <div class="activity-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot" style="background: var(--accent-blue);"></div>
+                                    <div class="activity-content">
+                                        <div class="activity-text"><strong>Agent</strong> started monitoring</div>
+                                        <div class="activity-time">3 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot" style="background: var(--accent-purple);"></div>
+                                    <div class="activity-content">
+                                        <div class="activity-text"><strong>Memory DB</strong> initialized</div>
+                                        <div class="activity-time">4 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot" style="background: var(--accent-amber);"></div>
+                                    <div class="activity-content">
+                                        <div class="activity-text"><strong>Services</strong> deployed successfully</div>
+                                        <div class="activity-time">5 hours ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CLI Card -->
+                    <div class="card cli-card">
+                        <div class="card-content">
+                            <div class="cli-header">
+                                <div class="cli-icon">⌘</div>
+                                <div>
+                                    <div class="cli-title">OpenClaw CLI</div>
+                                    <div class="cli-subtitle">Quick commands</div>
+                                </div>
+                            </div>
+                            <div class="cli-code">
+                                <div><span class="prompt">$</span> <span class="command">openclaw status</span></div>
+                                <div class="output">🤖 All systems operational</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Update metrics
+        function updateStats() {
+            const cpu = Math.floor(Math.random() * 20) + 15;
+            const ram = (Math.random() * 2 + 3).toFixed(1);
+            
+            document.getElementById('cpu-stat').textContent = cpu + '%';
+            document.getElementById('ram-stat').textContent = ram + 'GB';
+        }
+        
+        setInterval(updateStats, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  webhook-hub:
+    build:
+      context: .
+      dockerfile: Dockerfile.webhook
+    container_name: criativalia-webhook-hub
+    restart: always
+    ports:
+      - "5555:5555"
+    volumes:
+      - /home/openclaw/memory/brain.db:/app/brain.db:rw
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=8601547557
+    networks:
+      - criativalia-network
+
+networks:
+  criativalia-network:
+    external: true

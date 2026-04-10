@@ -1,0 +1,1 @@
+: "curl -s -w \"\\nHTTP_CODE: %{http_code}\\n\" https://criativalia-runtime.onrender.com/api/stats
