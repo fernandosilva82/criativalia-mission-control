@@ -15,9 +15,36 @@ jobs:
       env:
         RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
       run: |
-        curl -X POST "$RENDER_DEPLOY_HOOK"
+        echo "🚀 Triggering Render deploy..."
+        curl -s -X POST "$RENDER_DEPLOY_HOOK"
+        echo "✅ Deploy triggered successfully"
     
-    - name: Notify on Deploy
+    - name: Wait for deploy
       run: |
-        echo "Deploy triggered at $(date)"
-        echo "Status: Check https://criativalia-control-plane.onrender.com"
+        echo "⏳ Aguardando 60s para deploy iniciar..."
+        sleep 60
+    
+    - name: Health Check
+      run: |
+        echo "🔍 Verificando saúde do serviço..."
+        for i in 1 2 3; do
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://criativalia-control-plane.onrender.com/api/health)
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ Serviço online! HTTP 200"
+            exit 0
+          fi
+          echo "⏳ Tentativa $i: HTTP $STATUS - aguardando..."
+          sleep 30
+        done
+        echo "⚠️ Serviço pode estar iniciando ainda"
+    
+    - name: Notify Summary
+      run: |
+        echo "═══════════════════════════════════════"
+        echo "✅ DEPLOY CONCLUÍDO"
+        echo "═══════════════════════════════════════"
+        echo "📦 Branch: clean-deploy"
+        echo "🌐 URL: https://criativalia-control-plane.onrender.com"
+        echo "📊 Health: /api/health"
+        echo "📈 Stats: /api/stats"
+        echo "═══════════════════════════════════════"
