@@ -1,0 +1,139 @@
+{
+  "jobs": [
+    {
+      "id": "ceo-agent",
+      "name": "🧠 CEO Agent - Orquestrador",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 7200000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute CEO Agent cycle: Analyze pending opportunities in /criativalia/opportunities/, prioritize by impact_score (>=6), coordinate other agents as needed, and generate decision files. Review timesheets from last cycle and identify any critical issues requiring immediate attention.",
+        "model": "kimi-coding/k2p5",
+        "thinking": "high",
+        "timeoutSeconds": 600
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "trafficbot-scanner",
+      "name": "🔍 TrafficBot Scanner",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 21600000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute TrafficBot scan: Analyze traffic sources, search trends, user behavior, and identify traffic opportunities with impact_score >=6. Save findings to /criativalia/opportunities/YYYYMMDD/ and generate evidence to /criativalia/evidencias/YYYYYMMDD/",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 900
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "copybot-scanner",
+      "name": "✍️ CopyBot Scanner",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 28800000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute CopyBot scan: Generate optimized copy for products, emails, ads, and blog content. Save all deliverables to /criativalia/pending_approval/ for manual review. Generate evidence to /criativalia/evidencias/YYYYMMDD/",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 900
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "opsbot-scanner",
+      "name": "⚙️ OpsBot Scanner",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 14400000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Execute OpsBot scan: Monitor inventory, orders, fulfillment, and operational metrics. Check Shopify data via API. Alert on critical issues immediately. Save opportunities to /criativalia/opportunities/ and evidence to /criativalia/evidencias/",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 900
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "timesheet-generator",
+      "name": "📊 Timesheet Generator",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 3600000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Generate timesheet: Consolidate all agent activities from the last hour. Read /criativalia/evidencias/ and /criativalia/opportunities/. Create /criativalia/timesheets/YYYYMMDD/timesheet_24h.json with complete activity log.",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "deploy-monitor",
+      "name": "🔔 Deploy Monitor Notifier",
+      "schedule": {
+        "kind": "every",
+        "everyMs": 300000
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Monitor Render deploy: Check https://criativalia-control-plane.onrender.com health. Verify all pages load correctly (/kanban, /timesheet, /deliverables). Take screenshots if needed. Report any issues immediately to Telegram 8601547557.",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 180
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    },
+    {
+      "id": "morning-brief",
+      "name": "🌅 Morning Brief Generator",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 10 * * *",
+        "tz": "America/Sao_Paulo"
+      },
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Generate Morning Brief: Compile overnight activities from all agents. Read latest timesheet and opportunities. Send summary to Telegram 8601547557 with key highlights, pending approvals, and today's priorities.",
+        "model": "kimi-coding/k2p5",
+        "timeoutSeconds": 300
+      },
+      "delivery": {
+        "mode": "announce"
+      },
+      "sessionTarget": "isolated",
+      "enabled": true
+    }
+  ]
+}
