@@ -27,38 +27,46 @@ app.get('/financial', (req, res) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-    res.json({ 
-        status: 'ok', 
-        timestamp: new Date().toISOString(),
-        version: '1.0.0'
-    });
+    try {
+        res.json({ 
+            status: 'ok', 
+            timestamp: new Date().toISOString(),
+            version: '1.0.0'
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
 });
 
 // Stats endpoint (for keep-alive pings)
 app.get('/api/stats', (req, res) => {
-    const allAgents = agents.getAll();
-    const allSessions = sessions.getAll();
-    const allTasks = tasks.getAll();
-    
-    res.json({
-        status: 'online',
-        timestamp: new Date().toISOString(),
-        version: '1.0.0',
-        agents: {
-            total: allAgents.length,
-            running: allAgents.filter(a => a.status === 'running').length
-        },
-        sessions: {
-            total: allSessions.length,
-            active: allSessions.filter(s => s.status === 'running').length
-        },
-        tasks: {
-            total: allTasks.length,
-            pending: allTasks.filter(t => t.status === 'pending').length,
-            in_progress: allTasks.filter(t => t.status === 'in_progress').length
-        },
-        uptime: process.uptime()
-    });
+    try {
+        const allAgents = agents.getAll();
+        const allSessions = sessions.getAll();
+        const allTasks = tasks.getAll();
+        
+        res.json({
+            status: 'online',
+            timestamp: new Date().toISOString(),
+            version: '1.0.0',
+            agents: {
+                total: allAgents.length,
+                running: allAgents.filter(a => a.status === 'running').length
+            },
+            sessions: {
+                total: allSessions.length,
+                active: allSessions.filter(s => s.status === 'running').length
+            },
+            tasks: {
+                total: allTasks.length,
+                pending: allTasks.filter(t => t.status === 'pending').length,
+                in_progress: allTasks.filter(t => t.status === 'in_progress').length
+            },
+            uptime: process.uptime()
+        });
+    } catch (error) {
+        res.status(500).json({ status: 'error', message: error.message });
+    }
 });
 
 // Runtime state
