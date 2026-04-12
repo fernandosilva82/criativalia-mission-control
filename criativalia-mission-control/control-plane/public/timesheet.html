@@ -6,51 +6,52 @@
     <title>Timesheet - Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Criativalia Theme CSS -->
     <link rel="stylesheet" href="css/criativalia-theme.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0b; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
-        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
-        .btn-primary { background: #c17767; color: white; }
-        .btn-primary:hover { background: #d48877; }
-        .timeline-container { overflow-x: auto; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
+        }
+        
         .timeline-grid {
             display: grid;
             grid-template-columns: 150px repeat(24, 60px);
             gap: 1px;
-            background: #1a1a1b;
-            min-width: max-content;
+            background: var(--cri-bg-tertiary);
         }
+        
         .timeline-header {
-            background: #0f0f10;
+            background: var(--cri-bg-secondary);
             padding: 12px 8px;
             text-align: center;
             font-size: 11px;
             font-weight: 600;
-            border-bottom: 1px solid #2a2a2a;
+            border-bottom: 1px solid var(--cri-border);
         }
+        
         .timeline-hour {
-            background: #0f0f10;
+            background: var(--cri-bg-secondary);
             padding: 12px 4px;
             text-align: center;
             font-size: 11px;
-            color: #888;
-            border-bottom: 1px solid #2a2a2a;
-            border-left: 1px solid #1f1f1f;
+            color: var(--cri-text-muted);
+            border-bottom: 1px solid var(--cri-border);
+            border-left: 1px solid var(--cri-bg-tertiary);
         }
+        
         .timeline-hour.current {
-            background: #c17767/20;
-            color: #c17767;
+            background: var(--cri-gold-muted);
+            color: var(--cri-gold);
             font-weight: 600;
         }
+        
         .agent-row { display: contents; }
+        
         .agent-name {
-            background: #141414;
+            background: var(--cri-bg-secondary);
             padding: 12px;
             font-size: 12px;
             font-weight: 500;
@@ -60,14 +61,16 @@
             position: sticky;
             left: 0;
             z-index: 10;
-            border-right: 1px solid #2a2a2a;
+            border-right: 1px solid var(--cri-border);
         }
+        
         .time-cell {
-            background: #0a0a0b;
-            border-left: 1px solid #1f1f1f;
+            background: var(--cri-bg-primary);
+            border-left: 1px solid var(--cri-bg-tertiary);
             min-height: 50px;
             position: relative;
         }
+        
         .activity-bar {
             position: absolute;
             left: 2px;
@@ -79,25 +82,29 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all var(--cri-transition-fast);
         }
+        
         .activity-bar:hover {
             z-index: 100;
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            box-shadow: var(--cri-shadow-md);
         }
-        .activity-session { background: #7a9e7e; color: #0a0a0b; }
-        .activity-task { background: #c17767; color: white; }
-        .activity-log { background: #3b82f6; color: white; }
+        
+        .activity-session { background: var(--cri-olive-primary); color: var(--cri-text-primary); }
+        .activity-task { background: var(--cri-gold); color: var(--cri-text-inverse); }
+        .activity-log { background: var(--cri-info); color: white; }
+        
         .current-time-line {
             position: absolute;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: #c17767;
+            background: var(--cri-gold);
             z-index: 50;
             pointer-events: none;
         }
+        
         .current-time-line::before {
             content: '';
             position: absolute;
@@ -105,88 +112,96 @@
             left: -3px;
             width: 8px;
             height: 8px;
-            background: #c17767;
+            background: var(--cri-gold);
             border-radius: 50%;
         }
+        
+        .code-font { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
-                    <i class="fas fa-rocket text-white"></i>
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo Criativalia -->
+                <a href="/" class="cri-logo cri-logo--small">
+                    <div class="cri-logo__icon cri-logo__icon--small">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="cri-logo__text">
+                        <span class="cri-logo__brand">Criativalia</span>
+                        <span class="cri-logo__tagline">Timesheet</span>
+                    </div>
                 </a>
-                <div>
-                    <h1 class="font-bold text-lg">Timesheet</h1>
-                    <p class="text-xs text-gray-400">Agent Activity Timeline (24h)</p>
+                
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 text-xs">
+                        <span class="flex items-center gap-1">
+                            <span class="w-3 h-3 rounded bg-[var(--cri-olive-primary)]"></span> Session
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="w-3 h-3 rounded bg-[var(--cri-gold)]"></span> Task
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span class="w-3 h-3 rounded bg-[var(--cri-info)]"></span> Log
+                        </span>
+                    </div>
+                    <button onclick="refreshTimesheet()" class="cri-btn cri-btn--secondary cri-btn--icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="/" class="cri-btn cri-btn--secondary cri-btn--icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-4 text-xs">
-                    <span class="flex items-center gap-1">
-                        <span class="w-3 h-3 rounded bg-[#7a9e7e]"></span> Session
-                    </span>
-                    <span class="flex items-center gap-1">
-                        <span class="w-3 h-3 rounded bg-[#c17767]"></span> Task
-                    </span>
-                    <span class="flex items-center gap-1">
-                        <span class="w-3 h-3 rounded bg-[#3b82f6]"></span> Log
-                    </span>
-                </div>
-                <button onclick="refreshTimesheet()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
             </div>
         </div>
     </header>
 
     <!-- Timesheet -->
     <main class="p-6">
-        <div class="card overflow-hidden">
-            <div class="timeline-container" id="timeline-container">
+        <div class="cri-card overflow-hidden">
+            <div class="overflow-x-auto" id="timeline-container">
                 <div class="timeline-grid" id="timeline-grid">
-                    <!-- Timeline will be rendered here -->
+                    <!-- Timeline será renderizado aqui -->
                 </div>
             </div>
         </div>
         
         <!-- Stats -->
-        <div class="grid grid-cols-4 gap-4 mt-6">
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Sessions</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div class="cri-card cri-card--gradient p-4">
+                <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Total Sessions</div>
                 <div id="stat-sessions" class="text-2xl font-bold">-</div>
             </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Active Now</div>
-                <div id="stat-active" class="text-2xl font-bold text-green-400">-</div>
+            <div class="cri-card cri-card--gradient p-4">
+                <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Active Now</div>
+                <div id="stat-active" class="text-2xl font-bold text-[var(--cri-olive-light)]">-</div>
             </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Tasks Completed</div>
-                <div id="stat-completed" class="text-2xl font-bold text-orange-400">-</div>
+            <div class="cri-card cri-card--gradient p-4">
+                <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Tasks Completed</div>
+                <div id="stat-completed" class="text-2xl font-bold text-[var(--cri-gold)]">-</div>
             </div>
-            <div class="card p-4">
-                <div class="text-gray-400 text-xs uppercase tracking-wider mb-1">Total Logs</div>
+            <div class="cri-card cri-card--gradient p-4">
+                <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Total Logs</div>
                 <div id="stat-logs" class="text-2xl font-bold">-</div>
             </div>
         </div>
     </main>
 
     <!-- Activity Detail Modal -->
-    <div id="activity-modal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-6">
-        <div class="card max-w-lg w-full">
-            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                <h3 class="font-bold text-lg">Activity Details</h3>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-800 rounded-lg">
+    <div id="activity-modal" class="cri-modal-overlay hidden">
+        <div class="cri-modal">
+            <div class="cri-modal__header">
+                <h3 class="cri-modal__title">Detalhes da Atividade</h3>
+                <button onclick="closeModal()" class="cri-modal__close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="modal-content" class="p-6">
-                <!-- Content -->
+            <div id="modal-content" class="cri-modal__body">
+                <!-- Conteúdo -->
             </div>
         </div>
     </div>
@@ -221,6 +236,15 @@
                 updateStats();
             } catch (err) {
                 console.error('Error loading timesheet:', err);
+                document.getElementById('timeline-grid').innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Erro ao carregar o timesheet</p>
+                        <button onclick="loadTimesheet()" class="cri-btn cri-btn--primary mt-4">
+                            <i class="fas fa-sync-alt mr-2"></i>Tentar novamente
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -352,11 +376,28 @@
                     if (!data) return;
                     html = `
                         <div class="space-y-3">
-                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Session</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">ID</span><p class="font-mono text-xs">${data.id}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Status</span><p class="capitalize">${data.status}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Started</span><p>${new Date(data.started_at).toLocaleString('pt-BR')}</p></div>
-                            ${data.completed_at ? `<div><span class="text-xs text-gray-500 uppercase">Completed</span><p>${new Date(data.completed_at).toLocaleString('pt-BR')}</p></div>` : ''}
+                            <div>
+                                <label class="cri-label">Tipo</label>
+                                <p>Session</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">ID</label>
+                                <p class="code-font text-xs">${data.id}</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">Status</label>
+                                <span class="cri-badge cri-badge--${data.status === 'running' ? 'success' : 'neutral'}">${data.status}</span>
+                            </div>
+                            <div>
+                                <label class="cri-label">Iniciado</label>
+                                <p>${new Date(data.started_at).toLocaleString('pt-BR')}</p>
+                            </div>
+                            ${data.completed_at ? `
+                                <div>
+                                    <label class="cri-label">Concluído</label>
+                                    <p>${new Date(data.completed_at).toLocaleString('pt-BR')}</p>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                     break;
@@ -365,10 +406,22 @@
                     if (!data) return;
                     html = `
                         <div class="space-y-3">
-                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Task</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Title</span><p class="font-medium">${data.title}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Status</span><p class="capitalize">${data.status}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Priority</span><p>P${data.priority}</p></div>
+                            <div>
+                                <label class="cri-label">Tipo</label>
+                                <p>Task</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">Título</label>
+                                <p class="font-medium">${data.title}</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">Status</label>
+                                <span class="cri-badge cri-badge--neutral">${data.status}</span>
+                            </div>
+                            <div>
+                                <label class="cri-label">Prioridade</label>
+                                <p>P${data.priority}</p>
+                            </div>
                         </div>
                     `;
                     break;
@@ -377,10 +430,22 @@
                     if (!data) return;
                     html = `
                         <div class="space-y-3">
-                            <div><span class="text-xs text-gray-500 uppercase">Type</span><p>Log Entry</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Level</span><p class="capitalize ${data.level}">${data.level}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Message</span><p>${data.message}</p></div>
-                            <div><span class="text-xs text-gray-500 uppercase">Time</span><p>${new Date(data.created_at).toLocaleString('pt-BR')}</p></div>
+                            <div>
+                                <label class="cri-label">Tipo</label>
+                                <p>Log Entry</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">Level</label>
+                                <span class="cri-badge cri-badge--${data.level}">${data.level}</span>
+                            </div>
+                            <div>
+                                <label class="cri-label">Mensagem</label>
+                                <p>${data.message}</p>
+                            </div>
+                            <div>
+                                <label class="cri-label">Hora</label>
+                                <p>${new Date(data.created_at).toLocaleString('pt-BR')}</p>
+                            </div>
                         </div>
                     `;
                     break;

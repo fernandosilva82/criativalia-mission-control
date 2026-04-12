@@ -2,1958 +2,280 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="theme-color" content="#0a0a0b">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="description" content="Criativalia Control Plane - Dashboard de analytics da loja Shopify">
-    
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Criativalia">
-    <meta name="msapplication-TileColor" content="#0a0a0b">
-    <meta name="msapplication-config" content="/browserconfig.xml">
-    <title>Shopify Dashboard - Criativalia Control Plane</title>
-    
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Criativalia Theme CSS -->
     <link rel="stylesheet" href="css/criativalia-theme.css">
-    
-    <!-- Lazy load Chart.js -->
-    <script>
-        window.chartJsLoaded = false;
-        function loadChartJs() {
-            if (window.chartJsLoaded) return Promise.resolve();
-            return new Promise((resolve) => {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-                script.onload = () => {
-                    window.chartJsLoaded = true;
-                    resolve();
-                };
-                document.head.appendChild(script);
-            });
-        }
-    </script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        olive: {
-                            50: '#f4f7f4',
-                            100: '#e3ebe3',
-                            200: '#c5d8c5',
-                            300: '#9ebf9e',
-                            350: '#8ab88a',
-                            400: '#7a9e7a',
-                            450: '#6a9e6a',
-                            500: '#5a825a',
-                            600: '#456645',
-                            700: '#3a523a',
-                            800: '#304130',
-                            900: '#293629',
-                        },
-                        terracotta: {
-                            400: '#c17767',
-                            450: '#d48877',
-                            500: '#d48877',
-                            600: '#b56555',
-                        },
-                        cream: {
-                            50: '#fafaf8',
-                            100: '#f5f5f0',
-                            200: '#e8e8e0',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0b; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
-        
         body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-            background: #0a0a0b; 
-            color: #fafafa; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overscroll-behavior-x: none;
+            font-family: 'Inter', sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
         }
         
-        /* Sidebar Animation */
-        .sidebar {
-            transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: transform;
-            touch-action: pan-y;
-        }
-        .sidebar.open {
-            transform: translateX(0);
-        }
-        .sidebar-overlay {
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            backdrop-filter: blur(4px);
-        }
-        .sidebar-overlay.open {
-            opacity: 1;
-            visibility: visible;
+        .agent-card {
+            transition: all var(--cri-transition-normal);
         }
         
-        /* Enhanced Swipe indicator for mobile */
-        .swipe-indicator {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 40px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
-            transition: opacity 0.3s;
-        }
-        
-        .sidebar:hover .swipe-indicator {
-            opacity: 0.6;
-        }
-        
-        /* Card Styles */
-        .card { 
-            background: #141414; 
-            border: 1px solid #2a2a2a; 
-            border-radius: 12px;
-            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-        }
-        .card:hover {
-            border-color: #3a3a3a;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .metric-card { 
-            background: linear-gradient(135deg, #141414 0%, #1a1a1b 100%);
-            border: 1px solid #2a2a2a; 
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-        }
-        .metric-card:hover {
+        .agent-card:hover {
             transform: translateY(-2px);
-            border-color: #c17767;
-            box-shadow: 0 8px 30px rgba(193, 119, 103, 0.15);
-        }
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #c17767, #7a9e7a);
+            border-color: var(--cri-gold);
         }
         
-        /* Enhanced Metric Value with better contrast */
-        .metric-value { 
-            font-size: 1.875rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        .agent-avatar {
+            background: linear-gradient(135deg, var(--cri-olive-muted), var(--cri-gold-muted));
         }
-        
-        @media (min-width: 640px) {
-            .metric-value {
-                font-size: 2.25rem;
-            }
-        }
-        
-        /* Enhanced Buttons */
-        .btn-primary { 
-            background: #c17767; 
-            color: white;
-            transition: all 0.2s;
-            min-height: 44px;
-            min-width: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-        .btn-primary:hover { 
-            background: #d48877;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(193, 119, 103, 0.3);
-        }
-        .btn-primary:active {
-            transform: translateY(0) scale(0.98);
-        }
-        
-        /* Touch target minimum */
-        .touch-target {
-            min-height: 44px;
-            min-width: 44px;
-        }
-        
-        /* Enhanced Trends with better contrast */
-        .trend-up {
-            color: #7acc7a;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .trend-down {
-            color: #ff8a7a;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* [P0] IMPROVED: Better contrast for secondary text */
-        .text-secondary-improved {
-            color: #A8A890 !important;
-        }
-
-        /* [P0] Scroll to Top Button for Mobile */
-        .scroll-top-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #c17767, #7a9e7a);
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(193, 119, 103, 0.4);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .scroll-top-btn.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .scroll-top-btn:active {
-            transform: scale(0.95);
-        }
-
-        @media (min-width: 1024px) {
-            .scroll-top-btn {
-                display: none;
-            }
-        }
-
-        /* [P0] Enhanced Empty States */
-        .empty-state {
-            text-align: center;
-            padding: 48px 24px;
-        }
-
-        .empty-state__icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(193, 119, 103, 0.1), rgba(122, 158, 122, 0.1));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed rgba(193, 119, 103, 0.3);
-        }
-
-        .empty-state__icon i {
-            font-size: 32px;
-            color: #c17767;
-            opacity: 0.7;
-        }
-
-        .empty-state__title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #fafafa;
-            margin-bottom: 8px;
-        }
-
-        .empty-state__desc {
-            font-size: 14px;
-            color: #A8A890;
-            max-width: 280px;
-            margin: 0 auto 20px;
-            line-height: 1.5;
-        }
-
-        /* [P0] Improved Mobile Table Experience */
-        @media (max-width: 640px) {
-            .table-responsive-wrapper {
-                position: relative;
-            }
-
-            .table-responsive-wrapper::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: 30px;
-                background: linear-gradient(to right, transparent, #0a0a0b);
-                pointer-events: none;
-            }
-
-            table tbody tr {
-                min-height: 56px;
-            }
-
-            table tbody td {
-                padding: 16px 12px;
-                font-size: 14px;
-            }
-
-            table th {
-                padding: 14px 12px;
-                white-space: nowrap;
-            }
-        }
-
-        /* [P0] Enhanced Swipe Hint for Sidebar */
-        .swipe-hint-overlay {
-            position: fixed;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 35;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .swipe-hint-overlay.show {
-            opacity: 1;
-            animation: swipeHintPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes swipeHintPulse {
-            0%, 100% { transform: translateY(-50%) translateX(0); }
-            50% { transform: translateY(-50%) translateX(5px); }
-        }
-
-        .swipe-hint-arrow {
-            width: 40px;
-            height: 60px;
-            background: linear-gradient(90deg, rgba(193, 119, 103, 0.3), transparent);
-            border-radius: 0 30px 30px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .swipe-hint-arrow i {
-            color: #c17767;
-            font-size: 20px;
-            margin-left: -5px;
-        }
-
-        @media (min-width: 1024px) {
-            .swipe-hint-overlay {
-                display: none;
-            }
-        }
-
-        /* [P0] Better Focus Rings for Accessibility */
-        .focus-ring:focus-visible {
-            outline: 2px solid #c17767;
-            outline-offset: 2px;
-        }
-
-        /* [P0] Improved Loading State */
-        .loading-pulse {
-            animation: loadingPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-        }
-        
-        /* Enhanced Product Row */
-        .product-row { 
-            transition: all 0.15s;
-            border-radius: 8px;
-            margin: 0 8px;
-        }
-        .product-row:hover { 
-            background: rgba(193, 119, 103, 0.08);
-        }
-        .product-row:focus {
-            outline: 2px solid #c17767;
-            outline-offset: -2px;
-        }
-        
-        .chart-container { 
-            position: relative; 
-            height: 300px; 
-        }
-        
-        /* Chart skeleton */
-        .chart-skeleton {
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(90deg, #1a1a1b 25%, #252525 50%, #1a1a1b 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-            gap: 8px;
-        }
-        .chart-skeleton-bar {
-            flex: 1;
-            background: rgba(193, 119, 103, 0.2);
-            border-radius: 4px 4px 0 0;
-            animation: pulse-bar 1.5s infinite ease-in-out;
-        }
-        
-        /* Enhanced Skeleton Loading */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        .skeleton {
-            background: linear-gradient(90deg, #1a1a1b 25%, #252525 50%, #1a1a1b 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 4px;
-        }
-        
-        /* Enhanced Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            pointer-events: none;
-        }
-        .toast {
-            background: #1a1a1b;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-            transform: translateX(120%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: auto;
-            max-width: 320px;
-        }
-        .toast.show {
-            transform: translateX(0);
-        }
-        .toast.success {
-            border-left: 3px solid #7acc7a;
-        }
-        .toast.error {
-            border-left: 3px solid #ff6b6b;
-        }
-        .toast.info {
-            border-left: 3px solid #5a9fd4;
-        }
-        
-        /* Enhanced Breadcrumb Navigation */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: #a0a0a0;
-            flex-wrap: wrap;
-        }
-        .breadcrumb a {
-            color: #a0a0a0;
-            transition: color 0.2s;
-            text-decoration: none;
-        }
-        .breadcrumb a:hover {
-            color: #c17767;
-        }
-        .breadcrumb .current {
-            color: #fafafa;
-            font-weight: 500;
-        }
-        .breadcrumb-separator {
-            color: #555;
-        }
-        
-        /* Enhanced Navigation Items */
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: #a0a0a0;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            position: relative;
-            margin-bottom: 4px;
-        }
-        
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 0;
-            background: #c17767;
-            border-radius: 0 2px 2px 0;
-            transition: height 0.2s;
-        }
-        
-        .nav-item:hover {
-            background: rgba(255,255,255,0.05);
-            color: #ffffff;
-        }
-        
-        .nav-item:hover::before {
-            height: 20px;
-        }
-        
-        .nav-item.active {
-            background: rgba(193, 119, 103, 0.1);
-            color: #c17767;
-            border: 1px solid rgba(193, 119, 103, 0.2);
-        }
-        
-        .nav-item.active::before {
-            height: 24px;
-        }
-        
-        /* Mobile optimizations */
-        @media (max-width: 640px) {
-            .chart-container {
-                height: 200px;
-            }
-            .toast-container {
-                left: 16px;
-                right: 16px;
-                top: auto;
-                bottom: 20px;
-            }
-            .toast {
-                max-width: 100%;
-                transform: translateY(120%);
-            }
-            .toast.show {
-                transform: translateY(0);
-            }
-            .metric-value {
-                font-size: 1.5rem;
-            }
-        }
-        
-        /* Mobile table touch targets */
-        @media (max-width: 640px) {
-            table tbody tr {
-                min-height: 48px;
-                cursor: pointer;
-            }
-            table tbody td {
-                padding-top: 12px;
-                padding-bottom: 12px;
-            }
-            table tbody tr:hover {
-                background: rgba(193, 119, 103, 0.05);
-            }
-            table tbody tr:active {
-                background: rgba(193, 119, 103, 0.1);
-            }
-        }
-        
-        /* Touch-friendly improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .metric-card:hover {
-                transform: none;
-            }
-            .btn-primary:hover {
-                transform: none;
-            }
-            .product-row:hover {
-                background: transparent;
-            }
-            .product-row:active {
-                background: rgba(193, 119, 103, 0.1);
-            }
-        }
-        
-        /* Focus states for accessibility */
-        button:focus-visible,
-        a:focus-visible {
-            outline: 2px solid #c17767;
-            outline-offset: 2px;
-        }
-        
-        /* Skip link improvement */
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 16px;
-            background: #c17767;
-            color: white;
-            padding: 12px 16px;
-            border-radius: 8px;
-            z-index: 9999;
-            font-weight: 500;
-            transition: top 0.2s;
-            text-decoration: none;
-        }
-        .skip-link:focus {
-            top: 16px;
-        }
-        
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .sidebar,
-            .metric-card,
-            .btn-primary,
-            .skeleton,
-            .toast {
-                transition: none;
-                animation: none;
-            }
-        }
-        
-        /* Loading state fade transition */
-        .fade-enter {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        .fade-enter-active {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-        }
-        
-        /* Pull to refresh indicator */
-        .pull-refresh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(to bottom, #0a0a0b, transparent);
-            transform: translateY(-100%);
-            transition: transform 0.2s;
-            z-index: 25;
-        }
-        .pull-refresh.visible {
-            transform: translateY(0);
-        }
-        .pull-refresh-spinner {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #2a2a2a;
-            border-top-color: #c17767;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes pulse-bar {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 0.8; }
-        }
-        
-        /* Enhanced Status badges with pulse animation */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-        }
-        
-        .badge--paid {
-            background: rgba(122, 204, 122, 0.15);
-            color: #7acc7a;
-            border-color: rgba(122, 204, 122, 0.3);
-            animation: pulse-status 2s infinite;
-        }
-        
-        @keyframes pulse-status {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(122, 204, 122, 0.4); }
-            50% { box-shadow: 0 0 0 4px rgba(122, 204, 122, 0); }
-        }
-        
-        .badge--pending {
-            background: rgba(232, 184, 122, 0.15);
-            color: #e8b87a;
-            border-color: rgba(232, 184, 122, 0.3);
-        }
-        
-        .badge--processing {
-            background: rgba(90, 159, 212, 0.15);
-            color: #5a9fd4;
-            border-color: rgba(90, 159, 212, 0.3);
-        }
-        
-        .badge--cancelled {
-            background: rgba(255, 107, 107, 0.15);
-            color: #ff6b6b;
-            border-color: rgba(255, 107, 107, 0.3);
-        }
-/* ========================================
-   NIGHT SHIFT UX/UI IMPROVEMENTS
-   Adicionado em: 2026-04-09
-   ======================================== */
-
-/* Enhanced Touch Feedback */
-.touch-btn {
-    position: relative;
-    overflow: hidden;
-}
-
-.touch-btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s;
-}
-
-.touch-btn:active::after {
-    width: 200%;
-    height: 200%;
-}
-
-/* Header Button Improvements */
-header button,
-header a {
-    position: relative;
-    transition: all 0.15s ease-out;
-}
-
-header button:active,
-header a:active {
-    transform: scale(0.95);
-    background: #0f0f10 !important;
-}
-
-header button:hover,
-header a:hover {
-    background: #252525 !important;
-}
-
-/* Improved Skeleton Loading with Stagger */
-.skeleton-stagger-1 { animation-delay: 0ms; }
-.skeleton-stagger-2 { animation-delay: 100ms; }
-.skeleton-stagger-3 { animation-delay: 200ms; }
-.skeleton-stagger-4 { animation-delay: 300ms; }
-
-/* Enhanced Swipe Hint Animation */
-@keyframes swipe-hint {
-    0%, 100% { transform: translateY(-50%) scaleY(1); opacity: 0.3; }
-    50% { transform: translateY(-50%) scaleY(1.3); opacity: 0.6; }
-}
-
-.sidebar .swipe-indicator {
-    animation: swipe-hint 2s ease-in-out infinite;
-}
-
-.sidebar.open .swipe-indicator {
-    animation: none;
-    opacity: 0;
-}
-
-/* Better Focus States for Touch */
-@media (hover: none) and (pointer: coarse) {
-    .nav-item:focus,
-    .nav-item:active {
-        background: rgba(193, 119, 103, 0.15);
-    }
-    
-    header button:focus,
-    header a:focus {
-        outline: none;
-        background: #1a1a1b;
-    }
-}
-
-/* Touch Ripple Effect */
-@keyframes ripple {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}
-
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(193, 119, 103, 0.3);
-    transform: scale(0);
-    animation: ripple 0.6s linear;
-    pointer-events: none;
-}
-
-/* Improved Card Hover on Desktop */
-@media (hover: hover) and (pointer: fine) {
-    .metric-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(193, 119, 103, 0.2);
-    }
-}
-
-/* Enhanced Toast Animation */
-@keyframes toast-slide-in {
-    from {
-        transform: translateX(120%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes toast-slide-out {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(120%);
-        opacity: 0;
-    }
-}
-
-.toast.entering {
-    animation: toast-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.toast.leaving {
-    animation: toast-slide-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Mobile: Toast from bottom */
-@media (max-width: 640px) {
-    @keyframes toast-slide-up {
-        from {
-            transform: translateY(120%);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes toast-slide-down {
-        from {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateY(120%);
-            opacity: 0;
-        }
-    }
-    
-    .toast.entering {
-        animation: toast-slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    
-    .toast.leaving {
-        animation: toast-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-}
-
-/* Better Table Row Interactions */
-table tbody tr {
-    transition: background-color 0.15s ease;
-}
-
-table tbody tr:active {
-    background: rgba(193, 119, 103, 0.1) !important;
-}
-
-/* Product Row Enhanced Interactions */
-.product-row {
-    position: relative;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.product-row::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: #c17767;
-    border-radius: 0 2px 2px 0;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.product-row:hover::before,
-.product-row:focus::before {
-    opacity: 1;
-}
-
-/* Loading State Improvements */
-#loading-state .skeleton {
-    position: relative;
-    overflow: hidden;
-}
-
-#loading-state .skeleton::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.03) 50%,
-        transparent 100%
-    );
-    animation: shimmer-sweep 2s infinite;
-}
-
-@keyframes shimmer-sweep {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-/* Search Input Focus Animation */
-#product-search {
-    transition: all 0.2s ease;
-}
-
-#product-search:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(193, 119, 103, 0.15);
-}
-
-/* Status Badge Pulse for Active */
-.badge--active {
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(122, 204, 122, 0.4);
-    }
-    50% {
-        box-shadow: 0 0 0 8px rgba(122, 204, 122, 0);
-    }
-}
-
-/* Improved Scrollbar for Webkit */
-@media (hover: hover) {
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: #3a3a3a;
-        border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: #c17767;
-    }
-}
-
-/* Print Styles */
-@media print {
-    .sidebar,
-    .toast-container,
-    header button,
-    header a[href="/"] {
-        display: none !important;
-    }
-    
-    #main-content {
-        margin-left: 0 !important;
-    }
-    
-    .card {
-        break-inside: avoid;
-        border: 1px solid #ddd;
-    }
-}
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Skip Navigation for Accessibility -->
-    <a href="#main-content" class="skip-link">
-        Pular para conteúdo principal
-    </a>
-    
-    <!-- Pull to refresh indicator -->
-    <div id="pullRefresh" class="pull-refresh">
-        <div class="pull-refresh-spinner"></div>
-    </div>
-    
-    <!-- Toast Container -->
-    <div id="toastContainer" class="toast-container"></div>
-    
-    <!-- [P0] Scroll to Top Button (Mobile) -->
-    <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()" aria-label="Voltar ao topo">
-        <i class="fas fa-chevron-up" aria-hidden="true"></i>
-    </button>
-    
-    <!-- [P0] Swipe Hint for Mobile -->
-    <div id="swipeHint" class="swipe-hint-overlay" onclick="toggleSidebar()">
-        <div class="swipe-hint-arrow">
-            <i class="fas fa-chevron-right" aria-hidden="true"></i>
-        </div>
-    </div>
-    
-    <!-- Mobile Sidebar Overlay -->
-    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/70 z-40 lg:hidden" 
-         onclick="toggleSidebar()" 
-         role="button" 
-         aria-label="Fechar menu"
-         tabindex="0"></div>
-    
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-[#141414] border-r border-gray-800 z-50 lg:translate-x-0 lg:transition-none"
-           role="navigation"
-           aria-label="Menu principal">
-        <div class="swipe-indicator lg:hidden"></div>
-        <div class="p-6 border-b border-gray-800">
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0 shadow-lg shadow-orange-500/20">
-                    <i class="fas fa-rocket text-white text-sm" aria-hidden="true"></i>
-                </div>
-                <div class="min-w-0">
-                    <h1 class="font-bold text-lg text-white truncate">Criativalia</h1>
-                    <p class="text-xs text-gray-500 uppercase tracking-wider">Control Plane</p>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="p-4 space-y-1" aria-label="Navegação principal">
-            <a href="/dashboard.html" 
-               class="nav-item active touch-target"
-               aria-current="page">
-                <i class="fas fa-chart-line w-5 text-center" aria-hidden="true"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/unified-dashboard.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-th-large w-5 text-center" aria-hidden="true"></i>
-                <span>Visão Geral</span>
-            </a>
-            <a href="/kanban.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-columns w-5 text-center" aria-hidden="true"></i>
-                <span>Kanban</span>
-            </a>
-            <a href="/timesheet.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-clock w-5 text-center" aria-hidden="true"></i>
-                <span>Timesheet</span>
-            </a>
-            <a href="/deliverables.html" 
-               class="nav-item touch-target">
-                <i class="fas fa-tasks w-5 text-center" aria-hidden="true"></i>
-                <span>Entregáveis</span>
-            </a>
-            <a href="/coming-soon.html?page=produtos" 
-               class="nav-item touch-target opacity-75">
-                <i class="fas fa-box w-5 text-center" aria-hidden="true"></i>
-                <span>Produtos</span>
-                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
-            </a>
-            <a href="/coming-soon.html?page=pedidos" 
-               class="nav-item touch-target opacity-75">
-                <i class="fas fa-shopping-bag w-5 text-center" aria-hidden="true"></i>
-                <span>Pedidos</span>
-                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
-            </a>
-        </nav>
-        
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
-            <a href="/index.html" 
-               class="nav-item touch-target"
-               title="Voltar para Home">
-                <i class="fas fa-home w-5 text-center" aria-hidden="true"></i>
-                <span>Home</span>
-            </a>
-            <a href="/coming-soon.html?page=configuracoes" 
-               class="nav-item touch-target opacity-75"
-               title="Configurações (em breve)">
-                <i class="fas fa-cog w-5 text-center" aria-hidden="true"></i>
-                <span>Configurações</span>
-                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-olive-500/20 text-olive-400 border border-olive-500/30">em breve</span>
-            </a>
-            <div class="mt-4 px-4 py-3 rounded-lg bg-[#1a2a1a] border border-[#2a4a2a]">
-                <div class="flex items-center gap-2 text-[#7acc7a] text-xs font-medium">
-                    <span class="w-2 h-2 rounded-full bg-[#7acc7a] animate-pulse" aria-hidden="true"></span>
-                    <span>Sistema Online</span>
-                </div>
-                <p class="text-xs text-gray-500 mt-1">v2.1.0 • Night Shift Active</p>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <div id="main-content" class="lg:ml-72">
-        <!-- Header -->
-        <header class="border-b border-gray-800 bg-[#0a0a0b]/80 backdrop-blur sticky top-0 z-30">
-            <div class="px-4 sm:px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleSidebar()" 
-                            class="lg:hidden p-2 -ml-2 rounded-lg hover:bg-gray-800 transition touch-target touch-btn" 
-                            aria-label="Abrir menu"
-                            aria-expanded="false"
-                            aria-controls="sidebar">
-                        <i class="fas fa-bars text-gray-400" aria-hidden="true"></i>
-                    </button>
-                    <div>
-                        <!-- Breadcrumb Navigation -->
-                        <nav class="breadcrumb mb-1" aria-label="Breadcrumb">
-                            <a href="/">Home</a>
-                            <span class="breadcrumb-separator">/</span>
-                            <span class="current" aria-current="page">Dashboard</span>
-                        </nav>
-                        <h1 class="font-bold text-base sm:text-lg text-white">Shopify Dashboard</h1>
-                        <p class="text-xs text-gray-500 hidden sm:block">Real-time Store Analytics</p>
+    <!-- Header -->
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo Criativalia -->
+                <a href="/" class="cri-logo cri-logo--small">
+                    <div class="cri-logo__icon cri-logo__icon--small">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
                     </div>
-                </div>
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div id="data-source-indicator" class="hidden sm:block mr-2"></div>
-                    <div class="text-right hidden sm:block">
-                        <div class="text-xs text-gray-500">Last Updated</div>
-                        <div id="last-updated" class="text-sm font-medium text-white">-</div>
+                    <div class="cri-logo__text">
+                        <span class="cri-logo__brand">Criativalia</span>
+                        <span class="cri-logo__tagline">Dashboard</span>
                     </div>
-                    <button onclick="refreshDashboard()" 
-                            class="p-2 rounded-lg bg-[#1a1a1b] hover:bg-[#252525] border border-gray-700 transition touch-target touch-btn" 
-                            title="Atualizar dados"
-                            aria-label="Atualizar dashboard">
-                        <i class="fas fa-sync-alt text-sm text-gray-300" aria-hidden="true"></i>
-                    </button>
-                    <a href="/" 
-                       class="p-2 rounded-lg bg-[#1a1a1b] hover:bg-[#252525] border border-gray-700 transition touch-target touch-btn" 
-                       title="Voltar para home"
-                       aria-label="Voltar">
-                        <i class="fas fa-arrow-left text-sm text-gray-300" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-        </header>
-
-        <main class="px-4 sm:px-6 py-4 sm:py-6">
-            <!-- Loading State -->
-            <div id="loading-state" class="space-y-4">
-                <!-- Skeleton Metrics -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
-                        <div class="skeleton skeleton-stagger-1 h-4 w-24 mb-3"></div>
-                        <div class="skeleton h-8 w-32 mb-2"></div>
-                        <div class="skeleton h-3 w-20"></div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
-                        <div class="skeleton skeleton-stagger-2 h-4 w-20 mb-3"></div>
-                        <div class="skeleton h-8 w-28 mb-2"></div>
-                        <div class="skeleton h-3 w-16"></div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
-                        <div class="skeleton skeleton-stagger-3 h-4 w-28 mb-3"></div>
-                        <div class="skeleton h-8 w-32 mb-2"></div>
-                        <div class="skeleton h-3 w-20"></div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5" role="status" aria-label="Carregando métricas">
-                        <div class="skeleton skeleton-stagger-1 h-4 w-24 mb-3"></div>
-                        <div class="skeleton h-8 w-24 mb-2"></div>
-                        <div class="skeleton h-3 w-16"></div>
-                    </div>
-                </div>
+                </a>
                 
-                <!-- Skeleton Chart & Products -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                    <div class="lg:col-span-2 card p-4 sm:p-5">
-                        <div class="skeleton h-6 w-48 mb-4"></div>
-                        <div class="skeleton h-[200px] sm:h-[300px] w-full"></div>
-                    </div>
-                    <div class="card">
-                        <div class="p-4 border-b border-gray-800">
-                            <div class="skeleton h-5 w-32"></div>
+                <div class="flex items-center gap-3">
+                    <div class="px-4 py-2 rounded-lg bg-[var(--cri-olive-muted)] border border-[var(--cri-olive-primary)]/30">
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="cri-status cri-status--online"></span>
+                            <span class="text-[var(--cri-olive-light)] font-medium">Sistema Online</span>
                         </div>
-                        <div class="p-4 space-y-3">
-                            <div class="skeleton h-12 w-full"></div>
-                            <div class="skeleton h-12 w-full"></div>
-                            <div class="skeleton h-12 w-full"></div>
-                            <div class="skeleton h-12 w-full"></div>
+                    </div>
+                    <button onclick="refreshData()" class="cri-btn cri-btn--secondary cri-btn--icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="cri-card cri-card--gradient p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Receita MTD</span>
+                    <i class="fas fa-dollar-sign text-[var(--cri-gold)]"></i>
+                </div>
+                <div id="stat-revenue" class="text-xl font-bold">-</div>
+            </div>
+            
+            <div class="cri-card cri-card--gradient p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Pedidos</span>
+                    <i class="fas fa-shopping-bag text-[var(--cri-olive-primary)]"></i>
+                </div>
+                <div id="stat-orders" class="text-xl font-bold">-</div>
+            </div>
+            
+            <div class="cri-card cri-card--gradient p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Ticket Médio</span>
+                    <i class="fas fa-receipt text-[var(--cri-info)]"></i>
+                </div>
+                <div id="stat-aov" class="text-xl font-bold">-</div>
+            </div>
+            
+            <div class="cri-card cri-card--gradient p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Conversão</span>
+                    <i class="fas fa-percentage text-[var(--cri-gold)]"></i>
+                </div>
+                <div id="stat-conversion" class="text-xl font-bold">-</div>
+            </div>
+        </div>
+
+        <!-- Active Agents -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold">Agentes Ativos</h2>
+                <span id="agents-count" class="cri-badge cri-badge--neutral">0 agentes</span>
+            </div>
+            
+            <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Skeleton loading -->
+                <div class="cri-card p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
+                        <div class="flex-1">
+                            <div class="cri-skeleton h-4 w-32 mb-2"></div>
+                            <div class="cri-skeleton h-3 w-24"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cri-card p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
+                        <div class="flex-1">
+                            <div class="cri-skeleton h-4 w-32 mb-2"></div>
+                            <div class="cri-skeleton h-3 w-24"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cri-card p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
+                        <div class="flex-1">
+                            <div class="cri-skeleton h-4 w-32 mb-2"></div>
+                            <div class="cri-skeleton h-3 w-24"></div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Content (hidden while loading) -->
-            <div id="dashboard-content" class="space-y-4 sm:space-y-6 hidden">
-                <!-- Key Metrics -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4" role="region" aria-label="Métricas principais">
-                    <div class="metric-card p-4 sm:p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Receita MTD</span>
-                            <i class="fas fa-dollar-sign text-[#c17767]" aria-hidden="true"></i>
-                        </div>
-                        <div id="metric-revenue" class="metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-revenue" class="text-xs mt-2">
-                            <span class="text-gray-500">—</span>
-                            <span class="sr-only">Carregando tendência</span>
-                        </div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Pedidos</span>
-                            <i class="fas fa-shopping-bag text-blue-400" aria-hidden="true"></i>
-                        </div>
-                        <div id="metric-orders" class="metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-orders" class="text-xs mt-2">
-                            <span class="text-gray-500">—</span>
-                            <span class="sr-only">Carregando tendência</span>
-                        </div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Ticket Médio</span>
-                            <i class="fas fa-receipt text-[#8ab88a]" aria-hidden="true"></i>
-                        </div>
-                        <div id="metric-aov" class="metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-aov" class="text-xs mt-2">
-                            <span class="text-gray-500">—</span>
-                            <span class="sr-only">Carregando tendência</span>
-                        </div>
-                    </div>
-                    <div class="metric-card p-4 sm:p-5">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-gray-400 text-xs uppercase tracking-wider font-medium">Taxa Recompra</span>
-                            <i class="fas fa-redo text-purple-400" aria-hidden="true"></i>
-                        </div>
-                        <div id="metric-repeat" class="metric-value truncate" aria-live="polite">-</div>
-                        <div id="trend-repeat" class="text-xs mt-2">
-                            <span class="text-gray-500">—</span>
-                            <span class="sr-only">Carregando tendência</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                    <!-- Revenue Chart -->
-                    <section class="lg:col-span-2 card p-4 sm:p-5" aria-labelledby="chart-title">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 id="chart-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
-                                <i class="fas fa-chart-bar text-[#c17767]" aria-hidden="true"></i>
-                                Receita - Últimos 7 Dias
-                            </h2>
-                            <div class="flex items-center gap-2 text-xs">
-                                <span class="flex items-center gap-1 text-gray-400">
-                                    <span class="w-3 h-3 rounded bg-[#c17767]" aria-hidden="true"></span> 
-                                    <span>Receita</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="revenueChart" role="img" aria-label="Gráfico de receita dos últimos 7 dias"></canvas>
-                        </div>
-                    </section>
-
-                    <!-- Top Products -->
-                    <section class="card" aria-labelledby="products-title">
-                        <div class="p-4 border-b border-gray-800">
-                            <div class="flex items-center justify-between mb-3">
-                                <h2 id="products-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
-                                    <i class="fas fa-trophy text-yellow-400" aria-hidden="true"></i>
-                                    Top Produtos
-                                </h2>
-                            </div>
-                            <!-- Quick Search Filter -->
-                            <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs"></i>
-                                <input 
-                                    type="text" 
-                                    id="product-search" 
-                                    placeholder="Buscar produtos..."
-                                    class="w-full bg-[#1a1a1b] border border-gray-700 rounded-lg pl-9 pr-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#c17767] focus:ring-1 focus:ring-[#c17767] transition-colors"
-                                    aria-label="Buscar produtos"
-                                >
-                            </div>
-                        </div>
-                        <div id="top-products" class="divide-y divide-gray-800 max-h-[300px] sm:max-h-[340px] overflow-y-auto py-2" role="list">
-                            <!-- Products loaded here -->
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Recent Orders -->
-                <section class="card overflow-hidden" aria-labelledby="orders-title">
-                    <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                        <h2 id="orders-title" class="font-semibold flex items-center gap-2 text-sm sm:text-base text-white">
-                            <i class="fas fa-list text-blue-400" aria-hidden="true"></i>
-                            Pedidos Recentes
-                        </h2>
-                        <a href="/orders.html" class="text-xs text-[#c17767] hover:underline focus:outline-none focus:ring-2 focus:ring-[#c17767] focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-2 py-1 transition">
-                            Ver todos
-                        </a>
-                    </div>
-                    <div class="overflow-x-auto table-responsive-wrapper -mx-4 sm:mx-0">
-                        <div class="min-w-[600px] sm:min-w-0 px-4 sm:px-0">
-                            <table class="w-full">
-                                <thead class="bg-[#0f0f10]">
-                                    <tr>
-                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">ID</th>
-                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Cliente</th>
-                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Data</th>
-                                        <th scope="col" class="text-left p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="text-right p-3 text-xs font-medium text-gray-400 uppercase tracking-wider">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="recent-orders" class="divide-y divide-gray-800">
-                                    <!-- Orders loaded here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
+        <!-- Recent Tasks -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold">Tarefas Recentes</h2>
+                <a href="kanban.html" class="cri-btn cri-btn--secondary cri-btn--sm">
+                    Ver Kanban <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
-        </main>
-    </div>
+            
+            <div class="cri-card overflow-hidden">
+                <div id="tasks-list" class="divide-y divide-[var(--cri-border)]">
+                    <!-- Tasks serão renderizadas aqui -->
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script>
-        let revenueChart = null;
-        let isSidebarOpen = false;
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let currentProducts = []; // Store products for filtering
-
-        // Haptic feedback helper
-        function hapticFeedback(duration = 10) {
-            if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(duration);
-            }
-        }
-
-        // Toast Notification System
-        function showToast(message, type = 'info', duration = 3000) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.setAttribute('role', 'status');
-            toast.setAttribute('aria-live', 'polite');
-            
-            const icons = {
-                success: 'fa-check-circle text-[#7acc7a]',
-                error: 'fa-exclamation-circle text-red-400',
-                info: 'fa-info-circle text-blue-400'
-            };
-            
-            toast.innerHTML = `
-                <i class="fas ${icons[type]} text-lg" aria-hidden="true"></i>
-                <span class="text-sm text-gray-200">${message}</span>
-            `;
-            
-            container.appendChild(toast);
-            
-            requestAnimationFrame(() => {
-                toast.classList.add('show');
-            });
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-        }
-
-        // [P0] Scroll to Top functionality
-        function scrollToTop() {
-            hapticFeedback(10);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // [P0] Show/hide scroll to top button
-        function initScrollToTop() {
-            const btn = document.getElementById('scrollTopBtn');
-            let lastScrollY = window.scrollY;
-            
-            window.addEventListener('scroll', () => {
-                const currentScrollY = window.scrollY;
-                
-                // Show button after scrolling 300px
-                if (currentScrollY > 300) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
-                
-                lastScrollY = currentScrollY;
-            }, { passive: true });
-        }
-
-        // [P0] Show swipe hint on first load (mobile only)
-        function initSwipeHint() {
-            if (window.innerWidth >= 1024) return;
-            
-            const hint = document.getElementById('swipeHint');
-            const hasSeenHint = localStorage.getItem('criativalia_swipe_hint_seen');
-            
-            if (!hasSeenHint) {
-                setTimeout(() => {
-                    hint.classList.add('show');
-                    
-                    // Hide after 5 seconds or on interaction
-                    setTimeout(() => {
-                        hint.classList.remove('show');
-                        localStorage.setItem('criativalia_swipe_hint_seen', 'true');
-                    }, 5000);
-                }, 1000);
-                
-                // Hide on any click
-                document.addEventListener('click', () => {
-                    hint.classList.remove('show');
-                    localStorage.setItem('criativalia_swipe_hint_seen', 'true');
-                }, { once: true });
-            }
-        }
-
-        // [P0] Enhanced Sidebar toggle with animation
-        const originalToggleSidebar = toggleSidebar;
-        toggleSidebar = function() {
-            hapticFeedback(10);
-            isSidebarOpen = !isSidebarOpen;
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const hint = document.getElementById('swipeHint');
-            const menuButton = document.querySelector('button[aria-label^="Abrir"], button[aria-label^="Fechar"]');
-            
-            // Hide swipe hint when opening
-            if (hint) hint.classList.remove('show');
-            
-            if (isSidebarOpen) {
-                sidebar.classList.add('open');
-                overlay.classList.add('open');
-                document.body.style.overflow = 'hidden';
-                if (menuButton) {
-                    menuButton.setAttribute('aria-expanded', 'true');
-                    menuButton.setAttribute('aria-label', 'Fechar menu');
-                }
-                setTimeout(() => {
-                    const firstLink = sidebar.querySelector('a');
-                    if (firstLink) firstLink.focus();
-                }, 100);
-            } else {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('open');
-                document.body.style.overflow = '';
-                if (menuButton) {
-                    menuButton.setAttribute('aria-expanded', 'false');
-                    menuButton.setAttribute('aria-label', 'Abrir menu');
-                }
-            }
-        };
-        function toggleSidebar() {
-            hapticFeedback(10);
-            isSidebarOpen = !isSidebarOpen;
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const menuButton = document.querySelector('button[aria-label="Abrir menu"]');
-            
-            if (isSidebarOpen) {
-                sidebar.classList.add('open');
-                overlay.classList.add('open');
-                document.body.style.overflow = 'hidden';
-                if (menuButton) {
-                    menuButton.setAttribute('aria-expanded', 'true');
-                    menuButton.setAttribute('aria-label', 'Fechar menu');
-                }
-                setTimeout(() => {
-                    const firstLink = sidebar.querySelector('a');
-                    if (firstLink) firstLink.focus();
-                }, 100);
-            } else {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('open');
-                document.body.style.overflow = '';
-                if (menuButton) {
-                    menuButton.setAttribute('aria-expanded', 'false');
-                    menuButton.setAttribute('aria-label', 'Abrir menu');
-                }
-            }
-        }
-
-        // Swipe gesture support
-        function initSwipeGestures() {
-            document.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            document.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-            
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const swipeDistance = touchEndX - touchStartX;
-                
-                if (swipeDistance > swipeThreshold && touchStartX < 30 && !isSidebarOpen) {
-                    toggleSidebar();
-                }
-                
-                if (swipeDistance < -swipeThreshold && isSidebarOpen) {
-                    toggleSidebar();
-                }
-            }
-        }
-
-        // Pull to refresh
-        function initPullToRefresh() {
-            let startY = 0;
-            let isPulling = false;
-            const pullIndicator = document.getElementById('pullRefresh');
-            
-            document.addEventListener('touchstart', (e) => {
-                if (window.scrollY === 0) {
-                    startY = e.touches[0].clientY;
-                    isPulling = true;
-                }
-            }, { passive: true });
-            
-            document.addEventListener('touchmove', (e) => {
-                if (!isPulling) return;
-                const currentY = e.touches[0].clientY;
-                const diff = currentY - startY;
-                
-                if (diff > 60 && window.scrollY === 0) {
-                    pullIndicator.classList.add('visible');
-                }
-            }, { passive: true });
-            
-            document.addEventListener('touchend', () => {
-                if (pullIndicator.classList.contains('visible')) {
-                    refreshDashboard();
-                    setTimeout(() => {
-                        pullIndicator.classList.remove('visible');
-                    }, 500);
-                }
-                isPulling = false;
-            }, { passive: true });
-        }
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024 && isSidebarOpen) {
-                toggleSidebar();
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isSidebarOpen) {
-                toggleSidebar();
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', () => {
-            initSwipeGestures();
-            initPullToRefresh();
-            initScrollToTop(); // [P0] Initialize scroll to top
-            initSwipeHint();   // [P0] Initialize swipe hint
-            loadDashboard();
+            refreshData();
         });
 
-        async function loadDashboard() {
+        async function refreshData() {
             try {
-                const loadingState = document.getElementById('loading-state');
-                const content = document.getElementById('dashboard-content');
-                
-                loadingState.classList.remove('hidden');
-                content.classList.add('hidden');
-                
-                const res = await fetch('/api/shopify/stats');
-                const data = await res.json();
-                
-                await loadChartJs();
-                
-                loadingState.classList.add('hidden');
-                content.classList.remove('hidden');
-                content.classList.add('fade-enter');
-                
-                requestAnimationFrame(() => {
-                    content.classList.add('fade-enter-active');
-                    setTimeout(() => {
-                        content.classList.remove('fade-enter', 'fade-enter-active');
-                    }, 300);
-                });
-                
-                updateMetrics(data);
-                renderChart(data.revenue_7days || []);
-                renderTopProducts(data.top_products || []);
-                renderRecentOrders(data.recent_orders || []);
-                
-                const sourceIndicator = document.getElementById('data-source-indicator');
-                if (sourceIndicator) {
-                    if (data._source === 'shopify_api') {
-                        sourceIndicator.innerHTML = `
-                            <span class="text-[#7acc7a] text-xs flex items-center gap-1 font-medium">
-                                <i class="fas fa-check-circle" aria-hidden="true"></i> 
-                                Dados Reais Shopify
-                            </span>`;
-                    } else {
-                        sourceIndicator.innerHTML = `
-                            <span class="text-yellow-400 text-xs flex items-center gap-1 font-medium">
-                                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> 
-                                Dados Simulados
-                            </span>`;
-                    }
-                }
-                
-                document.getElementById('last-updated').textContent = 
-                    new Date().toLocaleTimeString('pt-BR');
-                
+                const [agentsRes, tasksRes, shopifyRes] = await Promise.all([
+                    fetch('/api/agents').catch(() => null),
+                    fetch('/api/tasks').catch(() => null),
+                    fetch('/api/shopify/stats').catch(() => null)
+                ]);
+
+                const agents = agentsRes ? await agentsRes.json() : [];
+                const tasks = tasksRes ? await tasksRes.json() : [];
+                const shopify = shopifyRes ? await shopifyRes.json() : {};
+
+                // Update stats
+                document.getElementById('stat-revenue').textContent = 
+                    'R$ ' + (shopify.revenue_mtd || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+                document.getElementById('stat-orders').textContent = (shopify.orders_mtd || 0).toLocaleString('pt-BR');
+                document.getElementById('stat-aov').textContent = 
+                    'R$ ' + (shopify.aov || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+                document.getElementById('stat-conversion').textContent = (shopify.conversion_rate || 0).toFixed(1) + '%';
+
+                // Render agents
+                renderAgents(agents);
+
+                // Render tasks
+                renderTasks(tasks.slice(0, 5));
+
             } catch (err) {
-                console.error('Error loading dashboard:', err);
-                showToast('Erro ao carregar dados. Usando fallback.', 'error');
-                
-                document.getElementById('loading-state').classList.add('hidden');
-                document.getElementById('dashboard-content').classList.remove('hidden');
-                loadFallbackData();
+                console.error('Error loading data:', err);
             }
         }
 
-        function updateMetrics(data) {
-            const revenue = data.revenue_mtd || 0;
-            document.getElementById('metric-revenue').textContent = formatCurrency(revenue);
-            updateTrend('trend-revenue', data.revenue_trend);
+        function renderAgents(agents) {
+            const container = document.getElementById('agents-grid');
+            document.getElementById('agents-count').textContent = `${agents.length} agentes`;
             
-            const orders = data.orders_mtd || 0;
-            document.getElementById('metric-orders').textContent = orders.toLocaleString('pt-BR');
-            updateTrend('trend-orders', data.orders_trend);
-            
-            const aov = data.aov || 0;
-            document.getElementById('metric-aov').textContent = formatCurrency(aov);
-            updateTrend('trend-aov', data.aov_trend);
-            
-            const repeatRate = data.repeat_rate || 0;
-            document.getElementById('metric-repeat').textContent = repeatRate.toFixed(1) + '%';
-            updateTrend('trend-repeat', data.repeat_trend);
-        }
-
-        function updateTrend(elementId, trend) {
-            const el = document.getElementById(elementId);
-            if (!trend) {
-                el.innerHTML = '<span class="text-gray-500">—</span>';
+            if (agents.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12">
+                        <i class="fas fa-robot"></i>
+                        <p>Nenhum agente ativo</p>
+                    </div>
+                `;
                 return;
             }
-            const isUp = trend >= 0;
-            const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
-            const colorClass = isUp ? 'trend-up' : 'trend-down';
-            const label = isUp ? 'aumento' : 'queda';
-            el.innerHTML = `
-                <span class="${colorClass}">
-                    <i class="fas ${icon} text-xs" aria-hidden="true"></i>
-                    ${Math.abs(trend).toFixed(1)}% 
-                    <span class="sr-only">${label}</span> 
-                    vs mês anterior
-                </span>
-            `;
-        }
 
-        function renderChart(revenueData) {
-            const ctx = document.getElementById('revenueChart').getContext('2d');
-            
-            const labels = revenueData.map(d => {
-                const date = new Date(d.date);
-                return date.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric' });
-            });
-            const values = revenueData.map(d => d.amount);
-            
-            if (revenueChart) {
-                revenueChart.destroy();
-            }
-            
-            const isMobile = window.innerWidth < 640;
-            
-            revenueChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Receita',
-                        data: values,
-                        backgroundColor: 'rgba(193, 119, 103, 0.85)',
-                        borderColor: '#c17767',
-                        borderWidth: 1,
-                        borderRadius: isMobile ? 3 : 6,
-                        borderSkipped: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: {
-                        intersect: false,
-                        mode: 'index'
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#1a1a1b',
-                            titleColor: '#fafafa',
-                            bodyColor: '#fafafa',
-                            borderColor: '#2a2a2a',
-                            borderWidth: 1,
-                            padding: 12,
-                            cornerRadius: 8,
-                            displayColors: false,
-                            callbacks: {
-                                label: (context) => formatCurrency(context.raw)
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { 
-                                color: '#1f1f1f',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#a0a0a0',
-                                callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k',
-                                font: { size: isMobile ? 10 : 12 },
-                                padding: 8
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { 
-                                color: '#a0a0a0',
-                                font: { size: isMobile ? 9 : 11 },
-                                maxRotation: isMobile ? 45 : 0,
-                                padding: 8
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 800,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
-        }
-
-        function renderTopProducts(products) {
-            // Store products for filtering
-            currentProducts = products || [];
-            const container = document.getElementById('top-products');
-            const searchInput = document.getElementById('product-search');
-            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
-            
-            // Filter products if search term exists
-            let displayProducts = currentProducts;
-            if (searchTerm) {
-                displayProducts = currentProducts.filter(p => 
-                    p.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            if (!displayProducts || displayProducts.length === 0) {
-                container.innerHTML = searchTerm ? `
-                    <div class="empty-state">
-                        <div class="empty-state__icon">
-                            <i class="fas fa-search" aria-hidden="true"></i>
+            container.innerHTML = agents.map(agent => `
+                <div class="agent-card cri-card p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="agent-avatar w-12 h-12 rounded-xl flex items-center justify-center text-xl">
+                            ${getAgentIcon(agent.role)}
                         </div>
-                        <h4 class="empty-state__title">Nenhum produto encontrado</h4>
-                        <p class="empty-state__desc">Não encontramos produtos correspondentes a "${escapeHtml(searchTerm)}". Tente outro termo.</p>
-                    </div>` : `
-                    <div class="empty-state">
-                        <div class="empty-state__icon">
-                            <i class="fas fa-box-open" aria-hidden="true"></i>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold truncate">${agent.name}</h3>
+                            <p class="text-sm text-[var(--cri-text-muted)]">${agent.role}</p>
                         </div>
-                        <h4 class="empty-state__title">Nenhuma venda ainda</h4>
-                        <p class="empty-state__desc">Seus produtos aparecerão aqui assim que começarem as vendas. O sistema está monitorando 24/7.</p>
-                        <a href="/products.html" class="btn-primary px-4 py-2 text-sm">
-                            <i class="fas fa-external-link-alt mr-2"></i>Ver produtos
-                        </a>
-                    </div>`;
-                return;
-            }
-            
-            container.innerHTML = displayProducts.slice(0, 10).map((product, index) => `
-                <div class="product-row p-3 flex items-center gap-3 cursor-pointer touch-target" 
-                     role="listitem"
-                     tabindex="0"
-                     aria-label="${product.name}, ${product.sold} vendas, ${formatCurrency(product.revenue)}">
-                    <div class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center font-bold text-sm ${index < 3 ? 'text-[#c17767]' : 'text-gray-500'} flex-shrink-0" aria-hidden="true">
-                        ${index + 1}
+                        <span class="cri-status cri-status--${agent.status === 'active' ? 'online' : 'offline'}"></span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-medium text-gray-200 truncate">${escapeHtml(product.name)}</h4>
-                        <p class="text-xs text-gray-500">${product.sold} vendas</p>
-                    </div>
-                    <div class="text-right flex-shrink-0">
-                        <div class="text-sm font-medium text-white">${formatCurrency(product.revenue)}</div>
-                        <div class="text-xs text-gray-500">${product.quantity} unid.</div>
+                    <div class="mt-4 flex items-center gap-4 text-xs text-[var(--cri-text-muted)]">
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-tasks"></i>
+                            ${agent.tasks_count || 0} tarefas
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i>
+                            ${agent.completed_tasks || 0} concluídas
+                        </span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function renderRecentOrders(orders) {
-            const container = document.getElementById('recent-orders');
-            if (!orders || orders.length === 0) {
+        function renderTasks(tasks) {
+            const container = document.getElementById('tasks-list');
+            
+            if (tasks.length === 0) {
                 container.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="p-0">
-                            <div class="empty-state py-12">
-                                <div class="empty-state__icon">
-                                    <i class="fas fa-shopping-bag" aria-hidden="true"></i>
-                                </div>
-                                <h4 class="empty-state__title">Nenhum pedido encontrado</h4>
-                                <p class="empty-state__desc">Os pedidos da sua loja aparecerão aqui automaticamente. Estamos sincronizando com a Shopify.</p>
-                                <a href="/orders.html" class="text-[#c17767] hover:underline text-sm font-medium">
-                                    Ver todos os pedidos →
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`;
+                    <div class="p-6 text-center text-[var(--cri-text-muted)]">
+                        <i class="fas fa-inbox text-3xl mb-3"></i>
+                        <p>Nenhuma tarefa recente</p>
+                    </div>
+                `;
                 return;
             }
-            
-            container.innerHTML = orders.slice(0, 10).map(order => `
-                <tr class="hover:bg-gray-900/30 transition">
-                    <td class="p-3 text-sm font-mono text-gray-300">
-                        <span aria-label="Pedido número">#</span>${order.id.slice(-6)}
-                    </td>
-                    <td class="p-3 text-sm text-gray-200">${escapeHtml(order.customer)}</td>
-                    <td class="p-3 text-sm text-gray-400">
-                        ${new Date(order.date).toLocaleDateString('pt-BR')}
-                    </td>
-                    <td class="p-3">
-                        <span class="badge badge--${order.status?.toLowerCase() || 'pending'}">
-                            ${translateStatus(order.status)}
-                        </span>
-                    </td>
-                    <td class="p-3 text-sm text-right font-medium text-white">${formatCurrency(order.total)}</td>
-                </tr>
+
+            container.innerHTML = tasks.map(task => `
+                <div class="p-4 flex items-center gap-4 hover:bg-[var(--cri-bg-hover)] transition">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium truncate">${task.title}</h4>
+                        <p class="text-sm text-[var(--cri-text-muted)]">
+                            ${task.status.replace(/_/g, ' ')} • P${task.priority || 5}
+                        </p>
+                    </div>
+                    <span class="cri-badge cri-badge--${getStatusColor(task.status)}">
+                        ${task.status.replace(/_/g, ' ')}
+                    </span>
+                </div>
             `).join('');
         }
 
-        function translateStatus(status) {
-            const translations = {
-                'paid': 'Pago',
-                'pending': 'Pendente',
-                'processing': 'Processando',
-                'fulfilled': 'Enviado',
-                'cancelled': 'Cancelado'
-            };
-            return translations[status?.toLowerCase()] || status;
+        function getAgentIcon(role) {
+            if (role?.includes('CEO')) return '👑';
+            if (role?.includes('Traffic')) return '📢';
+            if (role?.includes('Shopify')) return '🛒';
+            if (role?.includes('Copy')) return '✍️';
+            if (role?.includes('Design')) return '🎨';
+            if (role?.includes('Dev')) return '💻';
+            if (role?.includes('Data')) return '📊';
+            if (role?.includes('Support')) return '🎧';
+            return '🤖';
         }
 
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(value || 0);
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function loadFallbackData() {
-            const fallbackData = {
-                revenue_mtd: 0,
-                orders_mtd: 0,
-                aov: 0,
-                repeat_rate: 0,
-                revenue_trend: 0,
-                orders_trend: 0,
-                aov_trend: 0,
-                repeat_trend: 0,
-                revenue_7days: [],
-                top_products: [],
-                recent_orders: []
-            };
-            
-            updateMetrics(fallbackData);
-            renderChart(fallbackData.revenue_7days);
-            renderTopProducts(fallbackData.top_products);
-            renderRecentOrders(fallbackData.recent_orders);
-        }
-
-        function refreshDashboard() {
-            hapticFeedback(15);
-            showToast('Atualizando dados...', 'info', 1500);
-            loadDashboard().then(() => {
-                showToast('Dados atualizados!', 'success');
-            }).catch(() => {
-                showToast('Falha ao atualizar', 'error');
-            });
+        function getStatusColor(status) {
+            if (status === 'done') return 'success';
+            if (status === 'in_progress') return 'warning';
+            if (status === 'ready_to_deploy') return 'info';
+            return 'neutral';
         }
     </script>
 </body>

@@ -3,1442 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criativalia Mission Control</title>
+    <title>Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Criativalia Theme CSS -->
+    <!-- Criativalia Design System -->
     <link rel="stylesheet" href="css/criativalia-theme.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'criativalia': {
-                            green: '#4A5D23',
-                            'green-light': '#5A6D33',
-                            'green-dark': '#3A4D13',
-                            cream: '#F5F5DC',
-                            'cream-dark': '#E5E5CC',
-                            gold: '#D4A853',
-                            'gold-light': '#E4B863'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a15; }
-        ::-webkit-scrollbar-thumb { background: #4A5D23; border-radius: 3px; }
-        
         body { 
-            font-family: 'Inter', sans-serif; 
-            background: #1a1a15; 
-            color: #F5F5DC; 
+            font-family: 'Inter', sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
         }
         
-        .card { 
-            background: linear-gradient(145deg, #252520 0%, #1e1e18 100%);
-            border: 1px solid #3A4D13; 
-            border-radius: 12px;
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(74, 93, 35, 0.1) 0%, rgba(212, 168, 83, 0.05) 100%);
         }
         
-        .metric-card { 
-            background: linear-gradient(135deg, #252520 0%, #2a2a22 100%);
-            border: 1px solid #4A5D23; 
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #4A5D23, #D4A853);
-        }
-        
-        .metric-value { 
-            background: linear-gradient(135deg, #F5F5DC 0%, #D4A853 100%);
+        .metric-highlight {
+            background: linear-gradient(135deg, var(--cri-olive-primary), var(--cri-olive-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .btn-primary { 
-            background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%);
-            color: #F5F5DC;
-            border: 1px solid #5A6D33;
-        }
-        
-        .btn-primary:hover { 
-            background: linear-gradient(135deg, #5A6D33 0%, #4A5D23 100%);
-            transform: translateY(-1px);
-        }
-        
-        .btn-gold {
-            background: linear-gradient(135deg, #D4A853 0%, #B89843 100%);
-            color: #1a1a15;
-        }
-        
-        .btn-gold:hover {
-            background: linear-gradient(135deg, #E4B863 0%, #C4A853 100%);
-        }
-        
-        .period-selector {
-            background: #252520;
-            border: 1px solid #4A5D23;
-            border-radius: 8px;
+        .nav-card {
+            position: relative;
             overflow: hidden;
         }
         
-        .period-btn {
-            padding: 8px 16px;
-            background: transparent;
-            border: none;
-            color: #F5F5DC;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-        
-        .period-btn.active {
-            background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%);
-            color: #F5F5DC;
-        }
-        
-        .period-btn:hover:not(.active) {
-            background: #3A4D13;
-        }
-        
-        .trend-up { color: #7a9e7e; }
-        .trend-down { color: #c17767; }
-        
-        .product-row:hover { 
-            background: rgba(74, 93, 35, 0.2); 
-        }
-        
-        .chart-container { 
-            position: relative; 
-            height: 300px; 
-        }
-        
-        /* Sidebar styles */
-        .sidebar {
-            position: fixed;
-            left: 0;
+        .nav-card::before {
+            content: '';
+            position: absolute;
             top: 0;
-            bottom: 0;
-            width: 260px;
-            background: linear-gradient(180deg, #252520 0%, #1a1a15 100%);
-            border-right: 1px solid #3A4D13;
-            z-index: 100;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cri-olive-primary), var(--cri-gold));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
         
-        .sidebar-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            color: #E5E5CC;
-            text-decoration: none;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-            cursor: pointer;
+        .nav-card:hover::before {
+            transform: scaleX(1);
         }
         
-        .sidebar-item:hover, .sidebar-item.active {
-            background: rgba(74, 93, 35, 0.3);
-            border-left-color: #D4A853;
-            color: #F5F5DC;
-        }
-        
-        .sidebar-item i {
-            width: 24px;
-            text-align: center;
-            color: #D4A853;
-        }
-        
-        .main-content {
-            margin-left: 260px;
-        }
-        
-        /* Widget styles */
-        .widget-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            border-bottom: 1px solid #3A4D13;
-        }
-        
-        .widget-title {
-            font-weight: 600;
-            color: #F5F5DC;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .widget-title i {
-            color: #D4A853;
-        }
-        
-        /* Table styles */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .data-table th {
-            text-align: left;
-            padding: 12px 16px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #D4A853;
-            background: rgba(74, 93, 35, 0.2);
-            border-bottom: 1px solid #3A4D13;
-        }
-        
-        .data-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #2a2a22;
-            font-size: 14px;
-        }
-        
-        .data-table tr:hover td {
-            background: rgba(74, 93, 35, 0.1);
-        }
-        
-        /* Badge styles */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        
-        .badge-green {
-            background: rgba(74, 93, 35, 0.3);
-            color: #7a9e7e;
-            border: 1px solid #4A5D23;
-        }
-        
-        .badge-gold {
-            background: rgba(212, 168, 83, 0.2);
-            color: #D4A853;
-            border: 1px solid #D4A853;
-        }
-        
-        .badge-blue {
-            background: rgba(100, 149, 237, 0.2);
-            color: #6495ED;
-            border: 1px solid #6495ED;
-        }
-        
-        .badge-red {
-            background: rgba(193, 119, 103, 0.2);
-            color: #c17767;
-            border: 1px solid #c17767;
-        }
-        
-        .badge-purple {
-            background: rgba(147, 112, 219, 0.2);
-            color: #9370DB;
-            border: 1px solid #9370DB;
-        }
-        
-        /* Progress bar */
-        .progress-bar {
-            height: 6px;
-            background: #2a2a22;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4A5D23, #D4A853);
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-        
-        /* Kanban */
-        .kanban-column {
-            background: rgba(37, 37, 32, 0.8);
-            border: 1px solid #3A4D13;
-            border-radius: 12px;
-            min-height: 500px;
-        }
-        
-        .kanban-column-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid #3A4D13;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .kanban-card {
-            background: linear-gradient(145deg, #2a2a22 0%, #252520 100%);
-            border: 1px solid #4A5D23;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 8px;
-            cursor: grab;
-            transition: all 0.2s;
-        }
-        
-        .kanban-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(74, 93, 35, 0.3);
-        }
-        
-        /* Timesheet */
-        .timesheet-row {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 16px;
-            padding: 12px 16px;
-            border-bottom: 1px solid #2a2a22;
-        }
-        
-        .timesheet-hour {
-            font-size: 14px;
-            color: #D4A853;
-            font-weight: 500;
-        }
-        
-        /* Section visibility */
-        .section {
-            display: none;
-        }
-        
-        .section.active {
-            display: block;
-        }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
-            }
+        .agent-avatar {
+            background: linear-gradient(135deg, var(--cri-olive-muted), var(--cri-gold-muted));
         }
     </style>
 </head>
 <body class="min-h-screen">
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <div class="p-5 border-b border-[#3A4D13] flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl flex items-center justify-center text-xl" style="background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%);">
-                <i class="fas fa-leaf"></i>
-            </div>
-            <div>
-                <div class="text-lg font-bold text-[#F5F5DC]">Criativalia</div>
-                <div class="text-xs text-[#D4A853] tracking-widest">CONTROL PLANE</div>
-            </div>
-        </div>
-        
-        <nav class="py-4">
-            <div class="sidebar-item active" onclick="showSection('overview')" id="nav-overview">
-                <i class="fas fa-home"></i>
-                <span>Visão Geral</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('kanban')" id="nav-kanban">
-                <i class="fas fa-columns"></i>
-                <span>Kanban</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('timesheet')" id="nav-timesheet">
-                <i class="fas fa-clock"></i>
-                <span>Timesheet</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('financial')" id="nav-financial">
-                <i class="fas fa-chart-line"></i>
-                <span>Financeiro</span>
-            </div>
-            <div class="sidebar-item" onclick="showSection('deliverables')" id="nav-deliverables">
-                <i class="fas fa-box"></i>
-                <span>Entregas</span>
-            </div>
-        </nav>
-        
-        <div class="absolute bottom-0 left-0 right-0 p-5 border-t border-[#3A4D13]">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #4A5D23, #D4A853);">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <div>
-                    <div class="text-sm font-medium">Multi-Agent</div>
-                    <div class="text-xs text-[#7a9e7e]">v2.0 • Online</div>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Header -->
-        <header class="border-b border-[#3A4D13] bg-gradient-to-b from-[#252520] to-[#1e1e18] sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div>
-                        <h1 class="text-xl font-bold text-[#F5F5DC] flex items-center gap-2">
-                            <i class="fas fa-rocket text-[#D4A853]"></i>
-                            <span id="page-title">Visão Geral</span>
-                        </h1>
-                        <p class="text-xs text-[#D4A853]" id="page-subtitle">Dashboard unificado de missão</p>
+    <!-- Header -->
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo Criativalia -->
+                <a href="/" class="cri-logo">
+                    <div class="cri-logo__icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
                     </div>
-                </div>
+                    <div class="cri-logo__text">
+                        <span class="cri-logo__brand">Criativalia</span>
+                        <span class="cri-logo__tagline">Control Plane</span>
+                    </div>
+                </a>
                 
+                <!-- System Status -->
                 <div class="flex items-center gap-4">
-                    <div class="period-selector">
-                        <button class="period-btn active" onclick="setPeriod('MTD')" id="btn-mtd">MTD</button>
-                        <button class="period-btn" onclick="setPeriod('YTD')" id="btn-ytd">YTD</button>
+                    <div class="px-4 py-2 rounded-lg bg-[var(--cri-olive-muted)] border border-[var(--cri-olive-primary)]/30">
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="cri-status cri-status--online"></span>
+                            <span class="text-[var(--cri-olive-light)] font-medium">Sistema Online</span>
+                        </div>
                     </div>
-                    <button onclick="refreshData()" class="btn-primary px-4 py-2 rounded-lg">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
+                    <div class="text-xs text-[var(--cri-text-muted)]">
+                        v2.2.0
+                    </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        <div class="max-w-7xl mx-auto p-6">
+    <!-- Hero Section -->
+    <section class="hero-gradient py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-3 cri-text-gradient">Mission Control</h1>
+                <p class="text-[var(--cri-text-muted)] text-lg">Dashboard unificado de operações Criativalia</p>
+            </div>
             
-            <!-- SECTION 1: VISÃO GERAL -->
-            <div id="section-overview" class="section active">
-                <!-- KPI Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Receita MTD</span>
-                            <i class="fas fa-wallet text-[#4A5D23]"></i>
-                        </div>
-                        <div id="overview-revenue" class="metric-value text-2xl font-bold">-</div>
-                        <div id="overview-revenue-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Pedidos</span>
-                            <i class="fas fa-shopping-bag text-[#D4A853]"></i>
-                        </div>
-                        <div id="overview-orders" class="metric-value text-2xl font-bold">-</div>
-                        <div id="overview-orders-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Ticket Médio</span>
-                            <i class="fas fa-receipt text-[#7a9e7e]"></i>
-                        </div>
-                        <div id="overview-aov" class="metric-value text-2xl font-bold">-</div>
-                        <div id="overview-aov-trend" class="text-xs mt-2 text-[#7a9e7e]">- vs período anterior</div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Taxa Conversão</span>
-                            <i class="fas fa-percentage text-[#D4A853]"></i>
-                        </div>
-                        <div id="overview-conversion" class="metric-value text-2xl font-bold">-</div>
-                        <div id="overview-conversion-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
+            <!-- Key Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="cri-card cri-card--gradient p-5 text-center">
+                    <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Agentes</div>
+                    <div id="metric-agents" class="text-2xl font-bold metric-highlight">-</div>
                 </div>
-
-                <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-chart-area"></i>
-                                <span>Evolução de Receita</span>
-                            </div>
-                            <span class="badge badge-gold" id="overview-chart-label">MTD</span>
-                        </div>
-                        <div class="p-5">
-                            <div class="chart-container">
-                                <canvas id="overviewChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-robot"></i>
-                                <span>Agentes Ativos</span>
-                            </div>
-                        </div>
-                        <div class="p-5" id="agents-container">
-                            <div class="text-center text-gray-500 py-8">Carregando agentes...</div>
-                        </div>
-                    </div>
+                <div class="cri-card cri-card--gradient p-5 text-center">
+                    <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Tarefas Ativas</div>
+                    <div id="metric-tasks" class="text-2xl font-bold text-[var(--cri-gold)]">-</div>
                 </div>
-
-                <!-- Status Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="card p-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-[#4A5D23]/20 flex items-center justify-center">
-                                <i class="fas fa-check-circle text-[#7a9e7e] text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="text-sm text-[#D4A853]">Tarefas Concluídas</div>
-                                <div id="overview-tasks-done" class="text-xl font-bold">-</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-[#D4A853]/20 flex items-center justify-center">
-                                <i class="fas fa-spinner text-[#D4A853] text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="text-sm text-[#D4A853]">Em Progresso</div>
-                                <div id="overview-tasks-progress" class="text-xl font-bold">-</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-lg bg-[#c17767]/20 flex items-center justify-center">
-                                <i class="fas fa-exclamation-triangle text-[#c17767] text-xl"></i>
-                            </div>
-                            <div>
-                                <div class="text-sm text-[#D4A853]">Pendentes</div>
-                                <div id="overview-tasks-pending" class="text-xl font-bold">-</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="cri-card cri-card--gradient p-5 text-center">
+                    <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Entregas</div>
+                    <div id="metric-deliverables" class="text-2xl font-bold text-[var(--cri-olive-light)]">-</div>
                 </div>
-            </div>
-
-            <!-- SECTION 2: KANBAN -->
-            <div id="section-kanban" class="section">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-lg font-semibold">Quadro de Tarefas dos Agentes</h2>
-                    <button class="btn-primary px-4 py-2 rounded-lg text-sm" onclick="loadKanbanData()">
-                        <i class="fas fa-sync-alt mr-2"></i>Atualizar
-                    </button>
+                <div class="cri-card cri-card--gradient p-5 text-center">
+                    <div class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider mb-1">Receita MTD</div>
+                    <div id="metric-revenue" class="text-2xl font-bold text-[var(--cri-gold)]">-</div>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4 overflow-x-auto">
-                    <!-- Inbox -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-inbox mr-2"></i>Inbox</span>
-                            <span class="badge badge-blue" id="count-inbox">0</span>
-                        </div>
-                        <div id="kanban-inbox" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Opportunity -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-lightbulb mr-2"></i>Opportunity</span>
-                            <span class="badge badge-gold" id="count-opportunity">0</span>
-                        </div>
-                        <div id="kanban-opportunity" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Ready -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-play-circle mr-2"></i>Ready</span>
-                            <span class="badge badge-green" id="count-ready">0</span>
-                        </div>
-                        <div id="kanban-ready" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- In Progress -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-spinner mr-2"></i>In Progress</span>
-                            <span class="badge badge-gold" id="count-inprogress">0</span>
-                        </div>
-                        <div id="kanban-inprogress" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Review -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-eye mr-2"></i>Review</span>
-                            <span class="badge badge-purple" id="count-review">0</span>
-                        </div>
-                        <div id="kanban-review" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Deploy -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-rocket mr-2"></i>Deploy</span>
-                            <span class="badge badge-blue" id="count-deploy">0</span>
-                        </div>
-                        <div id="kanban-deploy" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Done -->
-                    <div class="kanban-column min-w-[200px]">
-                        <div class="kanban-column-header">
-                            <span class="text-[#F5F5DC]"><i class="fas fa-check-circle mr-2"></i>Done</span>
-                            <span class="badge badge-green" id="count-done">0</span>
-                        </div>
-                        <div id="kanban-done" class="p-2">
-                            <div class="text-center text-gray-500 py-4 text-sm">Sem dados</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 3: TIMESHEET -->
-            <div id="section-timesheet" class="section">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-lg font-semibold">Atividades dos Agentes por Hora</h2>
-                    <div class="flex gap-2">
-                        <select id="timesheet-agent-filter" class="bg-[#252520] border border-[#3A4D13] rounded-lg px-3 py-2 text-sm" onchange="loadTimesheetData()">
-                            <option value="all">Todos os Agentes</option>
-                        </select>
-                        <button class="btn-primary px-4 py-2 rounded-lg text-sm" onclick="loadTimesheetData()">
-                            <i class="fas fa-sync-alt mr-2"></i>Atualizar
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="widget-header">
-                        <div class="widget-title">
-                            <i class="fas fa-calendar-day"></i>
-                            <span>Timeline de Atividades - <span id="timesheet-date">Hoje</span></span>
-                        </div>
-                    </div>
-                    <div id="timesheet-container">
-                        <div class="text-center text-gray-500 py-8">Carregando timesheet...</div>
-                    </div>
-                </div>
-                
-                <!-- Summary -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#D4A853]" id="ts-total-hours">-</div>
-                        <div class="text-xs text-gray-400">Horas Totais</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#7a9e7e]" id="ts-tasks-completed">-</div>
-                        <div class="text-xs text-gray-400">Tarefas Completadas</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#6495ED]" id="ts-commits">-</div>
-                        <div class="text-xs text-gray-400">Commits</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#9370DB]" id="ts-deploys">-</div>
-                        <div class="text-xs text-gray-400">Deploys</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 4: FINANCEIRO -->
-            <div id="section-financial" class="section">
-                <!-- Revenue Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Receita Líquida</span>
-                            <i class="fas fa-wallet text-[#4A5D23]"></i>
-                        </div>
-                        <div id="fin-net-revenue" class="metric-value text-2xl font-bold">-</div>
-                        <div id="fin-net-revenue-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Receita Bruta</span>
-                            <i class="fas fa-coins text-[#D4A853]"></i>
-                        </div>
-                        <div id="fin-gross-revenue" class="metric-value text-2xl font-bold">-</div>
-                        <div id="fin-gross-revenue-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Margem Média</span>
-                            <i class="fas fa-percentage text-[#7a9e7e]"></i>
-                        </div>
-                        <div id="fin-margin" class="metric-value text-2xl font-bold">-</div>
-                        <div class="text-xs mt-2 text-[#7a9e7e]">
-                            <span id="fin-margin-diff">-</span> vs período anterior
-                        </div>
-                    </div>
-                    
-                    <div class="metric-card p-5">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-xs text-[#D4A853] uppercase tracking-wider">Ticket Médio</span>
-                            <i class="fas fa-receipt text-[#D4A853]"></i>
-                        </div>
-                        <div id="fin-aov" class="metric-value text-2xl font-bold">-</div>
-                        <div id="fin-aov-trend" class="text-xs mt-2 flex items-center gap-1">
-                            <i class="fas fa-chart-line"></i><span>-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts Row -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-chart-area"></i>
-                                <span>Comparativo de Receita</span>
-                            </div>
-                            <span class="badge badge-gold" id="fin-chart-label">MTD</span>
-                        </div>
-                        <div class="p-5">
-                            <div class="chart-container">
-                                <canvas id="financialChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-trophy"></i>
-                                <span>Produtos Mais Vendidos</span>
-                            </div>
-                            <div class="flex gap-2">
-                                <button onclick="setProductView('quantity')" class="period-btn active text-xs" id="fin-btn-qty">Qtd</button>
-                                <button onclick="setProductView('revenue')" class="period-btn text-xs" id="fin-btn-rev">Valor</button>
-                            </div>
-                        </div>
-                        <div id="fin-top-products" class="max-h-[340px] overflow-y-auto">
-                            <div class="text-center text-gray-500 py-8">Sem dados</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- P&L Statement -->
-                <div class="card mb-6">
-                    <div class="widget-header">
-                        <div class="widget-title">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <span>Demonstração de Resultados (P&L)</span>
-                        </div>
-                    </div>
-                    <div class="p-5 overflow-x-auto">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th class="text-right">MTD</th>
-                                    <th class="text-right">YTD</th>
-                                    <th class="text-right">% do Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fin-pnl-body">
-                                <tr>
-                                    <td colspan="4" class="text-center text-gray-500 py-8">Carregando P&L...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Surprise Metrics Row -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-users"></i>
-                                <span>CAC & LTV</span>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="text-center p-4 bg-[#4A5D23]/10 rounded-lg">
-                                    <div class="text-xs text-[#D4A853] uppercase mb-2">CAC</div>
-                                    <div id="fin-cac" class="text-xl font-bold text-[#F5F5DC]">-</div>
-                                </div>
-                                <div class="text-center p-4 bg-[#D4A853]/10 rounded-lg">
-                                    <div class="text-xs text-[#D4A853] uppercase mb-2">LTV</div>
-                                    <div id="fin-ltv" class="text-xl font-bold text-[#F5F5DC]">-</div>
-                                </div>
-                            </div>
-                            <div class="mt-4 p-3 bg-[#4A5D23]/20 rounded-lg text-center">
-                                <span class="text-xs text-[#D4A853]">Ratio LTV/CAC: </span>
-                                <span id="fin-ltv-cac-ratio" class="text-lg font-bold text-[#F5F5DC]">-</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-funnel-dollar"></i>
-                                <span>Taxa de Conversão</span>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <div class="text-center mb-5">
-                                <div id="fin-conversion" class="text-4xl font-bold text-[#D4A853]">-</div>
-                                <div class="text-xs text-[#F5F5DC]">Taxa Global</div>
-                            </div>
-                            <div class="flex justify-between mb-2 text-xs">
-                                <span class="text-[#D4A853]">Sessões</span>
-                                <span id="fin-sessions" class="font-semibold">-</span>
-                            </div>
-                            <div class="flex justify-between mb-2 text-xs">
-                                <span class="text-[#D4A853]">Pedidos</span>
-                                <span id="fin-orders" class="font-semibold">-</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="fin-conversion-bar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="widget-header">
-                            <div class="widget-title">
-                                <i class="fas fa-crystal-ball"></i>
-                                <span>Previsão de Receita</span>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <div class="text-center mb-4">
-                                <div class="text-xs text-[#D4A853] uppercase">Projeção Mensal</div>
-                                <div id="fin-forecast" class="text-2xl font-bold text-[#F5F5DC] mt-1">-</div>
-                            </div>
-                            <div class="bg-[#4A5D23]/20 rounded-lg p-4">
-                                <div class="flex justify-between mb-2 text-xs">
-                                    <span class="text-[#D4A853]">Realizado</span>
-                                    <span id="fin-forecast-actual" class="font-semibold">-</span>
-                                </div>
-                                <div class="progress-bar mb-3">
-                                    <div class="progress-fill" id="fin-forecast-bar" style="width: 0%;"></div>
-                                </div>
-                                <div class="flex justify-between text-xs">
-                                    <span class="text-[#7a9e7e]">Confiança: <span id="fin-forecast-confidence">-</span></span>
-                                    <span class="text-[#D4A853]">Faltam: <span id="fin-forecast-remaining">-</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 5: ENTREGAS -->
-            <div id="section-deliverables" class="section">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-lg font-semibold">Lista de Deliverables</h2>
-                    <div class="flex gap-2">
-                        <select id="deliverable-status-filter" class="bg-[#252520] border border-[#3A4D13] rounded-lg px-3 py-2 text-sm" onchange="loadDeliverablesData()">
-                            <option value="all">Todos os Status</option>
-                            <option value="completed">Concluído</option>
-                            <option value="in_progress">Em Progresso</option>
-                            <option value="pending">Pendente</option>
-                        </select>
-                        <button class="btn-primary px-4 py-2 rounded-lg text-sm" onclick="loadDeliverablesData()">
-                            <i class="fas fa-sync-alt mr-2"></i>Atualizar
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="overflow-x-auto">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Agente</th>
-                                    <th>Status</th>
-                                    <th>Início</th>
-                                    <th>Fim</th>
-                                    <th>Tempo</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="deliverables-body">
-                                <tr>
-                                    <td colspan="8" class="text-center text-gray-500 py-8">Carregando deliverables...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#7a9e7e]" id="del-total">-</div>
-                        <div class="text-xs text-gray-400">Total de Entregas</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#4A5D23]" id="del-completed">-</div>
-                        <div class="text-xs text-gray-400">Concluídas</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#D4A853]" id="del-inprogress">-</div>
-                        <div class="text-xs text-gray-400">Em Progresso</div>
-                    </div>
-                    <div class="card p-4 text-center">
-                        <div class="text-2xl font-bold text-[#D4A853]" id="del-avg-time">-</div>
-                        <div class="text-xs text-gray-400">Tempo Médio</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="text-center py-6 mt-6 text-[#D4A853] text-xs border-t border-[#3A4D13]">
-                <i class="fas fa-leaf mr-2"></i>
-                Criativalia Control Plane v2.0 • Dados em tempo real
             </div>
         </div>
+    </section>
+
+    <!-- Navigation Grid -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dashboard -->
+            <a href="unified-dashboard.html" class="nav-card cri-card cri-card--interactive p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-olive-muted)] flex items-center justify-center">
+                        <i class="fas fa-chart-line text-2xl text-[var(--cri-gold)]"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-[var(--cri-text-muted)] group-hover:text-[var(--cri-gold)] transition-colors"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Dashboard Unificado</h3>
+                <p class="text-sm text-[var(--cri-text-muted)]">Visão geral completa: métricas Shopify, kanban, timesheet e financeiro em um só lugar.</p>
+            </a>
+
+            <!-- Kanban -->
+            <a href="kanban.html" class="nav-card cri-card cri-card--interactive p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-gold-muted)] flex items-center justify-center">
+                        <i class="fas fa-columns text-2xl text-[var(--cri-gold)]"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-[var(--cri-text-muted)] group-hover:text-[var(--cri-gold)] transition-colors"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Kanban de Tarefas</h3>
+                <p class="text-sm text-[var(--cri-text-muted)]">Gestão visual das tarefas dos agentes. Acompanhe o progresso em tempo real.</p>
+                <div id="kanban-badge" class="mt-3 hidden">
+                    <span class="cri-badge cri-badge--warning">
+                        <span id="kanban-count">0</span> pendentes
+                    </span>
+                </div>
+            </a>
+
+            <!-- Timesheet -->
+            <a href="timesheet.html" class="nav-card cri-card cri-card--interactive p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-olive-muted)] flex items-center justify-center">
+                        <i class="fas fa-clock text-2xl text-[var(--cri-olive-light)]"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-[var(--cri-text-muted)] group-hover:text-[var(--cri-gold)] transition-colors"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Timesheet</h3>
+                <p class="text-sm text-[var(--cri-text-muted)]">Timeline de atividades dos agentes nas últimas 24h.</p>
+            </a>
+
+            <!-- Deliverables -->
+            <a href="deliverables.html" class="nav-card cri-card cri-card--interactive p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-gold-muted)] flex items-center justify-center">
+                        <i class="fas fa-box text-2xl text-[var(--cri-gold)]"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-[var(--cri-text-muted)] group-hover:text-[var(--cri-gold)] transition-colors"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Entregas</h3>
+                <p class="text-sm text-[var(--cri-text-muted)]">Catálogo de deliverables e assets produzidos pelos agentes.</p>
+                <div id="deliverables-badge" class="mt-3 hidden">
+                    <span class="cri-badge cri-badge--info">
+                        <span id="deliverables-count">0</span> itens
+                    </span>
+                </div>
+            </a>
+
+            <!-- Dashboard Classic -->
+            <a href="dashboard.html" class="nav-card cri-card cri-card--interactive p-6 group">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-bg-tertiary)] flex items-center justify-center">
+                        <i class="fas fa-rocket text-2xl text-[var(--cri-text-muted)]"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-[var(--cri-text-muted)] group-hover:text-[var(--cri-gold)] transition-colors"></i>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Dashboard Clássico</h3>
+                <p class="text-sm text-[var(--cri-text-muted)]">Versão original do dashboard com visualização de agentes e métricas.</p>
+            </a>
+
+            <!-- API Status -->
+            <div class="nav-card cri-card p-6">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-[var(--cri-bg-tertiary)] flex items-center justify-center">
+                        <i class="fas fa-server text-2xl text-[var(--cri-text-muted)]"></i>
+                    </div>
+                    <span id="api-status-indicator" class="cri-badge cri-badge--neutral">Verificando...</span>
+                </div>
+                <h3 class="font-semibold text-lg mb-2">Status da API</h3>
+                <p class="text-sm text-[var(--cri-text-muted)] mb-3">Verificação de endpoints do sistema.</p>
+                <button onclick="checkApiStatus()" class="cri-btn cri-btn--secondary cri-btn--sm">
+                    <i class="fas fa-sync-alt mr-2"></i>Verificar
+                </button>
+            </div>
+        </div>
+
+        <!-- Active Agents Section -->
+        <section class="mt-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold">Agentes Ativos</h2>
+                <button onclick="refreshData()" class="cri-btn cri-btn--secondary cri-btn--sm">
+                    <i class="fas fa-sync-alt mr-2"></i>Atualizar
+                </button>
+            </div>
+            
+            <div id="agents-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="cri-card p-6 text-center">
+                    <div class="cri-skeleton h-12 w-12 rounded-full mx-auto mb-3"></div>
+                    <div class="cri-skeleton h-4 w-32 mx-auto mb-2"></div>
+                    <div class="cri-skeleton h-3 w-24 mx-auto"></div>
+                </div>
+                <div class="cri-card p-6 text-center">
+                    <div class="cri-skeleton h-12 w-12 rounded-full mx-auto mb-3"></div>
+                    <div class="cri-skeleton h-4 w-32 mx-auto mb-2"></div>
+                    <div class="cri-skeleton h-3 w-24 mx-auto"></div>
+                </div>
+                <div class="cri-card p-6 text-center">
+                    <div class="cri-skeleton h-12 w-12 rounded-full mx-auto mb-3"></div>
+                    <div class="cri-skeleton h-4 w-32 mx-auto mb-2"></div>
+                    <div class="cri-skeleton h-3 w-24 mx-auto"></div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <script>
-        // State
-        let currentPeriod = 'MTD';
-        let productView = 'quantity';
-        let overviewChart = null;
-        let financialChart = null;
-        
-        const sections = ['overview', 'kanban', 'timesheet', 'financial', 'deliverables'];
-        const sectionTitles = {
-            'overview': { title: 'Visão Geral', subtitle: 'Dashboard unificado de missão' },
-            'kanban': { title: 'Kanban', subtitle: 'Quadro de tarefas dos agentes' },
-            'timesheet': { title: 'Timesheet', subtitle: 'Atividades dos agentes por hora' },
-            'financial': { title: 'Financeiro', subtitle: 'Análise completa de receitas e métricas' },
-            'deliverables': { title: 'Entregas', subtitle: 'Lista de deliverables' }
-        };
+    <!-- Footer -->
+    <footer class="border-t border-[var(--cri-border)] mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="cri-logo cri-logo--small">
+                        <div class="cri-logo__icon cri-logo__icon--small">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <span class="cri-logo__brand">Criativalia</span>
+                    </div>
+                </div>
+                <div class="text-sm text-[var(--cri-text-muted)]">
+                    © 2026 Criativalia. Todos os direitos reservados.
+                </div>
+                <div class="flex items-center gap-2 text-xs text-[var(--cri-text-muted)]">
+                    <i class="fas fa-code-branch"></i>
+                    <span>clean-deploy branch</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-        // Initialize
+    <script>
+        // Load data on page load
         document.addEventListener('DOMContentLoaded', () => {
             refreshData();
+            checkApiStatus();
         });
 
-        // Show Section
-        function showSection(section) {
-            sections.forEach(s => {
-                document.getElementById(`section-${s}`).classList.remove('active');
-                document.getElementById(`nav-${s}`).classList.remove('active');
-            });
-            document.getElementById(`section-${section}`).classList.add('active');
-            document.getElementById(`nav-${section}`).classList.add('active');
-            
-            document.getElementById('page-title').textContent = sectionTitles[section].title;
-            document.getElementById('page-subtitle').textContent = sectionTitles[section].subtitle;
-            
-            // Load data for the section
-            if (section === 'kanban') loadKanbanData();
-            if (section === 'timesheet') loadTimesheetData();
-            if (section === 'financial') loadFinancialData();
-            if (section === 'deliverables') loadDeliverablesData();
-        }
-
-        // Set Period
-        function setPeriod(period) {
-            currentPeriod = period;
-            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`btn-${period.toLowerCase()}`).classList.add('active');
-            
-            refreshData();
-        }
-
-        // Refresh All Data
         async function refreshData() {
-            const activeSection = sections.find(s => document.getElementById(`section-${s}`).classList.contains('active'));
-            
-            // Always load overview data
-            loadOverviewData();
-            
-            // Load section-specific data
-            if (activeSection === 'kanban') loadKanbanData();
-            if (activeSection === 'timesheet') loadTimesheetData();
-            if (activeSection === 'financial') loadFinancialData();
-            if (activeSection === 'deliverables') loadDeliverablesData();
-        }
-
-        // ==================== OVERVIEW SECTION ====================
-        async function loadOverviewData() {
             try {
-                const response = await fetch('/api/shopify/stats');
-                const data = response.ok ? await response.json() : {};
-                
-                updateOverviewMetrics(data);
-                renderOverviewChart(data);
-                updateOverviewTasks(data);
-            } catch (err) {
-                console.error('Error loading overview:', err);
-                showNoData('overview');
-            }
-            
-            // Load agents
-            try {
-                const agentsResponse = await fetch('/api/agents');
-                const agents = agentsResponse.ok ? await agentsResponse.json() : [];
-                renderAgents(agents);
-            } catch (err) {
-                document.getElementById('agents-container').innerHTML = '<div class="text-center text-gray-500 py-4">Sem dados de agentes</div>';
-            }
-        }
+                const [agentsRes, tasksRes, deliverablesRes, shopifyRes] = await Promise.all([
+                    fetch('/api/agents').catch(() => null),
+                    fetch('/api/tasks').catch(() => null),
+                    fetch('/api/deliverables').catch(() => null),
+                    fetch('/api/shopify/stats').catch(() => null)
+                ]);
 
-        function updateOverviewMetrics(data) {
-            const isMTD = currentPeriod === 'MTD';
-            
-            document.getElementById('overview-revenue').textContent = formatCurrency(isMTD ? data.revenue_mtd : data.revenue_ytd);
-            document.getElementById('overview-orders').textContent = (isMTD ? data.orders_mtd : data.orders_ytd)?.toLocaleString('pt-BR') || '-';
-            document.getElementById('overview-aov').textContent = formatCurrency(isMTD ? data.aov_mtd : data.aov_ytd);
-            document.getElementById('overview-conversion').textContent = (data.conversion_rate || 0).toFixed(2) + '%';
-            
-            updateTrend('overview-revenue-trend', isMTD ? data.revenue_mtd_trend : data.revenue_ytd_trend);
-            updateTrend('overview-orders-trend', isMTD ? data.orders_mtd_trend : data.orders_ytd_trend);
-            updateTrend('overview-aov-trend', isMTD ? data.aov_mtd_trend : data.aov_ytd_trend);
-            updateTrend('overview-conversion-trend', data.conversion_trend);
-        }
+                const agents = agentsRes ? await agentsRes.json() : [];
+                const tasks = tasksRes ? await tasksRes.json() : [];
+                const deliverables = deliverablesRes ? await deliverablesRes.json() : [];
+                const shopify = shopifyRes ? await shopifyRes.json() : {};
 
-        function renderOverviewChart(data) {
-            const ctx = document.getElementById('overviewChart')?.getContext('2d');
-            if (!ctx) return;
-            
-            const labels = currentPeriod === 'MTD' 
-                ? (data.mtd_labels || ['1', '5', '10', '15', '20', '25', '30'])
-                : ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            
-            const chartData = currentPeriod === 'MTD'
-                ? data.mtd_current || []
-                : data.ytd_2026 || [];
-            
-            if (overviewChart) overviewChart.destroy();
-            
-            overviewChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: currentPeriod === 'MTD' ? 'Mês Atual' : '2026',
-                        data: chartData,
-                        borderColor: '#D4A853',
-                        backgroundColor: 'rgba(212, 168, 83, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#252520',
-                            titleColor: '#F5F5DC',
-                            bodyColor: '#F5F5DC',
-                            borderColor: '#4A5D23',
-                            borderWidth: 1,
-                            callbacks: { label: (ctx) => formatCurrency(ctx.raw) }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#3A4D13', opacity: 0.3 },
-                            ticks: { color: '#D4A853', callback: (v) => 'R$ ' + (v/1000).toFixed(0) + 'k' }
-                        },
-                        x: { grid: { display: false }, ticks: { color: '#D4A853' } }
-                    }
+                // Update metrics
+                document.getElementById('metric-agents').textContent = agents.length;
+                document.getElementById('metric-tasks').textContent = tasks.filter(t => t.status !== 'done').length;
+                document.getElementById('metric-deliverables').textContent = deliverables.length;
+                document.getElementById('metric-revenue').textContent = 
+                    'R$ ' + (shopify.revenue_mtd || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+
+                // Update badges
+                const pendingTasks = tasks.filter(t => t.status !== 'done').length;
+                if (pendingTasks > 0) {
+                    document.getElementById('kanban-badge').classList.remove('hidden');
+                    document.getElementById('kanban-count').textContent = pendingTasks;
                 }
-            });
+
+                if (deliverables.length > 0) {
+                    document.getElementById('deliverables-badge').classList.remove('hidden');
+                    document.getElementById('deliverables-count').textContent = deliverables.length;
+                }
+
+                // Render agents
+                renderAgents(agents);
+
+            } catch (err) {
+                console.error('Error loading data:', err);
+                document.getElementById('agents-container').innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Erro ao carregar dados da API</p>
+                        <button onclick="refreshData()" class="cri-btn cri-btn--secondary mt-4">
+                            <i class="fas fa-sync-alt mr-2"></i>Tentar novamente
+                        </button>
+                    </div>
+                `;
+            }
         }
 
         function renderAgents(agents) {
             const container = document.getElementById('agents-container');
-            if (!agents || agents.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500 py-4">Sem agentes ativos</div>';
+            
+            if (agents.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12">
+                        <i class="fas fa-robot"></i>
+                        <p>Nenhum agente ativo no momento</p>
+                    </div>
+                `;
                 return;
             }
-            
+
             container.innerHTML = agents.map(agent => `
-                <div class="flex items-center gap-3 p-3 bg-[#2a2a22] rounded-lg mb-2">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${agent.status === 'online' ? 'bg-[#4A5D23]' : 'bg-gray-600'}">
-                        <i class="fas fa-robot text-sm"></i>
+                <div class="cri-card p-5 cri-animate-fade-in">
+                    <div class="flex items-center gap-4">
+                        <div class="agent-avatar w-12 h-12 rounded-xl flex items-center justify-center text-xl">
+                            ${getAgentIcon(agent.role)}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold truncate">${agent.name}</h3>
+                            <p class="text-sm text-[var(--cri-text-muted)]">${agent.role}</p>
+                        </div>
+                        <span class="cri-status cri-status--${agent.status === 'active' ? 'online' : 'offline'}"></span>
                     </div>
-                    <div class="flex-1">
-                        <div class="font-medium text-sm">${agent.name || agent.id}</div>
-                        <div class="text-xs text-gray-400">${agent.tasks_count || 0} tarefas</div>
+                    <div class="mt-4 flex items-center gap-4 text-xs text-[var(--cri-text-muted)]">
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-tasks"></i>
+                            ${agent.tasks_count || 0} tarefas
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i>
+                            ${agent.completed_tasks || 0} concluídas
+                        </span>
                     </div>
-                    <span class="badge ${agent.status === 'online' ? 'badge-green' : 'badge-red'}">${agent.status}</span>
                 </div>
             `).join('');
         }
 
-        function updateOverviewTasks(data) {
-            document.getElementById('overview-tasks-done').textContent = data.tasks_completed || 0;
-            document.getElementById('overview-tasks-progress').textContent = data.tasks_in_progress || 0;
-            document.getElementById('overview-tasks-pending').textContent = data.tasks_pending || 0;
+        function getAgentIcon(role) {
+            if (role?.includes('CEO')) return '👑';
+            if (role?.includes('Traffic')) return '📢';
+            if (role?.includes('Shopify')) return '🛒';
+            if (role?.includes('Copy')) return '✍️';
+            if (role?.includes('Design')) return '🎨';
+            if (role?.includes('Dev')) return '💻';
+            if (role?.includes('Data')) return '📊';
+            if (role?.includes('Support')) return '🎧';
+            return '🤖';
         }
 
-        // ==================== KANBAN SECTION ====================
-        async function loadKanbanData() {
-            const columns = ['inbox', 'opportunity', 'ready', 'inprogress', 'review', 'deploy', 'done'];
-            
-            try {
-                // Load from static JSON file
-                const response = await fetch('/data/agents-data.json?t=' + Date.now());
-                const data = response.ok ? await response.json() : { tasks: {} };
-                
-                const tasks = data.tasks || {};
-                
-                columns.forEach(col => {
-                    const colTasks = tasks[col] || [];
-                    document.getElementById(`count-${col}`).textContent = colTasks.length;
-                    
-                    const container = document.getElementById(`kanban-${col}`);
-                    if (colTasks.length === 0) {
-                        container.innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Nenhuma tarefa</div>';
-                    } else {
-                        container.innerHTML = colTasks.map(task => `
-                            <div class="kanban-card">
-                                <div class="font-medium text-sm mb-2">${task.title || 'Sem título'}</div>
-                                <div class="flex items-center justify-between text-xs">
-                                    <span class="text-[#D4A853]">${task.agent || 'N/A'}</span>
-                                    <span class="badge ${task.priority === 'high' ? 'badge-red' : task.priority === 'medium' ? 'badge-yellow' : 'badge-green'}">${task.priority || 'normal'}</span>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                });
-            } catch (err) {
-                console.error('Error loading kanban:', err);
-                columns.forEach(col => {
-                    document.getElementById(`kanban-${col}`).innerHTML = '<div class="text-center text-gray-500 py-4 text-sm">Erro ao carregar dados</div>';
-                });
-            }
-        }
+        async function checkApiStatus() {
+            const indicator = document.getElementById('api-status-indicator');
+            indicator.className = 'cri-badge cri-badge--warning';
+            indicator.textContent = 'Verificando...';
 
-        // ==================== TIMESHEET SECTION ====================
-        async function loadTimesheetData() {
             try {
-                // Load from static JSON file
-                const response = await fetch('/data/agents-data.json?t=' + Date.now());
-                const data = response.ok ? await response.json() : { timesheet: [] };
-                
-                const entries = data.timesheet || [];
-                const container = document.getElementById('timesheet-container');
-                
-                if (entries.length === 0) {
-                    container.innerHTML = '<div class="text-center text-gray-500 py-8">Sem atividades registradas</div>';
+                const res = await fetch('/api/health');
+                if (res.ok) {
+                    indicator.className = 'cri-badge cri-badge--success';
+                    indicator.innerHTML = '<i class="fas fa-check mr-1"></i> Online';
                 } else {
-                    container.innerHTML = entries.map(e => `
-                        <div class="timesheet-row">
-                            <div class="timesheet-hour">${e.agent}</div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-1 text-sm">
-                                    <span class="text-[#D4A853]">${e.sessions} sessões</span>
-                                    <span class="text-gray-400">|</span>
-                                    <span>${e.tasks} tarefas</span>
-                                    <span class="text-gray-400">|</span>
-                                    <span>${e.logs} logs</span>
-                                    <span class="text-xs text-gray-500 ml-auto">${formatTimeAgo(e.lastActive)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
+                    throw new Error('API error');
                 }
-                
-                // Update summary
-                const totalSessions = entries.reduce((sum, e) => sum + (e.sessions || 0), 0);
-                const totalTasks = entries.reduce((sum, e) => sum + (e.tasks || 0), 0);
-                document.getElementById('ts-total-hours').textContent = totalSessions + ' sessões';
-                document.getElementById('ts-total-tasks').textContent = totalTasks + ' tarefas';
-                
             } catch (err) {
-                console.error('Error loading timesheet:', err);
-                document.getElementById('timesheet-container').innerHTML = '<div class="text-center text-gray-500 py-8">Erro ao carregar dados</div>';
+                indicator.className = 'cri-badge cri-badge--error';
+                indicator.innerHTML = '<i class="fas fa-times mr-1"></i> Offline';
             }
-        }
-                document.getElementById('ts-tasks-completed').textContent = data.tasks_completed || 0;
-                document.getElementById('ts-commits').textContent = data.commits || 0;
-                document.getElementById('ts-deploys').textContent = data.deploys || 0;
-                
-            } catch (err) {
-                console.error('Error loading timesheet:', err);
-                document.getElementById('timesheet-container').innerHTML = '<div class="text-center text-gray-500 py-8">Erro ao carregar timesheet</div>';
-            }
-        }
-
-        // ==================== FINANCIAL SECTION ====================
-        async function loadFinancialData() {
-            try {
-                const response = await fetch('/api/shopify/financial');
-                const data = response.ok ? await response.json() : {};
-                
-                updateFinancialMetrics(data);
-                renderFinancialChart(data);
-                renderTopProducts(data.top_products || []);
-                renderPnL(data);
-                updateFinancialSurprise(data);
-            } catch (err) {
-                console.error('Error loading financial:', err);
-                showNoData('financial');
-            }
-        }
-
-        function updateFinancialMetrics(data) {
-            const isMTD = currentPeriod === 'MTD';
-            
-            document.getElementById('fin-net-revenue').textContent = formatCurrency(isMTD ? data.net_revenue_mtd : data.net_revenue_ytd);
-            document.getElementById('fin-gross-revenue').textContent = formatCurrency(isMTD ? data.gross_revenue_mtd : data.gross_revenue_ytd);
-            
-            const margin = (isMTD ? data.gross_revenue_mtd : data.gross_revenue_ytd) > 0 
-                ? (((isMTD ? data.net_revenue_mtd : data.net_revenue_ytd) / (isMTD ? data.gross_revenue_mtd : data.gross_revenue_ytd)) * 100) 
-                : 0;
-            document.getElementById('fin-margin').textContent = margin.toFixed(1) + '%';
-            
-            document.getElementById('fin-aov').textContent = formatCurrency(isMTD ? data.aov_mtd : data.aov_ytd);
-            
-            updateTrend('fin-net-revenue-trend', isMTD ? data.net_revenue_mtd_trend : data.net_revenue_ytd_trend);
-            updateTrend('fin-gross-revenue-trend', isMTD ? data.gross_revenue_mtd_trend : data.gross_revenue_ytd_trend);
-            updateTrend('fin-aov-trend', isMTD ? data.aov_mtd_trend : data.aov_ytd_trend);
-        }
-
-        function renderFinancialChart(data) {
-            const ctx = document.getElementById('financialChart')?.getContext('2d');
-            if (!ctx) return;
-            
-            const labels = currentPeriod === 'MTD' 
-                ? (data.mtd_labels || ['1', '5', '10', '15', '20', '25', '30'])
-                : ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            
-            const datasets = currentPeriod === 'MTD'
-                ? [
-                    { label: 'Mês Atual', data: data.mtd_current || [], borderColor: '#D4A853', backgroundColor: 'rgba(212, 168, 83, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
-                    { label: 'Mês Anterior', data: data.mtd_previous || [], borderColor: '#4A5D23', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 5], tension: 0.4 }
-                  ]
-                : [
-                    { label: '2026', data: data.ytd_2026 || [], borderColor: '#D4A853', backgroundColor: 'rgba(212, 168, 83, 0.1)', borderWidth: 3, fill: true, tension: 0.4 },
-                    { label: '2025', data: data.ytd_2025 || [], borderColor: '#4A5D23', backgroundColor: 'transparent', borderWidth: 2, tension: 0.4 }
-                  ];
-            
-            if (financialChart) financialChart.destroy();
-            
-            financialChart = new Chart(ctx, {
-                type: 'line',
-                data: { labels, datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#F5F5DC', usePointStyle: true } },
-                        tooltip: {
-                            backgroundColor: '#252520', titleColor: '#F5F5DC', bodyColor: '#F5F5DC',
-                            borderColor: '#4A5D23', borderWidth: 1,
-                            callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatCurrency(ctx.raw)}` }
-                        }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: '#3A4D13', opacity: 0.3 }, ticks: { color: '#D4A853', callback: (v) => 'R$ ' + (v/1000).toFixed(0) + 'k' } },
-                        x: { grid: { display: false }, ticks: { color: '#D4A853' } }
-                    }
-                }
-            });
-        }
-
-        function renderTopProducts(products) {
-            const container = document.getElementById('fin-top-products');
-            if (!products || products.length === 0) {
-                container.innerHTML = '<div class="text-center text-gray-500 py-8">Sem dados</div>';
-                return;
-            }
-            
-            const sorted = [...products].sort((a, b) => productView === 'quantity' ? (b.quantity || 0) - (a.quantity || 0) : (b.revenue || 0) - (a.revenue || 0));
-            
-            container.innerHTML = sorted.slice(0, 10).map((p, i) => {
-                const value = productView === 'quantity' ? (p.quantity || 0) : formatCurrency(p.revenue || 0);
-                const subValue = productView === 'quantity' ? formatCurrency(p.revenue || 0) : (p.quantity || 0) + ' unid.';
-                
-                return `
-                    <div class="product-row flex items-center gap-3 p-3 border-b border-[#2a2a22]">
-                        <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${i < 3 ? 'bg-gradient-to-br from-[#D4A853] to-[#4A5D23] text-[#1a1a15]' : 'bg-[#2a2a22] text-gray-500'}">${i + 1}</div>
-                        <div class="flex-1 min-w-0">
-                            <div class="font-medium text-sm truncate">${p.name}</div>
-                            <div class="text-xs text-[#7a9e7e]">${subValue}</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="font-semibold text-[#D4A853]">${value}</div>
-                            <div class="text-xs text-gray-500">${p.sold || 0} vendas</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function setProductView(view) {
-            productView = view;
-            document.getElementById('fin-btn-qty').classList.toggle('active', view === 'quantity');
-            document.getElementById('fin-btn-rev').classList.toggle('active', view === 'revenue');
-            loadFinancialData();
-        }
-
-        function renderPnL(data) {
-            const tbody = document.getElementById('fin-pnl-body');
-            const items = [
-                { name: 'Receita Bruta', mtd: data.gross_revenue_mtd, ytd: data.gross_revenue_ytd },
-                { name: 'Impostos', mtd: -(data.taxes_mtd || 0), ytd: -(data.taxes_ytd || 0) },
-                { name: 'Frete', mtd: -(data.shipping_mtd || 0), ytd: -(data.shipping_ytd || 0) },
-                { name: 'Receita Líquida', mtd: data.net_revenue_mtd, ytd: data.net_revenue_ytd, bold: true },
-                { name: 'Custo dos Produtos', mtd: -(data.cogs_mtd || 0), ytd: -(data.cogs_ytd || 0) },
-                { name: 'Lucro Bruto', mtd: data.gross_profit_mtd, ytd: data.gross_profit_ytd, bold: true },
-                { name: 'Despesas Operacionais', mtd: -(data.opex_mtd || 0), ytd: -(data.opex_ytd || 0) },
-                { name: 'Lucro Operacional', mtd: data.operating_profit_mtd, ytd: data.operating_profit_ytd, bold: true }
-            ];
-            
-            tbody.innerHTML = items.map(item => {
-                const pct = (data.net_revenue_mtd || 1) !== 0 ? ((item.mtd || 0) / data.net_revenue_mtd * 100) : 0;
-                return `
-                    <tr class="${item.bold ? 'font-semibold bg-[#4A5D23]/10' : ''}">
-                        <td>${item.name}</td>
-                        <td class="text-right ${(item.mtd || 0) < 0 ? 'text-[#c17767]' : 'text-[#7a9e7e]'}">${formatCurrency(item.mtd)}</td>
-                        <td class="text-right ${(item.ytd || 0) < 0 ? 'text-[#c17767]' : 'text-[#7a9e7e]'}">${formatCurrency(item.ytd)}</td>
-                        <td class="text-right text-[#D4A853]">${pct.toFixed(1)}%</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function updateFinancialSurprise(data) {
-            document.getElementById('fin-cac').textContent = formatCurrency(data.cac || 0);
-            document.getElementById('fin-ltv').textContent = formatCurrency(data.ltv || 0);
-            const ratio = (data.cac || 0) > 0 ? (data.ltv / data.cac) : 0;
-            document.getElementById('fin-ltv-cac-ratio').textContent = ratio.toFixed(1) + 'x';
-            
-            document.getElementById('fin-conversion').textContent = (data.conversion_rate || 0).toFixed(2) + '%';
-            document.getElementById('fin-sessions').textContent = (data.sessions || 0).toLocaleString('pt-BR');
-            document.getElementById('fin-orders').textContent = (data.orders || 0).toLocaleString('pt-BR');
-            document.getElementById('fin-conversion-bar').style.width = Math.min((data.conversion_rate || 0) * 5, 100) + '%';
-            
-            document.getElementById('fin-forecast').textContent = formatCurrency(data.revenue_forecast || 0);
-            document.getElementById('fin-forecast-actual').textContent = formatCurrency(data.net_revenue_mtd || 0);
-            document.getElementById('fin-forecast-confidence').textContent = (data.forecast_confidence || 85) + '%';
-            const remaining = Math.max(0, (data.revenue_forecast || 0) - (data.net_revenue_mtd || 0));
-            document.getElementById('fin-forecast-remaining').textContent = formatCurrency(remaining);
-            document.getElementById('fin-forecast-bar').style.width = Math.min(((data.net_revenue_mtd || 0) / (data.revenue_forecast || 1)) * 100, 100) + '%';
-        }
-
-        // ==================== DELIVERABLES SECTION ====================
-        async function loadDeliverablesData() {
-            try {
-                // Load from static JSON file
-                const response = await fetch('/data/agents-data.json?t=' + Date.now());
-                const data = response.ok ? await response.json() : { deliverables: [] };
-                
-                const deliverables = data.deliverables || [];
-                const filter = document.getElementById('deliverable-status-filter').value;
-                
-                const filtered = filter === 'all' ? deliverables : deliverables.filter(d => d.status === filter);
-                
-                const tbody = document.getElementById('deliverables-body');
-                if (filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">Sem deliverables</td></tr>';
-                } else {
-                    tbody.innerHTML = filtered.map(d => {
-                        const statusColors = {
-                            'completed': 'badge-green',
-                            'in_progress': 'badge-gold',
-                            'pending': 'badge-red'
-                        };
-                        return `
-                            <tr>
-                                <td class="font-mono text-xs">${d.id?.substring(0, 8) || '-'}</td>
-                                <td class="font-medium">${d.name}</td>
-                                <td>${d.agent}</td>
-                                <td><span class="badge ${statusColors[d.status] || 'badge-gold'}">${d.status}</span></td>
-                                <td class="text-xs text-gray-400">${d.created || '-'}</td>
-                                <td class="text-xs text-gray-400">${d.completed || '-'}</td>
-                                <td>${d.type || '-'}</td>
-                                <td>
-                                    ${d.url ? `<a href="${d.url}" target="_blank" class="text-[#D4A853] hover:underline"><i class="fas fa-external-link-alt"></i></a>` : '-'}
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-                
-                // Stats
-                document.getElementById('del-total').textContent = deliverables.length;
-                document.getElementById('del-completed').textContent = deliverables.filter(d => d.status === 'completed').length;
-                document.getElementById('del-inprogress').textContent = deliverables.filter(d => d.status === 'in_progress').length;
-                document.getElementById('del-avg-time').textContent = deliverables.length > 0 ? Math.round(deliverables.reduce((sum, d) => sum + (d.duration || 0), 0) / deliverables.length) + ' dias' : '-';
-                
-            } catch (err) {
-                console.error('Error loading deliverables:', err);
-                document.getElementById('deliverables-body').innerHTML = '<tr><td colspan="8" class="text-center text-gray-500 py-8">Erro ao carregar dados</td></tr>';
-            }
-        }
-
-        // ==================== UTILS ====================
-        function updateTrend(elementId, trend) {
-            const el = document.getElementById(elementId);
-            if (!el || !trend || trend === 0) {
-                if (el) el.innerHTML = '<span style="color: #888;">-</span>';
-                return;
-            }
-            const isUp = trend >= 0;
-            const color = isUp ? '#7a9e7e' : '#c17767';
-            el.innerHTML = `<i class="fas fa-arrow-${isUp ? 'up' : 'down'}" style="color: ${color};"></i><span style="color: ${color};">${Math.abs(trend).toFixed(1)}%</span>`;
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-        }
-
-        function showNoData(section) {
-            // Set all metrics to "-" or "Sem dados"
         }
     </script>
 </body>

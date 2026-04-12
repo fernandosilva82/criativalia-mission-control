@@ -6,60 +6,93 @@
     <title>Kanban - Criativalia Control Plane</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Criativalia Theme CSS -->
     <link rel="stylesheet" href="css/criativalia-theme.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0b; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0b; color: #fafafa; }
-        .card { background: #141414; border: 1px solid #2a2a2a; border-radius: 12px; }
-        .kanban-column { background: #0f0f10; border: 1px solid #1f1f1f; border-radius: 8px; min-width: 280px; max-width: 280px; }
-        .kanban-card { background: #1a1a1b; border: 1px solid #2a2a2a; border-radius: 8px; cursor: grab; transition: all 0.2s; }
-        .kanban-card:hover { border-color: #3a3a3a; transform: translateY(-2px); }
-        .kanban-card.dragging { opacity: 0.5; transform: rotate(2deg); }
-        .kanban-column.drag-over { background: #1a1a1b; border-color: #c17767; }
-        .btn-primary { background: #c17767; color: white; }
-        .btn-primary:hover { background: #d48877; }
-        .priority-1, .priority-2 { border-left: 3px solid #7a9e7e; }
-        .priority-3, .priority-4, .priority-5 { border-left: 3px solid #d4a373; }
-        .priority-6, .priority-7, .priority-8 { border-left: 3px solid #c17767; }
+        
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
+        }
+        
+        .kanban-column {
+            background: var(--cri-bg-secondary);
+            border: 1px solid var(--cri-border);
+            border-radius: var(--cri-radius-lg);
+            min-width: 280px;
+            max-width: 280px;
+        }
+        
+        .kanban-column.drag-over {
+            border-color: var(--cri-gold);
+            background: rgba(212, 168, 83, 0.05);
+        }
+        
+        .kanban-card {
+            background: var(--cri-bg-tertiary);
+            border: 1px solid var(--cri-border);
+            border-radius: var(--cri-radius-md);
+            cursor: grab;
+            transition: all var(--cri-transition-normal);
+        }
+        
+        .kanban-card:hover {
+            border-color: var(--cri-gold);
+            transform: translateY(-2px);
+            box-shadow: var(--cri-shadow-md);
+        }
+        
+        .kanban-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+        
+        .priority-1, .priority-2 { border-left: 3px solid var(--cri-olive-primary); }
+        .priority-3, .priority-4, .priority-5 { border-left: 3px solid var(--cri-gold); }
+        .priority-6, .priority-7, .priority-8 { border-left: 3px solid var(--cri-error); }
         .priority-9, .priority-10 { border-left: 3px solid #e74c3c; }
-        .column-header-inbox { border-top: 3px solid #888; }
-        .column-header-opportunity { border-top: 3px solid #9b59b6; }
-        .column-header-ready { border-top: 3px solid #3498db; }
-        .column-header-progress { border-top: 3px solid #f39c12; }
-        .column-header-review { border-top: 3px solid #e67e22; }
-        .column-header-deploy { border-top: 3px solid #1abc9c; }
-        .column-header-done { border-top: 3px solid #7a9e7e; }
+        
+        .column-header { border-top: 3px solid var(--cri-border); }
+        .column-header-inbox { border-top-color: var(--cri-text-muted); }
+        .column-header-opportunity { border-top-color: #9b59b6; }
+        .column-header-ready { border-top-color: var(--cri-info); }
+        .column-header-progress { border-top-color: var(--cri-gold); }
+        .column-header-review { border-top-color: var(--cri-error); }
+        .column-header-deploy { border-top-color: #1abc9c; }
+        .column-header-done { border-top-color: var(--cri-olive-primary); }
     </style>
 </head>
 <body class="min-h-screen">
     <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-full mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <a href="/" class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center hover:opacity-80 transition">
-                    <i class="fas fa-rocket text-white"></i>
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
+        <div class="max-w-full mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo Criativalia -->
+                <a href="/" class="cri-logo cri-logo--small">
+                    <div class="cri-logo__icon cri-logo__icon--small">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="cri-logo__text">
+                        <span class="cri-logo__brand">Criativalia</span>
+                        <span class="cri-logo__tagline">Kanban Board</span>
+                    </div>
                 </a>
-                <div>
-                    <h1 class="font-bold text-lg">Kanban Board</h1>
-                    <p class="text-xs text-gray-400">Task Management</p>
+                
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 text-sm text-[var(--cri-text-muted)]">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Arraste os cards entre as colunas</span>
+                    </div>
+                    <button onclick="refreshBoard()" class="cri-btn cri-btn--secondary cri-btn--icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <a href="/" class="cri-btn cri-btn--secondary cri-btn--icon">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 text-sm text-gray-400">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Arraste os cards entre as colunas</span>
-                </div>
-                <button onclick="refreshBoard()" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <a href="/" class="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
             </div>
         </div>
     </header>
@@ -67,21 +100,21 @@
     <!-- Kanban Board -->
     <main class="p-6 overflow-x-auto">
         <div class="flex gap-4 min-w-max pb-4" id="kanban-board">
-            <!-- Columns will be rendered here -->
+            <!-- Colunas serão renderizadas aqui -->
         </div>
     </main>
 
     <!-- Task Detail Modal -->
-    <div id="task-modal" class="fixed inset-0 bg-black/80 backdrop-blur z-50 hidden flex items-center justify-center p-6">
-        <div class="card max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col">
-            <div class="p-4 border-b border-gray-800 flex items-center justify-between">
-                <h3 class="font-bold text-lg">Task Details</h3>
-                <button onclick="closeModal()" class="p-2 hover:bg-gray-800 rounded-lg">
+    <div id="task-modal" class="cri-modal-overlay hidden">
+        <div class="cri-modal">
+            <div class="cri-modal__header">
+                <h3 class="cri-modal__title">Detalhes da Tarefa</h3>
+                <button onclick="closeModal()" class="cri-modal__close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="modal-content" class="p-6 overflow-y-auto">
-                <!-- Content -->
+            <div id="modal-content" class="cri-modal__body">
+                <!-- Conteúdo -->
             </div>
         </div>
     </div>
@@ -118,6 +151,15 @@
                 renderBoard();
             } catch (err) {
                 console.error('Error loading board:', err);
+                document.getElementById('kanban-board').innerHTML = `
+                    <div class="cri-empty-state py-12">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Erro ao carregar o board</p>
+                        <button onclick="loadBoard()" class="cri-btn cri-btn--primary mt-4">
+                            <i class="fas fa-sync-alt mr-2"></i>Tentar novamente
+                        </button>
+                    </div>
+                `;
             }
         }
 
@@ -126,18 +168,18 @@
             board.innerHTML = COLUMNS.map(col => {
                 const colTasks = tasks.filter(t => t.status === col.id);
                 return `
-                    <div class="kanban-column ${col.headerClass}" 
+                    <div class="kanban-column column-header ${col.headerClass}" 
                          data-column="${col.id}"
                          ondrop="handleDrop(event, '${col.id}')" 
                          ondragover="handleDragOver(event)"
                          ondragleave="handleDragLeave(event)">
-                        <div class="p-3 border-b border-gray-800/50">
+                        <div class="p-3 border-b border-[var(--cri-border)]">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <i class="fas ${col.icon} text-gray-400"></i>
+                                    <i class="fas ${col.icon} text-[var(--cri-text-muted)]"></i>
                                     <span class="font-semibold text-sm">${col.name}</span>
                                 </div>
-                                <span class="text-xs bg-gray-800 px-2 py-1 rounded-full">${colTasks.length}</span>
+                                <span class="cri-badge cri-badge--neutral">${colTasks.length}</span>
                             </div>
                         </div>
                         <div class="p-2 space-y-2 min-h-[200px]" id="column-${col.id}">
@@ -159,11 +201,15 @@
                      ondragend="handleDragEnd(event)"
                      onclick="viewTask('${task.id}')">
                     <div class="flex items-start justify-between mb-2">
-                        <span class="text-[10px] bg-gray-800 px-1.5 py-0.5 rounded text-gray-400">P${priority}</span>
-                        ${task.deliverables?.length ? `<span class="text-[10px] text-gray-500"><i class="fas fa-paperclip mr-1"></i>${task.deliverables.length}</span>` : ''}
+                        <span class="text-[10px] bg-[var(--cri-bg-secondary)] px-1.5 py-0.5 rounded text-[var(--cri-text-muted)]">P${priority}</span>
+                        ${task.deliverables?.length ? `
+                            <span class="text-[10px] text-[var(--cri-text-muted)]">
+                                <i class="fas fa-paperclip mr-1"></i>${task.deliverables.length}
+                            </span>
+                        ` : ''}
                     </div>
                     <h4 class="font-medium text-sm mb-2 line-clamp-2">${task.title}</h4>
-                    <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center justify-between text-xs text-[var(--cri-text-muted)]">
                         <span class="flex items-center gap-1">
                             <i class="fas fa-robot text-[10px]"></i>
                             ${agent?.name || 'Unassigned'}
@@ -235,58 +281,67 @@
             document.getElementById('modal-content').innerHTML = `
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs text-gray-500 uppercase">Title</label>
-                        <h2 class="text-xl font-bold mt-1">${task.title}</h2>
+                        <label class="cri-label">Título</label>
+                        <h2 class="text-lg font-bold mt-1">${task.title}</h2>
                     </div>
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs text-gray-500 uppercase">Status</label>
+                            <label class="cri-label">Status</label>
                             <p class="mt-1">
-                                <span class="px-2 py-1 rounded bg-gray-800 text-sm">${task.status.replace(/_/g, ' ')}</span>
+                                <span class="cri-badge cri-badge--neutral">${task.status.replace(/_/g, ' ')}</span>
                             </p>
                         </div>
                         <div>
-                            <label class="text-xs text-gray-500 uppercase">Priority</label>
+                            <label class="cri-label">Prioridade</label>
                             <p class="mt-1 flex items-center gap-2">
                                 <span class="text-lg font-bold">${task.priority || 5}</span>
-                                <span class="text-xs text-gray-400">/ 10</span>
+                                <span class="text-xs text-[var(--cri-text-muted)]">/ 10</span>
                             </p>
                         </div>
                     </div>
+                    
                     <div>
-                        <label class="text-xs text-gray-500 uppercase">Agent</label>
+                        <label class="cri-label">Agente</label>
                         <p class="mt-1 flex items-center gap-2">
-                            <i class="fas fa-robot text-gray-400"></i>
+                            <i class="fas fa-robot text-[var(--cri-text-muted)]"></i>
                             ${agent?.name || 'Unassigned'}
-                            <span class="text-gray-500">(${agent?.role || 'Unknown'})</span>
+                            <span class="text-[var(--cri-text-muted)]">(${agent?.role || 'Unknown'})</span>
                         </p>
                     </div>
+                    
                     <div>
-                        <label class="text-xs text-gray-500 uppercase">Description</label>
-                        <p class="mt-1 text-gray-300 whitespace-pre-wrap">${task.description || 'No description'}</p>
+                        <label class="cri-label">Descrição</label>
+                        <p class="mt-1 text-[var(--cri-text-secondary)] whitespace-pre-wrap">${task.description || 'Sem descrição'}</p>
                     </div>
+                    
                     ${task.deliverables?.length ? `
                         <div>
-                            <label class="text-xs text-gray-500 uppercase">Deliverables</label>
+                            <label class="cri-label">Deliverables</label>
                             <ul class="mt-1 space-y-1">
-                                ${task.deliverables.map(d => `<li class="text-sm text-gray-300"><i class="fas fa-check text-green-400 mr-2"></i>${d}</li>`).join('')}
+                                ${task.deliverables.map(d => `
+                                    <li class="text-sm text-[var(--cri-text-secondary)]">
+                                        <i class="fas fa-check text-[var(--cri-olive-primary)] mr-2"></i>${d}
+                                    </li>
+                                `).join('')}
                             </ul>
                         </div>
                     ` : ''}
-                    <div class="grid grid-cols-2 gap-4 text-xs text-gray-500">
+                    
+                    <div class="grid grid-cols-2 gap-4 text-xs text-[var(--cri-text-muted)]">
                         <div>
-                            <label class="uppercase">Created</label>
+                            <label class="cri-label">Criado</label>
                             <p>${formatFullDate(task.created_at)}</p>
                         </div>
                         ${task.started_at ? `
                             <div>
-                                <label class="uppercase">Started</label>
+                                <label class="cri-label">Iniciado</label>
                                 <p>${formatFullDate(task.started_at)}</p>
                             </div>
                         ` : ''}
                         ${task.completed_at ? `
                             <div>
-                                <label class="uppercase">Completed</label>
+                                <label class="cri-label">Concluído</label>
                                 <p>${formatFullDate(task.completed_at)}</p>
                             </div>
                         ` : ''}
