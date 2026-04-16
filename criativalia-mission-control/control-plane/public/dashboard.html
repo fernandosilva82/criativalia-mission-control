@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Dashboard - Criativalia Control Plane</title>
+    <meta name="description" content="Dashboard de controle da Criativalia - Gestão de agentes, tarefas e métricas em tempo real">
+    <meta name="theme-color" content="#5A7D33">
+    <meta name="color-scheme" content="dark">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Criativalia">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Dashboard - Criativalia Control Plane">
+    <meta property="og:description" content="Dashboard unificado de operações Criativalia">
+    <meta property="og:type" content="website">
+    
+    <!-- Preconnect para performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts com display=swap para evitar FOIT -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/criativalia-theme.css">
+    <style>
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
+            font-display: swap;
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 60;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: min(280px, 85vw);
+            max-width: 320px;
+            background: var(--cri-bg-secondary);
+            border-right: 1px solid var(--cri-border);
+            z-index: 70;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .mobile-nav.active {
+            transform: translateX(0);
+        }
+        
+        /* Sidebar Desktop */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 73px;
+            bottom: 0;
+            width: 240px;
+            background: var(--cri-bg-secondary);
+            border-right: 1px solid var(--cri-border);
+            z-index: 40;
+            overflow-y: auto;
+            padding: 1rem 0;
+        }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+        }
+        
+        .main-content {
+            margin-left: 240px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        /* Agent Card Improvements */
+        .agent-card {
+            transition: all var(--cri-transition-base);
+            cursor: pointer;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--cri-gold);
+            box-shadow: 0 4px 20px rgba(228, 200, 115, 0.2);
+        }
+        
+        .agent-card:focus-visible {
+            outline: 2px solid var(--cri-gold);
+            outline-offset: 2px;
+        }
+        
+        .agent-avatar {
+            background: linear-gradient(135deg, var(--cri-olive-muted), var(--cri-gold-muted));
+        }
+        
+        /* Touch targets garantidos */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: var(--cri-text-muted);
+        }
+        
+        .breadcrumb a {
+            color: var(--cri-text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--cri-gold);
+        }
+        
+        /* Focus styles for accessibility */
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--cri-gold);
+            outline-offset: 2px;
+        }
+        
+        /* Scroll shadows */
+        .scroll-container {
+            position: relative;
+        }
+        
+        .scroll-shadow-top,
+        .scroll-shadow-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .scroll-shadow-top {
+            top: 0;
+            background: linear-gradient(to bottom, var(--cri-bg-secondary), transparent);
+        }
+        
+        .scroll-shadow-bottom {
+            bottom: 0;
+            background: linear-gradient(to top, var(--cri-bg-secondary), transparent);
+        }
+        
+        /* Skip to content - Acessibilidade */
+        .skip-to-content {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--cri-olive-primary);
+            color: var(--cri-text-primary);
+            padding: 12px 20px;
+            border-radius: var(--cri-radius-md);
+            z-index: 9999;
+            transition: top 0.3s;
+        }
+        
+        .skip-to-content:focus {
+            top: 20px;
+        }
+        
+        /* Skeleton responsivo */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .skeleton-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1280px) {
+            .skeleton-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Navegação por teclado visível */
+        .cri-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--cri-text-muted);
+            text-decoration: none;
+            border-radius: var(--cri-radius-md);
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            min-height: 44px;
+        }
+        
+        .cri-nav-item:hover,
+        .cri-nav-item:focus {
+            color: var(--cri-text-primary);
+            background: var(--cri-bg-hover);
+        }
+        
+        .cri-nav-item.active {
+            color: var(--cri-text-primary);
+            background: var(--cri-olive-muted);
+            border-left-color: var(--cri-gold);
+        }
+        
+        .cri-nav-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--cri-gold);
+        }
+        
+        /* Badge de notificação */
+        .cri-nav-badge {
+            margin-left: auto;
+            background: var(--cri-gold);
+            color: #151510;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        .cri-nav-badge.hidden {
+            display: none;
+        }
+        
+        /* Status indicators */
+        .cri-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .cri-status--online {
+            background: var(--cri-success);
+            box-shadow: 0 0 8px var(--cri-success);
+        }
+        
+        .cri-status--offline {
+            background: var(--cri-text-disabled);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Skip to content - Acessibilidade -->
+    <a href="#main-content" class="skip-to-content">Pular para conteúdo principal</a>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" role="status" aria-label="Carregando">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container" role="region" aria-live="polite" aria-label="Notificações"></div>
+    
+    <!-- Mobile Nav Overlay -->
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay" onclick="closeMobileNav()" aria-hidden="true"></div>
+    
+    <!-- Mobile Navigation -->
+    <nav id="mobile-nav" class="mobile-nav" role="navigation" aria-label="Navegação mobile">
+        <div class="p-4 border-b border-[var(--cri-border)]">
+            <div class="flex items-center justify-between">
+                <div class="cri-logo cri-logo--small">
+                    <div class="cri-logo__icon cri-logo__icon--small">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <span class="cri-logo__brand">Criativalia</span>
+                </div>
+                <button onclick="closeMobileNav()" class="touch-target cri-btn cri-btn--ghost" aria-label="Fechar menu">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="p-4 space-y-1">
+            <a href="index.html" class="cri-nav-item touch-target">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                <span>Início</span>
+            </a>
+            <a href="dashboard.html" class="cri-nav-item active touch-target" aria-current="page">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="kanban.html" class="cri-nav-item touch-target">
+                <i class="fas fa-columns" aria-hidden="true"></i>
+                <span>Kanban</span>
+            </a>
+            <a href="timesheet.html" class="cri-nav-item touch-target">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                <span>Timesheet</span>
+            </a>
+            <a href="deliverables.html" class="cri-nav-item touch-target">
+                <i class="fas fa-box" aria-hidden="true"></i>
+                <span>Entregas</span>
+            </a>
+            <a href="unified-dashboard.html" class="cri-nav-item touch-target">
+                <i class="fas fa-th-large" aria-hidden="true"></i>
+                <span>Dashboard Unificado</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Sidebar Desktop -->
+    <aside class="sidebar" role="navigation" aria-label="Navegação principal">
+        <div class="px-4 space-y-1">
+            <a href="index.html" class="cri-nav-item">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                <span>Início</span>
+            </a>
+            <a href="dashboard.html" class="cri-nav-item active" aria-current="page">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="kanban.html" class="cri-nav-item">
+                <i class="fas fa-columns" aria-hidden="true"></i>
+                <span>Kanban</span>
+                <span id="sidebar-kanban-badge" class="cri-nav-badge hidden">0</span>
+            </a>
+            <a href="timesheet.html" class="cri-nav-item">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                <span>Timesheet</span>
+            </a>
+            <a href="deliverables.html" class="cri-nav-item">
+                <i class="fas fa-box" aria-hidden="true"></i>
+                <span>Entregas</span>
+            </a>
+            <a href="unified-dashboard.html" class="cri-nav-item">
+                <i class="fas fa-th-large" aria-hidden="true"></i>
+                <span>Dashboard Unificado</span>
+            </a>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-[var(--cri-border)]">
+            <div class="flex items-center gap-3 text-xs text-[var(--cri-text-muted)]">
+                <span class="cri-status cri-status--online" aria-hidden="true"></span>
+                <span>Sistema Online</span>
+            </div>
+            <div class="mt-2 text-xs text-[var(--cri-text-muted)]">
+                v2.2.1 (UX Enhanced)
+            </div>
+        </div>
+    </aside>
+
+    <!-- Header -->
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Mobile Menu Button -->
+                <button onclick="openMobileNav()" class="lg:hidden touch-target cri-btn cri-btn--ghost mr-2" 
+                        aria-label="Abrir menu de navegação" 
+                        aria-expanded="false" 
+                        aria-controls="mobile-nav">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+                
+                <!-- Logo Criativalia -->
+                <a href="/" class="cri-logo cri-logo--small">
+                    <div class="cri-logo__icon cri-logo__icon--small">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="cri-logo__text">
+                        <span class="cri-logo__brand">Criativalia</span>
+                        <span class="cri-logo__tagline">Dashboard</span>
+                    </div>
+                </a>
+                
+                <!-- Breadcrumb Desktop -->
+                <nav class="hidden md:flex breadcrumb ml-6" aria-label="Navegação estrutural">
+                    <a href="index.html">Início</a>
+                    <span class="breadcrumb-separator" aria-hidden="true">/</span>
+                    <span style="color: var(--cri-text-primary);">Dashboard</span>
+                </nav>
+                
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="hidden sm:flex px-4 py-2 rounded-lg bg-[var(--cri-olive-muted)] border border-[var(--cri-olive-primary)]/30">
+                        <div class="flex items-center gap-2 text-xs">
+                            <span class="cri-status cri-status--online" aria-hidden="true"></span>
+                            <span class="text-[var(--cri-olive-light)] font-medium">Sistema Online</span>
+                        </div>
+                    </div>
+                    <button onclick="refreshData()" 
+                            class="touch-target cri-btn cri-btn--secondary cri-btn--icon" 
+                            aria-label="Atualizar dados" 
+                            title="Atualizar dados (Ctrl+R)">
+                        <i class="fas fa-sync-alt" id="refresh-icon" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content" tabindex="-1">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+            <!-- Stats Grid -->
+            <section aria-labelledby="stats-heading">
+                <h2 id="stats-heading" class="sr-only">Estatísticas de Performance</h2>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                    <article class="cri-card cri-card--gradient p-4 sm:p-5" aria-labelledby="stat-revenue-label">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="stat-revenue-label" class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Receita MTD</span>
+                            <i class="fas fa-dollar-sign text-[var(--cri-gold)]" aria-hidden="true"></i>
+                        </div>
+                        <div id="stat-revenue" class="text-lg sm:text-xl font-bold" aria-live="polite" aria-atomic="true">
+                            <span class="cri-skeleton h-6 w-24 inline-block"></span>
+                        </div>
+                    </article>
+                    
+                    <article class="cri-card cri-card--gradient p-4 sm:p-5" aria-labelledby="stat-orders-label">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="stat-orders-label" class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Pedidos</span>
+                            <i class="fas fa-shopping-bag text-[var(--cri-olive-primary)]" aria-hidden="true"></i>
+                        </div>
+                        <div id="stat-orders" class="text-lg sm:text-xl font-bold" aria-live="polite" aria-atomic="true">
+                            <span class="cri-skeleton h-6 w-16 inline-block"></span>
+                        </div>
+                    </article>
+                    
+                    <article class="cri-card cri-card--gradient p-4 sm:p-5" aria-labelledby="stat-aov-label">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="stat-aov-label" class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Ticket Médio</span>
+                            <i class="fas fa-receipt text-[var(--cri-info)]" aria-hidden="true"></i>
+                        </div>
+                        <div id="stat-aov" class="text-lg sm:text-xl font-bold" aria-live="polite" aria-atomic="true">
+                            <span class="cri-skeleton h-6 w-20 inline-block"></span>
+                        </div>
+                    </article>
+                    
+                    <article class="cri-card cri-card--gradient p-4 sm:p-5" aria-labelledby="stat-conversion-label">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="stat-conversion-label" class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Conversão</span>
+                            <i class="fas fa-percentage text-[var(--cri-gold)]" aria-hidden="true"></i>
+                        </div>
+                        <div id="stat-conversion" class="text-lg sm:text-xl font-bold" aria-live="polite" aria-atomic="true">
+                            <span class="cri-skeleton h-6 w-16 inline-block"></span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Active Agents -->
+            <section class="mb-6 sm:mb-8" aria-labelledby="agents-heading">
+                <div class="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 id="agents-heading" class="text-lg sm:text-xl font-bold">Agentes Ativos</h2>
+                    <span id="agents-count" class="cri-badge cri-badge--neutral">Carregando...</span>
+                </div>
+                
+                <div id="agents-grid" class="skeleton-grid" role="list" aria-label="Lista de agentes">
+                    <!-- Skeleton loading responsivo -->
+                    <div class="cri-card p-4 sm:p-5" role="listitem">
+                        <div class="flex items-center gap-4">
+                            <div class="cri-skeleton w-12 h-12 rounded-xl flex-shrink-0" aria-hidden="true"></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="cri-skeleton h-4 w-3/4 mb-2" aria-hidden="true"></div>
+                                <div class="cri-skeleton h-3 w-1/2" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cri-card p-4 sm:p-5" role="listitem">
+                        <div class="flex items-center gap-4">
+                            <div class="cri-skeleton w-12 h-12 rounded-xl flex-shrink-0" aria-hidden="true"></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="cri-skeleton h-4 w-2/3 mb-2" aria-hidden="true"></div>
+                                <div class="cri-skeleton h-3 w-1/2" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cri-card p-4 sm:p-5" role="listitem">
+                        <div class="flex items-center gap-4">
+                            <div class="cri-skeleton w-12 h-12 rounded-xl flex-shrink-0" aria-hidden="true"></div>
+                            <div class="flex-1 min-w-0">
+                                <div class="cri-skeleton h-4 w-3/4 mb-2" aria-hidden="true"></div>
+                                <div class="cri-skeleton h-3 w-2/3" aria-hidden="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Tasks -->
+            <section aria-labelledby="tasks-heading">
+                <div class="flex items-center justify-between mb-4 sm:mb-6">
+                    <h2 id="tasks-heading" class="text-lg sm:text-xl font-bold">Tarefas Recentes</h2>
+                    <a href="kanban.html" class="cri-btn cri-btn--secondary cri-btn--sm touch-target">
+                        Ver Kanban <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+                    </a>
+                </div>
+                
+                <div class="cri-card overflow-hidden scroll-container">
+                    <div id="tasks-list" class="divide-y divide-[var(--cri-border)]" role="list" aria-label="Lista de tarefas">
+                        <!-- Tasks serão renderizadas aqui -->
+                        <div class="p-6 text-center text-[var(--cri-text-muted)]" role="status">
+                            <div class="cri-skeleton h-4 w-48 mx-auto mb-2" aria-hidden="true"></div>
+                            <div class="cri-skeleton h-3 w-32 mx-auto" aria-hidden="true"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // AbortController para cancelar requisições pendentes
+        let currentController = null;
+        const API_TIMEOUT = 8000; // 8 segundos timeout
+        
+        // Toast notification system
+        function showToast(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'polite');
+            
+            const icons = {
+                success: 'fa-check-circle',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle',
+                info: 'fa-info-circle'
+            };
+            
+            const colors = {
+                success: 'var(--cri-success)',
+                warning: 'var(--cri-warning)',
+                error: 'var(--cri-error)',
+                info: 'var(--cri-info)'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type]}" style="color: ${colors[type]}; flex-shrink: 0;" aria-hidden="true"></i>
+                <div class="flex-1 text-sm">${message}</div>
+                <button onclick="this.parentElement.remove()" 
+                        class="touch-target cri-btn cri-btn--ghost cri-btn--sm" 
+                        style="width: 32px; height: 32px; padding: 0;"
+                        aria-label="Fechar notificação">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    toast.classList.add('hiding');
+                    setTimeout(() => toast.remove(), 300);
+                }, duration);
+            }
+        }
+        
+        // Mobile navigation
+        function openMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const overlay = document.getElementById('mobile-nav-overlay');
+            const btn = document.querySelector('[aria-controls="mobile-nav"]');
+            
+            nav.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (btn) btn.setAttribute('aria-expanded', 'true');
+        }
+        
+        function closeMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            const overlay = document.getElementById('mobile-nav-overlay');
+            const btn = document.querySelector('[aria-controls="mobile-nav"]');
+            
+            nav.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+        
+        // Loading overlay
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('active');
+        }
+        
+        // Fetch com timeout e abort
+        async function fetchWithTimeout(url, options = {}, timeout = API_TIMEOUT) {
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+                clearTimeout(id);
+                return response;
+            } catch (error) {
+                clearTimeout(id);
+                if (error.name === 'AbortError') {
+                    throw new Error('Timeout: A requisição demorou muito para responder');
+                }
+                throw error;
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // ESC to close mobile nav
+            if (e.key === 'Escape') {
+                closeMobileNav();
+            }
+            
+            // Ctrl/Cmd + R to refresh
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                refreshData();
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshData();
+            
+            // Auto refresh a cada 30 segundos
+            setInterval(refreshData, 30000);
+        });
+
+        async function refreshData() {
+            // Cancela requisição anterior se existir
+            if (currentController) {
+                currentController.abort();
+            }
+            currentController = new AbortController();
+            
+            const refreshIcon = document.getElementById('refresh-icon');
+            refreshIcon.classList.add('cri-animate-spin');
+            
+            try {
+                const [agentsRes, tasksRes, shopifyRes] = await Promise.allSettled([
+                    fetchWithTimeout('/api/agents').catch(() => null),
+                    fetchWithTimeout('/api/tasks').catch(() => null),
+                    fetchWithTimeout('/api/shopify/stats').catch(() => null)
+                ]);
+
+                const agents = agentsRes.status === 'fulfilled' && agentsRes.value ? 
+                    await agentsRes.value.json() : [];
+                const tasks = tasksRes.status === 'fulfilled' && tasksRes.value ? 
+                    await tasksRes.value.json() : [];
+                const shopify = shopifyRes.status === 'fulfilled' && shopifyRes.value ? 
+                    await shopifyRes.value.json() : {};
+
+                // Update stats com animação
+                updateStat('stat-revenue', 'R$ ' + (shopify.revenue_mtd || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 }));
+                updateStat('stat-orders', (shopify.orders_mtd || 0).toLocaleString('pt-BR'));
+                updateStat('stat-aov', 'R$ ' + (shopify.aov || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 }));
+                updateStat('stat-conversion', (shopify.conversion_rate || 0).toFixed(1) + '%');
+
+                // Render agents
+                renderAgents(agents);
+
+                // Render tasks
+                renderTasks(tasks.slice(0, 5));
+                
+                // Update sidebar badge
+                const pendingTasks = tasks.filter(t => t.status !== 'done').length;
+                const sidebarBadge = document.getElementById('sidebar-kanban-badge');
+                if (pendingTasks > 0) {
+                    sidebarBadge.textContent = pendingTasks > 99 ? '99+' : pendingTasks;
+                    sidebarBadge.classList.remove('hidden');
+                } else {
+                    sidebarBadge.classList.add('hidden');
+                }
+                
+                // Toast só na primeira carga ou se houve erro anterior
+                if (!window.hasLoaded) {
+                    showToast('Dashboard carregado com sucesso!', 'success', 3000);
+                    window.hasLoaded = true;
+                }
+
+            } catch (err) {
+                console.error('Error loading data:', err);
+                showToast('Erro ao carregar dados: ' + err.message, 'error', 8000);
+                
+                document.getElementById('agents-grid').innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12" role="alert">
+                        <i class="fas fa-exclamation-circle text-4xl mb-4" aria-hidden="true" style="color: var(--cri-error);"></i>
+                        <p class="text-[var(--cri-text-muted)]">Erro ao carregar dados da API</p>
+                        <p class="text-sm text-[var(--cri-text-muted)] mt-2">${err.message}</p>
+                        <button onclick="refreshData()" class="cri-btn cri-btn--secondary mt-4 touch-target">
+                            <i class="fas fa-sync-alt mr-2" aria-hidden="true"></i>Tentar novamente
+                        </button>
+                    </div>
+                `;
+            } finally {
+                refreshIcon.classList.remove('cri-animate-spin');
+                currentController = null;
+            }
+        }
+        
+        function updateStat(id, value) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.textContent = value;
+                    el.style.opacity = '1';
+                }, 150);
+            }
+        }
+
+        function renderAgents(agents) {
+            const container = document.getElementById('agents-grid');
+            document.getElementById('agents-count').textContent = `${agents.length} agente${agents.length !== 1 ? 's' : ''}`;
+            
+            if (agents.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full cri-empty-state py-12" role="status">
+                        <i class="fas fa-robot text-4xl mb-4" aria-hidden="true"></i>
+                        <p class="text-[var(--cri-text-muted)]">Nenhum agente ativo no momento</p>
+                    </div>
+                `;
+                container.className = 'skeleton-grid';
+                return;
+            }
+
+            container.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4';
+            container.innerHTML = agents.map((agent, index) => `
+                <article class="agent-card cri-card p-4 sm:p-5 cri-animate-fade-in" 
+                         role="listitem" 
+                         tabindex="0"
+                         style="animation-delay: ${index * 0.05}s">
+                    <div class="flex items-center gap-4">
+                        <div class="agent-avatar w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0" 
+                             aria-hidden="true">
+                            ${getAgentIcon(agent.role)}
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-semibold truncate" title="${escapeHtml(agent.name)}">${escapeHtml(agent.name)}</h3>
+                            <p class="text-sm text-[var(--cri-text-muted)]">${escapeHtml(agent.role)}</p>
+                        </div>
+                        <span class="cri-status cri-status--${agent.status === 'active' ? 'online' : 'offline'}" 
+                              aria-label="Status: ${agent.status === 'active' ? 'Online' : 'Offline'}"></span>
+                    </div>
+                    <div class="mt-4 flex items-center gap-4 text-xs text-[var(--cri-text-muted)]">
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-tasks" aria-hidden="true"></i>
+                            ${agent.tasks_count || 0} tarefas
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-check-circle" aria-hidden="true"></i>
+                            ${agent.completed_tasks || 0} concluídas
+                        </span>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderTasks(tasks) {
+            const container = document.getElementById('tasks-list');
+            
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-[var(--cri-text-muted)]" role="status">
+                        <i class="fas fa-inbox text-3xl mb-3" aria-hidden="true"></i>
+                        <p>Nenhuma tarefa recente</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = tasks.map((task, index) => `
+                <article class="p-4 flex items-center gap-4 hover:bg-[var(--cri-bg-hover)] transition cri-animate-fade-in"
+                         role="listitem"
+                         style="animation-delay: ${index * 0.05}s">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium truncate" title="${escapeHtml(task.title)}">${escapeHtml(task.title)}</h4>
+                        <p class="text-sm text-[var(--cri-text-muted)]">
+                            ${formatStatus(task.status)} • P${task.priority || 5}
+                        </p>
+                    </div>
+                    <span class="cri-badge cri-badge--${getStatusColor(task.status)}">
+                        ${formatStatus(task.status)}
+                    </span>
+                </article>
+            `).join('');
+        }
+
+        function getAgentIcon(role) {
+            if (!role) return '🤖';
+            const roleLower = role.toLowerCase();
+            if (roleLower.includes('ceo')) return '👑';
+            if (roleLower.includes('traffic')) return '📢';
+            if (roleLower.includes('shopify')) return '🛒';
+            if (roleLower.includes('copy')) return '✍️';
+            if (roleLower.includes('design')) return '🎨';
+            if (roleLower.includes('dev')) return '💻';
+            if (roleLower.includes('data')) return '📊';
+            if (roleLower.includes('support')) return '🎧';
+            if (roleLower.includes('ux') || roleLower.includes('ui')) return '🎯';
+            return '🤖';
+        }
+
+        function getStatusColor(status) {
+            if (status === 'done' || status === 'completed') return 'success';
+            if (status === 'in_progress') return 'warning';
+            if (status === 'ready_to_deploy') return 'info';
+            return 'neutral';
+        }
+        
+        function formatStatus(status) {
+            if (!status) return 'Desconhecido';
+            const statusMap = {
+                'done': 'Concluído',
+                'completed': 'Concluído',
+                'in_progress': 'Em Progresso',
+                'ready_to_deploy': 'Pronto',
+                'pending': 'Pendente',
+                'blocked': 'Bloqueado'
+            };
+            return statusMap[status] || status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Service Worker para PWA (opcional)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                // Silenciosamente falha - não é crítico
+            });
+        }
+    </script>
+</body>
+</html>
