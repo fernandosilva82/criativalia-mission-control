@@ -11,125 +11,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-    <script>
-        // DADOS INLINE - SEMPRE DISPONÍVEIS
-        const REAL_DELIVERABLES = [
-            {
-                id: 'DEL-2026-0402-001',
-                title: '🛒 Copy Carrinho Abandonado - 3 Emails Prontos',
-                category: 'creative',
-                type: 'md',
-                agent_id: 'copybot',
-                agent_name: 'COPYBOT',
-                priority: 'P0',
-                tags: ['vendas', 'email-marketing', 'carrinho-abandonado', 'copy'],
-                content: `# 🛒 Sequência de Carrinho Abandonado - Copie e Cole no Klaviyo\n\n## 📧 EMAIL 1 - Lembrete Gentil (Enviar: 1 hora depois)\n**Assunto:** Esqueceu algo? Seus itens estão esperando 🛒\n\nCopie o código HTML para o Klaviyo...\n\n## 📧 EMAIL 2 - Frete Grátis (Enviar: 24 horas depois)\n**Assunto:** 🎁 Frete GRÁTIS pra você! Só mais 48h\n\n## 📧 EMAIL 3 - Última Chance (Enviar: 72 horas depois)\n**Assunto:** ⏰ Último aviso: seu carrinho expira em 24h\n\n## Configuração no Klaviyo:\n- Trigger: Started Checkout\n- Flow: 1h → 24h → 72h\n\n**Resultado Esperado:** +R$3.970/mês recuperado`,
-                size: '4.8 KB',
-                created_at: '2026-04-02T04:00:00Z'
-            },
-            {
-                id: 'DEL-2026-0402-002',
-                title: '💰 Scripts de Venda - WhatsApp/Atendimento',
-                category: 'creative',
-                type: 'md',
-                agent_id: 'copybot',
-                agent_name: 'COPYBOT',
-                priority: 'P0',
-                tags: ['vendas', 'whatsapp', 'atendimento', 'scripts'],
-                content: `# 💰 Scripts de Venda - Copie e Use\n\n## 🎯 SCRIPT 1: Abordagem Inicial\nOi [NOME]! 👋 Vi que você se interessou pelas nossas luminárias...\n\n## 🎯 SCRIPT 2: Lidando com "Está caro"\nEntendo perfeitamente! A gente trabalha com peças de design que duram ANOS...\n\n## 🎯 SCRIPT 3: Fechamento\nPosso gerar o link de pagamento agora? Aceito PIX (5% OFF) ou cartão em até 12x...\n\n## 🎯 SCRIPT 4: Follow-up\nOi [NOME]! Algumas peças que você olhou estão com estoque baixo...\n\n## 🎯 SCRIPT 5: Up-sell\nSua compra já está separada! Tenho uma sugestão que combina PERFEITAMENTE...\n\n**Impacto estimado:** +R$8.000/mês`,
-                size: '3.2 KB',
-                created_at: '2026-04-02T04:10:00Z'
-            },
-            {
-                id: 'DEL-2026-0402-003',
-                title: '📦 Descrições de Produto - Loja Shopify',
-                category: 'creative',
-                type: 'md',
-                agent_id: 'copybot',
-                agent_name: 'COPYBOT',
-                priority: 'P1',
-                tags: ['vendas', 'shopify', 'descricoes', 'copy'],
-                content: `# 📦 Descrições de Produto - Copie para Shopify\n\n## 💡 Arandela Articulada\n**Título:** Arandela Articulada de Madeira | Luminária de Parede Ajustável 360°\n\n**Descrição:** Transforme qualquer ambiente com luz e estilo. Articulação 360°...\n\n## 💡 Mushroom Lamp\n**Título:** Mushroom Lamp Cogumelo | Luminária de Mesa Decorativa Trend 2026\n\n**Descrição:** A tendência que viralizou no TikTok. Design orgânico...\n\n## 💡 Luminária de Mesa Articulada\n**Título:** Luminária de Mesa Articulada | Escritório Home Office LED\n\n**Descrição:** Produtividade começa com boa iluminação. LED anti-cansaço...`,
-                size: '5.1 KB',
-                created_at: '2026-04-02T04:15:00Z'
-            },
-            {
-                id: 'DEL-2026-0402-004',
-                title: '🎯 Anúncios Prontos - Facebook/Instagram Ads',
-                category: 'creative',
-                type: 'md',
-                agent_id: 'copybot',
-                agent_name: 'COPYBOT',
-                priority: 'P1',
-                tags: ['vendas', 'facebook-ads', 'instagram-ads', 'anuncios'],
-                content: `# 🎯 Anúncios Prontos - Copie e Cole\n\n## 📱 ANÚNCIO 1: Mushroom Lamp\nTexto: A luminária que viralizou no TikTok chegou ao Brasil!\nTítulo: Mushroom Lamp | Envio Imediato\n\n## 📱 ANÚNCIO 2: Arandela (Retargeting)\nTexto: Ainda pensando na Arandela Articulada? 15% OFF + Frete Grátis\nCupom: QUEROAGORA\n\n## 📱 ANÚNCIO 3: Home Office\nTexto: Sua produtividade depende da iluminação certa...\n\n## 📱 ANÚNCIO 4: Carrinho Abandonado\nTexto: Seus itens estão quase esgotando! Complete em 24h...\n\n## 📱 ANÚNCIO 5: Bundle\nTexto: Kit Sala Premium - 25% OFF (Economia de R$232)\n\n**Orçamento sugerido:** R$180/dia | **ROAS esperado:** 4x`,
-                size: '4.5 KB',
-                created_at: '2026-04-02T04:20:00Z'
-            },
-            {
-                id: 'DEL-2026-0402-005',
-                title: '📧 Sequência de Boas-Vindas - 5 Emails',
-                category: 'creative',
-                type: 'md',
-                agent_id: 'copybot',
-                agent_name: 'COPYBOT',
-                priority: 'P2',
-                tags: ['vendas', 'email-marketing', 'onboarding', 'bem-vindo'],
-                content: `# 📧 Sequência de Boas-Vindas - Copie para Klaviyo\n\n## 📨 EMAIL 1: Boas-Vindas (Imediato)\nAssunto: Bem-vindo à Criativalia! 🎉\nPresente: Código BEMVINDO15 (15% OFF)\n\n## 📨 EMAIL 2: Educação (Dia 2)\nAssunto: 3 erros que arruínam a iluminação da sua casa\n\n## 📨 EMAIL 3: Social Proof (Dia 4)\nAssunto: "Minha casa mudou completamente" 💬\n\n## 📨 EMAIL 4: Oferta (Dia 6)\nAssunto: Só falta você... 🎁\nÚltima chance: BEMVINDO15 expira em 24h\n\n## 📨 EMAIL 5: Última Tentativa (Dia 8)\nAssunto: Posso te ajudar com algo? 🤔\n\n**Resultado esperado:** +R$2.500/mês`,
-                size: '6.2 KB',
-                created_at: '2026-04-02T04:25:00Z'
-            }
-        ];
-    </script>
+    <script src="js/deliverables-data.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         
-        * { scrollbar-width: thin; scrollbar-color: #2a2a2a #0a0a0b; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0b; }
-        ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
-        
         body { 
             font-family: 'Inter', sans-serif; 
-            background: #0a0a0b; 
-            color: #fafafa; 
+            background: var(--cri-bg-primary); 
+            color: var(--cri-text-primary); 
         }
         
         .code-font { font-family: 'JetBrains Mono', monospace; }
         
-        .card { 
-            background: #141414; 
-            border: 1px solid #2a2a2a; 
-            border-radius: 12px;
-            transition: all 0.2s ease;
-        }
-        
-        .card:hover {
-            border-color: #c17767;
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary { 
-            background: linear-gradient(135deg, #c17767 0%, #d48877 100%);
-            color: white;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary:hover { 
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
-        .category-badge {
-            background: rgba(193, 119, 103, 0.15);
-            color: #c17767;
-            border: 1px solid rgba(193, 119, 103, 0.3);
-        }
-        
+        /* File icons com tema Criativalia */
         .file-icon {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
+            border-radius: var(--cri-radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -137,63 +35,70 @@
         }
         
         .file-md { background: rgba(66, 153, 225, 0.15); color: #4299e1; }
-        .file-json { background: rgba(236, 201, 75, 0.15); color: #ecc94b; }
+        .file-json { background: rgba(212, 168, 83, 0.15); color: var(--cri-gold); }
         .file-js { background: rgba(246, 224, 94, 0.15); color: #f6e05e; }
-        .file-py { background: rgba(72, 187, 120, 0.15); color: #48bb78; }
-        .file-csv { background: rgba(159, 122, 234, 0.15); color: #9f7aea; }
-        .file-img { background: rgba(237, 100, 166, 0.15); color: #ed64a6; }
-        .file-code { background: rgba(160, 174, 192, 0.15); color: #a0aec0; }
+        .file-py { background: rgba(74, 93, 35, 0.2); color: var(--cri-olive-light); }
+        .file-csv { background: rgba(90, 159, 212, 0.15); color: var(--cri-info); }
+        .file-img { background: rgba(193, 119, 103, 0.15); color: var(--cri-error); }
+        .file-code { background: var(--cri-bg-tertiary); color: var(--cri-text-muted); }
         
         .preview-panel {
-            background: #0d0d0e;
-            border-left: 1px solid #2a2a2a;
+            background: var(--cri-bg-primary);
+            border-left: 1px solid var(--cri-border);
         }
         
         .deliverable-item {
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all var(--cri-transition-fast);
         }
         
         .deliverable-item:hover {
-            background: rgba(193, 119, 103, 0.05);
+            background: var(--cri-bg-hover);
+            border-color: var(--cri-gold);
         }
         
         .deliverable-item.active {
-            background: rgba(193, 119, 103, 0.1);
-            border-left: 3px solid #c17767;
+            background: var(--cri-gold-muted);
+            border-left: 3px solid var(--cri-gold);
         }
         
         .hljs {
-            background: #0d0d0e !important;
-            border-radius: 8px;
+            background: var(--cri-bg-tertiary) !important;
+            border-radius: var(--cri-radius-md);
             padding: 16px;
         }
         
         .markdown-body {
-            color: #e2e8f0;
+            color: var(--cri-text-secondary);
             line-height: 1.6;
         }
         
-        .markdown-body h1 { color: #fafafa; border-bottom: 1px solid #2a2a2a; padding-bottom: 8px; }
-        .markdown-body h2 { color: #e2e8f0; margin-top: 24px; }
-        .markdown-body h3 { color: #a0aec0; }
+        .markdown-body h1 { 
+            color: var(--cri-text-primary); 
+            border-bottom: 1px solid var(--cri-border); 
+            padding-bottom: 8px; 
+        }
+        .markdown-body h2 { color: var(--cri-text-primary); margin-top: 24px; }
+        .markdown-body h3 { color: var(--cri-text-secondary); }
         .markdown-body code {
-            background: #1a1a1b;
+            background: var(--cri-bg-tertiary);
             padding: 2px 6px;
             border-radius: 4px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9em;
+            color: var(--cri-gold);
         }
         .markdown-body pre {
-            background: #0d0d0e;
+            background: var(--cri-bg-tertiary);
             padding: 16px;
-            border-radius: 8px;
+            border-radius: var(--cri-radius-md);
             overflow-x: auto;
+            border: 1px solid var(--cri-border);
         }
         .markdown-body blockquote {
-            border-left: 4px solid #c17767;
+            border-left: 4px solid var(--cri-gold);
             padding-left: 16px;
-            color: #a0aec0;
+            color: var(--cri-text-muted);
             font-style: italic;
         }
         .markdown-body table {
@@ -203,33 +108,61 @@
         }
         .markdown-body th,
         .markdown-body td {
-            border: 1px solid #2a2a2a;
+            border: 1px solid var(--cri-border);
             padding: 8px 12px;
             text-align: left;
         }
         .markdown-body th {
-            background: #1a1a1b;
+            background: var(--cri-bg-tertiary);
             font-weight: 600;
+            color: var(--cri-text-primary);
+        }
+        
+        /* Filter buttons */
+        .filter-btn {
+            transition: all var(--cri-transition-fast);
+        }
+        
+        .filter-btn.active {
+            background: var(--cri-gold-muted);
+            border-color: var(--cri-gold);
+            color: var(--cri-gold);
+        }
+        
+        /* Category badges */
+        .category-badge {
+            background: var(--cri-gold-muted);
+            color: var(--cri-gold);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+        }
+        
+        /* Modal overlay */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
         }
     </style>
-    <script src="js/deliverables-data.js"></script>
 </head>
 <body class="min-h-screen">
     <!-- Header -->
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
+    <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
         <div class="max-w-full mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <a href="/" class="text-gray-400 hover:text-white transition">
-                        <i class="fas fa-arrow-left"></i>
+                    <a href="/" class="cri-logo cri-logo--small">
+                        <div class="cri-logo__icon cri-logo__icon--small">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="cri-logo__text">
+                            <span class="cri-logo__brand">Criativalia</span>
+                            <span class="cri-logo__tagline">Entregas</span>
+                        </div>
                     </a>
-                    <div>
-                        <h1 class="text-xl font-bold text-white">📦 Entregas</h1>
-                        <p class="text-sm text-gray-500">Catálogo de entregas e assets</p>
-                    </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="openUploadModal()" class="btn-primary px-4 py-2 rounded-lg text-sm font-medium">
+                    <button onclick="openUploadModal()" class="cri-btn cri-btn--primary cri-btn--sm">
                         <i class="fas fa-plus mr-2"></i>Nova Entrega
                     </button>
                 </div>
@@ -239,67 +172,67 @@
 
     <div class="flex h-[calc(100vh-73px)]">
         <!-- Sidebar - Filtros -->
-        <aside class="w-64 border-r border-gray-800 bg-gray-900/30 p-4 overflow-y-auto">
+        <aside class="w-64 border-r border-[var(--cri-border)] bg-[var(--cri-bg-secondary)]/50 p-4 overflow-y-auto">
             <div class="space-y-6">
                 <!-- Busca -->
                 <div>
-                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Buscar</label>
+                    <label class="cri-label mb-2 block">Buscar</label>
                     <div class="relative">
-                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--cri-text-muted)]"></i>
                         <input type="text" id="searchInput" placeholder="Nome, tag, conteúdo..."
-                            class="w-full bg-gray-800 border border-gray-700 rounded-lg pl-10 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-c17767">
+                            class="cri-input cri-input--with-icon w-full pl-10">
                     </div>
                 </div>
 
                 <!-- Categorias -->
                 <div>
-                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Categorias</label>
+                    <label class="cri-label mb-2 block">Categorias</label>
                     <div class="space-y-1" id="categoryFilters">
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-white bg-c17767/20 border border-c17767/30 flex items-center gap-2" data-category="all">
-                            <i class="fas fa-th-large"></i> Todas
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-all">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item active flex items-center gap-2" data-category="all">
+                            <i class="fas fa-th-large w-5 text-center"></i> Todas
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-all">0</span>
                         </button>
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="strategy">
-                            <i class="fas fa-chess"></i> Estratégia
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-strategy">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-category="strategy">
+                            <i class="fas fa-chess w-5 text-center"></i> Estratégia
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-strategy">0</span>
                         </button>
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="creative">
-                            <i class="fas fa-palette"></i> Criativos
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-creative">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-category="creative">
+                            <i class="fas fa-palette w-5 text-center"></i> Criativos
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-creative">0</span>
                         </button>
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="analysis">
-                            <i class="fas fa-chart-line"></i> Análises
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-analysis">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-category="analysis">
+                            <i class="fas fa-chart-line w-5 text-center"></i> Análises
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-analysis">0</span>
                         </button>
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="code">
-                            <i class="fas fa-code"></i> Código
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-code">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-category="code">
+                            <i class="fas fa-code w-5 text-center"></i> Código
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-code">0</span>
                         </button>
-                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-category="docs">
-                            <i class="fas fa-file-alt"></i> Documentação
-                            <span class="ml-auto text-xs bg-gray-700 px-2 py-0.5 rounded-full" id="count-docs">0</span>
+                        <button class="filter-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-category="docs">
+                            <i class="fas fa-file-alt w-5 text-center"></i> Documentação
+                            <span class="ml-auto text-xs bg-[var(--cri-bg-tertiary)] px-2 py-0.5 rounded-full" id="count-docs">0</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Tipo de Arquivo -->
                 <div>
-                    <label class="text-xs font-medium text-gray-500 uppercase mb-2 block">Tipo</label>
+                    <label class="cri-label mb-2 block">Tipo</label>
                     <div class="space-y-1" id="typeFilters">
-                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="md">
-                            <i class="fab fa-markdown text-blue-400"></i> Markdown
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-type="md">
+                            <i class="fab fa-markdown text-[var(--cri-info)] w-5 text-center"></i> Markdown
                         </button>
-                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="json">
-                            <i class="fas fa-brackets-curly text-yellow-400"></i> JSON
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-type="json">
+                            <i class="fas fa-brackets-curly text-[var(--cri-gold)] w-5 text-center"></i> JSON
                         </button>
-                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="js">
-                            <i class="fab fa-js text-yellow-300"></i> JavaScript
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-type="js">
+                            <i class="fab fa-js text-yellow-300 w-5 text-center"></i> JavaScript
                         </button>
-                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="csv">
-                            <i class="fas fa-table text-purple-400"></i> CSV / Planilha
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-type="csv">
+                            <i class="fas fa-table text-purple-400 w-5 text-center"></i> CSV / Planilha
                         </button>
-                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-400 hover:bg-gray-800 flex items-center gap-2" data-type="img">
-                            <i class="fas fa-image text-pink-400"></i> Imagem
+                        <button class="type-btn w-full text-left px-3 py-2 rounded-lg text-sm cri-nav-item flex items-center gap-2" data-type="img">
+                            <i class="fas fa-image text-[var(--cri-error)] w-5 text-center"></i> Imagem
                         </button>
                     </div>
                 </div>
@@ -309,8 +242,8 @@
         <!-- Lista de Entregas -->
         <main class="flex-1 overflow-y-auto p-6" id="deliverablesList">
             <div class="mb-4 flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-white" id="listTitle">Todas as Entregas</h2>
-                <div class="text-sm text-gray-500">
+                <h2 class="text-lg font-semibold text-[var(--cri-text-primary)]" id="listTitle">Todas as Entregas</h2>
+                <div class="text-sm text-[var(--cri-text-muted)]">
                     <span id="showingCount">0</span> de <span id="totalCount">0</span> entregas
                 </div>
             </div>
@@ -322,22 +255,22 @@
 
         <!-- Preview Panel -->
         <aside class="w-[45%] preview-panel overflow-y-auto hidden" id="previewPanel">
-            <div class="sticky top-0 bg-gray-900/90 backdrop-blur border-b border-gray-800 p-4 z-10">
+            <div class="sticky top-0 bg-[var(--cri-bg-secondary)]/90 backdrop-blur border-b border-[var(--cri-border)] p-4 z-10">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div id="previewIcon" class="file-icon file-md">
                             <i class="fab fa-markdown"></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-white" id="previewTitle">Nome do Arquivo</h3>
-                            <p class="text-xs text-gray-500" id="previewMeta">Categoria • Tamanho • Data</p>
+                            <h3 class="font-semibold text-[var(--cri-text-primary)]" id="previewTitle">Nome do Arquivo</h3>
+                            <p class="text-xs text-[var(--cri-text-muted)]" id="previewMeta">Categoria • Tamanho • Data</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button onclick="downloadCurrent()" class="p-2 text-gray-400 hover:text-white transition" title="Download">
+                        <button onclick="downloadCurrent()" class="cri-btn cri-btn--ghost cri-btn--icon-sm" title="Download">
                             <i class="fas fa-download"></i>
                         </button>
-                        <button onclick="closePreview()" class="p-2 text-gray-400 hover:text-white transition" title="Fechar">
+                        <button onclick="closePreview()" class="cri-btn cri-btn--ghost cri-btn--icon-sm" title="Fechar">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -351,28 +284,27 @@
     </div>
 
     <!-- Modal de Upload -->
-    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur hidden items-center justify-center z-50">
-        <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-lg p-6 m-4">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-white">Nova Entrega</h3>
-                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-white">
+    <div id="uploadModal" class="modal-overlay fixed inset-0 hidden items-center justify-center z-50">
+        <div class="cri-modal max-w-lg w-full m-4">
+            <div class="cri-modal__header">
+                <h3 class="cri-modal__title">Nova Entrega</h3>
+                <button onclick="closeUploadModal()" class="cri-modal__close">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <form id="uploadForm" class="space-y-4">
+            <form id="uploadForm" class="cri-modal__body space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Título</label>
+                    <label class="cri-label">Título</label>
                     <input type="text" name="title" required
-                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767"
+                        class="cri-input w-full"
                         placeholder="Ex: Análise de LTV - Março 2026">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Categoria</label>
-                        <select name="category" required
-                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767">
+                        <label class="cri-label">Categoria</label>
+                        <select name="category" required class="cri-select w-full">
                             <option value="strategy">Estratégia</option>
                             <option value="creative">Criativos</option>
                             <option value="analysis">Análises</option>
@@ -381,9 +313,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-400 mb-1">Agente</label>
-                        <select name="agent_id"
-                            class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767">
+                        <label class="cri-label">Agente</label>
+                        <select name="agent_id" class="cri-select w-full">
                             <option value="">Selecione...</option>
                             <option value="data_analyst">DATA_ANALYST</option>
                             <option value="copywriter">COPYWRITER</option>
@@ -395,26 +326,26 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Tags (separadas por vírgula)</label>
+                    <label class="cri-label">Tags (separadas por vírgula)</label>
                     <input type="text" name="tags"
-                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-c17767"
+                        class="cri-input w-full"
                         placeholder="ltv, análise, março">
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Conteúdo / Descrição</label>
+                    <label class="cri-label">Conteúdo / Descrição</label>
                     <textarea name="content" rows="8" required
-                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white code-font text-sm focus:outline-none focus:border-c17767 resize-none"
+                        class="cri-textarea w-full code-font"
                         placeholder="Cole o conteúdo aqui (Markdown, JSON, código, etc.)"></textarea>
                 </div>
                 
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" onclick="closeUploadModal()"
-                        class="px-4 py-2 text-gray-400 hover:text-white transition">
+                        class="cri-btn cri-btn--secondary">
                         Cancelar
                     </button>
                     <button type="submit"
-                        class="btn-primary px-6 py-2 rounded-lg font-medium">
+                        class="cri-btn cri-btn--primary">
                         Salvar Entrega
                     </button>
                 </div>
@@ -463,7 +394,7 @@
 
         // Carregar entregas
         async function loadDeliverables() {
-            // PRIORIDADE 1: Usar dados reais do arquivo deliverables-data.js (sempre disponível)
+            // PRIORIDADE 1: Usar dados reais do arquivo deliverables-data.js
             if (typeof REAL_DELIVERABLES !== "undefined" && REAL_DELIVERABLES.length > 0) {
                 deliverables = REAL_DELIVERABLES;
                 console.log("✅ Entregas carregadas do deliverables-data.js:", deliverables.length);
@@ -479,7 +410,6 @@
                 console.log("✅ Entregas carregadas da API:", deliverables.length);
             } catch (err) {
                 console.error("❌ Erro ao carregar entregas:", err);
-                // Fallback final
                 deliverables = [];
             }
             renderDeliverables();
@@ -495,37 +425,43 @@
             document.getElementById('totalCount').textContent = deliverables.length;
             
             if (filtered.length === 0) {
-                container.innerHTML = `\n                    <div class="text-center py-12 text-gray-500">
+                container.innerHTML = `
+                    <div class="cri-empty-state py-12">
                         <i class="fas fa-inbox text-4xl mb-4"></i>
                         <p>Nenhuma entrega encontrada</p>
-                    </div>\n                `;
+                    </div>
+                `;
                 return;
             }
             
             container.innerHTML = filtered.map(d => {
                 const typeInfo = fileIcons[d.type] || fileIcons.default;
                 const date = new Date(d.created_at).toLocaleDateString('pt-BR');
-                return `\n                    <div class="deliverable-item card p-4 flex items-center gap-4 ${selectedDeliverable?.id === d.id ? 'active' : ''}"
+                return `
+                    <div class="deliverable-item cri-card p-4 flex items-center gap-4 ${selectedDeliverable?.id === d.id ? 'active' : ''}"
                          onclick="selectDeliverable('${d.id}')">
                         <div class="file-icon ${typeInfo.class}">
                             <i class="${typeInfo.icon}"></i>
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-center gap-2">
-                                <h4 class="font-medium text-white truncate">${d.title}</h4>
+                                <h4 class="font-medium text-[var(--cri-text-primary)] truncate">${d.title}</h4>
                                 <span class="category-badge text-xs px-2 py-0.5 rounded-full">
                                     ${categoryLabels[d.category] || d.category}
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-500 mt-1">
+                            <p class="text-sm text-[var(--cri-text-muted)] mt-1">
                                 ${d.agent_name || 'Desconhecido'} • ${date} • ${d.size || ''}
                             </p>
-                            ${d.tags?.length ? `\n                                <div class="flex gap-1 mt-2">
-                                    ${d.tags.map(t => `<span class="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">#${t}</span>`).join('')}
-                                </div>\n                            ` : ''}
+                            ${d.tags?.length ? `
+                                <div class="flex gap-1 mt-2 flex-wrap">
+                                    ${d.tags.map(t => `<span class="text-xs bg-[var(--cri-bg-tertiary)] text-[var(--cri-text-muted)] px-2 py-0.5 rounded">#${t}</span>`).join('')}
+                                </div>
+                            ` : ''}
                         </div>
-                        <i class="fas fa-chevron-right text-gray-600"></i>
-                    </div>\n                `;
+                        <i class="fas fa-chevron-right text-[var(--cri-text-muted)]"></i>
+                    </div>
+                `;
             }).join('');
         }
 
@@ -618,7 +554,7 @@
                 hljs.highlightAll();
             } else {
                 // Texto plano
-                contentEl.innerHTML = `<pre class="text-gray-300 code-font text-sm whitespace-pre-wrap">${escapeHtml(content)}</pre>`;
+                contentEl.innerHTML = `<pre class="text-[var(--cri-text-secondary)] code-font text-sm whitespace-pre-wrap">${escapeHtml(content)}</pre>`;
             }
         }
 
@@ -653,13 +589,15 @@
 
         // Modal de upload
         function openUploadModal() {
-            document.getElementById('uploadModal').classList.remove('hidden');
-            document.getElementById('uploadModal').classList.add('flex');
+            const modal = document.getElementById('uploadModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function closeUploadModal() {
-            document.getElementById('uploadModal').classList.add('hidden');
-            document.getElementById('uploadModal').classList.remove('flex');
+            const modal = document.getElementById('uploadModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             document.getElementById('uploadForm').reset();
         }
 
@@ -712,11 +650,9 @@
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.remove('bg-c17767/20', 'border', 'border-c17767/30', 'text-white');
-                    b.classList.add('text-gray-400');
+                    b.classList.remove('active');
                 });
-                btn.classList.add('bg-c17767/20', 'border', 'border-c17767/30', 'text-white');
-                btn.classList.remove('text-gray-400');
+                btn.classList.add('active');
                 
                 currentFilter = btn.dataset.category;
                 renderDeliverables();
@@ -725,15 +661,13 @@
 
         document.querySelectorAll('.type-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const isActive = btn.classList.contains('text-white');
+                const isActive = btn.classList.contains('active');
                 document.querySelectorAll('.type-btn').forEach(b => {
-                    b.classList.remove('text-white', 'bg-gray-800');
-                    b.classList.add('text-gray-400');
+                    b.classList.remove('active');
                 });
                 
                 if (!isActive) {
-                    btn.classList.add('text-white', 'bg-gray-800');
-                    btn.classList.remove('text-gray-400');
+                    btn.classList.add('active');
                     currentTypeFilter = btn.dataset.type;
                 } else {
                     currentTypeFilter = null;
