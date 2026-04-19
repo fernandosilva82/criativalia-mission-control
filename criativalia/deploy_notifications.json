@@ -1,165 +1,127 @@
 {
-  "last_check": "2026-04-19T15:27:55.251Z",
-  "check_count": 134,
-  "runs_checked": 5,
-  "new_notifications": 0,
+  "last_check": "2026-04-20T06:54:00Z",
+  "last_run_id": 24632807016,
   "notified_runs": [
+    24629780078,
+    24629780072,
+    24629780065,
+    24629780054,
+    24629780049,
+    24629780045,
+    24629780043,
+    24629780041,
+    24629780037,
+    24629780034,
     24612870422,
     24612870412,
+    24632807016,
+    24632807012,
+    24632807004,
     24305761094,
-    24290694896,
-    24269147211,
-    24269137683,
-    24269045119,
-    24286561502,
+    24632806568,
     24612870128,
-    24610752194,
-    24305760792,
-    24290694545,
-    24269146937,
-    24269044717,
-    24289138087
+    24610752194
   ],
-  "notifiedDeployments": [
+  "history": [
     {
-      "id": 24612870422,
-      "name": "Update Dashboard on Evidence",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T04:23:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870422"
+      "timestamp": "2026-04-19T19:37:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #15: 10 workflows verificados. Nenhum deploy novo. 3 workflows relevantes (success), 3 workflows ignorados (notify-deploy). Todos já notificados anteriormente."
     },
     {
-      "id": 24612870412,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T04:23:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870412"
+      "timestamp": "2026-04-19T19:38:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #16: 10 workflows verificados. 0 novos deploys. Todos já notificados anteriormente."
     },
     {
-      "id": 24305761094,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T01:53:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24305761094"
+      "timestamp": "2026-04-19T19:41:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #17: 10 workflows verificados. 0 novos deploys. Todos os 3 workflows relevantes (Deploy to Render, Deploy on Opportunities Update, Update Dashboard on Evidence) já notificados anteriormente."
     },
     {
-      "id": 24290694896,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T01:53:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24290694896"
+      "timestamp": "2026-04-20T03:42:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #18: 10 workflows verificados. 0 novos deploys. Todos os workflows de deploy (3 success, 3 notify-deploy failures) já notificados anteriormente."
     },
     {
-      "id": 24269147211,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T01:53:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269147211"
+      "timestamp": "2026-04-20T03:42:54Z",
+      "checked": 3,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #19: 5 workflows verificados. 0 novos deploys. Os 3 workflows de deploy mais recentes (Deploy to Render, Deploy on Opportunities Update, Update Dashboard on Evidence) já foram notificados anteriormente (run IDs: 24632807016, 24632807012, 24632807004)."
     },
     {
-      "id": 24269137683,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T01:53:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269137683"
+      "timestamp": "2026-04-19T20:00:00Z",
+      "checked": 3,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #20: 3 workflows de deploy verificados. Todos já notificados anteriormente. Nenhuma ação necessária."
     },
     {
-      "id": 24269045119,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T01:53:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269045119"
+      "timestamp": "2026-04-19T20:04:00Z",
+      "checked": 3,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #21: 3 workflows de deploy verificados. Todos já notificados anteriormente. Nenhuma ação necessária."
     },
     {
-      "id": 24286561502,
-      "name": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-19T10:52:00Z",
-      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24286561502"
+      "timestamp": "2026-04-20T04:05:19Z",
+      "checked": 6,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #22: 6 workflows de deploy verificados. Todos já notificados anteriormente. Nenhuma ação necessária."
+    },
+    {
+      "timestamp": "2026-04-20T04:06:19Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #23: 5 workflows verificados. 3 workflows de deploy relevantes (Deploy to Render, Deploy on Opportunities Update, Update Dashboard on Evidence) - todos completed/success. Nenhum deploy novo detectado, todos já notificados anteriormente."
+    },
+    {
+      "timestamp": "2026-04-20T04:06:45Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #24: 5 workflows verificados. 3 workflows de deploy relevantes: Deploy on Opportunities Update (✅ success), Update Dashboard on Evidence (✅ success), Deploy to Render (✅ success). Todos já notificados anteriormente. Nenhuma notificação enviada."
+    },
+    {
+      "timestamp": "2026-04-20T05:38:00Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #25: 5 workflows verificados. 3 workflows de deploy: Deploy on Opportunities Update (✅ success), Update Dashboard on Evidence (✅ success), Deploy to Render (✅ success). 1 workflow notify-deploy ignorado (failure). Todos já notificados anteriormente. Nenhuma notificação enviada."
+    },
+    {
+      "timestamp": "2026-04-20T06:47:00Z",
+      "checked": 6,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #26: 6 workflows de deploy verificados. Deploy mais recente: Deploy on Opportunities Update (ID: 24632807016, 2026-04-19 15:40 UTC) - já notificado. 0 novos deploys para notificar."
+    },
+    {
+      "timestamp": "2026-04-20T06:48:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #27: Cron deploy-monitor-notifier. 10 workflows verificados. 3 workflows de deploy relevantes: Deploy on Opportunities Update (ID: 24632807016, ✅ success), Update Dashboard on Evidence (ID: 24632807012, ✅ success), Deploy to Render (ID: 24632807004, ✅ success). Todos já notificados anteriormente. Nenhuma notificação enviada."
+    },
+    {
+      "timestamp": "2026-04-20T06:54:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #28: 10 workflows verificados. Deploy mais recente: 2026-04-19 12:40 BRT (Night Shift Design Agent). 3 workflows de deploy: Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅. Todos já notificados anteriormente."
     }
   ],
-  "ignored": [
-    24612870128,
-    24610752194,
-    24305760792,
-    24290694545,
-    24269146937,
-    24269044717,
-    24289138087
-  ],
-  "checkHistory": [
-    {
-      "timestamp": "2026-04-19T14:22:15Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #125: 19/04/2026 14:22 UTC. 10 runs verificados. 0 novos deploys."
-    },
-    {
-      "timestamp": "2026-04-19T14:23:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #126: 19/04/2026 14:23 UTC. 10 runs verificados. 0 novos deploys. Todos os workflows de deploy já notificados anteriormente."
-    },
-    {
-      "timestamp": "2026-04-19T14:25:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #127: 19/04/2026 14:25 UTC. 10 runs verificados. 0 novos deploys. Nenhum workflow de deploy pendente de notificação."
-    },
-    {
-      "timestamp": "2026-04-19T14:28:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #128: 19/04/2026 14:28 UTC. 10 runs verificados. 0 novos deploys. Nenhum workflow de deploy pendente de notificação."
-    },
-    {
-      "timestamp": "2026-04-19T14:33:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #129: 19/04/2026 14:33 UTC. 10 runs verificados. 0 novos deploys. Nenhum workflow de deploy pendente de notificação."
-    },
-    {
-      "timestamp": "2026-04-19T14:34:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #130: 19/04/2026 14:34 UTC. 10 runs verificados. 0 novos deploys. Todos os workflows já notificados anteriormente."
-    },
-    {
-      "timestamp": "2026-04-19T14:36:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #131: 19/04/2026 14:36 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária - todos os deploys já processados."
-    },
-    {
-      "timestamp": "2026-04-19T14:57:00Z",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #132: 19/04/2026 14:57 UTC. 10 runs verificados. 0 novos deploys. Todos os workflows de deploy já notificados anteriormente."
-    },
-    {
-      "timestamp": "2026-04-19T15:09:31.983901+00:00",
-      "runs_checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #133: 0 novos deploys, 0 notificações"
-    },
-    {
-      "timestamp": "2026-04-19T15:27:55.251Z",
-      "runs_checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #134: 19/04/2026 15:27 UTC. 5 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
-    }
-  ],
-  "last_check_summary": "Check #134 em 2026-04-19 15:27 UTC. 0 novos deploys.",
-  "note": "Monitoramento ativo. Últimos deploys: 18/04/2026 20:08 UTC (Update Dashboard + Deploy to Render). Aguardando novos workflows...",
-  "lastChecked": "2026-04-19T15:27:55.251Z"
+  "check_count": 28,
+  "last_check_summary": "Check #28: Nenhum deploy novo detectado. Todos os workflows de deploy recentes já foram notificados anteriormente."
 }

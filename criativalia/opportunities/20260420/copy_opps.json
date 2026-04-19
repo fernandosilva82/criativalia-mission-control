@@ -1,0 +1,122 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "ERRO CRÍTICO: Placeholder '[Nome da Sua Marca]' na descrição do Abajur Accordion",
+    "description": "A descrição do produto Abajur Accordion contém um placeholder não substituído: '[Nome da Sua Marca]'. Isso compromete a credibilidade da marca e confunde o cliente.",
+    "affected_pages": ["https://criativalia.com/products/abajur-accordion"],
+    "impact_score": 10,
+    "effort_score": 1,
+    "action_suggested": "Substituir '[Nome da Sua Marca]' por 'Criativalia' em toda a descrição do produto",
+    "category": "critical_error"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Redes sociais não atualizadas - apontam para perfis Shopify genéricos",
+    "description": "Todos os links de redes sociais no footer (Facebook, Instagram, TikTok, X, YouTube) apontam para perfis genéricos da Shopify (@shopify) em vez dos perfis reais da Criativalia. Isso gera desconfiança e perde oportunidade de engajamento.",
+    "affected_pages": ["https://criativalia.com/ (footer em todas as páginas)"],
+    "impact_score": 8,
+    "effort_score": 2,
+    "action_suggested": "Atualizar todos os links sociais para os perfis reais da Criativalia (criar se não existirem)",
+    "category": "brand_trust"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Blog/News completamente vazio - gap de conteúdo enorme",
+    "description": "A seção de blog (/blogs/news) está vazia, apenas com o footer. Concorrentes como Hay usam conteúdo inspiracional ('Outdoor Collection', 'Living Room Refresh') para engajar. A Criativalia perde oportunidade de SEO e storytelling.",
+    "affected_pages": ["https://criativalia.com/blogs/news"],
+    "impact_score": 9,
+    "effort_score": 7,
+    "action_suggested": "Criar estratégia de conteúdo: dicas de decoração sustentável, histórias dos designers, transformação de ambientes com fotos before/after",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Títulos de produtos genéricos - falta emoção e diferenciação",
+    "description": "Títulos como 'Abajur Accordion: Luminária Ecológica e Sustentável' são descritivos mas não emocionais. Comparado com Hay ('Palissade Cantilever Dining Armchair') ou Gantri, falta storytelling de transformação no próprio título.",
+    "affected_pages": [
+      "https://criativalia.com/products/abajur-accordion",
+      "https://criativalia.com/products/abajur-aro",
+      "https://criativalia.com/products/arandela-aura"
+    ],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Revisar títulos focando em transformação: 'Accordion - A Luz que Transforma seu Cantinho em Refúgio' ou similar",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Página 'Quem Somos' genérica - falta storytelling de origem",
+    "description": "A página 'Quem Somos' tem informações básicas sobre sustentabilidade e materiais, mas falta a história emocional: quem fundou, por quê, qual foi o momento de inspiração. Vitsœ conta 65 anos de história; Hay destaca designers. Criativalia precisa humanizar sua origem.",
+    "affected_pages": ["https://criativalia.com/pages/quem-somos"],
+    "impact_score": 7,
+    "effort_score": 4,
+    "action_suggested": "Adicionar história de fundação, foto do fundador/equipe, momento de inspiração, missão pessoal - tornar a marca mais humana",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Falta página de FAQ para objeções comuns",
+    "description": "Não há página de FAQ visível. Políticas de trocas, envio e privacidade existem mas estão espalhadas. Clientes precisam navegar por várias páginas para encontrar respostas. Gantri e Hay têm FAQs centralizadas que reduzem fricção de compra.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 7,
+    "effort_score": 4,
+    "action_suggested": "Criar página /pages/faq com perguntas organizadas: cuidados com PLA, instalação de arandelas, tempo de vida das lâmpadas, como limpar",
+    "category": "conversion_optimization"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Descrições de produtos focadas em funcionalidade, não em transformação",
+    "description": "As descrições são técnicas e listam características, mas falta foco em COMO o produto transforma o espaço e a vida do cliente. Ex: 'Altura: 25cm' vs 'A altura perfeita para iluminar sua leitura noturna sem incomodar'. Comparar com Gantri que fala em 'artful lighting'.",
+    "affected_pages": [
+      "https://criativalia.com/products/arandela-aura",
+      "https://criativalia.com/products/bandeja-organizador-gatinho"
+    ],
+    "impact_score": 6,
+    "effort_score": 5,
+    "action_suggested": "Revisar top 10 produtos mais vendidos e reescrever descrições focando em transformação emocional do ambiente",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Newsletter com copy fraca - 'Receba novidades e promoções'",
+    "description": "A call-to-action da newsletter no footer é genérica ('Assine nossa newsletter e receba promoções em primeira mão'). Não comunica valor específico nem cria urgência. Concorrentes premium evitam focar em 'promoções' para não baratear a marca.",
+    "affected_pages": ["https://criativalia.com/ (footer em todas as páginas)"],
+    "impact_score": 5,
+    "effort_score": 2,
+    "action_suggested": "Mudar para: 'Inspire-se primeiro: dicas de decoração sustentável e lançamentos exclusivos no seu e-mail'",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_009",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Seção 'Coleções' sem narrativa ou curadoria visual",
+    "description": "A página de produtos/coleções lista itens em grid sem contexto. Hay cria coleções com narrativa ('Outdoor Collection', 'Living Room Refresh') que contam uma história. Criativalia pode agrupar produtos por 'Ambiente' ou 'Estilo de Vida', não só por categoria.",
+    "affected_pages": ["https://criativalia.com/collections/all"],
+    "impact_score": 7,
+    "effort_score": 6,
+    "action_suggested": "Criar coleções temáticas: 'Cantinho da Leitura', 'Home Office Zen', 'Hall de Entrada Acolhedor' com curadoria e descrição de ambiente",
+    "category": "merchandising"
+  },
+  {
+    "id": "copy_010",
+    "timestamp": "2026-04-20T05:12:00Z",
+    "title": "Copy de 'Sustentabilidade' é genérica - falta prova social específica",
+    "description": "A marca menciona 'PLA de fontes renováveis' e 'produção sob demanda', mas não há dados específicos: quanto CO2 é evitado? Quantas peças foram feitas? Qual o impacto real? Gantri fala 'digitally made in California' - é específico e verificável.",
+    "affected_pages": [
+      "https://criativalia.com/",
+      "https://criativalia.com/pages/quem-somos"
+    ],
+    "impact_score": 6,
+    "effort_score": 5,
+    "action_suggested": "Adicionar dados específicos: 'X kg de CO2 evitados', 'Y peças produzidas sob demanda em 2024', certificações ou parcerias verificáveis",
+    "category": "sustainability_credibility"
+  }
+]

@@ -1,33 +1,58 @@
 /**
- * Criativalia Design System v2.0
+ * Criativalia Design System v2.1
  * Paleta: Verde Oliva + Off-White + Gold Accents
+ * Refinado por Night Shift Design Agent - 2025-04-20
  */
 
 /* ============================================
    VARIABLES & TOKENS
    ============================================ */
 :root {
-  /* Cores Principais - Paleta Verde Oliva */
+  /* Cores Principais - Paleta Verde Oliva Expandida */
   --cri-olive-primary: #4A5D23;
   --cri-olive-light: #7A9E7E;
   --cri-olive-dark: #2F3D16;
   --cri-olive-muted: rgba(74, 93, 35, 0.2);
+  --cri-olive-50: rgba(74, 93, 35, 0.05);
+  --cri-olive-100: rgba(74, 93, 35, 0.1);
+  --cri-olive-200: rgba(74, 93, 35, 0.2);
+  --cri-olive-300: rgba(74, 93, 35, 0.3);
+  --cri-olive-400: rgba(74, 93, 35, 0.4);
+  --cri-olive-500: rgba(74, 93, 35, 0.5);
+  --cri-olive-600: rgba(74, 93, 35, 0.6);
+  --cri-olive-700: rgba(74, 93, 35, 0.7);
+  --cri-olive-800: rgba(74, 93, 35, 0.8);
+  --cri-olive-900: rgba(74, 93, 35, 0.9);
   
-  /* Cores de Destaque */
+  /* Cores de Destaque - Gold */
   --cri-gold: #D4A853;
   --cri-gold-light: #E8C876;
+  --cri-gold-dark: #B08A3B;
   --cri-gold-muted: rgba(212, 168, 83, 0.15);
+  --cri-gold-50: rgba(212, 168, 83, 0.05);
+  --cri-gold-100: rgba(212, 168, 83, 0.1);
+  --cri-gold-200: rgba(212, 168, 83, 0.2);
+  --cri-gold-300: rgba(212, 168, 83, 0.3);
+  
+  /* Off-White & Neutros */
+  --cri-off-white: #F5F5DC;
+  --cri-cream: #F5F5DC;
+  --cri-beige: #E8E4D9;
+  --cri-sand: #C4B9A8;
   
   /* Fundos */
   --cri-bg-primary: #0a0a0b;
   --cri-bg-secondary: #141414;
   --cri-bg-tertiary: #1a1a1b;
+  --cri-bg-elevated: #222222;
   --cri-bg-hover: rgba(255, 255, 255, 0.05);
+  --cri-bg-active: rgba(255, 255, 255, 0.08);
   
-  /* Textos */
+  /* Textos - Garantindo Off-White como padrão */
   --cri-text-primary: #F5F5DC;
-  --cri-text-secondary: #e2e8f0;
-  --cri-text-muted: #888888;
+  --cri-text-secondary: #E8E4D9;
+  --cri-text-muted: #A0A0A0;
+  --cri-text-disabled: #666666;
   --cri-text-inverse: #0a0a0b;
   
   /* Bordas */
@@ -37,6 +62,7 @@
   
   /* Estados */
   --cri-success: #4A5D23;
+  --cri-success-light: #7A9E7E;
   --cri-warning: #D4A853;
   --cri-error: #c17767;
   --cri-info: #5a9fd4;
@@ -46,6 +72,7 @@
   --cri-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --cri-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
   --cri-shadow-glow: 0 0 20px rgba(74, 93, 35, 0.3);
+  --cri-shadow-gold: 0 0 20px rgba(212, 168, 83, 0.3);
   
   /* Espaçamento */
   --cri-space-xs: 4px;
@@ -53,17 +80,20 @@
   --cri-space-md: 16px;
   --cri-space-lg: 24px;
   --cri-space-xl: 32px;
+  --cri-space-2xl: 48px;
   
   /* Raio de Borda */
   --cri-radius-sm: 6px;
   --cri-radius-md: 8px;
   --cri-radius-lg: 12px;
   --cri-radius-xl: 16px;
+  --cri-radius-full: 9999px;
   
   /* Transições */
   --cri-transition-fast: 0.15s ease;
   --cri-transition-normal: 0.2s ease;
   --cri-transition-slow: 0.3s ease;
+  --cri-transition-bounce: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================
@@ -124,12 +154,17 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: var(--cri-shadow-md);
+  transition: box-shadow var(--cri-transition-normal);
+}
+
+.cri-logo:hover .cri-logo__icon {
+  box-shadow: var(--cri-shadow-gold);
 }
 
 .cri-logo__icon svg {
   width: 22px;
   height: 22px;
-  stroke: var(--cri-text-primary);
+  stroke: var(--cri-off-white);
   stroke-width: 2;
   fill: none;
 }
@@ -162,7 +197,7 @@ body {
 .cri-logo__brand {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -191,7 +226,7 @@ body {
 }
 
 /* ============================================
-   CARDS
+   CARDS - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-card {
   background: var(--cri-bg-secondary);
@@ -216,6 +251,7 @@ body {
 .cri-card--interactive:hover {
   border-color: var(--cri-gold);
   transform: translateY(-2px);
+  box-shadow: var(--cri-shadow-gold);
 }
 
 .cri-card--gradient::before {
@@ -226,6 +262,18 @@ body {
   right: 0;
   height: 3px;
   background: linear-gradient(90deg, var(--cri-olive-primary), var(--cri-gold));
+}
+
+.cri-card--olive {
+  border-left: 3px solid var(--cri-olive-primary);
+}
+
+.cri-card--gold {
+  border-left: 3px solid var(--cri-gold);
+}
+
+.cri-card--glow {
+  box-shadow: var(--cri-shadow-glow);
 }
 
 .cri-card__header {
@@ -239,10 +287,16 @@ body {
 .cri-card__title {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
   display: flex;
   align-items: center;
   gap: var(--cri-space-sm);
+}
+
+.cri-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--cri-text-muted);
+  margin-top: 2px;
 }
 
 .cri-card__body {
@@ -259,7 +313,7 @@ body {
 }
 
 /* ============================================
-   BUTTONS
+   BUTTONS - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-btn {
   display: inline-flex;
@@ -275,6 +329,7 @@ body {
   transition: all var(--cri-transition-fast);
   text-decoration: none;
   white-space: nowrap;
+  color: var(--cri-off-white);
 }
 
 .cri-btn:focus {
@@ -287,10 +342,10 @@ body {
   cursor: not-allowed;
 }
 
-/* Primary Button */
+/* Primary Button - Olive */
 .cri-btn--primary {
   background: linear-gradient(135deg, var(--cri-olive-primary) 0%, var(--cri-olive-light) 100%);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
   box-shadow: var(--cri-shadow-sm);
 }
 
@@ -303,7 +358,7 @@ body {
 /* Secondary Button */
 .cri-btn--secondary {
   background: var(--cri-bg-tertiary);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
   border-color: var(--cri-border);
 }
 
@@ -322,6 +377,7 @@ body {
 .cri-btn--accent:hover:not(:disabled) {
   opacity: 0.9;
   transform: translateY(-1px);
+  box-shadow: var(--cri-shadow-gold);
 }
 
 /* Ghost Button */
@@ -332,7 +388,7 @@ body {
 
 .cri-btn--ghost:hover:not(:disabled) {
   background: var(--cri-bg-hover);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
 }
 
 /* Danger Button */
@@ -344,6 +400,30 @@ body {
 
 .cri-btn--danger:hover:not(:disabled) {
   background: rgba(193, 119, 103, 0.3);
+}
+
+/* Olive Outline Button */
+.cri-btn--olive-outline {
+  background: transparent;
+  color: var(--cri-olive-light);
+  border-color: var(--cri-olive-primary);
+}
+
+.cri-btn--olive-outline:hover:not(:disabled) {
+  background: var(--cri-olive-muted);
+  color: var(--cri-off-white);
+}
+
+/* Gold Outline Button */
+.cri-btn--gold-outline {
+  background: transparent;
+  color: var(--cri-gold);
+  border-color: var(--cri-gold);
+}
+
+.cri-btn--gold-outline:hover:not(:disabled) {
+  background: var(--cri-gold-muted);
+  color: var(--cri-gold-light);
 }
 
 /* Button Sizes */
@@ -369,8 +449,12 @@ body {
   height: 32px;
 }
 
+.cri-btn--block {
+  width: 100%;
+}
+
 /* ============================================
-   FORM ELEMENTS
+   FORM ELEMENTS - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-form-group {
   margin-bottom: var(--cri-space-md);
@@ -392,7 +476,7 @@ body {
   width: 100%;
   padding: 10px 14px;
   font-size: 0.875rem;
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
   background: var(--cri-bg-tertiary);
   border: 1px solid var(--cri-border);
   border-radius: var(--cri-radius-md);
@@ -428,7 +512,7 @@ body {
 .cri-select {
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23D4A853' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   padding-right: 36px;
@@ -481,8 +565,54 @@ body {
   cursor: pointer;
 }
 
+/* Toggle Switch */
+.cri-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cri-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cri-toggle__slider {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--cri-bg-tertiary);
+  border-radius: var(--cri-radius-full);
+  border: 1px solid var(--cri-border);
+  transition: all var(--cri-transition-fast);
+}
+
+.cri-toggle__slider::before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background: var(--cri-text-muted);
+  border-radius: 50%;
+  transition: all var(--cri-transition-fast);
+}
+
+.cri-toggle input:checked + .cri-toggle__slider {
+  background: var(--cri-olive-primary);
+  border-color: var(--cri-olive-primary);
+}
+
+.cri-toggle input:checked + .cri-toggle__slider::before {
+  transform: translateX(20px);
+  background: var(--cri-off-white);
+}
+
 /* ============================================
-   NAVIGATION
+   NAVIGATION - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-nav {
   background: var(--cri-bg-secondary);
@@ -504,7 +634,7 @@ body {
 
 .cri-nav-item:hover {
   background: var(--cri-bg-hover);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
 }
 
 .cri-nav-item.active {
@@ -526,13 +656,13 @@ body {
   margin-left: auto;
   font-size: 0.65rem;
   padding: 2px 8px;
-  border-radius: 9999px;
+  border-radius: var(--cri-radius-full);
   background: var(--cri-olive-primary);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
 }
 
 /* ============================================
-   BADGES & TAGS
+   BADGES & TAGS - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-badge {
   display: inline-flex;
@@ -541,7 +671,7 @@ body {
   padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 500;
-  border-radius: 9999px;
+  border-radius: var(--cri-radius-full);
   border: 1px solid transparent;
 }
 
@@ -575,6 +705,18 @@ body {
   border-color: var(--cri-border);
 }
 
+.cri-badge--olive {
+  background: var(--cri-olive-muted);
+  color: var(--cri-off-white);
+  border-color: var(--cri-olive-primary);
+}
+
+.cri-badge--gold {
+  background: var(--cri-gold-muted);
+  color: var(--cri-gold-light);
+  border-color: var(--cri-gold);
+}
+
 .cri-tag {
   display: inline-flex;
   align-items: center;
@@ -585,8 +727,18 @@ body {
   border-radius: 4px;
 }
 
+.cri-tag--olive {
+  background: var(--cri-olive-100);
+  color: var(--cri-olive-light);
+}
+
+.cri-tag--gold {
+  background: var(--cri-gold-100);
+  color: var(--cri-gold);
+}
+
 /* ============================================
-   TABLES
+   TABLES - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-table {
   width: 100%;
@@ -624,7 +776,7 @@ body {
 }
 
 /* ============================================
-   MODALS
+   MODALS - COMPONENTES REUTILIZÁVEIS
    ============================================ */
 .cri-modal-overlay {
   position: fixed;
@@ -661,7 +813,7 @@ body {
 .cri-modal__title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
 }
 
 .cri-modal__close {
@@ -676,7 +828,7 @@ body {
 
 .cri-modal__close:hover {
   background: var(--cri-bg-hover);
-  color: var(--cri-text-primary);
+  color: var(--cri-off-white);
 }
 
 .cri-modal__body {
@@ -694,6 +846,73 @@ body {
 }
 
 /* ============================================
+   ALERTS - COMPONENTES REUTILIZÁVEIS
+   ============================================ */
+.cri-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--cri-space-md);
+  padding: var(--cri-space-md) var(--cri-space-lg);
+  border-radius: var(--cri-radius-md);
+  border: 1px solid transparent;
+}
+
+.cri-alert--success {
+  background: var(--cri-olive-muted);
+  color: var(--cri-olive-light);
+  border-color: rgba(74, 93, 35, 0.3);
+}
+
+.cri-alert--warning {
+  background: var(--cri-gold-muted);
+  color: var(--cri-gold);
+  border-color: rgba(212, 168, 83, 0.3);
+}
+
+.cri-alert--error {
+  background: rgba(193, 119, 103, 0.15);
+  color: var(--cri-error);
+  border-color: rgba(193, 119, 103, 0.3);
+}
+
+.cri-alert--info {
+  background: rgba(90, 159, 212, 0.15);
+  color: var(--cri-info);
+  border-color: rgba(90, 159, 212, 0.3);
+}
+
+/* ============================================
+   TOOLTIPS - COMPONENTES REUTILIZÁVEIS
+   ============================================ */
+.cri-tooltip {
+  position: relative;
+}
+
+.cri-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  background: var(--cri-bg-elevated);
+  color: var(--cri-off-white);
+  font-size: 0.75rem;
+  border-radius: var(--cri-radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--cri-transition-fast);
+  border: 1px solid var(--cri-border);
+}
+
+.cri-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  bottom: calc(100% + 8px);
+}
+
+/* ============================================
    UTILITIES
    ============================================ */
 .cri-text-gradient {
@@ -703,9 +922,29 @@ body {
   background-clip: text;
 }
 
+.cri-text-gradient-olive {
+  background: linear-gradient(135deg, var(--cri-olive-primary), var(--cri-olive-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cri-text-gradient-gold {
+  background: linear-gradient(135deg, var(--cri-gold), var(--cri-gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .cri-divider {
   height: 1px;
   background: var(--cri-border);
+  margin: var(--cri-space-lg) 0;
+}
+
+.cri-divider--gradient {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cri-olive-primary), var(--cri-gold), transparent);
   margin: var(--cri-space-lg) 0;
 }
 
@@ -765,6 +1004,10 @@ body {
   background: var(--cri-error);
 }
 
+.cri-status--warning::before {
+  background: var(--cri-gold);
+}
+
 /* Animations */
 @keyframes cri-fade-in {
   from { opacity: 0; transform: translateY(10px); }
@@ -773,6 +1016,37 @@ body {
 
 .cri-animate-fade-in {
   animation: cri-fade-in 0.3s ease;
+}
+
+@keyframes cri-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.cri-animate-pulse {
+  animation: cri-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cri-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(74, 93, 35, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(212, 168, 83, 0.4); }
+}
+
+.cri-animate-glow {
+  animation: cri-glow 2s ease-in-out infinite;
+}
+
+/* Background Gradients */
+.cri-bg-gradient-olive {
+  background: linear-gradient(135deg, var(--cri-olive-100), var(--cri-olive-50));
+}
+
+.cri-bg-gradient-gold {
+  background: linear-gradient(135deg, var(--cri-gold-100), var(--cri-gold-50));
+}
+
+.cri-bg-gradient-hero {
+  background: linear-gradient(135deg, rgba(74, 93, 35, 0.1) 0%, rgba(212, 168, 83, 0.05) 100%);
 }
 
 /* Responsive */
@@ -790,5 +1064,28 @@ body {
   .cri-modal {
     margin: var(--cri-space-sm);
     max-height: calc(100vh - var(--cri-space-lg));
+  }
+  
+  .cri-logo__text {
+    display: none;
+  }
+  
+  .cri-logo--mobile-text .cri-logo__text {
+    display: flex;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .cri-card {
+    border: 1px solid #ddd;
+    break-inside: avoid;
   }
 }

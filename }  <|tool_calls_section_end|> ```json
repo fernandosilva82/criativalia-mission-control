@@ -1,0 +1,94 @@
+(timesheet) {
+    date: "2026-04-20",
+    agents: {
+        "OpsBot": [
+            {
+                start: "00:35",
+                end: "00:42",
+                duration_min: 7,
+                task: "Scan de Oportunidades - Análise completa",
+                evidence_link: "/evidencias/ops_scan_20260420.json",
+                priority: "P0",
+                details: "12 oportunidades identificadas, 2 P0, potencial +R$52k/mês"
+            },
+            {
+                start: "00:41",
+                end: "00:45",
+                duration_min: 4,
+                task: "Notificação de Scanner Completo",
+                evidence_link: "/evidencias/20260419/ops_scanner_notification.json",
+                priority: "normal",
+                details: "Notificação de scan completo com 12 oportunidades"
+            },
+            {
+                start: "12:47",
+                end: "13:15",
+                duration_min: 28,
+                task: "Análise de Métricas Unitárias 90 dias",
+                evidence_link: "/evidencias/20260418/ops_scan_evidence.json",
+                priority: "P1",
+                details: "Receita R$83k, ticket médio R$469, 14 oportunidades geradas"
+            }
+        ],
+        "DesignBot": [
+            {
+                start: "02:08",
+                end: "02:45",
+                duration_min: 37,
+                task: "Design System Update v2.0 - CSS Theme",
+                evidence_link: "/evidencias/20260419/design_update_0208.md",
+                priority: "P1",
+                details: "Refinamento tema verde oliva #4A5D23, 15+ componentes reutilizáveis"
+            },
+            {
+                start: "05:47",
+                end: "06:15",
+                duration_min: 28,
+                task: "Design System Update - Verificação Visual",
+                evidence_link: "/evidencias/20260419/design_update_0547.md",
+                priority: "P2",
+                details: "Verificação de 6 páginas, consistência visual confirmada"
+            },
+            {
+                start: "23:38",
+                end: "00:15",
+                duration_min: 37,
+                task: "Design System Update v2.1 - Night Shift",
+                evidence_link: "/evidencias/20260419/design_update_2338.md",
+                priority: "P1",
+                details: "Logo implementado em todas as páginas, 40+ variáveis CSS"
+            }
+        ],
+        "TrafficBot": [
+            {
+                start: "00:00",
+                end: "00:00",
+                duration_min: 0,
+                task: "Sem atividade registrada nas últimas 24h",
+                evidence_link: null,
+                priority: null,
+                details: "Aguardando ativação manual ou cron job"
+            }
+        ],
+        "CopyBot": [
+            {
+                start: "00:00",
+                end: "00:00",
+                duration_min: 0,
+                task: "Sem atividade registrada nas últimas 24h",
+                evidence_link: null,
+                priority: null,
+                details: "Aguardando ativação manual ou cron job"
+            }
+        ]
+    },
+    summary: {
+        total_activities: 6,
+        total_active_agents: 2,
+        total_duration_min: 141,
+        critical_tasks: 1,
+        high_priority_tasks: 3,
+        opportunities_generated: 26,
+        potential_impact: "+R$89.6k/mês"
+    }
+}

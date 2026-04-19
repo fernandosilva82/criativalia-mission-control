@@ -1,0 +1,45 @@
+{
+  "scan_id": "ops-20260420-003526",
+  "agent": "OpsBot",
+  "timestamp": "2026-04-20T00:35:26Z",
+  "store": "Criativalia",
+  "shopify_domain": "m-s-negocios-2.myshopify.com",
+  "status": "completed_with_warnings",
+  "opportunities_found": 12,
+  "by_priority": {
+    "P0": 2,
+    "P1": 5,
+    "P2": 5
+  },
+  "by_category": {
+    "inventory": 2,
+    "pricing": 2,
+    "automation": 4,
+    "conversion": 2,
+    "technical": 2,
+    "content": 1,
+    "ux": 1
+  },
+  "financial_summary": {
+    "potential_monthly_low": 20500,
+    "potential_monthly_high": 52000,
+    "currency": "BRL"
+  },
+  "critical_findings": [
+    "95 produtos sem estoque - perda imediata de receita",
+    "Token Shopify com erro de autenticação - afeta automações",
+    "Sem carrinho abandonado - perda de 70% de recuperável",
+    "Sem alertas de estoque - reposição reativa"
+  ],
+  "quick_wins": [
+    "ops_002: Bundles de iluminação (esforço 2, impacto 9)",
+    "ops_004: Badges de desconto (esforço 2, impacto 7)",
+    "ops_007: Coleções por ambiente (esforço 2, impacto 6)"
+  ],
+  "output_files": [
+    "/root/.openclaw/workspace/criativalia/opportunities/20260420/ops_opps.json",
+    "/root/.openclaw/workspace/criativalia/opportunities/20260420/README.md"
+  ],
+  "next_scan": "2026-04-21T00:00:00Z",
+  "notes": "Scan realizado com base em dados existentes da fila de prioridades. API Shopify retornou erro de autenticação - recomendado verificar token. Oportunidades revalidadas e atualizadas com estimativas financeiras."
+}

@@ -1,6 +1,6 @@
 {
-  "last_check": "2026-04-20T00:56:00.000000+00:00",
-  "check_count": 151,
+  "last_check": "2026-04-19T18:01:00.000000+00:00",
+  "check_count": 172,
   "runs_checked": 10,
   "new_notifications": 0,
   "notified_runs": [
@@ -107,34 +107,56 @@
   ],
   "checkHistory": [
     {
-      "timestamp": "2026-04-20T00:56:00Z",
+      "timestamp": "2026-04-19T17:51:00Z",
       "runs_checked": 10,
       "new_deploys": 0,
       "notifications_sent": 0,
-      "note": "Check #151: 20/04/2026 00:56 UTC (Cron deploy-monitor-notifier). 10 runs verificados. 0 novos deploys. Todos os workflows já foram notificados anteriormente. Último deploy: Night Shift Design System (19/04 15:40 UTC)."
+      "note": "Check #166: 20/04/2026 01:51 UTC. 10 runs verificados. 0 novos deploys. Todos os workflows já foram notificados anteriormente."
     },
     {
-      "timestamp": "2026-04-20T00:55:00Z",
+      "timestamp": "2026-04-19T17:52:00Z",
       "runs_checked": 10,
       "new_deploys": 0,
       "notifications_sent": 0,
-      "note": "Check #150: 20/04/2026 00:55 UTC (Cron deploy-monitor-notifier). 10 runs verificados. 0 novos deploys. Todos os workflows já foram notificados anteriormente. Último deploy: Night Shift Design System (19/04 15:40 UTC)."
+      "note": "Check #167: 20/04/2026 01:52 UTC. 10 runs verificados. 0 novos deploys pendentes. Últimos deploys (Night Shift Design System - 19/04 15:40 UTC) já notificados anteriormente."
     },
     {
-      "timestamp": "2026-04-20T00:54:00Z",
+      "timestamp": "2026-04-19T17:53:00Z",
       "runs_checked": 10,
       "new_deploys": 0,
       "notifications_sent": 0,
-      "note": "Check #149: 20/04/2026 00:54 UTC (Cron deploy-monitor-notifier). 10 runs verificados. 0 novos deploys. Todos os workflows já foram notificados anteriormente. Último deploy: Night Shift Design System (19/04 15:40 UTC)."
+      "note": "Check #168: 20/04/2026 01:53 UTC. 10 runs verificados. 0 novos deploys pendentes. Night Shift Design System (19/04 15:40 UTC) já notificado. Aguardando novos deploys..."
     },
     {
-      "timestamp": "2026-04-20T00:53:00Z",
+      "timestamp": "2026-04-19T17:55:00Z",
       "runs_checked": 10,
       "new_deploys": 0,
       "notifications_sent": 0,
-      "note": "Check #148: 20/04/2026 00:53 UTC (Cron deploy-monitor-notifier). 10 runs verificados. 0 novos deploys. Todos os workflows já foram notificados anteriormente. Aguardando novos deploys..."
+      "note": "Check #169: 20/04/2026 01:55 UTC. 10 runs verificados. 0 novos deploys pendentes. Todos os workflows de deploy (Deploy to Render, Deploy on Opportunities Update, Update Dashboard on Evidence) continuam os mesmos desde 19/04 15:40 UTC. Aguardando novos deploys..."
+    },
+    {
+      "timestamp": "2026-04-19T17:57:10.241276+00:00",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #170: 0 novos deploys, 0 notificações"
+    },
+    {
+      "timestamp": "2026-04-19T18:00:00.000000+00:00",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #171: 20/04/2026 02:00 UTC. 10 runs verificados. 0 novos deploys. Último deploy foi Night Shift Design System em 19/04 15:40 UTC (já notificado). Aguardando novos workflows..."
+    },
+    {
+      "timestamp": "2026-04-19T18:01:00.000000+00:00",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #172: 20/04/2026 02:01 UTC. 10 runs verificados. 0 novos deploys. Nenhum workflow novo desde Night Shift Design System (19/04 15:40 UTC). Sistema operando normalmente."
     }
   ],
-  "last_check_summary": "Check #151 em 2026-04-20 00:56 UTC (Cron deploy-monitor-notifier). Nenhum novo deploy pendente. Status: AGUARDANDO NOVOS DEPLOYS.",
-  "note": "✅ Verificação #151 concluída. Nenhum novo deploy desde o Night Shift Design System (último em 19/04 15:40 UTC). Aguardando novos workflows..."
+  "last_check_summary": "Check #172 em 2026-04-20 02:01 UTC. 0 novos deploys pendentes.",
+  "note": "✅ Verificação #172 concluída. Nenhum novo deploy desde Night Shift Design System (último em 19/04 15:40 UTC). Sistema operando normalmente.",
+  "lastChecked": "2026-04-19T18:01:00Z"
 }
