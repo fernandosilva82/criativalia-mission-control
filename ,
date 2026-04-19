@@ -1,1 +1,137 @@
-, 
+{
+  "last_check": "2026-04-19T10:13:00Z",
+  "check_count": 88,
+  "runs_checked": 10,
+  "new_notifications": 0,
+  "notified_runs": [
+    24612870422,
+    24612870412,
+    24305761094,
+    24290694896,
+    24269147211,
+    24269137683,
+    24269045119
+  ],
+  "notifiedDeployments": [
+    {
+      "id": 24612870422,
+      "name": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T04:23:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870422"
+    },
+    {
+      "id": 24612870412,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T04:23:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870412"
+    },
+    {
+      "id": 24305761094,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24305761094"
+    },
+    {
+      "id": 24290694896,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24290694896"
+    },
+    {
+      "id": 24269147211,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269147211"
+    },
+    {
+      "id": 24269137683,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269137683"
+    },
+    {
+      "id": 24269045119,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269045119"
+    }
+  ],
+  "ignored": [
+    24612870128,
+    24610752194,
+    24305760792,
+    24290694545,
+    24269146937,
+    24269137004,
+    24269044717,
+    24289138087,
+    24286561502
+  ],
+  "checkHistory": [
+    {
+      "timestamp": "2026-04-19T10:13:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #88: 19/04/2026 10:13 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T10:09:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #87: 19/04/2026 10:09 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T10:04:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #86: 19/04/2026 10:04 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T10:02:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #85: 19/04/2026 10:02 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T09:57:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #84: 19/04/2026 09:57 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T09:42:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #83: 19/04/2026 09:42 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    },
+    {
+      "timestamp": "2026-04-19T09:21:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #82: 19/04/2026 09:21 UTC. 10 runs verificados. 0 novos deploys."
+    },
+    {
+      "timestamp": "2026-04-19T10:09:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #87: 19/04/2026 10:09 UTC. 10 runs verificados. 0 novos deploys. Nenhuma notificação necessária."
+    }
+  ],
+  "last_check_summary": "Check #88 em 2026-04-19 10:13 UTC. 0 novos deploys.",
+  "note": "Monitoramento ativo. Últimos deploys: 18/04/2026 20:08 UTC."
+}

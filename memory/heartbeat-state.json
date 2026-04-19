@@ -1,12 +1,15 @@
 {
   "lastChecks": {
-    "render_keepalive": 1745025201,
-    "calendar": null,
-    "status_report": 1743651275
+    "render_ping": 1745065627,
+    "agents_status": 1745065627
   },
   "render_status": {
-    "last_ping": "2026-04-19T03:53:21Z",
+    "last_ping": "2026-04-19T14:27:00Z",
     "http_code": 200,
-    "status": "online"
+    "status": "online",
+    "agents_count": 21,
+    "tasks_count": 4666,
+    "opportunities_count": 122560,
+    "mode": "active"
   }
 }

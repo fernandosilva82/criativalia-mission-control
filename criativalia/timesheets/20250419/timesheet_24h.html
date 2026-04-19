@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet Criativalia - Últimas 24h</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cri-olive-primary: #4A5D23;
+            --cri-olive-light: #7A9E7E;
+            --cri-olive-dark: #2F3D16;
+            --cri-gold: #D4A853;
+            --cri-gold-light: #E8C876;
+            --cri-text-primary: #F5F5DC;
+            --cri-text-secondary: #e2e8f0;
+            --cri-text-muted: #888888;
+            --cri-bg-primary: #0a0a0b;
+            --cri-bg-secondary: #141414;
+            --cri-bg-tertiary: #1a1a1b;
+            --cri-border: #2a2a2a;
+            --cri-card: #1a1a1b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cri-bg-primary);
+            color: var(--cri-text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--cri-border);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--cri-olive-primary), var(--cri-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: var(--cri-text-muted);
+            font-size: 1rem;
+        }
+        
+        .header .date-range {
+            color: var(--cri-gold);
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--cri-card);
+            border: 1px solid var(--cri-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--cri-olive-primary);
+            transform: translateY(-2px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cri-gold);
+        }
+        
+        .stat-label {
+            color: var(--cri-text-muted);
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+        
+        .timeline-container {
+            background: var(--cri-card);
+            border: 1px solid var(--cri-border);
+            border-radius: 16px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .timeline-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .legend-color.design { background: linear-gradient(135deg, #4A5D23, #7A9E7E); }
+        .legend-color.ops { background: linear-gradient(135deg, #D4A853, #E8C876); }
+        .legend-color.traffic { background: linear-gradient(135deg, #5B8DB8, #8FB8D8); }
+        .legend-color.copy { background: linear-gradient(135deg, #9B59B6, #BB8FCE); }
+        .legend-color.p0 { background: #E74C3C; }
+        
+        .timeline {
+            position: relative;
+            min-width: 1000px;
+        }
+        
+        .time-axis {
+            display: flex;
+            border-bottom: 2px solid var(--cri-border);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-slot {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--cri-text-muted);
+            padding: 5px;
+            border-left: 1px solid var(--cri-border);
+        }
+        
+        .time-slot:first-child { border-left: none; }
+        
+        .agent-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .agent-label {
+            width: 120px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding-right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .agent-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .agent-icon.design { background: linear-gradient(135deg, #4A5D23, #7A9E7E); }
+        .agent-icon.ops { background: linear-gradient(135deg, #D4A853, #E8C876); }
+        .agent-icon.traffic { background: linear-gradient(135deg, #5B8DB8, #8FB8D8); }
+        .agent-icon.copy { background: linear-gradient(135deg, #9B59B6, #BB8FCE); }
+        
+        .agent-timeline {
+            flex: 1;
+            height: 50px;
+            background: var(--cri-bg-secondary);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .activity-block {
+            position: absolute;
+            height: 40px;
+            top: 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding: 0 8px;
+            border: 1px solid transparent;
+        }
+        
+        .activity-block:hover {
+            transform: scaleY(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            border-color: var(--cri-gold);
+        }
+        
+        .activity-block.design { 
+            background: linear-gradient(135deg, rgba(74, 93, 35, 0.9), rgba(122, 158, 126, 0.9));
+            color: var(--cri-text-primary);
+        }
+        .activity-block.ops { 
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.9), rgba(232, 200, 118, 0.9));
+            color: #0a0a0b;
+        }
+        .activity-block.traffic { 
+            background: linear-gradient(135deg, rgba(91, 141, 184, 0.9), rgba(143, 184, 216, 0.9));
+            color: var(--cri-text-primary);
+        }
+        .activity-block.copy { 
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.9), rgba(187, 143, 206, 0.9));
+            color: var(--cri-text-primary);
+        }
+        
+        .activity-block.p0 {
+            border: 2px solid #E74C3C;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .activity-block.p0::after {
+            content: "🔥";
+            position: absolute;
+            top: 2px;
+            right: 4px;
+            font-size: 0.6rem;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: var(--cri-bg-tertiary);
+            border: 1px solid var(--cri-border);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.8rem;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .tooltip.show { opacity: 1; }
+        
+        .tooltip-title {
+            font-weight: 600;
+            color: var(--cri-gold);
+            margin-bottom: 5px;
+        }
+        
+        .tooltip-time {
+            color: var(--cri-text-muted);
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+        }
+        
+        .tooltip-desc {
+            color: var(--cri-text-secondary);
+            line-height: 1.4;
+        }
+        
+        .gap-indicator {
+            position: absolute;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(136, 136, 136, 0.1) 10px,
+                rgba(136, 136, 136, 0.1) 20px
+            );
+            pointer-events: none;
+        }
+        
+        .activity-table {
+            margin-top: 40px;
+            background: var(--cri-card);
+            border: 1px solid var(--cri-border);
+            border-radius: 16px;
+            padding: 30px;
+        }
+        
+        .activity-table h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--cri-border);
+        }
+        
+        th {
+            color: var(--cri-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:hover td {
+            background: var(--cri-bg-secondary);
+        }
+        
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-p0 { background: #E74C3C; color: white; }
+        .badge-p1 { background: var(--cri-gold); color: #0a0a0b; }
+        .badge-design { background: linear-gradient(135deg, #4A5D23, #7A9E7E); }
+        .badge-ops { background: linear-gradient(135deg, #D4A853, #E8C876); color: #0a0a0b; }
+        .badge-traffic { background: linear-gradient(135deg, #5B8DB8, #8FB8D8); }
+        .badge-copy { background: linear-gradient(135deg, #9B59B6, #BB8FCE); }
+        
+        .evidence-link {
+            color: var(--cri-gold);
+            text-decoration: none;
+        }
+        
+        .evidence-link:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--cri-text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--cri-border);
+        }
+        
+        .footer .logo {
+            font-weight: 700;
+            color: var(--cri-olive-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-container { padding: 15px; }
+            .agent-label { width: 80px; font-size: 0.75rem; }
+            .header h1 { font-size: 1.75rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Timesheet Criativalia</h1>
+        <p class="subtitle">Timeline de Atividades dos Agentes Autônomos</p>
+        <p class="date-range">Período: 18/04/2026 00:00 - 19/04/2026 23:59 (UTC+8)</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">11</div>
+            <div class="stat-label">Atividades Executadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Agentes Ativos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">38</div>
+            <div class="stat-label">Oportunidades Encontradas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">+R$126k</div>
+            <div class="stat-label">Impacto Potencial/Mês</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Commits em Produção</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">16</div>
+            <div class="stat-label">Quick Wins Identificados</div>
+        </div>
+    </div>
+    
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <h2>🕐 Timeline Visual</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color design"></div>
+                    <span>DesignBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color ops"></div>
+                    <span>OpsBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color traffic"></div>
+                    <span>TrafficBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color copy"></div>
+                    <span>CopyBot</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color p0"></div>
+                    <span>Prioridade P0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <div class="time-axis">
+                <div class="time-slot">00:00</div>
+                <div class="time-slot">02:00</div>
+                <div class="time-slot">04:00</div>
+                <div class="time-slot">06:00</div>
+                <div class="time-slot">08:00</div>
+                <div class="time-slot">10:00</div>
+                <div class="time-slot">12:00</div>
+                <div class="time-slot">14:00</div>
+                <div class="time-slot">16:00</div>
+                <div class="time-slot">18:00</div>
+                <div class="time-slot">20:00</div>
+                <div class="time-slot">22:00</div>
+            </div>
+            
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-icon design">🎨</div>
+                    DesignBot
+                </div>
+                <div class="agent-timeline">
+                    <!-- Gap 00:00-02:45 -->
+                    <div class="gap-indicator" style="left: 0%; width: 11.5%;"></div>
+                    
+                    <!-- Design System v1 - 02:45 -->
+                    <div class="activity-block design p0" style="left: 11.5%; width: 2%;" 
+                         data-task="Design System Update v1" 
+                         data-time="18/04 02:45 - 03:15 UTC"
+                         data-desc="Adicionados 7 componentes ao tema: Skeleton, Tabelas, Navegação, Toasts, Tooltips, Avatars, Metric Cards. Commit: 5433fb0f"
+                         onclick="openEvidence('/evidencias/20260418/design_update_0245.md')">
+                        Design System v1
+                    </div>
+                    
+                    <!-- Gap 03:15-02:08 (next day) -->
+                    <div class="gap-indicator" style="left: 13.5%; width: 45%;"></div>
+                    
+                    <!-- Design System v2 - 02:08 -->
+                    <div class="activity-block design p0" style="left: 58.5%; width: 2%;" 
+                         data-task="Design System v2.0" 
+                         data-time="19/04 02:08 - 02:38 UTC"
+                         data-desc="Verificação completa da paleta verde oliva (#4A5D23), logo com gradiente olive→gold. Commit: 1d06695f"
+                         onclick="openEvidence('/evidencias/20260419/design_update_0208.md')">
+                        Design System v2
+                    </div>
+                    
+                    <!-- Design Consistência - 02:47 -->
+                    <div class="activity-block design" style="left: 61%; width: 1.4%;" 
+                         data-task="Consistência Visual" 
+                         data-time="19/04 02:47 - 03:07 UTC"
+                         data-desc="Verificação de 6 páginas HTML, confirmação de tokens de design"
+                         onclick="openEvidence('/evidencias/20260419/design_update_0547.md')">
+                        Consistência
+                    </div>
+                    
+                    <!-- Refatoração deliverables - 04:00 -->
+                    <div class="activity-block design p0" style="left: 66.7%; width: 2%;" 
+                         data-task="Refatoração deliverables.html" 
+                         data-time="19/04 04:00 - 04:30 UTC"
+                         data-desc="Página de entregas refatorada para tema Criativalia, 161 linhas modificadas. Commit: 30ba561d"
+                         onclick="openEvidence('/evidencias/20250419/design_update_0400.md')">
+                        deliverables.html
+                    </div>
+                </div>
+            </div>
+            
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-icon ops">⚙️</div>
+                    OpsBot
+                </div>
+                <div class="agent-timeline">
+                    <!-- Gap 00:00-12:47 -->
+                    <div class="gap-indicator" style="left: 0%; width: 53%;"></div>
+                    
+                    <!-- Ops Scan 18/04 - 12:47 -->
+                    <div class="activity-block ops p0" style="left: 53%; width: 2%;" 
+                         data-task="Scanner de Oportunidades" 
+                         data-time="18/04 12:47 - 13:17 UTC"
+                         data-desc="Análise de métricas 90 dias: R$83k receita, ticket médio R$469, margem 54.5%. 14 oportunidades geradas."
+                         onclick="openEvidence('/evidencias/20260418/ops_scan_evidence.json')">
+                        Scanner Ops v1
+                    </div>
+                    
+                    <!-- Gap 13:17-00:41 -->
+                    <div class="gap-indicator" style="left: 55%; width: 52%;"></div>
+                    
+                    <!-- Ops Scan 19/04 - 00:41 -->
+                    <div class="activity-block ops" style="left: 56.7%; width: 0.7%;" 
+                         data-task="Scanner Alerta" 
+                         data-time="19/04 00:41 - 00:51 UTC"
+                         data-desc="Scan rápido: 12 oportunidades, top: Redirecionar Budget WhatsApp (+R$7.8k/mês)"
+                         onclick="openEvidence('/evidencias/20260419/ops_scanner_notification.json')">
+                        Alerta
+                    </div>
+                    
+                    <!-- Gap 00:51-08:25 -->
+                    <div class="gap-indicator" style="left: 57.4%; width: 31.6%;"></div>
+                    
+                    <!-- Ops Scanner Shopify - 08:25 -->
+                    <div class="activity-block ops p0" style="left: 89%; width: 1%;" 
+                         data-task="Scanner Shopify API" 
+                         data-time="19/04 08:25 - 08:40 UTC"
+                         data-desc="Conectado à API Shopify, 6 produtos analisados, 12 oportunidades, 95 produtos sem estoque detectados"
+                         onclick="openEvidence('/evidencias/ops-opportunity-scanner/2026-04-19_execucao.md')">
+                        Shopify Scan
+                    </div>
+                </div>
+            </div>
+            
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-icon copy">✍️</div>
+                    CopyBot
+                </div>
+                <div class="agent-timeline">
+                    <!-- Gap 00:00-12:47 -->
+                    <div class="gap-indicator" style="left: 0%; width: 53%;"></div>
+                    
+                    <!-- Copy Audit - 12:47 -->
+                    <div class="activity-block copy" style="left: 53%; width: 0.7%;" 
+                         data-task="Análise de Copy" 
+                         data-time="19/04 12:47 - 12:57 UTC"
+                         data-desc="Audit de 8 gaps de copy: descrições técnicas sem emoção, blog vazio, página Quem Somos genérica"
+                         onclick="openEvidence('/evidencias/20260419/copy_opps.json')">
+                        Copy Audit
+                    </div>
+                </div>
+            </div>
+            
+            <div class="agent-row">
+                <div class="agent-label">
+                    <div class="agent-icon traffic">🚀</div>
+                    TrafficBot
+                </div>
+                <div class="agent-timeline">
+                    <!-- Gap 00:00-23:14 -->
+                    <div class="gap-indicator" style="left: 0%; width: 96.4%;"></div>
+                    
+                    <!-- Traffic Scan - 23:14 -->
+                    <div class="activity-block traffic" style="left: 96.4%; width: 0.7%;" 
+                         data-task="Scan de Tendências" 
+                         data-time="19/04 23:14 - 23:24 UTC"
+                         data-desc="Análise de 10 oportunidades: Luminária Mushroom (+540%), Iluminação Escultural, Arandelas Articuladas"
+                         onclick="openEvidence('/evidencias/20260419/traffic_opps.json')">
+                        Tendências 2026
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tooltip" id="tooltip">
+            <div class="tooltip-title"></div>
+            <div class="tooltip-time"></div>
+            <div class="tooltip-desc"></div>
+        </div>
+    </div>
+    
+    <div class="activity-table">
+        <h2>📋 Detalhamento de Atividades</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Horário</th>
+                    <th>Agente</th>
+                    <th>Tarefa</th>
+                    <th>Duração</th>
+                    <th>Resultado</th>
+                    <th>Prioridade</th>
+                    <th>Evidência</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>18/04 02:45</td>
+                    <td><span class="badge badge-design">DesignBot</span></td>
+                    <td>Design System Update v1</td>
+                    <td>30 min</td>
+                    <td>+7 componentes, commit 5433fb0f</td>
+                    <td><span class="badge badge-p0">P0</span></td>
+                    <td><a href="/evidencias/20260418/design_update_0245.md" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>18/04 12:47</td>
+                    <td><span class="badge badge-ops">OpsBot</span></td>
+                    <td>Scanner de Oportunidades</td>
+                    <td>30 min</td>
+                    <td>14 oportunidades, +R$43.7k/mês</td>
+                    <td><span class="badge badge-p0">P0</span></td>
+                    <td><a href="/evidencias/20260418/ops_scan_evidence.json" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 02:08</td>
+                    <td><span class="badge badge-design">DesignBot</span></td>
+                    <td>Design System Refinamento v2.0</td>
+                    <td>30 min</td>
+                    <td>Tema verificado, commit 1d06695f</td>
+                    <td><span class="badge badge-p0">P0</span></td>
+                    <td><a href="/evidencias/20260419/design_update_0208.md" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 02:47</td>
+                    <td><span class="badge badge-design">DesignBot</span></td>
+                    <td>Consistência Visual</td>
+                    <td>20 min</td>
+                    <td>6 páginas verificadas</td>
+                    <td><span class="badge badge-p1">P1</span></td>
+                    <td><a href="/evidencias/20260419/design_update_0547.md" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 04:00</td>
+                    <td><span class="badge badge-design">DesignBot</span></td>
+                    <td>Refatoração deliverables.html</td>
+                    <td>30 min</td>
+                    <td>161 linhas modificadas, commit 30ba561d</td>
+                    <td><span class="badge badge-p0">P0</span></td>
+                    <td><a href="/evidencias/20250419/design_update_0400.md" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 00:41</td>
+                    <td><span class="badge badge-ops">OpsBot</span></td>
+                    <td>Scanner Alerta</td>
+                    <td>10 min</td>
+                    <td>12 oportunidades, +R$37.6k/mês</td>
+                    <td><span class="badge badge-p1">P1</span></td>
+                    <td><a href="/evidencias/20260419/ops_scanner_notification.json" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 08:25</td>
+                    <td><span class="badge badge-ops">OpsBot</span></td>
+                    <td>Scanner Shopify API</td>
+                    <td>15 min</td>
+                    <td>6 produtos, 95 sem estoque, +R$26.3k/mês</td>
+                    <td><span class="badge badge-p0">P0</span></td>
+                    <td><a href="/evidencias/ops-opportunity-scanner/2026-04-19_execucao.md" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 12:47</td>
+                    <td><span class="badge badge-copy">CopyBot</span></td>
+                    <td>Análise de Copy</td>
+                    <td>10 min</td>
+                    <td>8 gaps identificados</td>
+                    <td><span class="badge badge-p1">P1</span></td>
+                    <td><a href="/evidencias/20260419/copy_opps.json" class="evidence-link">Ver →</a></td>
+                </tr>
+                <tr>
+                    <td>19/04 23:14</td>
+                    <td><span class="badge badge-traffic">TrafficBot</span></td>
+                    <td>Scan de Tendências 2026</td>
+                    <td>10 min</td>
+                    <td>10 oportunidades, Mushroom +540%</td>
+                    <td><span class="badge badge-p1">P1</span></td>
+                    <td><a href="/evidencias/20260419/traffic_opps.json" class="evidence-link">Ver →</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <p><span class="logo">Criativalia</span> Control Plane - Timesheet Generator</p>
+        <p>Gerado em: 19/04/2026 23:23 UTC+8 | Agentes ativos: 4 | Próxima atualização: 24h</p>
+    </div>
+    
+    <script>
+        // Tooltip functionality
+        const tooltip = document.getElementById('tooltip');
+        const activityBlocks = document.querySelectorAll('.activity-block');
+        
+        activityBlocks.forEach(block => {
+            block.addEventListener('mouseenter', (e) => {
+                const title = block.getAttribute('data-task');
+                const time = block.getAttribute('data-time');
+                const desc = block.getAttribute('data-desc');
+                
+                tooltip.querySelector('.tooltip-title').textContent = title;
+                tooltip.querySelector('.tooltip-time').textContent = time;
+                tooltip.querySelector('.tooltip-desc').textContent = desc;
+                
+                tooltip.classList.add('show');
+            });
+            
+            block.addEventListener('mousemove', (e) => {
+                const rect = block.getBoundingClientRect();
+                tooltip.style.left = (e.pageX + 15) + 'px';
+                tooltip.style.top = (e.pageY - 10) + 'px';
+            });
+            
+            block.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+        
+        // Open evidence function
+        function openEvidence(path) {
+            console.log('Opening evidence:', path);
+            // In a real implementation, this would open the file
+            // For now, we'll just log it
+            alert('Evidência: ' + path + '\n\nEm um ambiente real, isso abriria o arquivo.');
+        }
+    </script>
+</body>
+</html>

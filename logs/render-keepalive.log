@@ -1,5 +1,13 @@
-[2026-04-19 04:13:26 CST] ✅ SUCCESS (HTTP 200)
-Criativalia Runtime on Render is awake and running.
-Active Agents: 21
-Database: 4447 tasks, 116892 opportunities
+[2026-04-19 08:07:00 UTC] ✅ SUCCESS - Render backend is awake
+
+HTTP Code: 200
 Endpoint: https://criativalia-runtime.onrender.com/api/stats
+
+Runtime Status:
+- isRunning: true
+- Mode: active
+- Agents registered: 21
+- Tasks in database: 4,590
+- Opportunities tracked: 120,584
+
+All agents idle and ready.

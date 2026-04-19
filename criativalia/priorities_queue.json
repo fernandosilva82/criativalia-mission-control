@@ -1,195 +1,352 @@
 {
-  "generated_at": "2026-04-19T04:30:00+08:00",
-  "generated_by": "CEO Agent - Orquestrador",
-  "total_opportunities": 18,
+  "generated_at": "2026-04-19T23:12:00+08:00",
+  "total_opportunities": 28,
+  "opportunities_analyzed": {
+    "ops": 10,
+    "traffic": 6,
+    "copy": 12
+  },
   "priorities": {
     "P0": [
       {
-        "id": "ops_007",
-        "agent": "TrafficBot",
-        "task": "Redirecionar R$1.000 do Google Ads para WhatsApp Agency Pro",
-        "why": "CAC 60% mais barato (R$20 vs R$50). ROI 4.5x. Impacto +R$7.8k/mês com mesmo budget.",
+        "id": "ops_001",
+        "agent": "OpsBot",
+        "task": "URGENTE: Reabastecer 95 produtos com estoque zerado",
+        "impact_score": 10,
+        "effort_score": 5,
+        "roi": 2.0,
+        "financial_impact": "+R$5k-15k/mês recuperado",
+        "why": "Perda de receita IMEDIATA. Clientes não conseguem comprar produtos sem estoque. Priorizar os 20 mais visitados.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "copy_001",
+        "agent": "CopyBot",
+        "task": "Corrigir placeholder '[Nome da Sua Marca]' no Abajur Accordion",
         "impact_score": 9,
-        "effort_score": 2,
-        "roi": 4.5,
-        "financial_impact": "+R$7.800/mês"
+        "effort_score": 1,
+        "roi": 9.0,
+        "financial_impact": "Credibilidade da marca",
+        "why": "Quebra profissionalismo da loja. Esforço mínimo, impacto máximo na percepção da marca.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_004",
+        "agent": "CopyBot",
+        "task": "Corrigir links sociais apontando para Shopify em vez de Criativalia",
+        "impact_score": 7,
+        "effort_score": 1,
+        "roi": 7.0,
+        "financial_impact": "Perda de seguidores/engajamento",
+        "why": "Links no rodapé enviam clientes para @shopify em vez dos perfis reais da marca. Quick win de 5 minutos.",
+        "source": "copy_opps.json"
       },
       {
         "id": "ops_002",
         "agent": "OpsBot",
-        "task": "Configurar frete grátis para pedidos >R$400 na Shopify",
-        "why": "65% dos pedidos estão abaixo de R$400. Threshold atual inexistente/altíssimo. ROI 8x.",
-        "impact_score": 8,
-        "effort_score": 1,
-        "roi": 8.0,
-        "financial_impact": "+R$1.800/mês"
-      },
-      {
-        "id": "ops_005",
-        "agent": "CopyBot",
-        "task": "Criar programa 'Primeira Compra' com 10% OFF + frete grátis",
-        "why": "80% dos clientes são novos. Taxa conversão 2.1% < 2.5% benchmark. Impacto +R$5.2k/mês.",
+        "task": "Criar bundles de iluminação 'Sala Completa' e 'Quarto Aconchegante'",
         "impact_score": 9,
-        "effort_score": 3,
-        "roi": 3.0,
-        "financial_impact": "+R$5.200/mês"
-      },
-      {
-        "id": "traffic_003",
-        "agent": "TrafficBot",
-        "task": "Importar/criar linha de luminárias mushroom + fotografia Pinterest",
-        "why": "Tendência viral no Pinterest. Design retrô anos 60. Alto apelo visual Instagram. ROI 3x.",
-        "impact_score": 9,
-        "effort_score": 3,
-        "roi": 3.0,
-        "financial_impact": "Potencial viral"
-      },
-      {
-        "id": "ops_008",
-        "agent": "OpsBot",
-        "task": "Implementar sequência recuperação carrinho abandonado (email + WhatsApp)",
-        "why": "72% abandono vs 69% benchmark. 15% recuperação = +R$4k/mês. Sequência: 1h email → 4h WhatsApp → 24h cupom.",
-        "impact_score": 9,
-        "effort_score": 4,
-        "roi": 2.25,
-        "financial_impact": "+R$4.000/mês"
-      },
-      {
-        "id": "ops_001",
-        "agent": "OpsBot",
-        "task": "Criar 3 bundles 'Luminária + Escultura' com desconto 15%",
-        "why": "Ticket médio R$244 vs meta R$500. Mushroom é bestseller 25% dos pedidos. Bundle aumenta ticket +35%.",
-        "impact_score": 9,
-        "effort_score": 3,
-        "roi": 3.0,
-        "financial_impact": "+R$4.200/mês"
-      },
-      {
-        "id": "ops_009",
-        "agent": "OpsBot",
-        "task": "Destacar categorias alta margem (60%) na home: Organizadores + Esculturas Premium",
-        "why": "Organizadores/Quadros têm 60% margem vs 50% Luminárias/Vasos. Shift mix = +2% margem média.",
-        "impact_score": 8,
-        "effort_score": 3,
-        "roi": 2.67,
-        "financial_impact": "+R$2.800/mês"
-      },
-      {
-        "id": "ops_003",
-        "agent": "OpsBot",
-        "task": "Implementar cross-sell automático de vasos PP em produtos decoração",
-        "why": "Vasos PP têm margem 60% e preço baixo (R$35-40). Combo = +25% itens adicionais. Pedido #2772 prova conceito.",
-        "impact_score": 8,
         "effort_score": 2,
-        "roi": 4.0,
-        "financial_impact": "+R$2.100/mês"
+        "roi": 4.5,
+        "financial_impact": "+R$3k-8k/mês | +20-35% ticket médio",
+        "why": "Iluminação é categoria principal. Bundles aumentam AOV com baixo esforço via Shopify Bundles (gratuito).",
+        "source": "ops_opps.json"
       }
     ],
     "P1": [
       {
-        "id": "ops_010",
+        "id": "ops_007",
         "agent": "OpsBot",
-        "task": "Mapear e implementar cross-sell por categoria no pós-compra",
-        "why": "Cross-sell de alta margem (60%) em pedido de margem menor (50%) = +10% margem total.",
-        "impact_score": 8,
+        "task": "Implementar automação de carrinho abandonado (3 emails: 1h, 24h, 72h)",
+        "impact_score": 9,
         "effort_score": 3,
-        "roi": 2.67,
-        "financial_impact": "+R$3.200/mês margem"
+        "roi": 3.0,
+        "financial_impact": "+R$2k-5k/mês | Recuperar 10-15% de carrinhos",
+        "why": "70% dos carrinhos são abandonados. Shopify tem automação nativa gratuita.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "traffic_003",
+        "agent": "TrafficBot",
+        "task": "Importar/criar linha de luminárias mushroom (tendência viral Pinterest)",
+        "impact_score": 9,
+        "effort_score": 3,
+        "roi": 3.0,
+        "financial_impact": "Potencial viral de tráfego",
+        "why": "Luminárias mushroom são viral no Pinterest. Alta potencialidade de conteúdo visual para Instagram.",
+        "source": "traffic_opps.json"
+      },
+      {
+        "id": "ops_003",
+        "agent": "OpsBot",
+        "task": "Adicionar badges de desconto % no tema da loja (compare_at_price)",
+        "impact_score": 7,
+        "effort_score": 2,
+        "roi": 3.5,
+        "financial_impact": "+R$2k-5k/mês | +10-15% conversão",
+        "why": "Clientes não percebem 'ofertas' atuais. Badges destacam economia real.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "copy_006",
+        "agent": "CopyBot",
+        "task": "Otimizar headline da homepage com proposta de valor diferenciada",
+        "impact_score": 7,
+        "effort_score": 2,
+        "roi": 3.5,
+        "financial_impact": "Melhor conversão primeira impressão",
+        "why": "Headline atual é genérica ('Decoração Sustentável'). Testar: 'Design Autoral que Transforma Sua Casa'.",
+        "source": "copy_opps.json"
       },
       {
         "id": "ops_004",
         "agent": "OpsBot",
-        "task": "Ajustar regras desconto: excluir produtos com compare_at_price >20% do preço",
-        "why": "Abajur Ecolight já tem 54% off, Mushroom leva -10% extra. Double discount reduz margem desnecessariamente.",
-        "impact_score": 7,
-        "effort_score": 2,
-        "roi": 3.5,
-        "financial_impact": "+R$1.500/mês"
-      },
-      {
-        "id": "ops_012",
-        "agent": "OpsBot",
-        "task": "Criar política margem mínima 55% para novos produtos",
-        "why": "Margem atual 54.5% está no limite. Novos produtos <55% puxam média para baixo.",
-        "impact_score": 7,
-        "effort_score": 2,
-        "roi": 3.5,
-        "financial_impact": "+R$1.800/mês"
-      },
-      {
-        "id": "traffic_001",
-        "agent": "CopyBot",
-        "task": "Criar categoria 'Luminárias 3D' + conteúdo blog educativo",
-        "why": "Busca por 'luminária 3D' crescendo significativamente. Oportunidade conteúdo educativo diferenciado.",
+        "task": "Configurar alertas de baixo estoque automáticos",
         "impact_score": 8,
-        "effort_score": 5,
-        "roi": 1.6,
-        "financial_impact": "Médio prazo"
-      },
-      {
-        "id": "traffic_002",
-        "agent": "OpsBot",
-        "task": "Desenvolver linha arandelas articuladas design exclusivo + sustentáveis",
-        "why": "Arandelas articuladas em alta. Lustres Gênesis e Starlumen já oferecem. Espaço para diferenciação.",
-        "impact_score": 7,
-        "effort_score": 4,
-        "roi": 1.75,
-        "financial_impact": "Médio prazo"
-      },
-      {
-        "id": "ops_006",
-        "agent": "DevBot",
-        "task": "Criar webhook alerta pedidos pendentes >12h para Slack/email",
-        "why": "Print on demand requer ativação manual. Pedidos >24h = cancelamentos. Alerta garante SLA.",
-        "impact_score": 7,
         "effort_score": 3,
-        "roi": 2.33,
-        "financial_impact": "Economia R$1.500-3.000/mês cancelamentos"
+        "roi": 2.67,
+        "financial_impact": "Evita ruptura de estoque | Economia R$1k-3k/mês",
+        "why": "Reposição atual é reativa. Alertas preventivos evitam novos casos de estoque zerado.",
+        "source": "ops_opps.json"
       },
       {
-        "id": "ops_011",
-        "agent": "DevBot",
-        "task": "Criar dashboard métricas faltantes: NPS, tempo resposta, taxa recompra 90d",
-        "why": "Impossível otimizar o que não se mede. 3 métricas críticas = null. Dashboard automático via APIs.",
+        "id": "ops_005",
+        "agent": "OpsBot",
+        "task": "Instalar app de cross-sell no checkout (One Click Upsell ou similar)",
         "impact_score": 8,
-        "effort_score": 4,
-        "roi": 2.0,
-        "financial_impact": "Economia indireta R$2.000+/mês churn"
+        "effort_score": 3,
+        "roi": 2.67,
+        "financial_impact": "+R$2k-6k/mês | +15-25% ticket médio",
+        "why": "Cliente compra 1 item e vai embora. Cross-sell captura AOV perdido no momento da compra.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "ops_008",
+        "agent": "OpsBot",
+        "task": "Criar coleções por ambiente: 'Sala', 'Quarto', 'Escritório'",
+        "impact_score": 6,
+        "effort_score": 2,
+        "roi": 3.0,
+        "financial_impact": "+R$1k-3k/mês | +8-12% conversão",
+        "why": "Clientes pensam em 'mobiliar minha sala', não em 'comprar um abajur'. Navegação por ambiente aumenta conversão.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "copy_010",
+        "agent": "CopyBot",
+        "task": "Adicionar copy introdutória na página de coleções",
+        "impact_score": 5,
+        "effort_score": 2,
+        "roi": 2.5,
+        "financial_impact": "Melhor jornada de compra",
+        "why": "Página /collections/all lista produtos sem contexto. Copy guia cliente na jornada.",
+        "source": "copy_opps.json"
       }
     ],
     "P2": [
       {
-        "id": "traffic_006",
+        "id": "traffic_001",
+        "agent": "TrafficBot",
+        "task": "Criar categoria 'Luminárias 3D' + conteúdo blog educativo",
+        "impact_score": 8,
+        "effort_score": 5,
+        "roi": 1.6,
+        "financial_impact": "Captura tendência de busca crescente",
+        "why": "Keyword 'luminária 3D' em alta no Brasil. Oportunidade de SEO + conteúdo.",
+        "source": "traffic_opps.json"
+      },
+      {
+        "id": "copy_002",
+        "agent": "CopyBot",
+        "task": "Criar conteúdo para blog vazio (guias de decoração, histórias dos designers)",
+        "impact_score": 8,
+        "effort_score": 6,
+        "roi": 1.33,
+        "financial_impact": "Tráfego orgânico + SEO + storytelling",
+        "why": "Blog/News vazio. Concorrentes usam conteúdo para engajamento. Esforço maior mas impacto significativo.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "traffic_002",
+        "agent": "TrafficBot",
+        "task": "Desenvolver linha de arandelas articuladas com design exclusivo",
+        "impact_score": 7,
+        "effort_score": 4,
+        "roi": 1.75,
+        "financial_impact": "Expansão de catálogo",
+        "why": "Arandelas articuladas em alta por funcionalidade. Espaço para diferenciação com design + materiais sustentáveis.",
+        "source": "traffic_opps.json"
+      },
+      {
+        "id": "ops_006",
         "agent": "OpsBot",
+        "task": "Auditar velocidade do site (Core Web Vitals) - Meta: LCP < 2.5s",
+        "impact_score": 7,
+        "effort_score": 4,
+        "roi": 1.75,
+        "financial_impact": "+R$1,5k-4k/mês | +10-20% conversão",
+        "why": "Sites lentos perdem 40% de conversão. Necessário verificar imagens, apps, tema.",
+        "source": "ops_opps.json"
+      },
+      {
+        "id": "traffic_006",
+        "agent": "TrafficBot",
         "task": "Desenvolver categoria 'Iluminação Sustentável' com certificações",
-        "why": "Crescente busca por LED eco-friendly. Starlumen já posiciona em LED técnico.",
         "impact_score": 7,
         "effort_score": 5,
         "roi": 1.4,
-        "financial_impact": "Médio prazo"
+        "financial_impact": "Posicionamento diferenciado",
+        "why": "Crescente busca por LED de baixo consumo + eco-friendly. Oportunidade de diferenciação.",
+        "source": "traffic_opps.json"
       },
       {
-        "id": "traffic_005",
-        "agent": "CopyBot",
-        "task": "Criar série 5+ guias iluminação por ambiente (sala, quarto, cozinha, home office, externo)",
-        "why": "Concorrentes focam em produtos, negligenciam conteúdo educativo. Gera backlinks naturais.",
+        "id": "ops_009",
+        "agent": "OpsBot",
+        "task": "Adicionar 2-3 fotos de lifestyle por produto (EachLabs IA se necessário)",
         "impact_score": 7,
-        "effort_score": 6,
-        "roi": 1.17,
-        "financial_impact": "Longo prazo SEO"
+        "effort_score": 5,
+        "roi": 1.4,
+        "financial_impact": "+R$2k-6k/mês | +15-25% conversão",
+        "why": "Produtos só têm fotos de catálogo (fundo branco). Fotos em ambiente real aumentam visualização.",
+        "source": "ops_opps.json"
       },
+      {
+        "id": "copy_007",
+        "agent": "CopyBot",
+        "task": "Adicionar storytelling emocional na página Quem Somos",
+        "impact_score": 7,
+        "effort_score": 5,
+        "roi": 1.4,
+        "financial_impact": "Conexão emocional com marca",
+        "why": "Página descreve o que faz mas falta o porquê. Storytelling cria conexão emocional.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_003",
+        "agent": "CopyBot",
+        "task": "Criar página FAQ (cuidados PLA, compatibilidade lâmpadas, produção sob demanda)",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Reduz dúvidas/atendimento",
+        "why": "FAQ inexistente (404). Centraliza dúvidas frequentes, reduz suporte.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_005",
+        "agent": "CopyBot",
+        "task": "Reescrever copy do Abajur EcoLight focando em transformação (não especificações)",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Melhor conversão produto",
+        "why": "Copy atual foca em 'biopolímero' em vez de 'santuário de aconchego'. Vender transformação, não especificações.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_008",
+        "agent": "CopyBot",
+        "task": "Criar lead magnet para newsletter (guia de iluminação ou 10% off)",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Aumenta base de emails",
+        "why": "Newsletter sem incentivo. Lead magnet (guia/cupom) aumenta taxa de conversão de cadastros.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "ops_010",
+        "agent": "OpsBot",
+        "task": "Criar dashboard de relatórios automáticos (Shopify Analytics ou Data Studio)",
+        "impact_score": 6,
+        "effort_score": 3,
+        "roi": 2.0,
+        "financial_impact": "Economia 5-10h/semana em relatórios manuais",
+        "why": "Decisões sem dados em tempo real. Dashboard automatiza métricas chave.",
+        "source": "ops_opps.json"
+      }
+    ],
+    "P3": [
       {
         "id": "traffic_004",
-        "agent": "CopyBot",
-        "task": "Criar página 'Luminárias em São Paulo' com entrega rápida",
-        "why": "Busca local 'loja iluminação São Paulo' tem volume. Lustres Gênesis tem showroom físico.",
+        "agent": "TrafficBot",
+        "task": "Criar página 'Luminárias em São Paulo' para capturar tráfego local",
         "impact_score": 6,
         "effort_score": 4,
         "roi": 1.5,
-        "financial_impact": "Médio prazo"
+        "financial_impact": "SEO local",
+        "why": "Concorrentes têm showrooms em SP. Oportunidade de capturar buscas locais mesmo sem loja física.",
+        "source": "traffic_opps.json"
+      },
+      {
+        "id": "traffic_005",
+        "agent": "TrafficBot",
+        "task": "Criar série de 5+ guias completos de iluminação por ambiente",
+        "impact_score": 7,
+        "effort_score": 6,
+        "roi": 1.17,
+        "financial_impact": "SEO + backlinks + autoridade",
+        "why": "Concorrentes focam em produtos, negligenciam conteúdo educativo. Esforço alto, retorno a médio prazo.",
+        "source": "traffic_opps.json"
+      },
+      {
+        "id": "copy_009",
+        "agent": "CopyBot",
+        "task": "Considerar renomear produtos com storytelling (nomes inspirados em cidades/conceitos)",
+        "impact_score": 5,
+        "effort_score": 7,
+        "roi": 0.71,
+        "financial_impact": "Memorabilidade de marca",
+        "why": "Nomes como 'Funky', 'Zoe', 'Zeus' são genéricos. Esforço alto (mudar SKU, URLs), impacto difícil de mensurar.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_012",
+        "agent": "CopyBot",
+        "task": "Reestruturar bullets da Arandela Aura (emocionais primeiro, técnicos depois)",
+        "impact_score": 5,
+        "effort_score": 3,
+        "roi": 1.67,
+        "financial_impact": "Melhor conversão produto",
+        "why": "9 bullets técnicos, falta conexão emocional. Mudança simples mas impacto limitado a 1 produto.",
+        "source": "copy_opps.json"
+      },
+      {
+        "id": "copy_011",
+        "agent": "CopyBot",
+        "task": "Reescrever página Envio enfatizando 'feito especialmente para você'",
+        "impact_score": 4,
+        "effort_score": 2,
+        "roi": 2.0,
+        "financial_impact": "Percepção de valor",
+        "why": "Página explica prazos mas não vende produção sob demanda. Impacto baixo, página pouco visitada.",
+        "source": "copy_opps.json"
       }
-    ],
-    "P3": []
+    ]
   },
-  "summary": "ANÁLISE CEO AGENT - 19/04/2026: 18 oportunidades analisadas com potencial total de +R$37.6k/mês. Foco imediato: 8 ações P0 que podem gerar +R$28.9k/mês com esforço baixo (ROI médio 3.6x). TOP 3: (1) Redirecionar budget WhatsApp (+R$7.8k/mês, esforço 2/10) - CAC 60% mais barato; (2) Configurar frete grátis R$400 (+R$1.8k/mês, esforço 1/10) - 65% pedidos abaixo threshold; (3) Programa Primeira Compra 10% OFF (+R$5.2k/mês) - 80% clientes são novos. Todos os dados baseados em análise real de 50 produtos e 20 pedidos Shopify."
+  "summary": "Análise consolidada de 28 oportunidades identificadas pelos agentes scanners (OpsBot, TrafficBot, CopyBot). Destaque para 4 tarefas P0-CRÍTICAS: (1) 95 produtos sem estoque representam perda imediata de R$5k-15k/mês, (2) Placeholder de marca no produto quebra credibilidade, (3) Links sociais errados enviam clientes para Shopify, (4) Bundles de iluminação oferecem ROI 4.5x com esforço mínimo. Foco nos próximos 7 dias deve ser recuperar estoque + corrigir erros críticos de copy. Potencial financeiro total das oportunidades P0+P1: +R$20k-45k/mês.",
+  "next_actions": {
+    "immediate": [
+      "OpsBot: Verificar relatório de produtos sem estoque no Shopify Admin",
+      "CopyBot: Editar descrição Abajur Accordion - substituir placeholder",
+      "CopyBot: Atualizar links sociais no tema (footer)",
+      "OpsBot: Configurar bundles no Shopify (Products > Bundles)"
+    ],
+    "week_1": [
+      "OpsBot: Configurar automação de carrinho abandonado (Marketing > Automations)",
+      "CopyBot: Otimizar headline da homepage",
+      "OpsBot: Adicionar badges de desconto no tema"
+    ],
+    "month_1": [
+      "TrafficBot: Pesquisar fornecedores de luminárias mushroom",
+      "CopyBot: Criar conteúdo inicial para blog",
+      "OpsBot: Configurar alertas de estoque automáticos"
+    ]
+  },
+  "financial_projection": {
+    "p0_potential": "+R$8k-23k/mês",
+    "p1_potential": "+R$12k-28k/mês",
+    "p2_potential": "+R$8k-20k/mês",
+    "total_estimated": "+R$28k-71k/mês"
+  }
 }

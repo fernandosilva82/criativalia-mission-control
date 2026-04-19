@@ -1,1 +1,212 @@
-/root/.openclaw/workspace/criativalia/timesheets/20260419/timesheet_24h.json
+{
+  "date": "2026-04-19",
+  "generated_at": "2026-04-19T23:09:00Z",
+  "period": "2026-04-18 23:09 UTC - 2026-04-19 23:09 UTC",
+  "total_agents_active": 4,
+  "agents": {
+    "DesignBot": {
+      "agent_name": "Night Shift Design Agent",
+      "total_tasks": 3,
+      "total_duration_min": 155,
+      "activities": [
+        {
+          "id": "design_001",
+          "start": "2026-04-18T02:45:00Z",
+          "end": "2026-04-18T04:30:00Z",
+          "start_time": "02:45",
+          "end_time": "04:30",
+          "duration_min": 105,
+          "task": "Design System Update v2.0 - Refinamento tema CSS",
+          "description": "Verificação do tema CSS existente, adição de 15 componentes (skeleton, tabelas, navegação, toasts, tooltips, avatares, header, metric cards, divider), confirmação de paleta verde oliva #4A5D23 e textos off-white #F5F5DC",
+          "priority": "P1",
+          "evidence_link": "/evidencias/20260418/design_update_0245.md",
+          "outputs": [
+            "public/css/criativalia-theme.css (+608 linhas de componentes)",
+            "public/index.html (metatags + favicon)",
+            "public/unified-dashboard.html (metatags)"
+          ]
+        },
+        {
+          "id": "design_002",
+          "start": "2026-04-19T02:08:00Z",
+          "end": "2026-04-19T02:35:00Z",
+          "start_time": "02:08",
+          "end_time": "02:35",
+          "duration_min": 27,
+          "task": "Design System - Verificação de consistência visual",
+          "description": "Verificação de tokens de design, componentes reutilizáveis, logo Criativalia, confirmação de paleta verde oliva #4A5D23 e textos off-white #F5F5DC em todas as páginas",
+          "priority": "P2",
+          "evidence_link": "/evidencias/20260419/design_update_0208.md",
+          "outputs": [
+            "Commit 1d06695f na branch clean-deploy-new",
+            "Pull Request criada no GitHub"
+          ]
+        },
+        {
+          "id": "design_003",
+          "start": "2026-04-19T05:47:00Z",
+          "end": "2026-04-19T06:10:00Z",
+          "start_time": "05:47",
+          "end_time": "06:10",
+          "duration_min": 23,
+          "task": "Design Update - Verificação final tema v2.0",
+          "description": "Verificação final da consistência visual em 6 páginas HTML, confirmação de fundo escuro #0a0a0b, bordas #2a2a2a, 759 linhas de CSS documentadas",
+          "priority": "P2",
+          "evidence_link": "/evidencias/20260419/design_update_0547.md",
+          "outputs": [
+            "6 páginas HTML verificadas (index, dashboard, unified-dashboard, deliverables, kanban, timesheet)",
+            "759 linhas de CSS confirmadas"
+          ]
+        }
+      ],
+      "color": "#4A90D9",
+      "status": "active"
+    },
+    "OpsBot": {
+      "agent_name": "OpsBot - Scanner de Oportunidades",
+      "total_tasks": 3,
+      "total_duration_min": 94,
+      "activities": [
+        {
+          "id": "ops_001",
+          "start": "2026-04-18T12:47:00Z",
+          "end": "2026-04-18T13:30:00Z",
+          "start_time": "12:47",
+          "end_time": "13:30",
+          "duration_min": 43,
+          "task": "Scanner de Oportunidades - Análise operacional completa",
+          "description": "Análise de métricas 90 dias: R$83.056,40 receita, 177 pedidos, 250 produtos, LTV/CAC 13.93x, 14 oportunidades identificadas, impacto +R$43.7k/mês",
+          "priority": "P0",
+          "evidence_link": "/evidencias/20260418/ops_scan_evidence.json",
+          "outputs": [
+            "opportunities/20260418/ops_opps.json",
+            "Top quick wins: Carrinho abandonado, WhatsApp scale, Bundles"
+          ]
+        },
+        {
+          "id": "ops_002",
+          "start": "2026-04-19T00:41:00Z",
+          "end": "2026-04-19T00:55:00Z",
+          "start_time": "00:41",
+          "end_time": "00:55",
+          "duration_min": 14,
+          "task": "Scanner - Notificação de conclusão",
+          "description": "Notificação de scanner completo, 12 oportunidades encontradas, impacto financeiro +R$37.6k/mês, 5 quick wins identificados, top: Redirecionar budget WhatsApp",
+          "priority": "P1",
+          "evidence_link": "/evidencias/20260419/ops_scanner_notification.json",
+          "outputs": [
+            "ops_opps.json",
+            "ops_summary.md"
+          ]
+        },
+        {
+          "id": "ops_003",
+          "start": "2026-04-19T08:25:00Z",
+          "end": "2026-04-19T09:02:00Z",
+          "start_time": "08:25",
+          "end_time": "09:02",
+          "duration_min": 37,
+          "task": "Scanner Shopify - Análise de produtos e oportunidades",
+          "description": "Conexão API Shopify validada, análise de 6 produtos, 12 oportunidades identificadas, 7 quick wins, impacto estimado R$26.3k/mês. Crítico: 95 produtos sem estoque, 100% sem SKU",
+          "priority": "P0",
+          "evidence_link": "/evidencias/ops-opportunity-scanner/2026-04-19_execucao.md",
+          "outputs": [
+            "opportunities/20260419/ops_opps.json",
+            "opportunities/20260419/README.md",
+            "timesheets/ops-opportunity-scanner_2026-04-19.json"
+          ]
+        }
+      ],
+      "color": "#E74C3C",
+      "status": "active"
+    },
+    "TrafficBot": {
+      "agent_name": "TrafficBot - Análise de Tráfego",
+      "total_tasks": 1,
+      "total_duration_min": 45,
+      "activities": [
+        {
+          "id": "traffic_001",
+          "start": "2026-04-19T23:14:00Z",
+          "end": "2026-04-19T23:59:00Z",
+          "start_time": "23:14",
+          "end_time": "23:59",
+          "duration_min": 45,
+          "task": "Análise de tendências de iluminação 2026",
+          "description": "Pesquisa de tendências: Luminária Mushroom (+540% Pinterest), Iluminação Escultural (Euroluce 2025), Arandelas Articuladas, Cordless Lighting, Materiais Nobres (travertino, alabastro), Wabi-Sabi, Vidro Soprado. 10 oportunidades de SEO e conteúdo identificadas",
+          "priority": "P1",
+          "evidence_link": "/opportunities/20260419/traffic_opps.json",
+          "outputs": [
+            "10 oportunidades de tráfego estruturadas",
+            "Foco: SEO long-form, link building, schema markup"
+          ]
+        }
+      ],
+      "color": "#27AE60",
+      "status": "active"
+    },
+    "CopyBot": {
+      "agent_name": "CopyBot - Geração de Copy",
+      "total_tasks": 1,
+      "total_duration_min": 52,
+      "activities": [
+        {
+          "id": "copy_001",
+          "start": "2026-04-19T12:47:00Z",
+          "end": "2026-04-19T13:39:00Z",
+          "start_time": "12:47",
+          "end_time": "13:39",
+          "duration_min": 52,
+          "task": "Análise de copy e oportunidades de conteúdo",
+          "description": "Análise completa da loja Criativalia vs concorrentes (Hay, Vitsœ, Gantri). 8 gaps identificados: descrições técnicas sem transformação emocional, blog vazio, página Quem Somos genérica, newsletter apenas promoções, headline genérica, narrativa de sustentabilidade fraca, vasos autoirrigáveis sem conteúdo, badge Brasil subutilizado",
+          "priority": "P1",
+          "evidence_link": "/opportunities/20260419/copy_opps.json",
+          "outputs": [
+            "8 oportunidades de copy estruturadas",
+            "Análise comparativa com Vitsœ, Hay, Gantri"
+          ]
+        }
+      ],
+      "color": "#9B59B6",
+      "status": "active"
+    }
+  },
+  "summary": {
+    "total_tasks": 8,
+    "total_hours": 5.77,
+    "p0_tasks": 2,
+    "p1_tasks": 5,
+    "p2_tasks": 3,
+    "quick_wins_generated": 19,
+    "estimated_financial_impact": "R$133.9k/mês",
+    "top_opportunities": [
+      "URGENTE: 95 produtos sem estoque (-R$5k-15k/mês recuperável)",
+      "Carrinho abandonado automatizado (+R$6.3k/mês)",
+      "Escala WhatsApp CAC R$20 (+R$6k/mês)",
+      "Bundles 'Decoração Completa' (+R$4.5k/mês)",
+      "Frete grátis threshold R$199 (+R$3.5k/mês)"
+    ]
+  },
+  "gaps_identified": [
+    "Nenhum gap crítico - todos os agentes ativos nas últimas 24h",
+    "DesignBot: 3 tarefas executadas com sucesso",
+    "OpsBot: 3 scanners operacionais completos",
+    "TrafficBot: Análise de tendências completada",
+    "CopyBot: Análise de copy finalizada"
+  ],
+  "critical_issues": [
+    "95 produtos sem estoque (perda imediata de receita)",
+    "100% dos produtos sem SKU (impede rastreamento/ERP)",
+    "67% sem preço de comparação (perde efeito âncora)",
+    "Blog/News completamente vazio"
+  ],
+  "next_recommended_actions": [
+    "PRIORIDADE 0: Reabastecer 20 produtos mais visitados sem estoque",
+    "PRIORIDADE 0: Preencher SKU em todos os produtos",
+    "Configurar frete grátis >R$199 (quick win)",
+    "Implementar automação de carrinho abandonado",
+    "Reescrever descrições com storytelling emocional",
+    "Criar 12 posts pilar para blog (SEO)",
+    "Implementar Schema.org Product markup"
+  ]
+}

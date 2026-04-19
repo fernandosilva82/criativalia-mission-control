@@ -1,0 +1,112 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Descrições de produto focadas em especificações, não em transformação",
+    "description": "As descrições atuais (Arandela Articture, Pendente Clara, Abajurs) são listas técnicas (material, voltagem, watts) sem conectar o produto à transformação do ambiente ou da vida do cliente. Comparado a Vitsœ ('Start small. Add to it. Reconfigure it. Take it with you when you move') e Gantri ('Great lighting can transform a space and how you feel in it'), a Criativalia perde oportunidade de venda emocional.",
+    "affected_pages": [
+      "https://criativalia.com/products/arandela-articture",
+      "https://criativalia.com/products/pendente-clara",
+      "https://criativalia.com/collections/abajures"
+    ],
+    "impact_score": 9,
+    "effort_score": 5,
+    "action_suggested": "Reescrever descrições com estrutura: (1) Cena de transformação - 'Imagine seu...', (2) Benefício emocional - 'Crie um ambiente que...', (3) Diferencial único da Criativalia, (4) Especificações técnicas apenas no final",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Blog/News completamente vazio - gap crítico de conteúdo",
+    "description": "A seção /blogs/news existe mas não possui nenhum artigo. Concorrentes como Hay ('Inspiration', 'News') e Vitsœ ('Editorial: Vitsœ Voice') usam conteúdo para SEO, engajimento e posicionamento. A Criativalia perde tráfego orgânico e oportunidade de construir autoridade em design sustentável.",
+    "affected_pages": [
+      "https://criativalia.com/blogs/news"
+    ],
+    "impact_score": 8,
+    "effort_score": 6,
+    "action_suggested": "Criar calendário editorial com 4 pilares: (1) Guias de estilo por ambiente, (2) Histórias dos designers/criadores, (3) Conteúdo educativo sobre materiais sustentáveis, (4) Transformações reais de clientes (before/after)",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Página 'Quem Somos' genérica - falta história de fundo",
+    "description": "O texto atual é genérico ('design contemporâneo, sustentabilidade e personalidade'). Não conta a origem da marca, quem são os fundadores, o estúdio de produção, o processo de design. Gantri destaca 'Based in the Bay Area' e a 'Factory in San Leandro'. Vitsœ tem 65 anos de história. Criativalia precisa humanizar sua origem.",
+    "affected_pages": [
+      "https://criativalia.com/pages/quem-somos"
+    ],
+    "impact_score": 7,
+    "effort_score": 4,
+    "action_suggested": "Adicionar: (1) Foto do estúdio/taller de produção, (2) História de como nasceu a marca, (3) Processo de impressão 3D em PLA mostrado visualmente, (4) Time/fundadores com fotos, (5) Visão de futuro - 'Para onde vamos'",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Newsletter sem estratégia de conteúdo - apenas 'promoções'",
+    "description": "O copy atual da captura de email é 'Assine nossa newletter e receba promoções em primeira mão'. Isso atrai apenas caçadores de desconto. Concorrentes de premium usam newsletters para contar histórias, inspirar, educar. A Criativalia pode perder margem ao competir só em preço.",
+    "affected_pages": [
+      "https://criativalia.com/"
+    ],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Mudar copy para: 'Receba inspiração de design sustentável, dicas de decoração e histórias exclusivas do nosso estúdio - direto no seu email.' Criar welcome sequence de 5 emails: (1) Boas-vindas + história, (2) Guia de escolha de luminária, (3) Sustentabilidade explicada, (4) Transformações de clientes, (5) Oferta exclusiva",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Headline da home genérica - 'Os Mais Desejados' não vende sonho",
+    "description": "A seção de destaque na home usa 'Os Mais Desejados' - linguagem de marketplace genérico. Não comunica o valor da marca. Comparado a Hay ('Living Room Refresh', 'Contemporary bathroom essentials') e Vitsœ (cada produto com storytelling), a Criativalia pode melhorar muito o primeiro impacto.",
+    "affected_pages": [
+      "https://criativalia.com/"
+    ],
+    "impact_score": 7,
+    "effort_score": 2,
+    "action_suggested": "Testar headlines: (1) 'Design que transforma seu espaço', (2) 'Peças únicas, produção consciente', (3) 'Iluminação e decoração com propósito'. Criar seções temáticas: 'Para sua sala de estar', 'Para quem ama plantas', 'Minimalismo com alma'",
+    "category": "headlines_messaging"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Falta narrativa de sustentabilidade além do material PLA",
+    "description": "A Criativalia menciona 'PLA de fontes renováveis' mas não aprofunda o storytelling de sustentabilidade. Gantri tem seção dedicada 'Manufacturing re-invented' explicando digital manufacturing. Vitsœ tem 'Against obsolescence' como pilar. A Criativalia pode diferenciar mais seu compromisso ambiental.",
+    "affected_pages": [
+      "https://criativalia.com/pages/quem-somos",
+      "https://criativalia.com/"
+    ],
+    "impact_score": 8,
+    "effort_score": 5,
+    "action_suggested": "Criar página dedicada 'Nosso compromisso' com: (1) Produção sob demanda = zero desperdício de estoque, (2) Embalagens sustentáveis, (3) Logística de baixo impacto, (4) Programa de devolução/reciclagem de produtos antigos, (5) Metas de carbono neutro",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Vasos autoirrigáveis - oportunidade de nicho não explorada em conteúdo",
+    "description": "Vasos autoirrigáveis são produtos de entrada perfeitos (preço acessível, problema real). Mas não há conteúdo educativo sobre: plantas ideais para autoirrigação, cuidados, como funciona o sistema. Isso é SEO de cauda longa não aproveitado. Competidores de vasos (como a própria Gantri com acessórios) usam guias extensivos.",
+    "affected_pages": [
+      "https://criativalia.com/collections/vasos-autoirrigaveis",
+      "https://criativalia.com/products/vaso-autoirrigavel-flollia"
+    ],
+    "impact_score": 6,
+    "effort_score": 4,
+    "action_suggested": "Criar série de conteúdo: (1) '5 plantas perfeitas para vasos autoirrigáveis', (2) 'Como funciona a autoirrigação - guia completo', (3) 'Viagem tranquila: cuide das plantas à distância', (4) Video mostrando o sistema em funcionamento",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-04-19T12:47:00Z",
+    "title": "Badge 'FABRICADO NO BRASIL' subutilizado - pode ser pilar de orgulho",
+    "description": "O badge 'FABRICADO NO BRASIL' aparece nas páginas de produto mas sem contexto. Em época de valorização do nacional e economia local, isso é um ativo de marca não explorado. Não há história sobre o onde, quem produz, o impacto na comunidade.",
+    "affected_pages": [
+      "https://criativalia.com/products/arandela-articture",
+      "https://criativalia.com/products/pendente-clara",
+      "https://criativalia.com/pages/quem-somos"
+    ],
+    "impact_score": 5,
+    "effort_score": 3,
+    "action_suggested": "Expandir para narrativa: 'Produzido em nosso estúdio no Rio de Janeiro', 'Design brasileiro, materiais locais', 'Cada compra apoia a economia criativa brasileira'. Adicionar foto do estúdio e time de produção.",
+    "category": "brand_storytelling"
+  }
+]
