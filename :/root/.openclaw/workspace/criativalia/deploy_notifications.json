@@ -1,0 +1,81 @@
+{
+  "notifiedDeployments": [
+    {
+      "id": 24305761094,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T11:50:41Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24305761094"
+    },
+    {
+      "id": 24290694896,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T11:50:41Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24290694896"
+    },
+    {
+      "id": 24269147211,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T11:50:41Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269147211"
+    },
+    {
+      "id": 24269137683,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T11:50:41Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269137683"
+    },
+    {
+      "id": 24269045119,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T11:50:41Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269045119"
+    }
+  ],
+  "last_check": "2026-04-18T12:08:00Z",
+  "last_check_summary": "✅ Verificação em 18/04/2026, 09:08 BRT. 5 workflows de deploy analisados (de 10 total). 0 novos deploys para notificar.",
+  "totalWorkflowsChecked": 10,
+  "check_count": 15,
+  "checkHistory": [
+    {
+      "timestamp": "2026-04-18T11:43:51.123Z",
+      "workflows_checked": 10,
+      "new_deploys": 2,
+      "notifications_sent": 2
+    },
+    {
+      "timestamp": "2026-04-18T11:51:42Z",
+      "workflows_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0
+    },
+    {
+      "timestamp": "2026-04-18T11:52:00Z",
+      "workflows_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0
+    },
+    {
+      "timestamp": "2026-04-18T11:53:17Z",
+      "workflows_checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0
+    },
+    {
+      "timestamp": "2026-04-18T11:56:00Z",
+      "workflows_checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0
+    },
+    {
+      "timestamp": "2026-04-18T12:08:00Z",
+      "workflows_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0
+    }
+  ]
+}

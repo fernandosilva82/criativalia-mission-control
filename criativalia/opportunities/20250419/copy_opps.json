@@ -1,0 +1,138 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Placeholder genérico '[Nome da Sua Marca]' na descrição do Abajur Accordion",
+    "description": "A descrição do produto Abajur Accordion contém o placeholder '[Nome da Sua Marca]' em vez do nome real da marca Criativalia. Isso quebra a credibilidade e profissionalismo da copy.",
+    "affected_pages": ["https://criativalia.com/products/abajur-accordion"],
+    "impact_score": 9,
+    "effort_score": 1,
+    "action_suggested": "Substituir '[Nome da Sua Marca]' por 'Criativalia' em toda a descrição do produto",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Blog/News vazio - Oportunidade de conteúdo",
+    "description": "A seção /blogs/news existe mas não possui conteúdo publicado. Concorrentes como Hay usam blogs de inspiração ('Ideas to refresh the living room') para engajamento e SEO. A Criativalia perde tráfego orgânico e oportunidades de storytelling.",
+    "affected_pages": ["https://criativalia.com/blogs/news"],
+    "impact_score": 8,
+    "effort_score": 6,
+    "action_suggested": "Criar conteúdo editorial: guias de decoração sustentável, histórias dos designers, dicas de iluminação, tendências de design consciente",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Página FAQ inexistente",
+    "description": "Não há página de FAQ (tentativa em /pages/faq retornou 404). Embora tenha políticas de reembolso e envio, não há um local centralizado para dúvidas frequentes sobre os produtos (como cuidados com PLA, duração, etc).",
+    "affected_pages": ["https://criativalia.com/pages/faq"],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Criar página FAQ com: cuidados com produtos PLA, compatibilidade de lâmpadas, diferenças entre modelos, como funciona produção sob demanda",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Social links apontando para Shopify em vez de Criativalia",
+    "description": "Os links de redes sociais no rodapé (Facebook, Instagram, TikTok, X, YouTube) estão apontando para as contas genéricas do Shopify (@shopify) em vez das redes da Criativalia. Perda de seguidores e engajamento.",
+    "affected_pages": ["https://criativalia.com/collections", "https://criativalia.com/blogs/news"],
+    "impact_score": 7,
+    "effort_score": 1,
+    "action_suggested": "Atualizar todos os links sociais para apontar para perfis reais da Criativalia (@criativalia ou similar)",
+    "category": "copy_error"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Copy do Abajur EcoLight focada em funcionalidade, não transformação",
+    "description": "A descrição do Abajur EcoLight é tecnicamente correta mas foca em especificações (PLA, dimensões, voltagem) em vez de vender a transformação do ambiente. Comparado ao Accordion que vende 'santuário de aconchego', o EcoLight vende 'biopolímero sustentável'.",
+    "affected_pages": ["https://criativalia.com/products/abajur-ecolight"],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Reescrever copy focando em: como a luz transforma o ambiente, sensação de bem-estar, momentos de conexão - depois mencionar sustentabilidade como diferencial",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Headline da homepage não diferencia a marca",
+    "description": "O título da homepage 'Decoração Sustentável e Moderna para Casa e Jardim' é genérico e não comunica a proposta de valor única da Criativalia. Não menciona design autoral, produção sob demanda, ou o aspecto emocional da marca.",
+    "affected_pages": ["https://criativalia.com/"],
+    "impact_score": 7,
+    "effort_score": 2,
+    "action_suggested": "Testar headlines que vendem transformação: 'Design Autoral que Transforma Sua Casa em um Espaço Único' ou 'Peças Exclusivas, Produzidas Sob Demanda, Com Consciência'",
+    "category": "headline_optimization"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Página Quem Somos é funcional mas sem storytelling emocional",
+    "description": "A página Quem Somos descreve o que a marca faz (design, PLA, produção local) mas falta a história do porquê. Concorrentes como Vitsœ vendem 'Against obsolescence' e 'Investing for life' - valores que conectam emocionalmente.",
+    "affected_pages": ["https://criativalia.com/pages/quem-somos"],
+    "impact_score": 7,
+    "effort_score": 5,
+    "action_suggested": "Adicionar storytelling: quem fundou e por quê, a jornada da marca, o que significa 'Criativalia', histórias de clientes, missão além do lucro",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Oportunidade de email marketing - Newsletter sem lead magnet",
+    "description": "O footer tem 'Assine nossa newsletter' mas não oferece nada em troca (desconto, guia, conteúdo exclusivo). Sem incentivo, taxa de conversão baixa.",
+    "affected_pages": ["https://criativalia.com/collections/all", "https://criativalia.com/pages/quem-somos"],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "Criar lead magnet: 'Guia de Iluminação Sustentável para Ambientes Aconchegantes' ou cupom de 10% na primeira compra em troca do email",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_009",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Nomes de produtos pouco memoráveis",
+    "description": "Produtos como 'Abajur Funky', 'Abajur Zoe', 'Abajur Zeus' usam nomes genéricos que não criam conexão emocional. Comparado a marcas como Gantri que usam nomes de designers ou conceitos, os nomes da Criativalia são esquecíveis.",
+    "affected_pages": [
+      "https://criativalia.com/products/abajur-funky",
+      "https://criativalia.com/products/abajur-zoe",
+      "https://criativalia.com/products/abajur-zeus"
+    ],
+    "impact_score": 5,
+    "effort_score": 7,
+    "action_suggested": "Considerar renomear produtos com storytelling: inspirados em cidades (Palermo, Tokyo funcionam), conceitos de design, ou criar coleções temáticas",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_010",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Copy de categoria/coleções ausente",
+    "description": "A página /collections/all lista produtos sem nenhuma introdução ou copy de categoria. Sem contexto sobre a coleção, sem guiar o cliente na jornada de compra.",
+    "affected_pages": ["https://criativalia.com/collections/all"],
+    "impact_score": 5,
+    "effort_score": 2,
+    "action_suggested": "Adicionar copy introdutória explicando a coleção: 'Nossa coleção de luminárias combina design autoral com sustentabilidade...' + filtros por ambiente (quarto, sala, escritório)",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_011",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Página Envio e Prazos sem copy persuasiva",
+    "description": "A página explica os prazos mas não vende a proposta de valor da produção local (3-10 dias). Não menciona o benefício de receber algo feito sob demanda especialmente para o cliente.",
+    "affected_pages": ["https://criativalia.com/pages/envio-e-prazos"],
+    "impact_score": 4,
+    "effort_score": 2,
+    "action_suggested": "Reescrever enfatizando: 'Sua peça é feita especialmente para você' + explicar que produção sob demanda = menos desperdício + exclusividade",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_012",
+    "timestamp": "2026-04-19T04:36:00Z",
+    "title": "Arandela Aura: lista de bullets técnicas demais",
+    "description": "A Arandela Aura tem 9 bullets técnicos ('Não aquece o ambiente', 'Baixo impacto ambiental') mas falta conectar com o benefício emocional. Comparado com concorrentes que vendem 'atmosfera' e 'bem-estar'.",
+    "affected_pages": ["https://criativalia.com/products/arandela-aura"],
+    "impact_score": 5,
+    "effort_score": 3,
+    "action_suggested": "Reestruturar: começar com bullets emocionais (ambiente aconchegante, design que impressiona) depois especificações técnicas",
+    "category": "product_copy"
+  }
+]

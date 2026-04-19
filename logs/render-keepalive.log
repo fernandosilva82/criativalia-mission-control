@@ -1,6 +1,5 @@
-[2026-04-10T19:05:05.877Z] SUCCESS - Render service is awake
-Status: 200 OK
-Response time: 237ms
-Runtime: Active with 21 agents
-Database: 2127 tasks, 56096 opportunities
-All agents status: idle
+[2026-04-19 04:13:26 CST] ✅ SUCCESS (HTTP 200)
+Criativalia Runtime on Render is awake and running.
+Active Agents: 21
+Database: 4447 tasks, 116892 opportunities
+Endpoint: https://criativalia-runtime.onrender.com/api/stats

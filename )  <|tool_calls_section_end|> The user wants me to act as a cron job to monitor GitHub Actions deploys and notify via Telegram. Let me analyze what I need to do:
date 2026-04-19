@@ -1,0 +1,19 @@
+: "2026-04-19T01:33:00Z",
+  "runs_checked": 10,
+  "new_notifications": 0,
+  "notified": [
+    24305761094,
+    24290694896,
+    24269147211,
+    24269137683,
+    24269045119
+  ],
+  "ignored": [
+    24305760792,
+    24290694545,
+    24269146937,
+    24269137004,
+    24269044717
+  ],
+  "note": "Nenhum deploy novo encontrado em 2026-04-19T01:33:00Z. Total de deploys notificados: 5."
+}

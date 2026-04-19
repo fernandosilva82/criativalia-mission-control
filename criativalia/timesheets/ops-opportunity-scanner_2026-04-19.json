@@ -1,0 +1,46 @@
+{
+  "agent": "ops-opportunity-scanner",
+  "agent_name": "OpsBot - Scanner de Oportunidades",
+  "timestamp": "2026-04-19T04:38:00Z",
+  "date": "2026-04-19",
+  "task": "Análise operacional da loja Shopify Criativalia",
+  "status": "completed",
+  "outputs": [
+    {
+      "type": "file",
+      "path": "/root/.openclaw/workspace/criativalia/opportunities/20260419/ops_opps.json",
+      "description": "12 oportunidades estruturadas em JSON"
+    },
+    {
+      "type": "file",
+      "path": "/root/.openclaw/workspace/criativalia/opportunities/20260419/README.md",
+      "description": "Relatório executivo em Markdown"
+    }
+  ],
+  "metrics": {
+    "products_analyzed": 6,
+    "opportunities_found": 12,
+    "quick_wins": 7,
+    "estimated_monthly_impact": "R$26.3k"
+  },
+  "key_findings": [
+    "100% dos produtos sem SKU preenchido",
+    "67% dos produtos sem preço de comparação (compare_at_price)",
+    "Nenhum bundle estratégico identificado",
+    "Produtos de coelho com preços similares (R$89-119) sem estratégia de upsell",
+    "Site sem reviews/social proof visível",
+    "Imagens grandes sem otimização WebP"
+  ],
+  "top_opportunities": [
+    "Criar bundles 'Decoração Completa' (+R$4.5k/mês)",
+    "Frete grátis threshold R$199 (+R$3.5k/mês)",
+    "Implementar reviews (+R$3k/mês)",
+    "Cross-sell na PDP (+R$3k/mês)"
+  ],
+  "next_actions": [
+    "Configurar frete grátis >R$199",
+    "Adicionar compare_at_price em 4 produtos",
+    "Preencher SKU em todos os produtos",
+    "Criar 3 bundles estratégicos"
+  ]
+}

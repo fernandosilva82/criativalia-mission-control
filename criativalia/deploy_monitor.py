@@ -5,175 +5,266 @@ Monitora deploys no GitHub Actions e notifica no Telegram.
 """
 
 import json
+import os
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
 import urllib.request
 import urllib.error
-import os
-from datetime import datetime, timezone
 
 # Configurações
-GITHUB_REPO = "fernandosilva82/criativalia-mission-control"
-STATE_FILE = "/root/.openclaw/workspace/criativalia/deploy_notifications.json"
+REPO = "fernandosilva82/criativalia-mission-control"
+STATE_FILE = Path("/root/.openclaw/workspace/criativalia/deploy_notifications.json")
 TELEGRAM_CHAT_ID = "8601547557"
 CONTROL_PLANE_URL = "https://criativalia-control-plane.onrender.com"
+GITHUB_API_URL = f"https://api.github.com/repos/{REPO}/actions/runs"
 
 # Workflows de deploy para monitorar
 DEPLOY_WORKFLOWS = [
     "Deploy to Render",
-    "Deploy on Opportunities Update",
+    "Deploy on Opportunities Update", 
     "Update Dashboard on Evidence"
 ]
 
+# Workflows para ignorar
+IGNORE_WORKFLOWS = [
+    "pages build",
+    "notify-deploy.yml",
+    "Notify Deploy Status"
+]
+
+
 def load_state():
-    """Carrega o estado atual das notificações."""
-    try:
+    """Carrega o estado das notificações."""
+    if STATE_FILE.exists():
         with open(STATE_FILE, 'r') as f:
             return json.load(f)
-    except FileNotFoundError:
-        return {
-            "last_checked": None,
-            "notified_runs": [],
-            "last_check_summary": {}
-        }
+    return {
+        "last_check": None,
+        "check_count": 0,
+        "notified_runs": [],
+        "notifiedDeployments": [],
+        "checkHistory": [],
+        "ignored": []
+    }
+
 
 def save_state(state):
     """Salva o estado das notificações."""
-    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(STATE_FILE, 'w') as f:
         json.dump(state, f, indent=2)
 
-def get_github_workflows():
-    """Consulta workflows recentes no GitHub Actions."""
-    url = f"https://api.github.com/repos/{GITHUB_REPO}/actions/runs?per_page=10"
+
+def fetch_github_runs(per_page=10):
+    """Busca runs do GitHub Actions."""
+    url = f"{GITHUB_API_URL}?per_page={per_page}"
     try:
         req = urllib.request.Request(url, headers={
-            'Accept': 'application/vnd.github+json',
-            'User-Agent': 'Deploy-Monitor/1.0'
+            'Accept': 'application/vnd.github.v3+json',
+            'User-Agent': 'Criativalia-DeployMonitor/1.0'
         })
         with urllib.request.urlopen(req, timeout=30) as response:
-            return json.loads(response.read().decode('utf-8'))
+            data = json.loads(response.read().decode())
+            return data.get('workflow_runs', [])
     except Exception as e:
-        print(f"Erro ao consultar GitHub API: {e}")
-        return None
+        print(f"❌ Erro ao buscar runs do GitHub: {e}")
+        return []
 
-def is_notified(run_id, state):
-    """Verifica se um run já foi notificado."""
-    return any(n.get('run_id') == run_id for n in state['notified_runs'])
 
-def format_time(iso_time):
-    """Formata horário ISO para formato legível."""
+def is_deploy_workflow(name):
+    """Verifica se é um workflow de deploy."""
+    name_lower = name.lower()
+    # Ignorar explicitamente
+    for ignore in IGNORE_WORKFLOWS:
+        if ignore.lower() in name_lower:
+            return False
+    # Verificar se é deploy
+    for deploy in DEPLOY_WORKFLOWS:
+        if deploy.lower() in name_lower:
+            return True
+    return False
+
+
+def format_telegram_message(run, conclusion):
+    """Formata mensagem para Telegram."""
+    name = run['name']
+    run_id = run['id']
+    html_url = run['html_url']
+    created_at = run['created_at']
+    
+    # Formatar data
     try:
-        dt = datetime.fromisoformat(iso_time.replace('Z', '+00:00'))
-        return dt.strftime('%d/%m/%Y %H:%M UTC')
+        dt = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+        formatted_date = dt.strftime('%d/%m/%Y %H:%M UTC')
     except:
-        return iso_time
-
-def send_telegram_message(message):
-    """Envia mensagem para o Telegram via OpenClaw message tool."""
-    # Escreve mensagem em arquivo temporário para ser lida pelo sistema
-    notification_file = "/tmp/deploy_notification.txt"
-    with open(notification_file, 'w') as f:
-        f.write(message)
-    print(f"NOTIFICATION_READY: {notification_file}")
-    return True
-
-def process_deploys():
-    """Processa deploys e envia notificações."""
-    state = load_state()
-    workflows_data = get_github_workflows()
+        formatted_date = created_at
     
-    if not workflows_data:
-        print("❌ Falha ao obter dados do GitHub")
-        return
-    
-    workflow_runs = workflows_data.get('workflow_runs', [])
-    new_notifications = []
-    notifications_to_send = []
-    
-    for run in workflow_runs:
-        run_id = run['id']
-        workflow_name = run['name']
-        status = run['status']
-        conclusion = run.get('conclusion', 'unknown')
-        html_url = run['html_url']
-        created_at = run['created_at']
-        
-        # Só processa workflows de deploy
-        if workflow_name not in DEPLOY_WORKFLOWS:
-            continue
-        
-        # Só processa runs completados
-        if status != 'completed':
-            continue
-        
-        # Verifica se já foi notificado
-        if is_notified(run_id, state):
-            continue
-        
-        # É um novo deploy concluído - prepara notificação
-        time_str = format_time(created_at)
-        
-        if conclusion == 'success':
-            message = f"""✅ **Deploy Concluído com Sucesso!**
+    if conclusion == 'success':
+        return f"""✅ **Deploy Concluído com Sucesso!**
 
-📦 Workflow: {workflow_name}
-⏰ Horário: {time_str}
+📦 Workflow: {name}
+⏰ Horário: {formatted_date}
 🌐 URL: {CONTROL_PLANE_URL}
 🔗 Detalhes: {html_url}"""
-        else:
-            message = f"""❌ **Deploy Falhou!**
+    else:
+        return f"""❌ **Deploy Falhou!**
 
-📦 Workflow: {workflow_name}
-⏰ Horário: {time_str}
+📦 Workflow: {name}
+⏰ Horário: {formatted_date}
 🔗 Logs: {html_url}
 ⚠️ Verifique os logs para mais detalhes."""
-        
-        notification = {
-            'run_id': run_id,
-            'workflow': workflow_name,
-            'conclusion': conclusion,
-            'notified_at': datetime.now(timezone.utc).isoformat()
-        }
-        
-        new_notifications.append(notification)
-        notifications_to_send.append(message)
-        
-        print(f"📝 Novo deploy detectado: {workflow_name} ({conclusion})")
+
+
+def print_notification(run, conclusion):
+    """Imprime notificação no formato que o OpenClaw pode capturar."""
+    name = run['name']
+    run_id = run['id']
+    html_url = run['html_url']
+    created_at = run['created_at']
     
-    # Envia notificações
-    for message in notifications_to_send:
-        send_telegram_message(message)
+    # Formatar data
+    try:
+        dt = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+        formatted_date = dt.strftime('%d/%m/%Y %H:%M UTC')
+    except:
+        formatted_date = created_at
     
-    # Atualiza estado
-    state['notified_runs'].extend(new_notifications)
-    state['last_checked'] = datetime.now(timezone.utc).isoformat()
-    state['last_check_summary'] = {
-        'checked_at': state['last_checked'],
-        'total_runs_found': len(workflow_runs),
-        'new_notifications': len(new_notifications),
-        'message': f"{len(new_notifications)} novo(s) deploy(s) notificado(s)." if new_notifications else "Nenhum novo deploy detectado."
+    if conclusion == 'success':
+        icon = "✅"
+        status_text = "SUCESSO"
+    else:
+        icon = "❌"
+        status_text = "FALHA"
+    
+    print(f"\n{'='*60}")
+    print(f"📢 NOTIFICAÇÃO TELEGRAM - Deploy {status_text}")
+    print(f"{'='*60}")
+    print(f"{icon} Workflow: {name}")
+    print(f"🆔 Run ID: {run_id}")
+    print(f"⏰ Horário: {formatted_date}")
+    print(f"🔗 URL: {html_url}")
+    print(f"{'='*60}\n")
+    
+    # Formato especial para facilitar parsing
+    print(f"::NOTIFICATION::{name}|{run_id}|{conclusion}|{html_url}|{formatted_date}::")
+
+
+def main():
+    """Função principal do monitor."""
+    print(f"🔍 Deploy Monitor - Criativalia")
+    print(f"⏰ Iniciado em: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    print(f"📁 Estado: {STATE_FILE}")
+    print(f"🔄 Buscando runs do GitHub...\n")
+    
+    # Carregar estado
+    state = load_state()
+    
+    # Incrementar contador de checks
+    state['check_count'] = state.get('check_count', 0) + 1
+    check_count = state['check_count']
+    
+    # Buscar runs
+    runs = fetch_github_runs(per_page=10)
+    
+    if not runs:
+        print("⚠️ Nenhum run encontrado ou erro na API")
+        return
+    
+    print(f"📊 Total de runs encontrados: {len(runs)}\n")
+    
+    # Runs já notificados
+    notified_ids = set(state.get('notified_runs', []))
+    
+    new_deploys = 0
+    notifications_sent = 0
+    
+    for run in runs:
+        run_id = run['id']
+        name = run['name']
+        status = run['status']
+        conclusion = run.get('conclusion', 'unknown')
+        
+        # Verificar se é workflow de deploy
+        if not is_deploy_workflow(name):
+            print(f"⏭️  Ignorado: {name} (ID: {run_id}) - não é deploy")
+            if run_id not in state.get('ignored', []):
+                state.setdefault('ignored', []).append(run_id)
+            continue
+        
+        print(f"📋 Workflow: {name}")
+        print(f"   ID: {run_id} | Status: {status} | Conclusion: {conclusion}")
+        
+        # Verificar se já foi notificado
+        if run_id in notified_ids:
+            print(f"   ✅ Já notificado anteriormente")
+            continue
+        
+        # Se estiver completo
+        if status == 'completed':
+            new_deploys += 1
+            
+            print(f"   🔔 NOVO DEPLOY CONCLUÍDO! Enviando notificação...")
+            
+            # Imprimir notificação (para ser capturada pelo agente)
+            print_notification(run, conclusion)
+            
+            # Adicionar aos notificados
+            notified_ids.add(run_id)
+            state['notified_runs'] = list(notified_ids)
+            
+            # Adicionar detalhes do deployment
+            deployment_info = {
+                "id": run_id,
+                "name": name,
+                "conclusion": conclusion,
+                "notified_at": datetime.now(timezone.utc).isoformat(),
+                "html_url": run['html_url']
+            }
+            state.setdefault('notifiedDeployments', []).append(deployment_info)
+            
+            notifications_sent += 1
+            print(f"   ✅ Marcado como notificado\n")
+        else:
+            print(f"   ⏳ Status: {status} - aguardando conclusão\n")
+    
+    # Atualizar estado
+    now = datetime.now(timezone.utc)
+    state['last_check'] = now.isoformat()
+    
+    # Adicionar ao histórico
+    history_entry = {
+        "timestamp": now.isoformat(),
+        "runs_checked": len(runs),
+        "new_deploys": new_deploys,
+        "notifications_sent": notifications_sent,
+        "note": f"Check #{check_count}: {new_deploys} novos deploys, {notifications_sent} notificações"
     }
+    state.setdefault('checkHistory', []).append(history_entry)
+    
+    # Manter apenas últimos 50 checks
+    if len(state['checkHistory']) > 50:
+        state['checkHistory'] = state['checkHistory'][-50:]
     
     save_state(state)
     
-    # Gera resumo para o cron
-    summary = state['last_check_summary']
-    print(f"\n📊 Resumo: {summary['message']}")
-    print(f"   Total runs verificados: {summary['total_runs_found']}")
-    print(f"   Novas notificações: {summary['new_notifications']}")
+    print(f"\n{'='*60}")
+    print(f"✅ Check #{check_count} concluído")
+    print(f"📊 Novos deploys: {new_deploys}")
+    print(f"📨 Notificações: {notifications_sent}")
+    print(f"🕐 Próximo check: em 5 minutos")
+    print(f"{'='*60}")
     
-    return len(new_notifications)
+    # Retornar quantidade de notificações para o agente
+    return notifications_sent
+
 
 if __name__ == "__main__":
-    print("🔔 Deploy Monitor Notifier - Criativalia")
-    print(f"⏰ Execução: {datetime.now(timezone.utc).isoformat()}")
-    print("-" * 50)
-    
     try:
-        count = process_deploys()
-        if count and count > 0:
-            # Indica que há notificações pendentes
-            exit(0)
-        exit(0)
+        result = main()
+        sys.exit(0 if result is not None else 1)
     except Exception as e:
-        print(f"❌ Erro durante execução: {e}")
-        exit(1)
+        print(f"❌ Erro fatal: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

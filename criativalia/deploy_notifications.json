@@ -1,143 +1,155 @@
 {
-  "notified_runs": {
-    "23918851000": {
-      "workflow": "Deploy to Render",
+  "last_check": "2026-04-19T05:44:18Z",
+  "check_count": 45,
+  "runs_checked": 10,
+  "new_notifications": 0,
+  "notified_runs": [
+    24612870422,
+    24612870412,
+    24305761094,
+    24290694896,
+    24269147211,
+    24269137683,
+    24269045119
+  ],
+  "notifiedDeployments": [
+    {
+      "id": 24612870422,
+      "name": "Update Dashboard on Evidence",
       "conclusion": "success",
-      "notified_at": "2026-04-03T05:17:00Z"
+      "notified_at": "2026-04-19T04:23:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870422"
     },
-    "23899584709": {
-      "workflow": "Deploy to Render",
+    {
+      "id": 24612870412,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T05:17:00Z"
+      "notified_at": "2026-04-19T04:23:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24612870412"
     },
-    "23899584706": {
-      "workflow": "Deploy on Opportunities Update",
+    {
+      "id": 24305761094,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T05:17:00Z"
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24305761094"
     },
-    "23899584698": {
-      "workflow": "Update Dashboard on Evidence",
+    {
+      "id": 24290694896,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T05:17:00Z"
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24290694896"
     },
-    "23894181638": {
-      "workflow": "Deploy to Render",
+    {
+      "id": 24269147211,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T05:17:00Z"
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269147211"
     },
-    "23935143637": {
-      "workflow": "Deploy to Render",
+    {
+      "id": 24269137683,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T07:40:00Z"
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269137683"
     },
-    "23935143613": {
-      "workflow": "Update Dashboard on Evidence",
+    {
+      "id": 24269045119,
+      "name": "Deploy to Render",
       "conclusion": "success",
-      "notified_at": "2026-04-03T07:40:00Z"
-    },
-    "23935085410": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T07:40:00Z"
-    },
-    "23943173394": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T10:38:00Z"
-    },
-    "23943097975": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T10:38:00Z"
-    },
-    "23943046333": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T10:38:00Z"
-    },
-    "23943046332": {
-      "workflow": "Update Dashboard on Evidence",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T10:38:00Z"
-    },
-    "23945416818": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T13:56:00Z"
-    },
-    "23949594672": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T15:08:00Z"
-    },
-    "23949594663": {
-      "workflow": "Update Dashboard on Evidence",
-      "conclusion": "success",
-      "notified_at": "2026-04-03T15:08:00Z"
-    },
-    "23953469411": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-08T04:18:00Z"
-    },
-    "23948743524": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-08T05:34:00Z"
-    },
-    "23948725744": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-08T05:34:00Z"
-    },
-    "24187673530": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T11:26:00Z"
-    },
-    "24187673518": {
-      "workflow": "Update Dashboard on Evidence",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T11:26:00Z"
-    },
-    "24187672658": {
-      "workflow": ".github/workflows/notify-deploy.yml",
-      "conclusion": "failure",
-      "notified_at": "2026-04-09T11:26:00Z"
-    },
-    "24180073753": {
-      "workflow": "Update Dashboard on Evidence",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T08:18:00Z"
-    },
-    "24180073744": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T08:18:00Z"
-    },
-    "24180073735": {
-      "workflow": "Deploy on Opportunities Update",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T08:18:00Z"
-    },
-    "24180072794": {
-      "workflow": ".github/workflows/notify-deploy.yml",
-      "conclusion": "failure",
-      "notified_at": "2026-04-09T08:18:00Z"
-    },
-    "24169608600": {
-      "workflow": "Deploy to Render",
-      "conclusion": "success",
-      "notified_at": "2026-04-09T02:43:00Z"
+      "notified_at": "2026-04-19T01:53:00Z",
+      "html_url": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269045119"
     }
-  },
-  "last_check": "2026-04-10T20:15:00Z",
-  "pending_notifications": [],
-  "last_check_summary": {
-    "checked_at": "2026-04-10T20:15:00Z",
-    "runs_checked": 5,
-    "new_notifications": 0,
-    "status": "completed",
-    "message": "Nenhum novo deploy para notificar. Todos os 5 runs verificados já foram notificados anteriormente."
-  }
+  ],
+  "ignored": [
+    24612870128,
+    24610752194,
+    24305760792,
+    24290694545,
+    24269146937,
+    24269137004,
+    24269044717
+  ],
+  "checkHistory": [
+    {
+      "timestamp": "2026-04-19T04:23:00Z",
+      "runs_checked": 10,
+      "new_deploys": 2,
+      "notifications_sent": 2,
+      "note": "Check #35: 10 runs verificados. 2 novos deploys com sucesso encontrados e notificados: Update Dashboard on Evidence (24612870422) e Deploy to Render (24612870412). Ambos executados em 18/04/2026 20:08 UTC."
+    },
+    {
+      "timestamp": "2026-04-19T04:26:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #36: 10 runs verificados. Nenhum deploy novo. 2 workflows de deploy já notificados anteriormente (Update Dashboard on Evidence e Deploy to Render - 18/04 20:08 UTC). 3 workflows notify-deploy.yml ignorados."
+    },
+    {
+      "timestamp": "2026-04-19T04:28:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #37: 10 runs verificados. Nenhum deploy novo. Aguardando novos runs no GitHub Actions."
+    },
+    {
+      "timestamp": "2026-04-19T04:29:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #38: 10 runs verificados. Nenhum deploy novo detectado. Todos os 5 workflows de deploy relevantes já foram notificados anteriormente. 3 workflows notify-deploy.yml ignorados."
+    },
+    {
+      "timestamp": "2026-04-18T20:30:34.095603+00:00",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #39: 0 novos deploys, 0 notificações"
+    },
+    {
+      "timestamp": "2026-04-19T05:16:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #40: 10 runs verificados. Nenhum deploy novo. Todos os 5 workflows já notificados anteriormente."
+    },
+    {
+      "timestamp": "2026-04-19T05:23:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #41: 10 runs verificados. Nenhum deploy novo detectado. 4 workflows de deploy relevantes já notificados anteriormente. 4 workflows notify-deploy.yml ignorados."
+    },
+    {
+      "timestamp": "2026-04-19T05:26:00Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #42: 10 runs verificados. Nenhum deploy novo. Últimos deploys: Update Dashboard on Evidence (24612870422) e Deploy to Render (24612870412) - ambos já notificados em 18/04 20:08 UTC. 2 workflows notify-deploy.yml ignorados."
+    },
+    {
+      "timestamp": "2026-04-19T05:40:29Z",
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #43: 19/04/2026 05:40 UTC. 0 novos deploys, 0 notificações."
+    },
+    {
+      "timestamp": "2026-04-19T05:43:18Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #44: 19/04/2026 05:43 UTC. 0 novos deploys. Últimos deploys: Update Dashboard on Evidence e Deploy to Render (ambos 18/04 20:08 UTC). 1 workflow notify-deploy.yml ignorado."
+    },
+    {
+      "timestamp": "2026-04-19T05:44:18Z",
+      "runs_checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #45: 19/04/2026 05:44 UTC. 0 novos deploys. Todos os workflows de deploy já notificados anteriormente. 1 workflow notify-deploy.yml ignorado (falha de configuração)."
+    }
+  ],
+  "last_check_summary": "Check #45 em 2026-04-19 05:44 UTC. 10 runs verificados. 0 novos deploys.",
+  "note": "Monitoramento ativo. Últimos deploys: 18/04/2026 20:08 UTC. Aguardando novos runs no GitHub Actions."
 }

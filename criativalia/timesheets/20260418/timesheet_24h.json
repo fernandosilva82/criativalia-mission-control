@@ -1,0 +1,180 @@
+{
+  "date": "2026-04-18",
+  "generated_at": "2026-04-18T15:43:00Z",
+  "period": "Últimas 24h",
+  "agents": {
+    "DesignBot": [
+      {
+        "start": "02:45",
+        "end": "03:30",
+        "duration_min": 45,
+        "task": "Design System Update - Tema Criativalia",
+        "priority": "P1",
+        "evidence_link": "/evidencias/20260418/design_update_0245.md",
+        "details": [
+          "Verificação do tema CSS existente",
+          "Adicionados componentes: Skeleton, Tabelas, Sidebar, Toasts, Tooltips, Avatar, Header, Metric Cards, Divider",
+          "Atualização de metadados (favicon, theme-color)",
+          "+608 linhas de componentes adicionadas"
+        ]
+      }
+    ],
+    "OpsBot": [
+      {
+        "start": "12:47",
+        "end": "13:17",
+        "duration_min": 30,
+        "task": "Scanner de Oportunidades - Análise de Dados",
+        "priority": "P0",
+        "evidence_link": "/evidencias/20260418/ops_scan_evidence.json",
+        "details": [
+          "Análise de métricas dos últimos 90 dias",
+          "Receita: R$83.056,40 | 177 pedidos | Margem 54,5%",
+          "CAC médio: R$38,67 | LTV: R$538,64 | Ratio 13,93x",
+          "14 oportunidades geradas | Potencial: +R$43.700/mês",
+          "Quick wins: Automação carrinho abandonado, Escala WhatsApp, Frete grátis"
+        ]
+      }
+    ],
+    "CopyBot": [],
+    "TrafficBot": []
+  },
+  "summary": {
+    "total_tasks": 2,
+    "total_hours": 1.25,
+    "agents_active": ["DesignBot", "OpsBot"],
+    "agents_idle": ["CopyBot", "TrafficBot"],
+    "p0_tasks": 1,
+    "p1_tasks": 1
+  },
+  "historical_context": {
+    "last_7_days": {
+      "CopyBot": [
+        {
+          "date": "2026-04-01",
+          "tasks": [
+            {
+              "start": "23:00",
+              "end": "23:05",
+              "duration_min": 5,
+              "task": "Estratégia de Marketing 360°",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260401/deliverable_estrategia_360.json"
+            },
+            {
+              "start": "23:06",
+              "end": "23:11",
+              "duration_min": 5,
+              "task": "Sequência Carrinho Abandonado (Klaviyo)",
+              "priority": "P0",
+              "evidence_link": "/evidencias/20260401/deliverable_carrinho_abandonado.json"
+            },
+            {
+              "start": "23:08",
+              "end": "23:11",
+              "duration_min": 3,
+              "task": "3 Bundles Estratégicos Shopify",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260401/deliverable_bundles.json"
+            },
+            {
+              "start": "23:10",
+              "end": "23:12",
+              "duration_min": 2,
+              "task": "Blog Post SEO: Luminária Cogumelo",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260401/deliverable_blog_mushroom.json"
+            },
+            {
+              "start": "23:00",
+              "end": "23:05",
+              "duration_min": 5,
+              "task": "Calendário Editorial Abril",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260401/deliverable_calendario_editorial.json"
+            }
+          ]
+        }
+      ],
+      "DesignBot": [
+        {
+          "date": "2026-04-09",
+          "tasks": [
+            {
+              "start": "10:30",
+              "end": "11:15",
+              "duration_min": 45,
+              "task": "Design Update - Componentes UI",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260409/design_update_1030.md"
+            },
+            {
+              "start": "19:17",
+              "end": "20:00",
+              "duration_min": 43,
+              "task": "Design Update - Tema Visual",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260409/design_update_1917.md"
+            }
+          ]
+        },
+        {
+          "date": "2026-04-03",
+          "tasks": [
+            {
+              "start": "04:42",
+              "end": "05:30",
+              "duration_min": 48,
+              "task": "Design Update - Dashboard",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260403/design_update_0442.md"
+            },
+            {
+              "start": "05:08",
+              "end": "05:55",
+              "duration_min": 47,
+              "task": "Design Update - Mobile UX",
+              "priority": "P1",
+              "evidence_link": "/evidencias/20260403/design_update_0508.md"
+            }
+          ]
+        }
+      ],
+      "OpsBot": [
+        {
+          "date": "2026-03-29",
+          "tasks": [
+            {
+              "start": "14:00",
+              "end": "14:45",
+              "duration_min": 45,
+              "task": "Scanner de Oportunidades - Análise Q1",
+              "priority": "P0",
+              "evidence_link": "/evidencias/20260329/opsbot/ops_scan_evidence.json"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "next_recommended": [
+    {
+      "agent": "CopyBot",
+      "task": "Implementar sequência de carrinho abandonado no Klaviyo",
+      "priority": "P0",
+      "reason": "Quick win identificado pelo OpsBot - potencial +R$6.300/mês"
+    },
+    {
+      "agent": "TrafficBot",
+      "task": "Escala de campanhas no WhatsApp (CAC R$20)",
+      "priority": "P0",
+      "reason": "Melhor CAC identificado - potencial +R$6.000/mês"
+    },
+    {
+      "agent": "DesignBot",
+      "task": "Criar imagens para bundles estratégicos",
+      "priority": "P1",
+      "reason": "CopyBot já entregou configuração - precisa de assets visuais"
+    }
+  ]
+}

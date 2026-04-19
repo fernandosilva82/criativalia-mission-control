@@ -121,18 +121,31 @@ Todas as páginas utilizam:
 
 ---
 
-## 📝 Commit
+## 📝 Commit & Push
+
+**Branch:** `clean-deploy-new`  
+**Commit:** `1d06695f`  
+**Status:** ✅ Push realizado para GitHub
 
 ```bash
-git add control-plane/public/css/criativalia-theme.css control-plane/public/index.html
+git add criativalia-mission-control/control-plane/public/css/criativalia-theme.css \
+    criativalia-mission-control/control-plane/public/index.html \
+    criativalia/evidencias/20260419/design_update_0208.md
+
 git commit -m "🎨 Design System: Refinamento tema Criativalia v2.0
 
-- Paleta verde oliva #4A5D23 verificada
-- Textos off-white #F5F5DC confirmados
-- Logo Criativalia com gradiente implementado
-- Componentes reutilizáveis: cards, buttons, inputs, badges
-- Consistência visual em todas as páginas"
+- Paleta verde oliva #4A5D23 verificada e ajustada
+- Textos off-white #F5F5DC confirmados em todas as páginas
+- Logo Criativalia com gradiente olive→gold implementado
+- Componentes reutilizáveis: cards, buttons, inputs, badges, modais
+- Status indicators com cores semanticas
+- Animações e transições consistentes
+- Documentação criada em evidencias/20260419/"
+
+git push origin clean-deploy-new
 ```
+
+**Pull Request:** https://github.com/fernandosilva82/criativalia-mission-control/pull/new/clean-deploy-new
 
 ---
 

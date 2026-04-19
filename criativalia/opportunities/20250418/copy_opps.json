@@ -1,0 +1,118 @@
+[
+  {
+    "id": "copy_001",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Blog completamente vazio - oportunidade de conteúdo",
+    "description": "A seção /blogs/news existe mas está vazia, mostrando apenas o footer. Concorrentes como Vitsœ têm editorial ativo ('Vitsœ Voice') com histórias que conectam emocionalmente. Blog é canal crucial para SEO e construção de autoridade em decoração sustentável.",
+    "affected_pages": ["https://criativalia.com/blogs/news"],
+    "impact_score": 9,
+    "effort_score": 6,
+    "action_suggested": "Criar editorial calendar com temas: (1) Processo de design das peças, (2) Histórias de clientes e seus ambientes, (3) Dicas de decoração sustentável, (4) Behind the scenes da produção 3D, (5) Como escolher luminárias para cada ambiente",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_002",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Página 'Quem Somos' genérica sem storytelling diferenciado",
+    "description": "O texto atual é funcional mas não emocional. Comparado com Vitsœ ('Against obsolescence', 'Investing for life', 'Transcending fashion') e Gantri ('A new future for design'), a Criativalia perde oportunidade de conectar com valores do consumidor. O texto não conta QUEM está por trás, não há rosto humano na marca.",
+    "affected_pages": ["https://criativalia.com/pages/quem-somos"],
+    "impact_score": 8,
+    "effort_score": 4,
+    "action_suggested": "Reescrever com estrutura: (1) A origem - quem fundou e por quê, (2) O problema - decoração bonita vs sustentável, (3) A solução - impressão 3D e produção sob demanda, (4) O futuro - visão da marca. Incluir foto do fundador/equipe.",
+    "category": "brand_storytelling"
+  },
+  {
+    "id": "copy_003",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "FAQ não existe (404) - gap de experiência do cliente",
+    "description": "Tentativa de acessar /pages/faq retorna 404. Clientes têm dúvidas sobre impressão 3D, resistência do material, cuidados com produtos autoirrigáveis. A ausência de FAQ aumenta carga no suporte e pode gerar abandono de carrinho.",
+    "affected_pages": ["https://criativalia.com/pages/faq"],
+    "impact_score": 7,
+    "effort_score": 3,
+    "action_suggested": "Criar FAQ estruturado em categorias: (1) Sobre os materiais (PLA, durabilidade, cuidados), (2) Sobre autoirrigação (como funciona, plantas ideais), (3) Sobre produção (prazo, personalização), (4) Sobre envio (rastreamento, prazos por região)",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_004",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Descrições de produto focadas em funcionalidade, não transformação",
+    "description": "Produtos como Prateleira Ondina IV e Vaso Flollia têm descrições técnicas ('Design inteligente', 'Sistema autoirrigável eficiente') mas falta o ganho emocional. O Pendente Clara é exemplo positivo ('Transforme qualquer ambiente'). Concorrentes como Hay e Vitsœ vendem o lifestyle, não o objeto.",
+    "affected_pages": [
+      "https://criativalia.com/products/prateleira-ondina-iv-design-minimalista-funcionalidade-maxima",
+      "https://criativalia.com/products/vaso-autoirrigavel-flollia",
+      "https://criativalia.com/products/bandeja-organica-design-multifuncional"
+    ],
+    "impact_score": 8,
+    "effort_score": 4,
+    "action_suggested": "Reestruturar descrições: (1) Headline emocional - 'O que esse produto transforma na sua vida', (2) Parágrafo de contexto - cenário de uso, (3) Benefícios em bullet - foco em resultado, não característica, (4) Especificações técnicas - ao final. Exemplo: 'Chegar em casa e sentir...' vs 'Acabamento fosco'",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_005",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Ausência de página 'Como é Feito' ou 'Nosso Processo'",
+    "description": "A produção sob demanda via impressão 3D é diferencial único, mas está escondida em descrições de produto. Gantri destaca 'digital manufacturing' como pilar da marca. Clientes valorizam transparência sobre origem e processo produtivo.",
+    "affected_pages": ["https://criativalia.com"],
+    "impact_score": 7,
+    "effort_score": 5,
+    "action_suggested": "Criar página dedicada mostrando: (1) Do conceito ao arquivo 3D, (2) Impressão em camadas - vídeo/time-lapse, (3) Acabamento artesanal, (4) Por que produzir sob demanda reduz desperdício. Incluir comparação visual: produção tradicional vs impressão 3D.",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_006",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Newsletter no footer tem typo ('newletter') e não há pop-up de captura",
+    "description": "Texto no footer diz 'Assine nossa newletter' (faltando 's'). Além disso, não há mecanismo ativo de captura de emails na home - apenas o campo no footer que é pouco visível. Email marketing é canal de maior ROI para e-commerce.",
+    "affected_pages": ["https://criativalia.com"],
+    "impact_score": 6,
+    "effort_score": 2,
+    "action_suggested": "(1) Corrigir typo 'newletter' → 'newsletter', (2) Implementar pop-up de saída (exit intent) com oferta: '10% off na primeira compra + guia de decoração sustentável', (3) Criar lead magnet: ebook '5 Formas de Transformar seu Ambiente sem Reforma'",
+    "category": "email_marketing"
+  },
+  {
+    "id": "copy_007",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Headlines da home genéricas - oportunidade de posicionamento",
+    "description": "As seções da home ('Os Mais Desejados', 'Iluminação', 'Vasos autoirrigáveis') são descritivas mas não persuasivas. Falta headlines que vendam o benefício. Comparar com Hay ('HAY outdoor collection', 'LIVING ROOM REFRESH') que criam desejo imediato.",
+    "affected_pages": ["https://criativalia.com"],
+    "impact_score": 6,
+    "effort_score": 2,
+    "action_suggested": "Reescrever headlines: 'Os Mais Desejados' → 'As peças que transformam ambientes', 'Iluminação' → 'Luz que cria atmosfera', 'Vasos autoirrigáveis' → 'Plantas vivas, sem complicação'. Focar no resultado, não na categoria.",
+    "category": "headline_optimization"
+  },
+  {
+    "id": "copy_008",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Ausência de guias de ambiente ou inspiração de uso",
+    "description": "Não há seção de 'Ambientes' ou 'Inspire-se' mostrando produtos em contexto real. Vitsœ tem 'Gallery' extensa. Hay tem 'Inspiration'. Clientes precisam visualizar como o produto ficará no espaço deles. Isso também reduz objeções de 'não sei se combina'.",
+    "affected_pages": ["https://criativalia.com"],
+    "impact_score": 7,
+    "effort_score": 5,
+    "action_suggested": "Criar seção 'Ambientes' ou 'Inspire-se' com: (1) Sala de estar - combinações de luminárias, (2) Home office - organizadores e vasos, (3) Quarto - abajures e acessórios. Incluir fotos reais (ou geradas) de ambientes completos, não apenas produto isolado.",
+    "category": "content_gap"
+  },
+  {
+    "id": "copy_009",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Títulos de produtos inconsistentes - oportunidade de padronização",
+    "description": "Há inconsistência nos títulos: 'Abajur Accordion: Luminária Ecológica e Sustentável' (descritivo completo) vs 'Abajur Aro' (apenas nome) vs 'Abajur 'Nobody Lamp' – Escultura de Luz Moderna' (com aspas e subtítulo). Isso confunde e prejudica SEO.",
+    "affected_pages": [
+      "https://criativalia.com/collections/all"
+    ],
+    "impact_score": 5,
+    "effort_score": 3,
+    "action_suggested": "Padronizar nomenclatura: [Nome do Produto] - [Benefício Principal]. Exemplos: 'Abajur Aro - Iluminação Escultural para Cantos', 'Pendente SAN - Design Geométrico em Luz'. Manter consistência melhora indexação e clareza para cliente.",
+    "category": "product_copy"
+  },
+  {
+    "id": "copy_010",
+    "timestamp": "2026-04-18T04:45:00Z",
+    "title": "Seção 'Nossa Assinatura' na home tem copy fraca comparada ao potencial",
+    "description": "O texto atual ('Na Criativalia, a gente acredita que decorar a casa vai muito além de estética...') é correto mas não memorável. Não há citações de clientes, não há prova social. Vitsœ destaca 'What our customers say' com depoimentos reais.",
+    "affected_pages": ["https://criativalia.com"],
+    "impact_score": 6,
+    "effort_score": 3,
+    "action_suggested": "(1) Encurtar para 2-3 frases impactantes, (2) Adicionar seção de depoimentos abaixo com fotos reais de clientes e seus ambientes, (3) Incluir métricas de confiança: 'X clientes', 'Y estados atendidos', 'Z toneladas de CO2 evitadas pela produção sob demanda'",
+    "category": "brand_storytelling"
+  }
+]

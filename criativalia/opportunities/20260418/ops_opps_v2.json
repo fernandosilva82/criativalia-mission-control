@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ops_011",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Redirecionar budget para WhatsApp (menor CAC)",
+    "description": "WhatsApp tem CAC de R$20 vs Google Ads R$50 (60% mais barato). Dados mostram: WhatsApp gera 40 clientes/mês com R$800, Google gera 50 com R$2.500. Redirecionar R$1.000 do Google para WhatsApp pode trazer +50 clientes no canal mais eficiente.",
+    "impact_score": 9,
+    "effort_score": 2,
+    "roi_estimate": "+R$2.35 de LTV por real investido vs R$1.08 no Google",
+    "financial_impact": "+R$7.8k/mês (capturando 50 clientes extras no canal de melhor CAC)",
+    "action_suggested": "Aumentar investimento WhatsApp de R$800 para R$1.800/mês, reduzir Google de R$2.500 para R$1.500",
+    "category": "marketing"
+  },
+  {
+    "id": "ops_012",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Dobrar foco em categorias de alta margem (60%)",
+    "description": "Organizadores e Quadros/Arte têm 60% de margem vs 50% de Luminárias e Vasos. Dados: organizadores têm ticket R$45 (baixo), mas margem R$27. Estratégia: criar organizadores maiores/ premium (ticket R$80-120) mantendo margem 60%.",
+    "impact_score": 8,
+    "effort_score": 4,
+    "roi_estimate": "+10% na margem bruta geral (de 54.5% para 58-60%)",
+    "financial_impact": "+R$4.2k/mês em lucro adicional (sem aumentar receita)",
+    "action_suggested": "Desenvolver 3 organizadores premium (R$89-129) e promover categoria Quadros",
+    "category": "product"
+  },
+  {
+    "id": "ops_013",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Implementar alerta de estoque zero para Print on Demand",
+    "description": "Print on demand requer ativação manual de pedidos. Risco: pedidos em aberto >24h sem envio para produção. Automatizar: alerta no Slack/email quando pedido fica >12h em 'não pago' ou >24h em 'pago não produzido'.",
+    "impact_score": 7,
+    "effort_score": 3,
+    "roi_estimate": "Evita 100% de cancelamentos por delay operacional",
+    "financial_impact": "Evita perda de R$1.5-3k/mês em cancelamentos",
+    "action_suggested": "Criar webhook Shopify → Slack para alertas de pedidos pendentes",
+    "category": "automation"
+  },
+  {
+    "id": "ops_014",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Criar plano de crescimento acelerado (80.6% em 6 meses)",
+    "description": "Meta: de R$27.7k para R$50k/mês = crescimento de 80.6%. Plano precisa de R$3.7k de incremento mensal. Quick wins identificados: bundles (+R$5.5k), frete grátis (+R$4.2k), carrinho abandonado (+R$6.3k) já cobrem meta do mês 1-2.",
+    "impact_score": 10,
+    "effort_score": 5,
+    "roi_estimate": "Crescimento 80% em 6 meses (meta validada)",
+    "financial_impact": "+R$22.3k/mês ao atingir R$50k (vs atual R$27.7k)",
+    "action_suggested": "Implementar prioridades P0 imediatamente: bundles, frete grátis, carrinho abandonado",
+    "category": "strategy"
+  },
+  {
+    "id": "ops_015",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Estabelecer margem mínima 55% para novos produtos",
+    "description": "Margem média atual 54.5% está saudável, mas alguns produtos (Vasos 50.6%, Luminárias 50%) puxam para baixo. Criar política: nenhum produto novo abaixo de 55% margem. Revisar produtos existentes <50% para reposicionamento ou descontinuação.",
+    "impact_score": 7,
+    "effort_score": 2,
+    "roi_estimate": "Proteção de margem em 55%+ para todo catálogo futuro",
+    "financial_impact": "+R$1.8k/mês (evitando produtos de baixa margem)",
+    "action_suggested": "Criar checklist de lançamento: margem mínima 55%, senão rejeitar",
+    "category": "pricing"
+  },
+  {
+    "id": "ops_016",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Implementar cross-sell por categoria no pós-compra",
+    "description": "Cliente comprou Vaso (margem 50%)? Cross-sell Organizador (margem 60%). Comprou Luminária? Cross-sell Quadro. Estratégia: aumentar margem do pedido trocando produtos de baixa margem por complementos de alta margem.",
+    "impact_score": 8,
+    "effort_score": 3,
+    "roi_estimate": "+15% margem bruta nos pedidos com cross-sell",
+    "financial_impact": "+R$3.2k/mês (20-30% dos pedidos com cross-sell)",
+    "action_suggested": "Configurar emails pós-compra com recomendações contextuais por categoria",
+    "category": "conversion"
+  },
+  {
+    "id": "ops_017",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Criar programa 'Primeira Compra' para reduzir atrito",
+    "description": "Conversão 2.1% está abaixo do benchmark 2.5%. Clientes novos têm maior atrito. Criar oferta 'Primeira Compra': 10% OFF no primeiro pedido + frete grátis (independentemente do valor). Reduz barreira psicológica inicial.",
+    "impact_score": 8,
+    "effort_score": 2,
+    "roi_estimate": "+0.4% conversão (2.1% → 2.5%) = +19% de pedidos",
+    "financial_impact": "+R$5.2k/mês (~11 pedidos adicionais)",
+    "action_suggested": "Configurar popup first-time visitor com cupom PRIMEIRA10 + frete grátis",
+    "category": "conversion"
+  },
+  {
+    "id": "ops_018",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Implementar dashboard de métricas faltantes",
+    "description": "Dados críticos não coletados: NPS, tempo de resposta, taxa de recompra. Impossível otimizar o que não se mede. Criar dashboard simples (Google Sheets ou Metabase) com: NPS (meta 50), tempo resposta (meta 2h), taxa recompra 90d (meta 30%).",
+    "impact_score": 9,
+    "effort_score": 3,
+    "roi_estimate": "Visibilidade 100% das métricas de experiência",
+    "financial_impact": "Indireto: identificação precoce de problemas = economia de R$2k+/mês em churn evitado",
+    "action_suggested": "Criar spreadsheet/dashboard com automações para coleta de métricas",
+    "category": "analytics"
+  },
+  {
+    "id": "ops_019",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Otimizar LTV com email marketing pós-compra",
+    "description": "LTV atual R$538 é saudável, mas taxa de recompra não medida. Implementar sequência pós-compra: (1) Dia 7: agradecimento + NPS, (2) Dia 30: novo produto relacionado, (3) Dia 60: oferta exclusiva recompra, (4) Dia 90: 'sentimos sua falta'.",
+    "impact_score": 8,
+    "effort_score": 3,
+    "roi_estimate": "Aumento de 20% na frequência de compra (2.3 → 2.8 compras/ano)",
+    "financial_impact": "+R$3.5k/mês (aumento LTV para R$646)",
+    "action_suggested": "Configurar 4-email sequence no Shopify Email ou Mailchimp",
+    "category": "retention"
+  },
+  {
+    "id": "ops_020",
+    "timestamp": "2026-04-18T20:56:00Z",
+    "title": "Reduzir taxa de abandono de carrinho (72% → 60%)",
+    "description": "72% de abandono está acima do benchmark 69%. Ações combinadas: (1) frete grátis threshold R$299, (2) checkout expresso (1-click), (3) recuperação automática (ops_004). Meta realista: reduzir para 60% (melhor que benchmark).",
+    "impact_score": 9,
+    "effort_score": 4,
+    "roi_estimate": "-12% abandono = +40% mais conversões finais",
+    "financial_impact": "+R$8.3k/mês (redução de 12% no abandono = ~18 pedidos a mais)",
+    "action_suggested": "Implementar frete grátis + checkout otimizado + recuperação automática",
+    "category": "conversion"
+  }
+]

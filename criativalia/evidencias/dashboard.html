@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌅 Morning Brief - Criativalia | 11/04/2026</title>
+    <title>🌅 Morning Brief - Criativalia | 19/04/2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,9 @@
             --olive-primary: #4A5D23;
             --olive-light: #5A6D33;
             --olive-dark: #3A4D13;
+            --olive-muted: rgba(74, 93, 35, 0.2);
             --gold: #D4A853;
+            --gold-light: #E8C876;
             --cream: #F5F5DC;
             --cream-secondary: #A8A890;
             --danger: #ff6b6b;
@@ -76,7 +78,7 @@
         }
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(74, 93, 35, 0.2);
+            box-shadow: 0 8px 24px var(--olive-muted);
         }
         .stat-number {
             font-size: 2.5rem;
@@ -129,6 +131,7 @@
         .badge-p2 { background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
         .badge-completed { background: rgba(39, 174, 96, 0.2); color: #27ae60; border: 1px solid rgba(39, 174, 96, 0.3); }
         .badge-pending { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.3); }
+        .badge-inprogress { background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); }
         .agent-section {
             background: var(--bg-secondary);
             border-radius: 12px;
@@ -178,6 +181,7 @@
             text-decoration: none;
             font-size: 0.875rem;
             transition: opacity 0.2s;
+            margin-right: 0.5rem;
         }
         .link-button:hover { opacity: 0.9; }
         .priority-list {
@@ -220,6 +224,15 @@
             color: var(--gold);
             margin-bottom: 0.5rem;
         }
+        .impact-positive { color: #27ae60; }
+        .impact-money { color: var(--gold); }
+        .highlight-box {
+            background: linear-gradient(135deg, var(--olive-muted) 0%, rgba(212, 168, 83, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
         @media (max-width: 768px) {
             .header h1 { font-size: 1.5rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -232,7 +245,7 @@
     <header class="header">
         <div class="header-content">
             <h1>🌅 Morning Brief - Criativalia</h1>
-            <p>Relatório Matinal de Atividades | 11 de Abril de 2026</p>
+            <p>Relatório Matinal de Atividades | 19 de Abril de 2026</p>
         </div>
     </header>
 
@@ -242,19 +255,19 @@
             <h2 class="section-title">📊 Resumo Executivo</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">22</div>
+                    <div class="stat-number">18</div>
                     <div class="stat-label">Oportunidades Detectadas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">3</div>
+                    <div class="stat-number">2</div>
                     <div class="stat-label">Tarefas Executadas</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number">5</div>
                     <div class="stat-label">Deploys 24h</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">5</div>
+                    <div class="stat-number">3</div>
                     <div class="stat-label">P0 - Prioridade Máxima</div>
                 </div>
             </div>
@@ -262,8 +275,8 @@
 
         <!-- Alerta Importante -->
         <div class="alert">
-            <div class="alert-title">⚠️ Atenção: Deploys Pendentes</div>
-            <p>O DesignBot finalizou atualizações do Design System que estão <strong>aguardando commit e deploy</strong>. Último deploy bem-sucedido foi em 09/04/2026.</p>
+            <div class="alert-title">💰 Potencial Financeiro Total</div>
+            <p>As oportunidades detectadas nas últimas 24h representam um <strong class="impact-money">potencial de +R$37.6k/mês</strong>. Quick wins identificados podem gerar <strong class="impact-positive">+R$14.2k/mês</strong> com esforço mínimo.</p>
         </div>
 
         <!-- Top Oportunidades -->
@@ -271,33 +284,57 @@
             <h2 class="section-title">🎯 Top Oportunidades (Últimas 24h)</h2>
             <div class="card">
                 <div class="opportunity-item">
-                    <div class="opportunity-title">1. Luminária 3D - Produto TOP em Dropshipping 2026</div>
-                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">TOP 2 de produtos vencedores para 2026. Design minimalista com projeção 3D, altamente "instagramável".</p>
+                    <div class="opportunity-title">1. Redirecionar Budget WhatsApp ← Google Ads</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">WhatsApp tem CAC de R$20 vs Google Ads R$50 (60% mais barato). Transferir R$1.000 aumenta aquisição em +50 clientes/mês no canal mais eficiente.</p>
                     <div class="opportunity-meta">
                         <span class="badge badge-p0">Impacto: 9/10</span>
-                        <span class="badge badge-p1">Esforço: 6/10</span>
-                        <span>🤖 TrafficBot</span>
-                        <span>📅 10/04/2026</span>
+                        <span class="badge badge-completed">Esforço: 2/10</span>
+                        <span class="impact-money">💰 +R$7.8k/mês</span>
+                        <span>🤖 OpsBot</span>
+                        <span>📅 19/04/2026</span>
                     </div>
                 </div>
                 <div class="opportunity-item">
-                    <div class="opportunity-title">2. Luminárias Pendentes - +40% nas Buscas Pinterest</div>
-                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Aumento de 40% nas buscas por "luminária pendente". Movimento para casas mais acolhedoras.</p>
+                    <div class="opportunity-title">2. Criar Bundles Luminária + Escultura</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Ticket médio R$244 está abaixo da meta R$500. Luminária Mushroom é bestseller. Bundles estratégicos podem aumentar ticket em +35%.</p>
                     <div class="opportunity-meta">
-                        <span class="badge badge-p1">Impacto: 8/10</span>
-                        <span class="badge badge-p2">Esforço: 4/10</span>
-                        <span>🤖 TrafficBot</span>
-                        <span>📅 10/04/2026</span>
+                        <span class="badge badge-p0">Impacto: 9/10</span>
+                        <span class="badge badge-p1">Esforço: 3/10</span>
+                        <span class="impact-money">💰 +R$4.2k/mês</span>
+                        <span>🤖 OpsBot</span>
+                        <span>📅 19/04/2026</span>
                     </div>
                 </div>
                 <div class="opportunity-item">
-                    <div class="opportunity-title">3. Arandela de Parede - "Novo Acessório de Luxo"</div>
-                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Arandelas orgânicas e inteligentes em alta. Materiais nobres: latão escovado, mármore, vidro soprado.</p>
+                    <div class="opportunity-title">3. Programa "Primeira Compra" 10% OFF + Frete Grátis</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Conversão 2.1% abaixo do benchmark 2.5%. 80% dos clientes são novos. Reduz atrito inicial e aumenta conversão em +19%.</p>
+                    <div class="opportunity-meta">
+                        <span class="badge badge-p0">Impacto: 9/10</span>
+                        <span class="badge badge-p1">Esforço: 3/10</span>
+                        <span class="impact-money">💰 +R$5.2k/mês</span>
+                        <span>🤖 OpsBot</span>
+                        <span>📅 19/04/2026</span>
+                    </div>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-title">4. Frete Grátis Threshold R$400</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">65% dos pedidos estão abaixo de R$400. Reduzir threshold incentiva adição de itens ao carrinho.</p>
                     <div class="opportunity-meta">
                         <span class="badge badge-p1">Impacto: 8/10</span>
-                        <span class="badge badge-p1">Esforço: 5/10</span>
+                        <span class="badge badge-completed">Esforço: 1/10</span>
+                        <span class="impact-money">💰 +R$1.8k/mês</span>
+                        <span>🤖 OpsBot</span>
+                        <span>📅 19/04/2026</span>
+                    </div>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-title">5. Luminária Mushroom/Cogumelo - Viral no Pinterest</div>
+                    <p style="color: var(--cream-secondary); margin: 0.5rem 0;">Tendência viral no Pinterest com apelo nostálgico e aesthetic. Alto potencial de conteúdo visual para Instagram.</p>
+                    <div class="opportunity-meta">
+                        <span class="badge badge-p0">Impacto: 9/10</span>
+                        <span class="badge badge-p1">Esforço: 3/10</span>
                         <span>🤖 TrafficBot</span>
-                        <span>📅 09/04/2026</span>
+                        <span>📅 19/04/2026</span>
                     </div>
                 </div>
             </div>
@@ -307,30 +344,58 @@
         <div class="section">
             <h2 class="section-title">✅ O Que Foi Feito Autonomamente</h2>
             
+            <!-- OpsBot -->
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span>⚙️</span>
+                    <span class="agent-name">OpsBot</span>
+                    <span class="badge badge-completed">2 min | 12 oportunidades</span>
+                </div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <span class="activity-desc">🔍 <strong>Scanner de Oportunidades Completo</strong> - Análise de Shopify API (50 produtos, 20 pedidos)</span>
+                        <span class="activity-time">19/04 00:41 UTC | ✅ Concluído</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">📊 <strong>Relatório Executivo Gerado</strong> - 12 oportunidades, +R$37.6k potencial, 5 quick wins</span>
+                        <span class="activity-time">19/04 00:41 UTC | ✅ Concluído</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">📈 <strong>Análise de Dados Operacionais</strong> - Margem 54.5%, CAC WhatsApp R$20, Abandono 72%</span>
+                        <span class="activity-time">18/04 12:47 UTC | ✅ Concluído</span>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="opportunities/20260419/ops_opps.json" class="link-button">Ver oportunidades JSON</a>
+                    <a href="opportunities/20260419/ops_summary.md" class="link-button">Ver relatório completo</a>
+                    <a href="evidencias/20260418/ops_scan_evidence.json" class="link-button">Ver evidência</a>
+                </div>
+            </div>
+
             <!-- DesignBot -->
             <div class="agent-section">
                 <div class="agent-header">
                     <span>🎨</span>
-                    <span class="agent-name">DesignBot</span>
-                    <span class="badge badge-completed">215 min ativos</span>
+                    <span class="agent-name">DesignBot (Night Shift)</span>
+                    <span class="badge badge-completed">Concluído</span>
                 </div>
                 <ul class="activity-list">
                     <li class="activity-item">
-                        <span class="activity-desc">🎯 <strong>[P0] UX/UI Review</strong> - Correções críticas: remoção de JS inválido, feedback tátil mobile, animações de loading</span>
-                        <span class="activity-time">60 min | ✅ Deployed</span>
+                        <span class="activity-desc">🎨 <strong>Design System Update v2.0</strong> - Refinamento tema Criativalia, paleta verde oliva #4A5D23</span>
+                        <span class="activity-time">19/04 02:08 CST | ✅ Commit pushed</span>
                     </li>
                     <li class="activity-item">
-                        <span class="activity-desc">🎨 <strong>Design System Update</strong> - Tema Criativalia com paleta verde oliva #4A5D23, textos off-white</span>
-                        <span class="activity-time">60 min | ✅ Completo</span>
+                        <span class="activity-desc">✅ <strong>Verificação CSS Completa</strong> - Tokens de design confirmados em todas as páginas</span>
+                        <span class="activity-time">19/04 02:08 CST | ✅ Concluído</span>
                     </li>
                     <li class="activity-item">
-                        <span class="activity-desc">✨ <strong>Design System Night</strong> - Logo SVG criado, consistência em 6 páginas verificada</span>
-                        <span class="activity-time">75 min | ⏳ Aguardando commit</span>
+                        <span class="activity-desc">🚀 <strong>Logo Criativalia Implementado</strong> - SVG com gradiente olive→gold, tipografia definida</span>
+                        <span class="activity-time">19/04 02:08 CST | ✅ Concluído</span>
                     </li>
                 </ul>
                 <div style="margin-top: 1rem;">
-                    <a href="/criativalia/evidencias/20260409/uxui_review_0405.md" class="link-button">Ver evidência UX/UI</a>
-                    <a href="/criativalia/evidencias/20260409/design_update_1030.md" class="link-button">Ver Design System</a>
+                    <a href="evidencias/20260419/design_update_0208.md" class="link-button">Ver evidência Design</a>
+                    <a href="https://github.com/fernandosilva82/criativalia-mission-control/pull/new/clean-deploy-new" class="link-button">Ver Pull Request</a>
                 </div>
             </div>
 
@@ -339,12 +404,24 @@
                 <div class="agent-header">
                     <span>🚦</span>
                     <span class="agent-name">TrafficBot</span>
-                    <span class="badge badge-pending">Aguardando ativação</span>
+                    <span class="badge badge-pending">6 oportunidades</span>
                 </div>
-                <div class="empty-state">
-                    <div class="empty-state-icon">💤</div>
-                    <p>TrafficBot não executou atividades nas últimas 24h</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">10 oportunidades detectadas no dia 10/04 aguardam análise</p>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <span class="activity-desc">🔍 <strong>Análise de Tendências</strong> - 6 oportunidades de tráfego identificadas</span>
+                        <span class="activity-time">19/04 00:32 UTC | ✅ Concluído</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">📌 <strong>Luminária Mushroom Viral</strong> - Tendência Pinterest identificada</span>
+                        <span class="activity-time">19/04 00:32 UTC | ✅ Detectado</span>
+                    </li>
+                    <li class="activity-item">
+                        <span class="activity-desc">📈 <strong>Keyword 'luminária 3D'</strong> - Em alta no mercado brasileiro</span>
+                        <span class="activity-time">19/04 00:32 UTC | ✅ Detectado</span>
+                    </li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                    <a href="opportunities/20260419/traffic_opps.json" class="link-button">Ver oportunidades</a>
                 </div>
             </div>
 
@@ -353,39 +430,47 @@
                 <div class="agent-header">
                     <span>✍️</span>
                     <span class="agent-name">CopyBot</span>
-                    <span class="badge badge-pending">Aguardando ativação</span>
+                    <span class="badge badge-pending">10 tarefas na fila</span>
                 </div>
                 <div class="empty-state">
                     <div class="empty-state-icon">💤</div>
                     <p>CopyBot não executou atividades nas últimas 24h</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">1 tarefa P1 na fila: "Criar página 'Por que PLA?'"</p>
-                </div>
-            </div>
-
-            <!-- OpsBot -->
-            <div class="agent-section">
-                <div class="agent-header">
-                    <span>⚙️</span>
-                    <span class="agent-name">OpsBot</span>
-                    <span class="badge badge-pending">Aguardando ativação</span>
-                </div>
-                <div class="empty-state">
-                    <div class="empty-state-icon">💤</div>
-                    <p>OpsBot não executou atividades nas últimas 24h</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">20 tarefas na fila, incluindo 5 P0 críticas</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">10 tarefas P0/P1/P2 na fila aguardando execução</p>
                 </div>
             </div>
         </div>
 
         <!-- Deploys -->
         <div class="section">
-            <h2 class="section-title">🚀 Deploys Automáticos</h2>
+            <h2 class="section-title">🚀 Deploys Automáticos (GitHub Actions)</h2>
             <div class="card">
-                <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
-                    <p>Nenhum deploy novo nas últimas 24h</p>
-                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">Último deploy: 09/04/2026 às 08:18 UTC</p>
-                    <p style="font-size: 0.875rem;">Design System atualizado aguardando commit e deploy</p>
+                <div class="highlight-box">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">📦 Deploys Realizados</h3>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <span>✅ Deploy to Render (#24305761094)</span>
+                            <span style="color: var(--success);">Success</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <span>✅ Deploy to Render (#24290694896)</span>
+                            <span style="color: var(--success);">Success</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <span>✅ Deploy to Render (#24269147211)</span>
+                            <span style="color: var(--success);">Success</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <span>✅ Deploy to Render (#24269137683)</span>
+                            <span style="color: var(--success);">Success</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 8px;">
+                            <span>✅ Deploy to Render (#24269045119)</span>
+                            <span style="color: var(--success);">Success</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--cream-secondary);">
+                        Total: 5 deploys notificados via Telegram | Último check: 19/04 02:15 UTC
+                    </p>
                 </div>
             </div>
         </div>
@@ -397,45 +482,66 @@
                 <ul class="priority-list">
                     <li class="priority-item">
                         <div class="priority-info">
-                            <div class="priority-title">1. Cadastrar SKUs em 100 produtos sem identificação</div>
-                            <div class="priority-meta">⚙️ OpsBot | Impacto: 10/10 | Deadline: 11/04/2026</div>
-                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Risco operacional crítico - produtos sem SKU impedem controle de estoque</p>
+                            <div class="priority-title">1. Implementar Plano de Crescimento Acelerado (80.6% em 6 meses)</div>
+                            <div class="priority-meta">🤖 StrategyBot | Impacto: 10/10 | ROI: 2.0x</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Meta: R$27.7k → R$50k/mês. Quick wins cobrem meta dos meses 1-2. <span class="impact-money">+R$22.3k/mês</span></p>
                         </div>
                         <span class="badge badge-p0">P0</span>
                     </li>
                     <li class="priority-item">
                         <div class="priority-info">
-                            <div class="priority-title">2. Criar planilha de custos e calcular margens reais</div>
-                            <div class="priority-meta">⚙️ OpsBot | Impacto: 10/10 | Deadline: 12/04/2026</div>
-                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Vendendo no escuro - sem saber margens reais, risco de prejuízo</p>
+                            <div class="priority-title">2. Redirecionar Budget WhatsApp ← Google Ads</div>
+                            <div class="priority-meta">🤖 TrafficBot | Impacto: 9/10 | ROI: 4.5x | Esforço: 2</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">CAC 60% mais barato no WhatsApp (R$20 vs R$50). <span class="impact-money">+R$7.8k/mês</span></p>
                         </div>
                         <span class="badge badge-p0">P0</span>
                     </li>
                     <li class="priority-item">
                         <div class="priority-info">
-                            <div class="priority-title">3. Criar 4 bundles estratégicos para aumentar ticket médio</div>
-                            <div class="priority-meta">⚙️ OpsBot | Impacto: 9/10 | ROI: 4.5x | Deadline: 14/04/2026</div>
-                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">73% dos pedidos têm apenas 1 item. Potencial: +R$ 8.000/mês</p>
-                        </div>
-                        <span class="badge badge-p0">P0</span>
-                    </li>
-                    <li class="priority-item">
-                        <div class="priority-info">
-                            <div class="priority-title">4. Implementar coleta de email marketing</div>
-                            <div class="priority-meta">⚙️ OpsBot | Impacto: 9/10 | Deadline: 15/04/2026</div>
-                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">100% dos clientes não inscritos. Base de 50+ clientes sem comunicação</p>
-                        </div>
-                        <span class="badge badge-p0">P0</span>
-                    </li>
-                    <li class="priority-item">
-                        <div class="priority-info">
-                            <div class="priority-title">5. Adicionar luminária 3D ao catálogo</div>
-                            <div class="priority-meta">🚦 TrafficBot | Impacto: 9/10 | Deadline: 20/04/2026</div>
-                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">TOP 2 produto vencedor 2026. Alto potencial viral</p>
+                            <div class="priority-title">3. Criar Editorial Calendar e 5 Posts para Blog Vazio</div>
+                            <div class="priority-meta">🤖 CopyBot | Impacto: 9/10 | ROI: 1.5x</div>
+                            <p style="color: var(--cream-secondary); margin-top: 0.5rem;">Blog é canal crucial para SEO. Gap crítico vs concorrentes. Impacto médio/longo prazo.</p>
                         </div>
                         <span class="badge badge-p0">P0</span>
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- Quick Wins -->
+        <div class="section">
+            <h2 class="section-title">⚡ Quick Wins (Baixo Esforço, Alto Retorno)</h2>
+            <div class="card">
+                <div class="highlight-box">
+                    <h3 style="color: var(--gold); margin-bottom: 1rem;">💰 +R$14.2k/mês com mínimo esforço</h3>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem 0;"><strong>1. Frete Grátis R$400</strong></td>
+                            <td style="padding: 0.75rem 0; color: var(--cream-secondary);">Esforço: 1/10</td>
+                            <td style="padding: 0.75rem 0; text-align: right;" class="impact-money">+R$1.8k/mês</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem 0;"><strong>2. Redirecionar Budget WhatsApp</strong></td>
+                            <td style="padding: 0.75rem 0; color: var(--cream-secondary);">Esforço: 2/10</td>
+                            <td style="padding: 0.75rem 0; text-align: right;" class="impact-money">+R$7.8k/mês</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem 0;"><strong>3. Cross-sell Vasos PP</strong></td>
+                            <td style="padding: 0.75rem 0; color: var(--cream-secondary);">Esforço: 2/10</td>
+                            <td style="padding: 0.75rem 0; text-align: right;" class="impact-money">+R$2.1k/mês</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 0;"><strong>4. Ajustar Descontos Promocionais</strong></td>
+                            <td style="padding: 0.75rem 0; color: var(--cream-secondary);">Esforço: 2/10</td>
+                            <td style="padding: 0.75rem 0; text-align: right;" class="impact-money">+R$1.5k/mês</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 0;"><strong>5. Política Margem Mínima 55%</strong></td>
+                            <td style="padding: 0.75rem 0; color: var(--cream-secondary);">Esforço: 2/10</td>
+                            <td style="padding: 0.75rem 0; text-align: right;" class="impact-money">+R$1.8k/mês</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -451,16 +557,47 @@
             </div>
         </div>
 
+        <!-- Métricas Operacionais -->
+        <div class="section">
+            <h2 class="section-title">📈 Métricas Operacionais (Base de Dados Reais)</h2>
+            <div class="card">
+                <div class="highlight-box">
+                    <div class="stats-grid" style="margin-bottom: 0;">
+                        <div class="stat-card">
+                            <div class="stat-number" style="font-size: 1.5rem;">R$244</div>
+                            <div class="stat-label">Ticket Médio Real</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="font-size: 1.5rem;">54.5%</div>
+                            <div class="stat-label">Margem Média</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="font-size: 1.5rem;">13.9x</div>
+                            <div class="stat-label">LTV/CAC Ratio</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" style="font-size: 1.5rem;">72%</div>
+                            <div class="stat-label">Abandono Carrinho</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: var(--cream-secondary); font-size: 0.875rem;">
+                    Dados atualizados em 18/04/2026 às 12:47 UTC | Fonte: Shopify API (50 produtos, 20 pedidos recentes, 90 dias de histórico)
+                </p>
+            </div>
+        </div>
+
         <!-- Próximas Ações -->
         <div class="section">
             <h2 class="section-title">🎯 Próximas Ações Recomendadas</h2>
             <div class="card">
                 <ol style="padding-left: 1.5rem; color: var(--cream);">
-                    <li style="margin-bottom: 1rem;"><strong>Commit e deploy das alterações do DesignBot</strong> - Logo e tema atualizados prontos para produção</li>
-                    <li style="margin-bottom: 1rem;"><strong>Ativar OpsBot para tarefas P0</strong> - Cadastro de SKUs é crítico e vence hoje (11/04)</li>
-                    <li style="margin-bottom: 1rem;"><strong>Revisar oportunidades de produto</strong> - 22 oportunidades detectadas, priorizar implementação</li>
-                    <li style="margin-bottom: 1rem;"><strong>Verificar integração Meta Pixel</strong> - Configurado mas precisa de validação</li>
-                    <li><strong>Ativar TrafficBot para análise contínua</strong> - Gap de 24h sem atividade</li>
+                    <li style="margin-bottom: 1rem;"><strong>⚡ Aprovar Pull Request do DesignBot</strong> - Design System v2.0 pronto para merge em clean-deploy-new</li>
+                    <li style="margin-bottom: 1rem;"><strong>🚀 Implementar Quick Win #1: Frete Grátis R$400</strong> - 30 min de trabalho, +R$1.8k/mês</li>
+                    <li style="margin-bottom: 1rem;"><strong>📱 Redirecionar Budget WhatsApp</strong> - 1h de trabalho, +R$7.8k/mês, ROI 4.5x</li>
+                    <li style="margin-bottom: 1rem;"><strong>🛍️ Criar Bundles Luminária + Escultura</strong> - Potencial +R$4.2k/mês em ticket médio</li>
+                    <li style="margin-bottom: 1rem;"><strong>🎁 Configurar Programa Primeira Compra</strong> - Popup + cupom PRIMEIRA10, +19% conversão</li>
+                    <li><strong>✍️ Ativar CopyBot para tarefas P0/P1</strong> - 10 tarefas acumuladas na fila</li>
                 </ol>
             </div>
         </div>
@@ -472,8 +609,9 @@
                 <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
                     <a href="https://criativalia-control-plane.onrender.com" class="link-button" target="_blank">🌐 Control Plane</a>
                     <a href="https://github.com/fernandosilva82/criativalia-mission-control" class="link-button" target="_blank">📦 GitHub Repo</a>
-                    <a href="/criativalia/timesheets/20260410/timesheet_24h.html" class="link-button">📊 Timesheet Completo</a>
-                    <a href="/criativalia/priorities_queue.json" class="link-button">🎯 Fila de Prioridades</a>
+                    <a href="priorities_queue.json" class="link-button">🎯 Fila de Prioridades</a>
+                    <a href="opportunities/20260419/ops_summary.md" class="link-button">📊 Relatório OpsBot</a>
+                    <a href="evidencias/20260419/design_update_0208.md" class="link-button">🎨 Design System</a>
                 </div>
             </div>
         </div>
@@ -481,7 +619,7 @@
 
     <footer class="footer">
         <p>🌅 Morning Brief Generator - Criativalia Autonomous System</p>
-        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Gerado em: 11/04/2026 02:51 AM (Asia/Shanghai) | Próximo brief: 12/04/2026</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Gerado em: 19/04/2026 02:30 AM (Asia/Shanghai) | Próximo brief: 20/04/2026</p>
     </footer>
 </body>
 </html>

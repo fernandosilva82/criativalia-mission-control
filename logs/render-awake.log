@@ -1,5 +1,5 @@
-[2026-04-10T22:38:00Z] Keep Render Awake - SUCCESS
-Status: 200 OK
-Response time: 220ms
-Runtime: Active (21 agents, all idle)
-Database: 21 agents, 2168 tasks, 57188 opportunities
+[2026-04-18 15:15 UTC] Keep Render Awake - Criativalia Runtime
+Command: curl -s -w "\nHTTP_CODE: %{http_code}\n" https://criativalia-runtime.onrender.com/api/stats
+Result: CONNECTION FAILED (HTTP_CODE: 000, exit code: 28)
+Status: ❌ FAILURE - Backend did not respond (likely sleeping or unreachable)
+Note: Exit code 28 indicates connection timeout. Render free tier instances sleep after inactivity and take 30-60s to wake up.

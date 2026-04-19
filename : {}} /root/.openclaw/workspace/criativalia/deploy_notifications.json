@@ -1,0 +1,148 @@
+{
+  "last_check": "2026-04-18T18:28:53.000Z",
+  "last_check_summary": "✅ Verificação em 18/04/2026, 18:28 UTC. 10 workflows analisados. 0 novos deploys.",
+  "totalWorkflowsChecked": 296,
+  "notifiedDeployments": [
+    {
+      "id": 24305761094,
+      "name": "Deploy to Render",
+      "displayTitle": "🎨 Night Shift Design: Sistema de Design Criativalia v2.0",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-12T12:16:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24305761094"
+    },
+    {
+      "id": 24290694896,
+      "name": "Deploy to Render",
+      "displayTitle": "🎨 Night Shift: Refinamento do Design System Criativalia",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-11T20:15:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24290694896"
+    },
+    {
+      "id": 24269147211,
+      "name": "Deploy to Render",
+      "displayTitle": "docs: Add relatório de ajustes e auditoria",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-18T02:12:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269147211"
+    },
+    {
+      "id": 24269137683,
+      "name": "Deploy to Render",
+      "displayTitle": "ci: Melhorar workflow de deploy e adicionar scripts de limpeza",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-18T02:12:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269137683"
+    },
+    {
+      "id": 24269045119,
+      "name": "Deploy to Render",
+      "displayTitle": "fix: Add error handling to health and stats endpoints",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-18T02:12:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24269045119"
+    },
+    {
+      "id": 24260971658,
+      "name": "Deploy on Opportunities Update",
+      "displayTitle": "Deploy on Opportunities Update",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-18T03:15:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24260971658"
+    },
+    {
+      "id": 24260958078,
+      "name": "Update Dashboard on Evidence",
+      "displayTitle": "Update Dashboard on Evidence",
+      "status": "completed",
+      "conclusion": "success",
+      "notifiedAt": "2026-04-18T03:15:00Z",
+      "htmlUrl": "https://github.com/fernandosilva82/criativalia-mission-control/actions/runs/24260958078"
+    }
+  ],
+  "ignoredWorkflows": [
+    "notify-deploy.yml",
+    ".github/workflows/notify-deploy.yml",
+    "pages build and deployment"
+  ],
+  "lastScan": {
+    "timestamp": "2026-04-18T18:28:53.000Z",
+    "workflowsChecked": 10,
+    "newDeploysFound": 0,
+    "ignoredCount": 1,
+    "nextCheck": "2026-04-18T18:43:00.000Z",
+    "dataSource": "github_api"
+  },
+  "checkHistory": [
+    {
+      "timestamp": "2026-04-18T18:28:53.000Z",
+      "workflowsChecked": 10,
+      "newNotifications": 0,
+      "status": "no_new_deploys"
+    },
+    {
+      "timestamp": "2026-04-18T18:27:32.000Z",
+      "workflowsChecked": 5,
+      "newNotifications": 0,
+      "status": "no_new_deploys"
+    },
+    {
+      "timestamp": "2026-04-18T18:24:00.000Z",
+      "workflowsChecked": 10,
+      "newNotifications": 0,
+      "status": "no_new_deploys"
+    }
+  ],
+  "check_count": 64,
+  "notified_runs": [
+    {
+      "id": 24305761094,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-12T12:16:00Z"
+    },
+    {
+      "id": 24290694896,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-11T20:15:00Z"
+    },
+    {
+      "id": 24269147211,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T02:12:00Z"
+    },
+    {
+      "id": 24269137683,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T02:12:00Z"
+    },
+    {
+      "id": 24269045119,
+      "name": "Deploy to Render",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T02:12:00Z"
+    },
+    {
+      "id": 24260971658,
+      "name": "Deploy on Opportunities Update",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T03:12:00Z"
+    },
+    {
+      "id": 24260958078,
+      "name": "Update Dashboard on Evidence",
+      "conclusion": "success",
+      "notified_at": "2026-04-18T03:12:00Z"
+    }
+  ]
+}

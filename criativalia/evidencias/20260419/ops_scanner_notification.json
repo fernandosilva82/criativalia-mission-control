@@ -1,0 +1,23 @@
+{
+  "notification_type": "ops_scanner_complete",
+  "agent": "OpsBot",
+  "timestamp": "2026-04-19T00:41:00Z",
+  "status": "success",
+  "message": "⚙️ OpsBot - Scanner de Oportunidades completo",
+  "summary": {
+    "opportunities_found": 12,
+    "financial_impact": "+R$37.6k/mês",
+    "quick_wins": 5,
+    "top_opportunity": {
+      "title": "Redirecionar Budget WhatsApp ← Google Ads",
+      "impact": "+R$7.8k/mês",
+      "effort": "2/10"
+    }
+  },
+  "files_created": [
+    "opportunities/20260419/ops_opps.json",
+    "opportunities/20260419/ops_summary.md"
+  ],
+  "action_required": false,
+  "priority": "normal"
+}

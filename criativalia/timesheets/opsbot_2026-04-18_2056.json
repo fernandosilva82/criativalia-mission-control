@@ -1,0 +1,52 @@
+{
+  "agent": "OpsBot",
+  "task": "Scanner de Oportunidades Operacionais",
+  "date": "2026-04-18",
+  "start_time": "20:56:00",
+  "end_time": "20:58:00",
+  "duration_minutes": 2,
+  "status": "completed",
+  "summary": "Análise operacional completa da Criativalia identificando 20 oportunidades de crescimento",
+  "outputs": [
+    {
+      "file": "/root/.openclaw/workspace/criativalia/opportunities/20260418/ops_opps_v2.json",
+      "description": "10 novas oportunidades operacionais complementares"
+    },
+    {
+      "file": "/root/.openclaw/workspace/criativalia/opportunities/20260418/ops_opportunities_report.md",
+      "description": "Relatório executivo com análise e roadmap"
+    }
+  ],
+  "key_findings": {
+    "total_opportunities": 20,
+    "financial_impact": "+R$53.8k/mês",
+    "quick_wins": 8,
+    "roi_average": "4.2x",
+    "top_opportunities": [
+      "Redirecionar budget WhatsApp (+R$7.8k/mês)",
+      "Reduzir abandono carrinho 72%→60% (+R$8.3k/mês)",
+      "Carrinho abandonado automático (+R$6.3k/mês)",
+      "Oferta primeira compra (+R$5.2k/mês)",
+      "Bundles estratégicos (+R$5.5k/mês)"
+    ]
+  },
+  "data_sources": [
+    "metricas_unitarias.json - 90 dias de dados reais Shopify",
+    "priorities_queue.json - Fila de prioridades atual",
+    "ops_opps.json - Análises anteriores"
+  ],
+  "recommendations": [
+    "Implementar frete grátis threshold R$299 (esforço 2, impacto 8)",
+    "Redirecionar R$1k de Google Ads para WhatsApp (CAC 60% mais baixo)",
+    "Criar política margem mínima 55% para novos produtos",
+    "Configurar automação carrinho abandonado (72% abandono atual)",
+    "Implementar dashboard NPS + métricas faltantes"
+  ],
+  "next_steps": [
+    "CEO Agent revisar e priorizar ações",
+    "InfraBot configurar frete grátis no Shopify",
+    "TrafficBot redistribuir budget Google→WhatsApp",
+    "CopyBot criar copy para bundles e oferta primeira compra"
+  ],
+  "evidence_url": "https://criativalia-control-plane.onrender.com/opportunities/20260418"
+}

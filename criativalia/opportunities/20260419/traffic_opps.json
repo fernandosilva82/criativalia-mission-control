@@ -1,0 +1,68 @@
+:[
+  {
+    "id":"traffic_001",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"Keyword 'luminária 3D' em alta",
+    "description":"Pesquisas por luminárias 3D/LED estão crescendo significativamente. O termo 'luminária 3D' mostra tendência de busca crescente no mercado brasileiro de decoração. Oportunidade de criar conteúdo educativo sobre diferentes tipos de luminárias 3D e seus usos em ambientes residenciais.",
+    "source":"Análise de tendências de mercado",
+    "impact_score":8,
+    "effort_score":5,
+    "action_suggested":"Criar categoria de produtos 'Luminárias 3D' e conteúdo blog explicando tecnologia e aplicações",
+    "evidence_url":"https://blog.lustresgenesis.com.br"
+  },
+  {
+    "id":"traffic_002",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"Arandela articulada - tendência funcional",
+    "description":"Arandelas articuladas estão em alta por combinar design moderno com funcionalidade. Permitem direcionamento da luz e são populares em projetos de iluminação técnica. Concorrentes como Lustres Gênesis e Starlumen já oferecem variedade, mas há espaço para diferenciação.",
+    "source":"Análise de concorrentes",
+    "impact_score":7,
+    "effort_score":4,
+    "action_suggested":"Desenvolver linha de arandelas articuladas com foco em design exclusivo e materiais sustentáveis",
+    "evidence_url":"https://blog.lustresgenesis.com.br/10-melhoras-lojas-de-iluminacao/"
+  },
+  {
+    "id":"traffic_003",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"Luminária mushroom/cogumelo - viral no Pinterest",
+    "description":"Luminárias no formato de cogumelo (mushroom lamps) são tendência viral no Pinterest e redes sociais. Design retrô/anos 60 com apelo nostálgico e aesthetic. Alta potencialidade de conteúdo visual para Instagram e Pinterest.",
+    "source":"Tendências Pinterest/Google",
+    "impact_score":9,
+    "effort_score":3,
+    "action_suggested":"Importar/criar linha de luminárias mushroom e investir em fotografia para Pinterest/Instagram",
+    "evidence_url":"https://www.pinterest.com/trends"
+  },
+  {
+    "id":"traffic_004",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"SEO local - oportunidade em São Paulo",
+    "description":"Concorrentes principais (Lustres Gênesis, Lume Decor) possuem showrooms físicos em São Paulo. Busca por 'loja de iluminação em São Paulo' e variações apresentam volume significativo. Oportunidade de capturar tráfego local mesmo sem loja física através de conteúdo localizado.",
+    "source":"Análise concorrentes + Google Trends",
+    "impact_score":6,
+    "effort_score":4,
+    "action_suggested":"Criar página 'Luminárias em São Paulo' com entrega rápida e atendimento personalizado online",
+    "evidence_url":"https://blog.lustresgenesis.com.br/10-melhoras-lojas-de-iluminacao/"
+  },
+  {
+    "id":"traffic_005",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"Gap de conteúdo: guias de iluminação por ambiente",
+    "description":"Concorrentes focam em produtos mas negligenciam conteúdo educativo completo. Oportunidade de criar guias como 'Como escolher luminária para sala', 'Iluminação ideal para quarto', etc. Tipo de conteúdo que gera backlinks naturais e autoridade.",
+    "source":"Análise de gaps de conteúdo",
+    "impact_score":7,
+    "effort_score":6,
+    "action_suggested":"Criar série de 5+ guias completos de iluminação por ambiente (sala, quarto, cozinha, home office, externo)",
+    "evidence_url":"https://www.shopify.com/br/blog/analise-de-palavras-chave-de-concorrentes"
+  },
+  {
+    "id":"traffic_006",
+    "timestamp":"2026-04-19T00:32:00Z",
+    "title":"Iluminação sustentável e LED - tendência 2026",
+    "description":"Crescente busca por luminárias sustentáveis, LED de baixo consumo e materiais eco-friendly. Concorrentes como Starlumen já posicionam em LED técnico. Oportunidade de diferenciação com foco em design + sustentabilidade.",
+    "source":"Tendências mercado 2026",
+    "impact_score":7,
+    "effort_score":5,
+    "action_suggested":"Desenvolver categoria 'Iluminação Sustentável' com certificações e materiais eco-friendly destacados",
+    "evidence_url":"https://www.lumedecoronline.com.br"
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "scan_id": "ops_scan_20260418",
+  "timestamp": "2026-04-18T12:47:00Z",
+  "agent": "OpsBot - Scanner de Oportunidades",
+  "status": "completed",
+  "data_sources": [
+    "metricas_unitarias.json - Dados de margens, CAC, LTV (últimos 90 dias)",
+    "priorities_queue.json - Fila de prioridades atualizada",
+    "kpi_semanal_criativalia.csv - Metas vs Real (detectado: dados não atualizados)",
+    "ops_opps.json histórico - Oportunidades anteriores para comparação"
+  ],
+  "analysis_summary": {
+    "receita_90d": "R$83.056,40",
+    "ticket_medio_atual": "R$469,25 (abaixo da meta R$500)",
+    "total_pedidos_90d": 177,
+    "produtos_ativos": 250,
+    "margem_media": "54,5% (saudável, acima de 50%)",
+    "cac_media_ponderada": "R$38,67",
+    "ltv_calculado": "R$538,64",
+    "ltv_cac_ratio": "13,93x (SAUDÁVEL - acima de 3x)",
+    "taxa_conversao": "2,1% (abaixo do benchmark 2,5%)",
+    "taxa_abandono_carrinho": "72% (acima do benchmark 69%)",
+    "cac_por_canal": {
+      "whatsapp": "R$20 (melhor CAC)",
+      "organico": "R$33",
+      "meta_ads": "R$44",
+      "google_ads": "R$50 (mais alto - oportunidade)"
+    },
+    "margens_por_categoria": {
+      "organizadores": "60,0% (melhor)",
+      "almofadas": "56,9%",
+      "vasos": "50,6%",
+      "luminarias": "50,0% (oportunidade de melhoria)",
+      "quadros": "60,0%"
+    }
+  },
+  "opportunities_generated": 14,
+  "top_5_opportunities": [
+    {
+      "id": "ops_004",
+      "title": "Automação de carrinho abandonado",
+      "impact_score": 9,
+      "financial_impact": "+R$6.300/mês",
+      "quick_win": true
+    },
+    {
+      "id": "ops_005",
+      "title": "Escala no WhatsApp (CAC R$20)",
+      "impact_score": 9,
+      "financial_impact": "+R$6.000/mês",
+      "quick_win": true
+    },
+    {
+      "id": "ops_001",
+      "title": "Bundles estratégicos",
+      "impact_score": 9,
+      "financial_impact": "+R$5.500/mês",
+      "quick_win": false
+    },
+    {
+      "id": "ops_007",
+      "title": "Programa de fidelidade",
+      "impact_score": 8,
+      "financial_impact": "+R$4.500/mês",
+      "quick_win": false
+    },
+    {
+      "id": "ops_002",
+      "title": "Frete grátis threshold R$299",
+      "impact_score": 8,
+      "financial_impact": "+R$4.200/mês",
+      "quick_win": true
+    }
+  ],
+  "quick_wins_identified": [
+    "ops_002 - Frete grátis (esforço 2, impacto alto)",
+    "ops_012 - Implementar NPS (esforço 3, dados críticos)",
+    "ops_005 - Escala WhatsApp (esforço 3, ROI garantido)",
+    "ops_004 - Carrinho abandonado (esforço 3, receita imediata)"
+  ],
+  "critical_gaps_found": [
+    "KPIs semanais não atualizados automaticamente (receita real = 0)",
+    "NPS não medido - sem visibilidade de satisfação do cliente",
+    "Taxa de recompra não monitorada",
+    "Tempo de resposta ao cliente não medido"
+  ],
+  "total_potential_impact": "+R$43.700/mês",
+  "output_file": "/root/.openclaw/workspace/criativalia/opportunities/20260418/ops_opps.json"
+}
