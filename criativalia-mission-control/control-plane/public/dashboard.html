@@ -2,8 +2,16 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Dashboard - Criativalia Control Plane</title>
+    
+    <!-- Performance: Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/criativalia-theme.css">
@@ -11,104 +19,236 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body { 
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--cri-bg-primary);
             color: var(--cri-text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         .agent-card {
             transition: all var(--cri-transition-normal);
+            cursor: pointer;
+            position: relative;
         }
         
         .agent-card:hover {
             transform: translateY(-2px);
             border-color: var(--cri-gold);
+            box-shadow: var(--cri-shadow-gold);
+        }
+        
+        .agent-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity var(--cri-transition-fast);
+            background: linear-gradient(135deg, rgba(212, 168, 83, 0.05), transparent);
+        }
+        
+        .agent-card:hover::after {
+            opacity: 1;
         }
         
         .agent-avatar {
             background: linear-gradient(135deg, var(--cri-olive-muted), var(--cri-gold-muted));
         }
+
+        .task-row {
+            transition: all var(--cri-transition-fast);
+            cursor: pointer;
+        }
+        
+        .task-row:hover {
+            background: var(--cri-bg-hover);
+            padding-left: 20px;
+        }
+
+        /* Stat card shimmer while loading */
+        .stat-loading {
+            background: linear-gradient(90deg, var(--cri-bg-tertiary) 25%, #252525 50%, var(--cri-bg-tertiary) 75%);
+            background-size: 200% 100%;
+            animation: cri-skeleton-shimmer 1.5s infinite;
+            border-radius: 4px;
+            display: inline-block;
+            width: 80px;
+            height: 24px;
+        }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen cri-page-with-sidebar">
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="cri-sidebar__overlay" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="cri-sidebar">
+        <div class="cri-sidebar__header">
+            <a href="/" class="cri-logo cri-logo--small">
+                <div class="cri-logo__icon cri-logo__icon--small">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="cri-logo__text">
+                    <span class="cri-logo__brand">Criativalia</span>
+                    <span class="cri-logo__tagline">Dashboard</span>
+                </div>
+            </a>
+            <button onclick="toggleSidebar()" class="cri-btn cri-btn--ghost cri-btn--icon-sm" aria-label="Fechar menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="cri-sidebar__section">Navegação</div>
+        <nav class="flex flex-col gap-1">
+            <a href="/" class="cri-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </a>
+            <a href="unified-dashboard.html" class="cri-nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard Unificado</span>
+            </a>
+            <a href="dashboard.html" class="cri-nav-item active">
+                <i class="fas fa-rocket"></i>
+                <span>Dashboard Clássico</span>
+            </a>
+            <a href="kanban.html" class="cri-nav-item">
+                <i class="fas fa-columns"></i>
+                <span>Kanban</span>
+                <span id="sidebar-kanban-badge" class="cri-nav-badge hidden">0</span>
+            </a>
+            <a href="timesheet.html" class="cri-nav-item">
+                <i class="fas fa-clock"></i>
+                <span>Timesheet</span>
+            </a>
+            <a href="deliverables.html" class="cri-nav-item">
+                <i class="fas fa-box"></i>
+                <span>Entregas</span>
+            </a>
+        </nav>
+        
+        <div class="cri-sidebar__section">Sistema</div>
+        <nav class="flex flex-col gap-1">
+            <a href="#" class="cri-nav-item" onclick="refreshData(); return false;">
+                <i class="fas fa-sync-alt" id="sidebar-refresh-icon"></i>
+                <span>Atualizar Dados</span>
+            </a>
+        </nav>
+        
+        <div class="mt-auto pt-4 border-t border-[var(--cri-border)]">
+            <div class="cri-last-updated" id="last-updated">
+                <i class="fas fa-clock"></i>
+                <span>Nunca atualizado</span>
+            </div>
+            <div class="text-xs text-[var(--cri-text-muted)] mt-2">
+                v2.3.0 • Night Shift UX
+            </div>
+        </div>
+    </aside>
+
     <!-- Header -->
     <header class="border-b border-[var(--cri-border)] bg-[var(--cri-bg-secondary)] sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
             <div class="flex items-center justify-between">
-                <!-- Logo Criativalia -->
-                <a href="/" class="cri-logo cri-logo--small">
-                    <div class="cri-logo__icon cri-logo__icon--small">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <div class="cri-logo__text">
-                        <span class="cri-logo__brand">Criativalia</span>
-                        <span class="cri-logo__tagline">Dashboard</span>
-                    </div>
-                </a>
-                
                 <div class="flex items-center gap-3">
-                    <div class="px-4 py-2 rounded-lg bg-[var(--cri-olive-muted)] border border-[var(--cri-olive-primary)]/30">
+                    <button onclick="toggleSidebar()" class="cri-hamburger" aria-label="Abrir menu de navegação">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <!-- Logo Criativalia -->
+                    <a href="/" class="cri-logo cri-logo--small">
+                        <div class="cri-logo__icon cri-logo__icon--small">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <div class="cri-logo__text">
+                            <span class="cri-logo__brand">Criativalia</span>
+                            <span class="cri-logo__tagline">Dashboard</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="px-3 py-2 rounded-lg bg-[var(--cri-olive-muted)] border border-[var(--cri-olive-primary)]/30 hidden sm:flex">
                         <div class="flex items-center gap-2 text-xs">
                             <span class="cri-status cri-status--online"></span>
                             <span class="text-[var(--cri-olive-light)] font-medium">Sistema Online</span>
                         </div>
                     </div>
-                    <button onclick="refreshData()" class="cri-btn cri-btn--secondary cri-btn--icon">
-                        <i class="fas fa-sync-alt"></i>
+                    <button onclick="refreshData()" class="cri-btn cri-btn--secondary cri-btn--icon" aria-label="Atualizar dados do dashboard">
+                        <i class="fas fa-sync-alt" id="header-refresh-icon"></i>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <!-- Loading Bar -->
+        <div id="loading-bar" class="hidden mb-6">
+            <div class="cri-loading">
+                <div class="cri-loading__spinner"></div>
+                <span>Carregando dados...</span>
+            </div>
+        </div>
+        
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="cri-card cri-card--gradient p-5">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div class="cri-card cri-card--gradient p-4 sm:p-5 relative">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Receita MTD</span>
                     <i class="fas fa-dollar-sign text-[var(--cri-gold)]"></i>
                 </div>
-                <div id="stat-revenue" class="text-xl font-bold">-</div>
+                <div id="stat-revenue" class="text-lg sm:text-xl font-bold">
+                    <span class="stat-loading"></span>
+                </div>
             </div>
             
-            <div class="cri-card cri-card--gradient p-5">
+            <div class="cri-card cri-card--gradient p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Pedidos</span>
                     <i class="fas fa-shopping-bag text-[var(--cri-olive-primary)]"></i>
                 </div>
-                <div id="stat-orders" class="text-xl font-bold">-</div>
+                <div id="stat-orders" class="text-lg sm:text-xl font-bold">
+                    <span class="stat-loading"></span>
+                </div>
             </div>
             
-            <div class="cri-card cri-card--gradient p-5">
+            <div class="cri-card cri-card--gradient p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Ticket Médio</span>
                     <i class="fas fa-receipt text-[var(--cri-info)]"></i>
                 </div>
-                <div id="stat-aov" class="text-xl font-bold">-</div>
+                <div id="stat-aov" class="text-lg sm:text-xl font-bold">
+                    <span class="stat-loading"></span>
+                </div>
             </div>
             
-            <div class="cri-card cri-card--gradient p-5">
+            <div class="cri-card cri-card--gradient p-4 sm:p-5">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-[var(--cri-text-muted)] text-xs uppercase tracking-wider">Conversão</span>
                     <i class="fas fa-percentage text-[var(--cri-gold)]"></i>
                 </div>
-                <div id="stat-conversion" class="text-xl font-bold">-</div>
+                <div id="stat-conversion" class="text-lg sm:text-xl font-bold">
+                    <span class="stat-loading"></span>
+                </div>
             </div>
         </div>
 
         <!-- Active Agents -->
-        <section class="mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold">Agentes Ativos</h2>
+        <section class="mb-6 sm:mb-8">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 class="text-lg sm:text-xl font-bold">Agentes Ativos</h2>
                 <span id="agents-count" class="cri-badge cri-badge--neutral">0 agentes</span>
             </div>
             
-            <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div id="agents-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <!-- Skeleton loading -->
-                <div class="cri-card p-5">
+                <div class="cri-card p-4 sm:p-5">
                     <div class="flex items-center gap-4">
                         <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
                         <div class="flex-1">
@@ -117,7 +257,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="cri-card p-5">
+                <div class="cri-card p-4 sm:p-5 hidden sm:block">
                     <div class="flex items-center gap-4">
                         <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
                         <div class="flex-1">
@@ -126,7 +266,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="cri-card p-5">
+                <div class="cri-card p-4 sm:p-5 hidden lg:block">
                     <div class="flex items-center gap-4">
                         <div class="cri-skeleton w-12 h-12 rounded-xl"></div>
                         <div class="flex-1">
@@ -140,8 +280,8 @@
 
         <!-- Recent Tasks -->
         <section>
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold">Tarefas Recentes</h2>
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 class="text-lg sm:text-xl font-bold">Tarefas Recentes</h2>
                 <a href="kanban.html" class="cri-btn cri-btn--secondary cri-btn--sm">
                     Ver Kanban <i class="fas fa-arrow-right ml-2"></i>
                 </a>
@@ -156,11 +296,50 @@
     </main>
 
     <script>
+        // Sidebar Toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar.classList.contains('active')) {
+                    toggleSidebar();
+                }
+            }
+        });
+        
+        // Close sidebar on window resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             refreshData();
         });
 
         async function refreshData() {
+            const loadingBar = document.getElementById('loading-bar');
+            const refreshIcon = document.getElementById('header-refresh-icon');
+            const sidebarRefreshIcon = document.getElementById('sidebar-refresh-icon');
+            
+            // Show loading state
+            loadingBar.classList.remove('hidden');
+            if (refreshIcon) refreshIcon.classList.add('fa-spin');
+            if (sidebarRefreshIcon) sidebarRefreshIcon.classList.add('fa-spin');
+            
             try {
                 const [agentsRes, tasksRes, shopifyRes] = await Promise.all([
                     fetch('/api/agents').catch(() => null),
@@ -173,22 +352,71 @@
                 const shopify = shopifyRes ? await shopifyRes.json() : {};
 
                 // Update stats
-                document.getElementById('stat-revenue').textContent = 
-                    'R$ ' + (shopify.revenue_mtd || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
-                document.getElementById('stat-orders').textContent = (shopify.orders_mtd || 0).toLocaleString('pt-BR');
-                document.getElementById('stat-aov').textContent = 
-                    'R$ ' + (shopify.aov || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
-                document.getElementById('stat-conversion').textContent = (shopify.conversion_rate || 0).toFixed(1) + '%';
+                updateStat('stat-revenue', 'R$ ' + (shopify.revenue_mtd || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 }));
+                updateStat('stat-orders', (shopify.orders_mtd || 0).toLocaleString('pt-BR'));
+                updateStat('stat-aov', 'R$ ' + (shopify.aov || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 }));
+                updateStat('stat-conversion', (shopify.conversion_rate || 0).toFixed(1) + '%');
 
                 // Render agents
                 renderAgents(agents);
 
                 // Render tasks
                 renderTasks(tasks.slice(0, 5));
+                
+                // Update sidebar kanban badge
+                const pendingTasks = tasks.filter(t => t.status !== 'done').length;
+                const kanbanBadge = document.getElementById('sidebar-kanban-badge');
+                if (kanbanBadge) {
+                    if (pendingTasks > 0) {
+                        kanbanBadge.textContent = pendingTasks;
+                        kanbanBadge.classList.remove('hidden');
+                    } else {
+                        kanbanBadge.classList.add('hidden');
+                    }
+                }
+                
+                // Update last updated
+                updateLastUpdated();
 
             } catch (err) {
                 console.error('Error loading data:', err);
+                showError('Erro ao carregar dados. Tente novamente.');
+            } finally {
+                loadingBar.classList.add('hidden');
+                if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+                if (sidebarRefreshIcon) sidebarRefreshIcon.classList.remove('fa-spin');
             }
+        }
+        
+        function updateStat(id, value) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerHTML = value;
+                el.classList.add('cri-animate-fade-in');
+                setTimeout(() => el.classList.remove('cri-animate-fade-in'), 300);
+            }
+        }
+        
+        function updateLastUpdated() {
+            const el = document.getElementById('last-updated');
+            if (el) {
+                const now = new Date();
+                const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                el.innerHTML = `<i class="fas fa-check-circle text-[var(--cri-olive-primary)]"></i><span>Atualizado às ${time}</span>`;
+            }
+        }
+        
+        function showError(message) {
+            const container = document.getElementById('tasks-list');
+            container.innerHTML = `
+                <div class="p-6 text-center">
+                    <i class="fas fa-exclamation-circle text-[var(--cri-error)] text-3xl mb-3"></i>
+                    <p class="text-[var(--cri-text-muted)]">${message}</p>
+                    <button onclick="refreshData()" class="cri-btn cri-btn--secondary mt-4">
+                        <i class="fas fa-sync-alt mr-2"></i>Tentar novamente
+                    </button>
+                </div>
+            `;
         }
 
         function renderAgents(agents) {
@@ -206,18 +434,18 @@
             }
 
             container.innerHTML = agents.map(agent => `
-                <div class="agent-card cri-card p-5">
-                    <div class="flex items-center gap-4">
+                <a href="timesheet.html?agent=${encodeURIComponent(agent.name)}" class="agent-card cri-card p-4 sm:p-5 block text-inherit no-underline" role="button">
+                    <div class="flex items-center gap-4 relative z-10">
                         <div class="agent-avatar w-12 h-12 rounded-xl flex items-center justify-center text-xl">
                             ${getAgentIcon(agent.role)}
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-semibold truncate">${agent.name}</h3>
+                            <h3 class="font-semibold truncate text-[var(--cri-text-primary)]">${agent.name}</h3>
                             <p class="text-sm text-[var(--cri-text-muted)]">${agent.role}</p>
                         </div>
-                        <span class="cri-status cri-status--${agent.status === 'active' ? 'online' : 'offline'}"></span>
+                        <span class="cri-status cri-status--${agent.status === 'active' ? 'online' : 'offline'}" title="${agent.status === 'active' ? 'Online' : 'Offline'}"></span>
                     </div>
-                    <div class="mt-4 flex items-center gap-4 text-xs text-[var(--cri-text-muted)]">
+                    <div class="mt-4 flex items-center gap-4 text-xs text-[var(--cri-text-muted)] relative z-10">
                         <span class="flex items-center gap-1">
                             <i class="fas fa-tasks"></i>
                             ${agent.tasks_count || 0} tarefas
@@ -227,7 +455,7 @@
                             ${agent.completed_tasks || 0} concluídas
                         </span>
                     </div>
-                </div>
+                </a>
             `).join('');
         }
 
@@ -237,7 +465,7 @@
             if (tasks.length === 0) {
                 container.innerHTML = `
                     <div class="p-6 text-center text-[var(--cri-text-muted)]">
-                        <i class="fas fa-inbox text-3xl mb-3"></i>
+                        <i class="fas fa-inbox text-3xl mb-3 opacity-50"></i>
                         <p>Nenhuma tarefa recente</p>
                     </div>
                 `;
@@ -245,17 +473,17 @@
             }
 
             container.innerHTML = tasks.map(task => `
-                <div class="p-4 flex items-center gap-4 hover:bg-[var(--cri-bg-hover)] transition">
+                <a href="kanban.html?task=${encodeURIComponent(task.id || '')}" class="task-row p-3 sm:p-4 flex items-center gap-3 sm:gap-4 block text-inherit no-underline">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-medium truncate">${task.title}</h4>
+                        <h4 class="font-medium truncate text-[var(--cri-text-primary)]">${task.title}</h4>
                         <p class="text-sm text-[var(--cri-text-muted)]">
                             ${task.status.replace(/_/g, ' ')} • P${task.priority || 5}
                         </p>
                     </div>
-                    <span class="cri-badge cri-badge--${getStatusColor(task.status)}">
+                    <span class="cri-badge cri-badge--${getStatusColor(task.status)} shrink-0">
                         ${task.status.replace(/_/g, ' ')}
                     </span>
-                </div>
+                </a>
             `).join('');
         }
 
