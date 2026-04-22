@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criativalia - Timesheet 24h | 2026-04-22</title>
+  <style>
+    :root {
+      --cri-olive-primary: #4A5D23;
+      --cri-olive-light: #7A9E7E;
+      --cri-olive-dark: #2F3D16;
+      --cri-gold: #D4A853;
+      --cri-gold-light: #E8C876;
+      --cri-off-white: #F5F5DC;
+      --cri-text-secondary: #E8E4D9;
+      --cri-bg-primary: #0a0a0b;
+      --cri-bg-secondary: #141414;
+      --cri-bg-tertiary: #1a1a1c;
+      --cri-border: rgba(212, 168, 83, 0.15);
+      --traffic-color: #6366f1;
+      --copy-color: #10b981;
+      --design-color: #f59e0b;
+      --ops-color: #3b82f6;
+      --gap-color: rgba(255,255,255,0.03);
+      --p0-color: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--cri-bg-primary);
+      color: var(--cri-off-white);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--cri-border);
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      color: var(--cri-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      color: var(--cri-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .header .window {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.4rem 1rem;
+      background: var(--cri-bg-tertiary);
+      border: 1px solid var(--cri-border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--cri-olive-light);
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      padding: 0.5rem 1.2rem;
+      background: var(--cri-bg-secondary);
+      border: 1px solid var(--cri-border);
+      border-radius: 12px;
+      font-size: 0.9rem;
+    }
+
+    .stat-pill .number {
+      font-weight: 700;
+      color: var(--cri-gold);
+    }
+
+    .timeline-container {
+      background: var(--cri-bg-secondary);
+      border: 1px solid var(--cri-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 2rem;
+    }
+
+    .timeline {
+      position: relative;
+      min-width: 1200px;
+    }
+
+    /* Time axis */
+    .time-axis {
+      display: flex;
+      margin-left: 140px;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--cri-border);
+    }
+
+    .time-marker {
+      flex: 1;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--cri-text-secondary);
+      position: relative;
+    }
+
+    .time-marker::before {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 1px;
+      height: 6px;
+      background: var(--cri-border);
+    }
+
+    /* Grid lines */
+    .grid-lines {
+      position: absolute;
+      top: 0;
+      left: 140px;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      pointer-events: none;
+    }
+
+    .grid-line {
+      flex: 1;
+      border-right: 1px dashed rgba(255,255,255,0.04);
+    }
+
+    /* Agent rows */
+    .agent-row {
+      display: flex;
+      align-items: stretch;
+      min-height: 70px;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .agent-label {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      padding-right: 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .agent-label .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .agent-track {
+      flex: 1;
+      position: relative;
+      background: var(--cri-bg-tertiary);
+      border-radius: 10px;
+      min-height: 60px;
+      overflow: hidden;
+    }
+
+    /* Activity blocks */
+    .activity-block {
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .activity-block:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+
+    .activity-block .task-name {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .activity-block .task-time {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-left: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    .activity-block.p0 {
+      border-color: var(--p0-color);
+      box-shadow: 0 0 0 1px var(--p0-color), inset 0 0 20px rgba(239, 68, 68, 0.1);
+    }
+
+    /* Agent colors */
+    .traffic-agent .dot { background: var(--traffic-color); }
+    .traffic-agent .activity-block { background: rgba(99, 102, 241, 0.2); border-color: var(--traffic-color); }
+    .traffic-agent .activity-block:hover { background: rgba(99, 102, 241, 0.35); }
+
+    .copy-agent .dot { background: var(--copy-color); }
+    .copy-agent .activity-block { background: rgba(16, 185, 129, 0.2); border-color: var(--copy-color); }
+    .copy-agent .activity-block:hover { background: rgba(16, 185, 129, 0.35); }
+
+    .design-agent .dot { background: var(--design-color); }
+    .design-agent .activity-block { background: rgba(245, 158, 11, 0.2); border-color: var(--design-color); }
+    .design-agent .activity-block:hover { background: rgba(245, 158, 11, 0.35); }
+
+    .ops-agent .dot { background: var(--ops-color); }
+    .ops-agent .activity-block { background: rgba(59, 130, 246, 0.2); border-color: var(--ops-color); }
+    .ops-agent .activity-block:hover { background: rgba(59, 130, 246, 0.35); }
+
+    /* Gap indicator */
+    .gap-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.15);
+      font-style: italic;
+    }
+
+    /* No activity row styling */
+    .no-activity {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255,255,255,0.02) 10px,
+        rgba(255,255,255,0.02) 20px
+      );
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--cri-border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+
+    .legend-color.traffic { background: rgba(99, 102, 241, 0.3); border-color: var(--traffic-color); }
+    .legend-color.copy { background: rgba(16, 185, 129, 0.3); border-color: var(--copy-color); }
+    .legend-color.design { background: rgba(245, 158, 11, 0.3); border-color: var(--design-color); }
+    .legend-color.ops { background: rgba(59, 130, 246, 0.3); border-color: var(--ops-color); }
+    .legend-color.p0 { background: rgba(239, 68, 68, 0.2); border-color: var(--p0-color); box-shadow: 0 0 0 1px var(--p0-color); }
+
+    /* Detail panel */
+    .detail-panel {
+      background: var(--cri-bg-secondary);
+      border: 1px solid var(--cri-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .detail-panel h3 {
+      color: var(--cri-gold);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .detail-card {
+      background: var(--cri-bg-tertiary);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid;
+    }
+
+    .detail-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .detail-card .meta {
+      font-size: 0.8rem;
+      color: var(--cri-text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .detail-card ul li {
+      font-size: 0.85rem;
+      padding: 0.2rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .detail-card ul li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--cri-gold);
+    }
+
+    .detail-card a {
+      color: var(--cri-gold-light);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .detail-card a:hover {
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .badge.p0 { background: rgba(239, 68, 68, 0.2); color: var(--p0-color); border: 1px solid var(--p0-color); }
+    .badge.p1 { background: rgba(212, 168, 83, 0.15); color: var(--cri-gold); border: 1px solid var(--cri-gold); }
+    .badge.p2 { background: rgba(122, 158, 126, 0.15); color: var(--cri-olive-light); border: 1px solid var(--cri-olive-light); }
+
+    .inactive-notice {
+      text-align: center;
+      padding: 2rem;
+      color: rgba(255,255,255,0.25);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>📊 Timesheet Criativalia - Últimas 24h</h1>
+    <div class="subtitle">Timeline de atividades dos agentes autônomos</div>
+    <div class="window">
+      🕐 Janela: 2026-04-21 08:20 BRT → 2026-04-22 08:20 BRT
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-pill">
+      <span class="number">5</span> atividades
+    </div>
+    <div class="stat-pill">
+      <span class="number">3</span> agentes ativos
+    </div>
+    <div class="stat-pill">
+      <span class="number">1</span> agente inativo
+    </div>
+    <div class="stat-pill">
+      <span class="number">145</span> minutos totais
+    </div>
+    <div class="stat-pill">
+      <span class="number" style="color:#ef4444">1</span> tarefa P0
+    </div>
+  </div>
+
+  <div class="timeline-container">
+    <div class="timeline">
+      <!-- Time axis (00:00 to 23:59 BRT) -->
+      <div class="time-axis">
+        <div class="time-marker">00:00</div>
+        <div class="time-marker">02:00</div>
+        <div class="time-marker">04:00</div>
+        <div class="time-marker">06:00</div>
+        <div class="time-marker">08:00</div>
+        <div class="time-marker">10:00</div>
+        <div class="time-marker">12:00</div>
+        <div class="time-marker">14:00</div>
+        <div class="time-marker">16:00</div>
+        <div class="time-marker">18:00</div>
+        <div class="time-marker">20:00</div>
+        <div class="time-marker">22:00</div>
+      </div>
+
+      <!-- Grid lines -->
+      <div class="grid-lines">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+      </div>
+
+      <!-- TrafficBot Row -->
+      <div class="agent-row traffic-agent">
+        <div class="agent-label">
+          <div class="dot"></div>
+          TrafficBot
+        </div>
+        <div class="agent-track">
+          <!-- Activity: 07:41-08:11 BRT -->
+          <a class="activity-block"
+             href="/criativalia/opportunities/20260422/traffic_opps.json"
+             style="left: 34.8%; width: 2.1%;"
+             title="Traffic/Trend Scanner - 10 oportunidades">
+            <span class="task-name">🚦 Traffic Scan</span>
+            <span class="task-time">07:41-08:11</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- CopyBot Row -->
+      <div class="agent-row copy-agent">
+        <div class="agent-label">
+          <div class="dot"></div>
+          CopyBot
+        </div>
+        <div class="agent-track no-activity">
+          <div class="gap-indicator">Sem atividade registrada</div>
+        </div>
+      </div>
+
+      <!-- DesignBot Row -->
+      <div class="agent-row design-agent">
+        <div class="agent-label">
+          <div class="dot"></div>
+          DesignBot
+        </div>
+        <div class="agent-track">
+          <!-- Activity 1: 03:39-04:24 BRT -->
+          <a class="activity-block"
+             href="/criativalia/evidencias/20260422/design_update_0639.md"
+             style="left: 15.2%; width: 3.1%;"
+             title="Design System v2.3 Update - Night Shift">
+            <span class="task-name">🎨 Design System v2.3</span>
+            <span class="task-time">03:39-04:24</span>
+          </a>
+          <!-- Activity 2: 06:39-07:09 BRT -->
+          <a class="activity-block"
+             href="/criativalia/evidencias/20260422/design_verification_0939.md"
+             style="left: 27.7%; width: 2.1%;"
+             title="Verificação Consistência Visual v2.3">
+            <span class="task-name">🔍 Verificação Visual</span>
+            <span class="task-time">06:39-07:09</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- OpsBot Row -->
+      <div class="agent-row ops-agent">
+        <div class="agent-label">
+          <div class="dot"></div>
+          OpsBot
+        </div>
+        <div class="agent-track">
+          <!-- Activity 1: 03:49-03:59 BRT -->
+          <a class="activity-block"
+             href="/criativalia/logs/deploy-check-2026-04-22.log"
+             style="left: 16.0%; width: 0.7%;"
+             title="Deploy Manager Check">
+            <span class="task-name">🚀 Deploy Check</span>
+            <span class="task-time">03:49</span>
+          </a>
+          <!-- Activity 2: 05:27-05:57 BRT -->
+          <a class="activity-block p0"
+             href="/criativalia/opportunities/20260422/ops_opps.json"
+             style="left: 22.7%; width: 2.1%;"
+             title="Ops Opportunity Scanner - 10 oportunidades identificadas (P0)">
+            <span class="task-name">⚡ Ops Scan</span>
+            <span class="task-time">05:27-05:57</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-color traffic"></div>
+      <span>TrafficBot</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color copy"></div>
+      <span>CopyBot</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color design"></div>
+      <span>DesignBot</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color ops"></div>
+      <span>OpsBot</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color p0"></div>
+      <span>Tarefa P0 (Urgente)</span>
+    </div>
+  </div>
+
+  <div class="detail-panel">
+    <h3>📋 Detalhes das Atividades</h3>
+
+    <div class="detail-card" style="border-color: var(--ops-color);">
+      <h4>⚡ Ops Opportunity Scanner <span class="badge p0">P0</span></h4>
+      <div class="meta">🕐 05:27-05:57 BRT (30 min) | OpsBot</div>
+      <ul>
+        <li><strong>771 SKUs</strong> com estoque zero ativo no site</li>
+        <li><strong>250 produtos (100%)</strong> sem imagem no catálogo</li>
+        <li><strong>92 produtos</strong> sem categoria definida</li>
+        <li><strong>229 produtos</strong> com desconto "permanente" médio 19%</li>
+        <li>Oportunidade bundle <strong>'Sala Iluminada'</strong></li>
+        <li>Cross-sell automático no checkout</li>
+        <li>6% pedidos com problemas financeiros (2 voided + 3 refunded)</li>
+        <li>Prateleiras Aria - estoque alto, rotação baixa</li>
+        <li>Categoria '3D Printed Planter' domina catálogo (37% = 93 SKUs)</li>
+        <li>Arandela Articture - desconto 60%, possível problema de precificação</li>
+      </ul>
+      <a href="/criativalia/opportunities/20260422/ops_opps.json">📄 Ver evidência completa →</a>
+    </div>
+
+    <div class="detail-card" style="border-color: var(--traffic-color);">
+      <h4>🚦 Traffic/Trend Scanner <span class="badge p1">P1</span></h4>
+      <div class="meta">🕐 07:41-08:11 BRT (30 min) | TrafficBot</div>
+      <ul>
+        <li>Luminária Mushroom/Cogumelo - Tendência Vintage Revival <strong>+340%</strong></li>
+        <li>Luminária 3D Moon/Galaxy Projector - Nicho em alta no ML</li>
+        <li>Arandela Articulável - Funcionalidade + Design em alta</li>
+        <li>Vidro Texturizado/Murano - Oportunidade de alto valor</li>
+        <li>Metais Quentes (Bronze/Latão/Dourado) - Retorno do glamour</li>
+        <li>Materiais Biofílicos (Madeira/Rattan/Fibras) - Natureza em alta</li>
+        <li>Smart Lighting / Iluminação Inteligente - Mercado emergente</li>
+        <li>Luminária de Piso/Coluna - Cantinho de leitura e aconchego</li>
+        <li>Formas Orgânicas e Esculturais - Design como arte</li>
+        <li>Oportunidade de Backlink: iSaloni 2026 / Semana de Design de Milão</li>
+      </ul>
+      <a href="/criativalia/opportunities/20260422/traffic_opps.json">📄 Ver evidência completa →</a>
+    </div>
+
+    <div class="detail-card" style="border-color: var(--design-color);">
+      <h4>🎨 Design System v2.3 Update <span class="badge p1">P1</span></h4>
+      <div class="meta">🕐 03:39-04:24 BRT (45 min) | DesignBot - Night Shift</div>
+      <ul>
+        <li>Correção do <strong>financial.html</strong> (cores hardcoded → CSS variables)</li>
+        <li>Atualização CSS Principal <strong>v2.2 → v2.3</strong></li>
+        <li>Verificação de consistência em <strong>7 páginas HTML</strong></li>
+        <li>Documentação de <strong>15+ componentes</strong> reutilizáveis</li>
+        <li>Verificação de <strong>40+ variáveis CSS</strong> e paleta de cores completa</li>
+      </ul>
+      <a href="/criativalia/evidencias/20260422/design_update_0639.md">📄 Ver evidência completa →</a>
+    </div>
+
+    <div class="detail-card" style="border-color: var(--design-color);">
+      <h4>🔍 Verificação Consistência Visual v2.3 <span class="badge p2">P2</span></h4>
+      <div class="meta">🕐 06:39-07:09 BRT (30 min) | DesignBot</div>
+      <ul>
+        <li>Confirmação de <strong>7/7 páginas</strong> usando criativalia-theme.css</li>
+        <li>Validação de <strong>293 referências</strong> a variáveis CSS --cri-*</li>
+        <li>Verificação de componentes: logo, cards, botões, formulários, tabelas, badges</li>
+        <li>Confirmação de paleta: oliva, dourado, off-white, fundos</li>
+      </ul>
+      <a href="/criativalia/evidencias/20260422/design_verification_0939.md">📄 Ver evidência completa →</a>
+    </div>
+
+    <div class="detail-card" style="border-color: var(--ops-color);">
+      <h4>🚀 Deploy Manager Check <span class="badge p1">P1</span></h4>
+      <div class="meta">🕐 03:49 BRT (~10 min) | OpsBot</div>
+      <ul>
+        <li>Verificação de commits pendentes na branch clean-deploy</li>
+        <li>Checagem de mudanças não commitadas em control-plane/src/</li>
+        <li>API Shopify Stats: <strong>R$ 8.625,21 MTD</strong>, 33 orders, AOV R$ 261,37</li>
+        <li>Status: <strong>ONLINE</strong> - Nenhuma ação necessária</li>
+      </ul>
+      <a href="/criativalia/logs/deploy-check-2026-04-22.log">📄 Ver evidência completa →</a>
+    </div>
+
+    <div class="detail-card" style="border-color: var(--copy-color); opacity: 0.6;">
+      <h4>✏️ CopyBot <span class="badge" style="background:rgba(255,255,255,0.1);color:#888;border-color:#555">Inativo</span></h4>
+      <div class="meta">🕐 Sem atividade registrada na janela de 24h</div>
+      <div class="inactive-notice">
+        CopyBot não registrou atividades nas últimas 24h.<br>
+        Última atividade conhecida: 2026-04-20 (deliverables de copy)
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Click handler for activity blocks
+    document.querySelectorAll('.activity-block').forEach(block => {
+      block.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href && !href.startsWith('#')) {
+          console.log('Navigating to evidence:', href);
+        }
+      });
+    });
+
+    // Current time indicator (if viewing during the day)
+    const now = new Date();
+    const currentHour = now.getHours() + now.getMinutes() / 60;
+    const percent = (currentHour / 24) * 100;
+  </script>
+
+</body>
+</html>

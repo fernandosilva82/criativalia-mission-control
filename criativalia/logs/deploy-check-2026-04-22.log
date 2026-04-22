@@ -1,0 +1,23 @@
+# Deploy Manager Check - 2026-04-22 06:49 UTC
+
+## ✅ Status: TUDO OK
+
+### 1. Commits pendentes na branch clean-deploy
+- Branch atual: `clean-deploy-new` (sincronizada com origin)
+- Branch `clean-deploy`: existe local/remoto, está ~8 commits atrás da clean-deploy-new
+- Sem commits pendentes de push
+
+### 2. Mudanças em control-plane/src/
+- Nenhuma mudança não commitada detectada
+- Diretório limpo
+
+### 3. API Shopify Stats
+- URL: https://criativalia-control-plane.onrender.com/api/shopify/stats
+- `_source`: `shopify_api` ✅ (dados reais)
+- Revenue MTD: R$ 8.625,21
+- Orders MTD: 33
+- AOV: R$ 261,37
+- Status: ONLINE
+
+### Nota
+Branch `clean-deploy-new` é a branch ativa de desenvolvimento. A branch `clean-deploy` está atrás mas não representa código não deployado - é uma branch anterior.

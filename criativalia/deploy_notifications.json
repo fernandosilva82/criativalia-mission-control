@@ -1,6 +1,6 @@
 {
-  "last_check": "2026-04-22T06:25:00Z",
-  "last_run_id": 24673418155,
+  "last_check": "2026-04-22T13:17:00Z",
+  "last_run_id": 24764479495,
   "notified_runs": [
     24629780078,
     24629780072,
@@ -21,101 +21,60 @@
     24632807004,
     24632806568,
     24305761094,
-    24673418155
+    24673418155,
+    24764479495
   ],
   "history": [
+    {
+      "timestamp": "2026-04-22T13:17:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #56: Cron deploy-monitor-notifier. 10 workflows verificados. Último run: notify-deploy.yml #64 (24764479495, failure, 22/04 06:48 UTC) - já notificado. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. Nenhum deploy novo desde 19/04 15:40 UTC. Próximo check em ~5 min."
+    },
+    {
+      "timestamp": "2026-04-22T11:25:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #55: Cron deploy-monitor-notifier. 10 workflows verificados. Último run: notify-deploy.yml #64 (24764479495, failure, 22/04 06:48 UTC) - já notificado. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. Nenhum deploy novo detectado desde último check (11:00 UTC)."
+    },
+    {
+      "timestamp": "2026-04-22T11:00:00Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #54: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. notify-deploy.yml #65 e #64 (failure) - já notificados. Nenhuma notificação de deploy necessária."
+    },
+    {
+      "timestamp": "2026-04-22T10:17:00Z",
+      "checked": 10,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #53: Cron deploy-monitor-notifier. 10 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. notify-deploy.yml #64 (failure) e #63 (failure) - já notificados. Nenhuma notificação de deploy necessária."
+    },
+    {
+      "timestamp": "2026-04-22T08:58:00Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #52: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. notify-deploy.yml #64 (failure) - já notificado. Nenhuma notificação de deploy necessária."
+    },
+    {
+      "timestamp": "2026-04-22T07:49:00Z",
+      "checked": 5,
+      "new_deploys": 0,
+      "notifications_sent": 0,
+      "note": "Check #51: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. notify-deploy.yml #64 (failure) - já notificado. Nenhuma notificação de deploy necessária."
+    },
     {
       "timestamp": "2026-04-22T06:25:00Z",
       "checked": 5,
       "new_deploys": 0,
       "notifications_sent": 0,
       "note": "Check #50: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. Run mais recente: notify-deploy.yml #63 (failure) - já notificado. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-22T06:23:00Z",
-      "checked": 10,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #49: Cron deploy-monitor-notifier. 10 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update #9 ✅, Update Dashboard on Evidence #16 ✅, Deploy to Render #62 ✅) - todos já notificados anteriormente. Run mais recente: notify-deploy.yml #63 (failure) - já notificado. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T18:11:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #48: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Novo run detectado: notify-deploy.yml #63 (failure) - já notificado. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T18:10:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #47: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Novo run detectado: notify-deploy.yml #63 (failure) - ignorado pois não é workflow de deploy. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T15:58:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #46: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Novo run detectado: notify-deploy.yml #63 (failure) - ignorado pois não é workflow de deploy. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T15:56:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #45: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Novo run detectado: notify-deploy.yml #63 (failure) - ignorado pois não é workflow de deploy. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T15:16:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #44: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Novo run detectado: notify-deploy.yml #63 (failure) - ignorado pois não é workflow de deploy. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T14:47:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #43: Cron deploy-monitor-notifier. 5 workflows verificados. 4 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅, notify-deploy.yml ❌) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T03:36:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #42: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T03:35:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #41: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T03:16:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #40: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T01:55:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #39: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
-    },
-    {
-      "timestamp": "2026-04-20T01:46:00Z",
-      "checked": 5,
-      "new_deploys": 0,
-      "notifications_sent": 0,
-      "note": "Check #38: Cron deploy-monitor-notifier. 5 workflows verificados. 3 workflows de deploy relevantes (Deploy on Opportunities Update ✅, Update Dashboard on Evidence ✅, Deploy to Render ✅) - todos já notificados anteriormente. Nenhuma notificação de deploy necessária."
     }
   ],
-  "check_count": 50,
-  "last_check_summary": "Check #50: Nenhum deploy novo. Todos os 3 workflows de deploy já notificados. Último deploy: Night Shift UX - 20/04 11:53 BRT (failure no notify-deploy). Aguardando novos deploys..."
+  "check_count": 55,
+  "last_check_summary": "Check #55: Nenhum deploy novo. Todos os 3 workflows de deploy já notificados. Último deploy: Deploy to Render #62 (success) - 19/04 15:40 UTC. Aguardando novos deploys..."
 }

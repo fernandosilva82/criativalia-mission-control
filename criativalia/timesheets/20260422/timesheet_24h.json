@@ -1,0 +1,117 @@
+{
+  "date": "2026-04-22",
+  "window_start_utc": "2026-04-21T11:20:00Z",
+  "window_end_utc": "2026-04-22T11:20:00Z",
+  "timezone": "America/Sao_Paulo",
+  "agents": {
+    "TrafficBot": [
+      {
+        "start": "2026-04-22T10:41:00Z",
+        "end": "2026-04-22T11:11:00Z",
+        "start_brt": "07:41",
+        "end_brt": "08:11",
+        "duration_min": 30,
+        "task": "Traffic/Trend Scanner - 10 oportunidades de tráfego identificadas",
+        "details": [
+          "Luminária Mushroom/Cogumelo - Tendência Vintage Revival +340%",
+          "Luminária 3D Moon/Galaxy Projector - Nicho em Alta no ML",
+          "Arandela Articulável - Funcionalidade + Design em Alta",
+          "Vidro Texturizado/Murano - Oportunidade de Alto Valor",
+          "Metais Quentes (Bronze/Latão/Dourado) - Retorno do Glamour",
+          "Materiais Biofílicos (Madeira/Rattan/Fibras) - Natureza em Alta",
+          "Smart Lighting / Iluminação Inteligente - Mercado Emergente",
+          "Luminária de Piso/Coluna - Cantinho de Leitura e Aconchego",
+          "Formas Orgânicas e Esculturais - Design como Arte",
+          "Oportunidade de Backlink: iSaloni 2026 / Semana de Design de Milão"
+        ],
+        "evidence_link": "/criativalia/opportunities/20260422/traffic_opps.json",
+        "priority": "P1"
+      }
+    ],
+    "CopyBot": [],
+    "DesignBot": [
+      {
+        "start": "2026-04-22T06:39:00Z",
+        "end": "2026-04-22T07:24:00Z",
+        "start_brt": "03:39",
+        "end_brt": "04:24",
+        "duration_min": 45,
+        "task": "Atualização Design System v2.3 - Night Shift",
+        "details": [
+          "Correção do financial.html (cores hardcoded → CSS variables)",
+          "Atualização CSS Principal v2.2 → v2.3 (changelog, variáveis)",
+          "Verificação de consistência em 7 páginas HTML",
+          "Documentação de 15+ componentes reutilizáveis",
+          "Verificação de 40+ variáveis CSS e paleta de cores"
+        ],
+        "evidence_link": "/criativalia/evidencias/20260422/design_update_0639.md",
+        "priority": "P1"
+      },
+      {
+        "start": "2026-04-22T09:39:00Z",
+        "end": "2026-04-22T10:09:00Z",
+        "start_brt": "06:39",
+        "end_brt": "07:09",
+        "duration_min": 30,
+        "task": "Verificação de Consistência Visual v2.3",
+        "details": [
+          "Confirmação de 7/7 páginas usando criativalia-theme.css",
+          "Validação de 293 referências a variáveis CSS --cri-*",
+          "Verificação de componentes: logo, cards, botões, formulários, tabelas, badges",
+          "Confirmação de paleta: oliva, dourado, off-white, fundos"
+        ],
+        "evidence_link": "/criativalia/evidencias/20260422/design_verification_0939.md",
+        "priority": "P2"
+      }
+    ],
+    "OpsBot": [
+      {
+        "start": "2026-04-22T06:49:00Z",
+        "end": "2026-04-22T06:59:00Z",
+        "start_brt": "03:49",
+        "end_brt": "03:59",
+        "duration_min": 10,
+        "task": "Deploy Manager Check",
+        "details": [
+          "Verificação de commits pendentes na branch clean-deploy",
+          "Checagem de mudanças não commitadas em control-plane/src/",
+          "API Shopify Stats: R$ 8.625,21 MTD, 33 orders, AOV R$ 261,37",
+          "Status: ONLINE - Nenhuma ação necessária"
+        ],
+        "evidence_link": "/criativalia/logs/deploy-check-2026-04-22.log",
+        "priority": "P1"
+      },
+      {
+        "start": "2026-04-22T08:27:00Z",
+        "end": "2026-04-22T08:57:00Z",
+        "start_brt": "05:27",
+        "end_brt": "05:57",
+        "duration_min": 30,
+        "task": "Ops Opportunity Scanner - Scan Completo da Operação",
+        "details": [
+          "P0: 771 SKUs com estoque zero ativo no site",
+          "P0: 250 produtos (100%) sem imagem no catálogo",
+          "P1: 92 produtos sem categoria definida",
+          "P1: 229 produtos com desconto 'permanente' médio 19%",
+          "P1: Oportunidade bundle 'Sala Iluminada'",
+          "P1: Cross-sell automático no checkout",
+          "P1: 6% pedidos com problemas financeiros",
+          "P2: Prateleiras Aria - estoque alto, rotação baixa",
+          "P2: Categoria '3D Printed Planter' domina catálogo (37%)",
+          "P2: Arandela Articture - desconto 60%, possível problema precificação"
+        ],
+        "evidence_link": "/criativalia/opportunities/20260422/ops_opps.json",
+        "priority": "P0"
+      }
+    ]
+  },
+  "summary": {
+    "total_activities": 5,
+    "total_agents_active": 3,
+    "agents_with_no_activity": ["CopyBot"],
+    "total_duration_min": 145,
+    "p0_tasks": 1,
+    "p1_tasks": 3,
+    "p2_tasks": 1
+  }
+}
