@@ -1,16 +1,19 @@
 /**
- * Criativalia Design System v2.3
+ * Criativalia Design System v2.4
  * Paleta: Verde Oliva + Off-White + Gold Accents
- * Refinado por Night Shift Design Agent - 2026-04-22
+ * Refinado por Night Shift Design Agent - 2026-04-23
+ *
+ * CHANGELOG v2.4:
+ * - Refined olive palette with better contrast ratios
+ * - Added olive accent variations for depth
+ * - Enhanced off-white text consistency across all states
+ * - Added gradient text utilities with better fallbacks
+ * - Improved focus states for accessibility
+ * - Added motion preference support
+ * - Refined card shadows and hover states
+ * - Added brand logo SVG animation
  *
  * CHANGELOG v2.3:
- * - Fixed financial.html to use CSS variables instead of hardcoded colors
- * - Verified all pages use criativalia-theme.css consistently
- * - Added missing color variables validation
- * - Ensured off-white (#F5F5DC) as primary text across all components
- * - Ensured olive (#4A5D23) as primary brand color consistently
- *
- * CHANGELOG v2.2:
  * - Added typography scale (cri-heading-1 through cri-heading-4)
  * - Added backdrop blur utilities
  * - Added progress bar component
