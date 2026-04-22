@@ -13,43 +13,44 @@
                 extend: {
                     colors: {
                         'criativalia': {
-                            green: '#4A5D23',
-                            'green-light': '#5A6D33',
-                            'green-dark': '#3A4D13',
-                            cream: '#F5F5DC',
-                            'cream-dark': '#E5E5CC',
-                            gold: '#D4A853',
-                            'gold-light': '#E4B863'
+                            green: 'var(--cri-olive-primary)',
+                            'green-light': 'var(--cri-olive-light)',
+                            'green-dark': 'var(--cri-border)',
+                            cream: 'var(--cri-off-white)',
+                            'cream-dark': 'var(--cri-text-secondary)',
+                            gold: 'var(--cri-gold)',
+                            'gold-light': 'var(--cri-gold-light)'
                         }
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="/css/criativalia-theme.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        * { scrollbar-width: thin; scrollbar-color: #4A5D23 #1a1a15; }
+        * { scrollbar-width: thin; scrollbar-color: var(--cri-olive-primary) var(--cri-bg-primary); }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #1a1a15; }
-        ::-webkit-scrollbar-thumb { background: #4A5D23; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: var(--cri-bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--cri-olive-primary); border-radius: 3px; }
         
         body { 
             font-family: 'Inter', sans-serif; 
-            background: #1a1a15; 
-            color: #F5F5DC; 
+            background: var(--cri-bg-primary); 
+            color: var(--cri-text-primary); 
         }
         
         .card { 
-            background: linear-gradient(145deg, #252520 0%, #1e1e18 100%);
-            border: 1px solid #3A4D13; 
-            border-radius: 12px;
+            background: var(--cri-bg-secondary);
+            border: 1px solid var(--cri-border); 
+            border-radius: var(--cri-radius-lg);
         }
         
         .metric-card { 
-            background: linear-gradient(135deg, #252520 0%, #2a2a22 100%);
-            border: 1px solid #4A5D23; 
-            border-radius: 12px;
+            background: var(--cri-bg-secondary);
+            border: 1px solid var(--cri-border); 
+            border-radius: var(--cri-radius-lg);
             position: relative;
             overflow: hidden;
         }
@@ -61,40 +62,40 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #4A5D23, #D4A853);
+            background: linear-gradient(90deg, var(--cri-olive-primary), var(--cri-gold));
         }
         
         .metric-value { 
-            background: linear-gradient(135deg, #F5F5DC 0%, #D4A853 100%);
+            background: linear-gradient(135deg, var(--cri-off-white) 0%, var(--cri-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .btn-primary { 
-            background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%);
-            color: #F5F5DC;
-            border: 1px solid #5A6D33;
+            background: linear-gradient(135deg, var(--cri-olive-primary) 0%, var(--cri-olive-dark) 100%);
+            color: var(--cri-off-white);
+            border: 1px solid var(--cri-olive-light);
         }
         
         .btn-primary:hover { 
-            background: linear-gradient(135deg, #5A6D33 0%, #4A5D23 100%);
+            background: linear-gradient(135deg, var(--cri-olive-light) 0%, var(--cri-olive-primary) 100%);
             transform: translateY(-1px);
         }
         
         .btn-gold {
-            background: linear-gradient(135deg, #D4A853 0%, #B89843 100%);
-            color: #1a1a15;
+            background: linear-gradient(135deg, var(--cri-gold) 0%, var(--cri-gold-dark) 100%);
+            color: var(--cri-text-inverse);
         }
         
         .btn-gold:hover {
-            background: linear-gradient(135deg, #E4B863 0%, #C4A853 100%);
+            background: linear-gradient(135deg, var(--cri-gold-light) 0%, var(--cri-gold) 100%);
         }
         
         .period-selector {
-            background: #252520;
-            border: 1px solid #4A5D23;
-            border-radius: 8px;
+            background: var(--cri-bg-tertiary);
+            border: 1px solid var(--cri-border);
+            border-radius: var(--cri-radius-md);
             overflow: hidden;
         }
         
@@ -102,26 +103,26 @@
             padding: 8px 16px;
             background: transparent;
             border: none;
-            color: #F5F5DC;
+            color: var(--cri-text-primary);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all var(--cri-transition-fast);
             font-size: 14px;
         }
         
         .period-btn.active {
-            background: linear-gradient(135deg, #4A5D23 0%, #3A4D13 100%);
-            color: #F5F5DC;
+            background: linear-gradient(135deg, var(--cri-olive-primary) 0%, var(--cri-olive-dark) 100%);
+            color: var(--cri-off-white);
         }
         
         .period-btn:hover:not(.active) {
-            background: #3A4D13;
+            background: var(--cri-bg-hover);
         }
         
-        .trend-up { color: #7a9e7e; }
-        .trend-down { color: #c17767; }
+        .trend-up { color: var(--cri-success-light); }
+        .trend-down { color: var(--cri-error); }
         
         .product-row:hover { 
-            background: rgba(74, 93, 35, 0.2); 
+            background: var(--cri-olive-muted); 
         }
         
         .chart-container { 
@@ -136,11 +137,11 @@
             top: 0;
             bottom: 0;
             width: 260px;
-            background: linear-gradient(180deg, #252520 0%, #1a1a15 100%);
-            border-right: 1px solid #3A4D13;
+            background: var(--cri-bg-secondary);
+            border-right: 1px solid var(--cri-border);
             z-index: 100;
             transform: translateX(-100%);
-            transition: transform 0.3s ease;
+            transition: transform var(--cri-transition-normal);
         }
         
         .sidebar.open {
@@ -154,7 +155,7 @@
             z-index: 99;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: all var(--cri-transition-normal);
         }
         
         .sidebar-overlay.open {
@@ -167,22 +168,22 @@
             align-items: center;
             gap: 12px;
             padding: 12px 20px;
-            color: #E5E5CC;
+            color: var(--cri-text-secondary);
             text-decoration: none;
-            transition: all 0.2s;
+            transition: all var(--cri-transition-fast);
             border-left: 3px solid transparent;
         }
         
         .sidebar-item:hover, .sidebar-item.active {
-            background: rgba(74, 93, 35, 0.3);
-            border-left-color: #D4A853;
-            color: #F5F5DC;
+            background: var(--cri-olive-muted);
+            border-left-color: var(--cri-gold);
+            color: var(--cri-off-white);
         }
         
         .sidebar-item i {
             width: 24px;
             text-align: center;
-            color: #D4A853;
+            color: var(--cri-gold);
         }
         
         /* Mobile hamburger */
@@ -197,13 +198,13 @@
         .hamburger span {
             width: 24px;
             height: 2px;
-            background: #F5F5DC;
-            transition: all 0.3s;
+            background: var(--cri-off-white);
+            transition: all var(--cri-transition-normal);
         }
         
         .main-content {
             margin-left: 0;
-            transition: margin-left 0.3s;
+            transition: margin-left var(--cri-transition-normal);
         }
         
         @media (min-width: 1024px) {
@@ -224,14 +225,14 @@
             align-items: center;
             gap: 12px;
             padding: 20px;
-            border-bottom: 1px solid #3A4D13;
+            border-bottom: 1px solid var(--cri-border);
         }
         
         .logo-icon {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #4A5D23 0%, #D4A853 100%);
-            border-radius: 12px;
+            background: linear-gradient(135deg, var(--cri-olive-primary) 0%, var(--cri-gold) 100%);
+            border-radius: var(--cri-radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -241,12 +242,12 @@
         .logo-text {
             font-size: 18px;
             font-weight: 700;
-            color: #F5F5DC;
+            color: var(--cri-off-white);
         }
         
         .logo-subtext {
             font-size: 11px;
-            color: #D4A853;
+            color: var(--cri-gold);
             letter-spacing: 1px;
         }
         
@@ -256,19 +257,19 @@
             align-items: center;
             justify-content: space-between;
             padding: 16px 20px;
-            border-bottom: 1px solid #3A4D13;
+            border-bottom: 1px solid var(--cri-border);
         }
         
         .widget-title {
             font-weight: 600;
-            color: #F5F5DC;
+            color: var(--cri-off-white);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .widget-title i {
-            color: #D4A853;
+            color: var(--cri-gold);
         }
         
         /* Table styles */
@@ -284,19 +285,19 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #D4A853;
-            background: rgba(74, 93, 35, 0.2);
-            border-bottom: 1px solid #3A4D13;
+            color: var(--cri-gold);
+            background: var(--cri-bg-tertiary);
+            border-bottom: 1px solid var(--cri-border);
         }
         
         .data-table td {
             padding: 12px 16px;
-            border-bottom: 1px solid #2a2a22;
+            border-bottom: 1px solid var(--cri-border);
             font-size: 14px;
         }
         
         .data-table tr:hover td {
-            background: rgba(74, 93, 35, 0.1);
+            background: var(--cri-bg-hover);
         }
         
         /* Badge styles */
@@ -305,36 +306,36 @@
             align-items: center;
             gap: 4px;
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: var(--cri-radius-full);
             font-size: 12px;
             font-weight: 500;
         }
         
         .badge-green {
-            background: rgba(74, 93, 35, 0.3);
-            color: #7a9e7e;
-            border: 1px solid #4A5D23;
+            background: var(--cri-olive-muted);
+            color: var(--cri-olive-light);
+            border: 1px solid var(--cri-olive-primary);
         }
         
         .badge-gold {
-            background: rgba(212, 168, 83, 0.2);
-            color: #D4A853;
-            border: 1px solid #D4A853;
+            background: var(--cri-gold-muted);
+            color: var(--cri-gold);
+            border: 1px solid var(--cri-gold);
         }
         
         /* Progress bar */
         .progress-bar {
             height: 6px;
-            background: #2a2a22;
-            border-radius: 3px;
+            background: var(--cri-bg-tertiary);
+            border-radius: var(--cri-radius-full);
             overflow: hidden;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4A5D23, #D4A853);
-            border-radius: 3px;
-            transition: width 0.3s;
+            background: linear-gradient(90deg, var(--cri-olive-primary), var(--cri-gold));
+            border-radius: var(--cri-radius-full);
+            transition: width var(--cri-transition-normal);
         }
         
         /* Touch-friendly */
@@ -399,14 +400,14 @@
             </a>
         </nav>
         
-        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; border-top: 1px solid #3A4D13;">
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; border-top: 1px solid var(--cri-border);">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #4A5D23, #D4A853); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--cri-olive-primary), var(--cri-gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                     <i class="fas fa-robot"></i>
                 </div>
                 <div>
                     <div style="font-size: 13px; font-weight: 500;">Multi-Agent</div>
-                    <div style="font-size: 11px; color: #7a9e7e;">v2.0 • Online</div>
+                    <div style="font-size: 11px; color: var(--cri-success-light);">v2.0 • Online</div>
                 </div>
             </div>
         </div>
@@ -415,7 +416,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <!-- Header -->
-        <header style="border-bottom: 1px solid #3A4D13; background: linear-gradient(180deg, #252520 0%, #1e1e18 100%); position: sticky; top: 0; z-index: 50;">
+        <header style="border-bottom: 1px solid var(--cri-border); background: linear-gradient(180deg, var(--cri-bg-secondary) 0%, var(--cri-bg-primary) 100%); position: sticky; top: 0; z-index: 50;">
             <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 16px;">
                     <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
@@ -424,11 +425,11 @@
                         <span></span>
                     </div>
                     <div>
-                        <h1 style="font-size: 20px; font-weight: 700; color: #F5F5DC;">
-                            <i class="fas fa-chart-line" style="color: #D4A853; margin-right: 8px;"></i>
+                        <h1 style="font-size: 20px; font-weight: 700; color: var(--cri-off-white);">
+                            <i class="fas fa-chart-line" style="color: var(--cri-gold); margin-right: 8px;"></i>
                             Financeiro
                         </h1>
-                        <p style="font-size: 12px; color: #D4A853;">Análise completa de receitas e métricas</p>
+                        <p style="font-size: 12px; color: var(--cri-gold);">Análise completa de receitas e métricas</p>
                     </div>
                 </div>
                 
@@ -452,8 +453,8 @@
                 <!-- Receita Líquida -->
                 <div class="metric-card" style="padding: 20px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                        <span style="font-size: 12px; color: #D4A853; text-transform: uppercase; letter-spacing: 0.5px;">Receita Líquida</span>
-                        <i class="fas fa-wallet" style="color: #4A5D23;"></i>
+                        <span style="font-size: 12px; color: var(--cri-gold); text-transform: uppercase; letter-spacing: 0.5px;">Receita Líquida</span>
+                        <i class="fas fa-wallet" style="color: var(--cri-olive-primary);"></i>
                     </div>
                     <div id="metric-net-revenue" class="metric-value" style="font-size: 28px; font-weight: 700;">-</div>
                     <div id="trend-net-revenue" style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
@@ -465,8 +466,8 @@
                 <!-- Receita Bruta -->
                 <div class="metric-card" style="padding: 20px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                        <span style="font-size: 12px; color: #D4A853; text-transform: uppercase; letter-spacing: 0.5px;">Receita Bruta</span>
-                        <i class="fas fa-coins" style="color: #D4A853;"></i>
+                        <span style="font-size: 12px; color: var(--cri-gold); text-transform: uppercase; letter-spacing: 0.5px;">Receita Bruta</span>
+                        <i class="fas fa-coins" style="color: var(--cri-gold);"></i>
                     </div>
                     <div id="metric-gross-revenue" class="metric-value" style="font-size: 28px; font-weight: 700;">-</div>
                     <div id="trend-gross-revenue" style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
@@ -478,11 +479,11 @@
                 <!-- Margem Média -->
                 <div class="metric-card" style="padding: 20px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                        <span style="font-size: 12px; color: #D4A853; text-transform: uppercase; letter-spacing: 0.5px;">Margem Média</span>
-                        <i class="fas fa-percentage" style="color: #7a9e7e;"></i>
+                        <span style="font-size: 12px; color: var(--cri-gold); text-transform: uppercase; letter-spacing: 0.5px;">Margem Média</span>
+                        <i class="fas fa-percentage" style="color: var(--cri-success-light);"></i>
                     </div>
                     <div id="metric-margin" class="metric-value" style="font-size: 28px; font-weight: 700;">-</div>
-                    <div style="font-size: 12px; margin-top: 8px; color: #7a9e7e;">
+                    <div style="font-size: 12px; margin-top: 8px; color: var(--cri-success-light);">
                         <span id="margin-diff">-</span> vs período anterior
                     </div>
                 </div>
@@ -490,8 +491,8 @@
                 <!-- Ticket Médio -->
                 <div class="metric-card" style="padding: 20px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                        <span style="font-size: 12px; color: #D4A853; text-transform: uppercase; letter-spacing: 0.5px;">Ticket Médio</span>
-                        <i class="fas fa-receipt" style="color: #D4A853;"></i>
+                        <span style="font-size: 12px; color: var(--cri-gold); text-transform: uppercase; letter-spacing: 0.5px;">Ticket Médio</span>
+                        <i class="fas fa-receipt" style="color: var(--cri-gold);"></i>
                     </div>
                     <div id="metric-aov" class="metric-value" style="font-size: 28px; font-weight: 700;">-</div>
                     <div id="trend-aov" style="font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 4px;">
@@ -549,21 +550,21 @@
                     </div>
                     <div style="padding: 20px;">
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                            <div style="text-align: center; padding: 16px; background: rgba(74, 93, 35, 0.1); border-radius: 8px;">
-                                <div style="font-size: 11px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">CAC</div>
-                                <div id="metric-cac" style="font-size: 24px; font-weight: 700; color: #F5F5DC;">-</div>
-                                <div style="font-size: 11px; color: #7a9e7e; margin-top: 4px;">Custo Aquisição</div>
+                            <div style="text-align: center; padding: 16px; background: var(--cri-olive-100); border-radius: 8px;">
+                                <div style="font-size: 11px; color: var(--cri-gold); text-transform: uppercase; margin-bottom: 8px;">CAC</div>
+                                <div id="metric-cac" style="font-size: 24px; font-weight: 700; color: var(--cri-off-white);">-</div>
+                                <div style="font-size: 11px; color: var(--cri-success-light); margin-top: 4px;">Custo Aquisição</div>
                             </div>
-                            <div style="text-align: center; padding: 16px; background: rgba(212, 168, 83, 0.1); border-radius: 8px;">
-                                <div style="font-size: 11px; color: #D4A853; text-transform: uppercase; margin-bottom: 8px;">LTV</div>
-                                <div id="metric-ltv" style="font-size: 24px; font-weight: 700; color: #F5F5DC;">-</div>
-                                <div style="font-size: 11px; color: #7a9e7e; margin-top: 4px;">Valor Vida Útil</div>
+                            <div style="text-align: center; padding: 16px; background: var(--cri-gold-100); border-radius: 8px;">
+                                <div style="font-size: 11px; color: var(--cri-gold); text-transform: uppercase; margin-bottom: 8px;">LTV</div>
+                                <div id="metric-ltv" style="font-size: 24px; font-weight: 700; color: var(--cri-off-white);">-</div>
+                                <div style="font-size: 11px; color: var(--cri-success-light); margin-top: 4px;">Valor Vida Útil</div>
                             </div>
                         </div>
-                        <div style="margin-top: 16px; padding: 12px; background: rgba(74, 93, 35, 0.2); border-radius: 8px; text-align: center;">
-                            <span style="font-size: 12px; color: #D4A853;">Ratio LTV/CAC: </span>
-                            <span id="metric-ltv-cac-ratio" style="font-size: 18px; font-weight: 700; color: #F5F5DC;">-</span>
-                            <div style="font-size: 11px; color: #7a9e7e; margin-top: 4px;">Meta: > 3.0</div>
+                        <div style="margin-top: 16px; padding: 12px; background: var(--cri-olive-200); border-radius: 8px; text-align: center;">
+                            <span style="font-size: 12px; color: var(--cri-gold);">Ratio LTV/CAC: </span>
+                            <span id="metric-ltv-cac-ratio" style="font-size: 18px; font-weight: 700; color: var(--cri-off-white);">-</span>
+                            <div style="font-size: 11px; color: var(--cri-success-light); margin-top: 4px;">Meta: > 3.0</div>
                         </div>
                     </div>
                 </div>
@@ -578,15 +579,15 @@
                     </div>
                     <div style="padding: 20px;">
                         <div style="text-align: center; margin-bottom: 20px;">
-                            <div id="metric-conversion" style="font-size: 48px; font-weight: 700; color: #D4A853;">-</div>
-                            <div style="font-size: 12px; color: #F5F5DC;">Taxa Global</div>
+                            <div id="metric-conversion" style="font-size: 48px; font-weight: 700; color: var(--cri-gold);">-</div>
+                            <div style="font-size: 12px; color: var(--cri-off-white);">Taxa Global</div>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                            <span style="font-size: 12px; color: #D4A853;">Sessões</span>
+                            <span style="font-size: 12px; color: var(--cri-gold);">Sessões</span>
                             <span id="metric-sessions" style="font-size: 12px; font-weight: 600;">-</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                            <span style="font-size: 12px; color: #D4A853;">Pedidos</span>
+                            <span style="font-size: 12px; color: var(--cri-gold);">Pedidos</span>
                             <span id="metric-orders" style="font-size: 12px; font-weight: 600;">-</span>
                         </div>
                         <div class="progress-bar">
@@ -605,20 +606,20 @@
                     </div>
                     <div style="padding: 20px;">
                         <div style="text-align: center; margin-bottom: 16px;">
-                            <div style="font-size: 11px; color: #D4A853; text-transform: uppercase;">Projeção Mensal</div>
-                            <div id="metric-forecast" style="font-size: 32px; font-weight: 700; color: #F5F5DC; margin-top: 4px;">-</div>
+                            <div style="font-size: 11px; color: var(--cri-gold); text-transform: uppercase;">Projeção Mensal</div>
+                            <div id="metric-forecast" style="font-size: 32px; font-weight: 700; color: var(--cri-off-white); margin-top: 4px;">-</div>
                         </div>
-                        <div style="background: rgba(74, 93, 35, 0.2); border-radius: 8px; padding: 16px;">
+                        <div style="background: var(--cri-olive-200); border-radius: 8px; padding: 16px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                                <span style="font-size: 12px; color: #D4A853;">Realizado</span>
+                                <span style="font-size: 12px; color: var(--cri-gold);">Realizado</span>
                                 <span id="forecast-actual" style="font-size: 12px; font-weight: 600;">-</span>
                             </div>
                             <div class="progress-bar" style="margin-bottom: 12px;">
                                 <div class="progress-fill" id="forecast-bar" style="width: 0%;"></div>
                             </div>
                             <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                                <span style="color: #7a9e7e;">Confiança: <span id="forecast-confidence">-</span></span>
-                                <span style="color: #D4A853;">Faltam: <span id="forecast-remaining">-</span></span>
+                                <span style="color: var(--cri-success-light);">Confiança: <span id="forecast-confidence">-</span></span>
+                                <span style="color: var(--cri-gold);">Faltam: <span id="forecast-remaining">-</span></span>
                             </div>
                         </div>
                     </div>
@@ -670,7 +671,7 @@
             </div>
 
             <!-- Footer -->
-            <div style="text-align: center; padding: 24px; color: #D4A853; font-size: 12px; border-top: 1px solid #3A4D13; margin-top: 24px;">
+            <div style="text-align: center; padding: 24px; color: var(--cri-gold); font-size: 12px; border-top: 1px solid var(--cri-border); margin-top: 24px;">
                 <i class="fas fa-leaf" style="margin-right: 8px;"></i>
                 Criativalia Control Plane v2.0 • Dados em tempo real do Shopify
             </div>
@@ -775,12 +776,12 @@
         function updateTrend(elementId, trend) {
             const el = document.getElementById(elementId);
             if (!trend || trend === 0) {
-                el.innerHTML = '<span style="color: #888;">-</span>';
+                el.innerHTML = '<span style="color: var(--cri-text-muted);">-</span>';
                 return;
             }
             const isUp = trend >= 0;
             const icon = isUp ? 'fa-arrow-up' : 'fa-arrow-down';
-            const color = isUp ? '#7a9e7e' : '#c17767';
+            const color = isUp ? 'var(--cri-success-light)' : 'var(--cri-error)';
             el.innerHTML = `<i class="fas ${icon}" style="color: ${color};"></i><span style="color: ${color};">${Math.abs(trend).toFixed(1)}%</span>`;
         }
 
@@ -799,8 +800,8 @@
                         {
                             label: 'Mês Atual',
                             data: data.mtd_current || [],
-                            borderColor: '#D4A853',
-                            backgroundColor: 'rgba(212, 168, 83, 0.1)',
+                            borderColor: 'var(--cri-gold)',
+                            backgroundColor: 'var(--cri-gold-100)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4
@@ -808,7 +809,7 @@
                         {
                             label: 'Mês Anterior',
                             data: data.mtd_previous || [],
-                            borderColor: '#4A5D23',
+                            borderColor: 'var(--cri-olive-primary)',
                             backgroundColor: 'transparent',
                             borderWidth: 2,
                             borderDash: [5, 5],
@@ -817,7 +818,7 @@
                         {
                             label: 'Mesmo Mês 2025',
                             data: data.mtd_last_year || [],
-                            borderColor: '#7a9e7e',
+                            borderColor: 'var(--cri-success-light)',
                             backgroundColor: 'transparent',
                             borderWidth: 1,
                             tension: 0.4
@@ -833,8 +834,8 @@
                         {
                             label: '2026',
                             data: data.ytd_2026 || [],
-                            borderColor: '#D4A853',
-                            backgroundColor: 'rgba(212, 168, 83, 0.1)',
+                            borderColor: 'var(--cri-gold)',
+                            backgroundColor: 'var(--cri-gold-100)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4
@@ -842,7 +843,7 @@
                         {
                             label: '2025',
                             data: data.ytd_2025 || [],
-                            borderColor: '#4A5D23',
+                            borderColor: 'var(--cri-olive-primary)',
                             backgroundColor: 'transparent',
                             borderWidth: 2,
                             tension: 0.4
@@ -868,16 +869,16 @@
                     plugins: {
                         legend: {
                             labels: {
-                                color: '#F5F5DC',
+                                color: 'var(--cri-off-white)',
                                 usePointStyle: true,
                                 padding: 20
                             }
                         },
                         tooltip: {
-                            backgroundColor: '#252520',
-                            titleColor: '#F5F5DC',
-                            bodyColor: '#F5F5DC',
-                            borderColor: '#4A5D23',
+                            backgroundColor: 'var(--cri-bg-secondary)',
+                            titleColor: 'var(--cri-off-white)',
+                            bodyColor: 'var(--cri-off-white)',
+                            borderColor: 'var(--cri-olive-primary)',
                             borderWidth: 1,
                             callbacks: {
                                 label: (context) => `${context.dataset.label}: ${formatCurrency(context.raw)}`
@@ -887,15 +888,15 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: '#3A4D13', opacity: 0.3 },
+                            grid: { color: 'var(--cri-border)', opacity: 0.3 },
                             ticks: {
-                                color: '#D4A853',
+                                color: 'var(--cri-gold)',
                                 callback: (value) => 'R$ ' + (value / 1000).toFixed(0) + 'k'
                             }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#D4A853' }
+                            ticks: { color: 'var(--cri-gold)' }
                         }
                     }
                 }
@@ -907,7 +908,7 @@
             const container = document.getElementById('top-products-container');
             
             if (!products || products.length === 0) {
-                container.innerHTML = '<div style="padding: 24px; text-align: center; color: #888;">Nenhum dado disponível</div>';
+                container.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--cri-text-muted);">Nenhum dado disponível</div>';
                 return;
             }
             
@@ -924,17 +925,17 @@
                 const subValue = productView === 'quantity' ? formatCurrency(product.revenue || 0) : (product.quantity || 0) + ' unid.';
                 
                 return `
-                    <div class="product-row" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #2a2a22;">
-                        <div style="width: 32px; height: 32px; background: ${index < 3 ? 'linear-gradient(135deg, #D4A853, #4A5D23)' : '#2a2a22'}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: ${index < 3 ? '#1a1a15' : '#888'};">
+                    <div class="product-row" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--cri-bg-tertiary);">
+                        <div style="width: 32px; height: 32px; background: ${index < 3 ? 'linear-gradient(135deg, var(--cri-gold), var(--cri-olive-primary))' : 'var(--cri-bg-tertiary)'}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: ${index < 3 ? 'var(--cri-bg-primary)' : 'var(--cri-text-muted)'};">
                             ${index + 1}
                         </div>
                         <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 500; color: #F5F5DC; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${product.name}</div>
-                            <div style="font-size: 12px; color: #7a9e7e;">${subValue}</div>
+                            <div style="font-weight: 500; color: var(--cri-off-white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${product.name}</div>
+                            <div style="font-size: 12px; color: var(--cri-success-light);">${subValue}</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-weight: 600; color: #D4A853;">${value}</div>
-                            <div style="font-size: 11px; color: #888;">${product.sold || 0} vendas</div>
+                            <div style="font-weight: 600; color: var(--cri-gold);">${value}</div>
+                            <div style="font-size: 11px; color: var(--cri-text-muted);">${product.sold || 0} vendas</div>
                         </div>
                     </div>
                 `;
@@ -946,22 +947,22 @@
             const tbody = document.getElementById('margin-table-body');
             
             if (!margins || margins.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 24px; color: #888;">Nenhum dado disponível</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 24px; color: var(--cri-text-muted);">Nenhum dado disponível</td></tr>';
                 return;
             }
             
             tbody.innerHTML = margins.slice(0, 8).map(p => {
                 const margin = p.price > 0 ? ((p.price - p.cost) / p.price * 100) : 0;
                 const profit = p.price - p.cost;
-                const marginColor = margin >= 40 ? '#7a9e7e' : margin >= 20 ? '#D4A853' : '#c17767';
+                const marginColor = margin >= 40 ? 'var(--cri-success-light)' : margin >= 20 ? 'var(--cri-gold)' : 'var(--cri-error)';
                 
                 return `
                     <tr>
                         <td style="font-weight: 500;">${p.name}</td>
                         <td>${formatCurrency(p.price)}</td>
-                        <td style="color: #888;">${formatCurrency(p.cost)}</td>
+                        <td style="color: var(--cri-text-muted);">${formatCurrency(p.cost)}</td>
                         <td style="color: ${marginColor}; font-weight: 600;">${margin.toFixed(1)}%</td>
-                        <td style="color: #7a9e7e;">${formatCurrency(profit)}</td>
+                        <td style="color: var(--cri-success-light);">${formatCurrency(profit)}</td>
                     </tr>
                 `;
             }).join('');
@@ -972,7 +973,7 @@
             const container = document.getElementById('category-aov-container');
             
             if (!categories || categories.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: #888; padding: 24px;">Nenhum dado disponível</div>';
+                container.innerHTML = '<div style="text-align: center; color: var(--cri-text-muted); padding: 24px;">Nenhum dado disponível</div>';
                 return;
             }
             
@@ -984,13 +985,13 @@
                 return `
                     <div style="margin-bottom: 16px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <span style="font-size: 13px; color: #F5F5DC;">${cat.name}</span>
-                            <span style="font-size: 13px; font-weight: 600; color: #D4A853;">${formatCurrency(cat.aov)}</span>
+                            <span style="font-size: 13px; color: var(--cri-off-white);">${cat.name}</span>
+                            <span style="font-size: 13px; font-weight: 600; color: var(--cri-gold);">${formatCurrency(cat.aov)}</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${percentage}%; opacity: 0.8;"></div>
                         </div>
-                        <div style="font-size: 11px; color: #7a9e7e; margin-top: 4px;">${cat.orders || 0} pedidos</div>
+                        <div style="font-size: 11px; color: var(--cri-success-light); margin-top: 4px;">${cat.orders || 0} pedidos</div>
                     </div>
                 `;
             }).join('');

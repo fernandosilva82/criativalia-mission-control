@@ -1,0 +1,123 @@
+{
+  "date": "2026-04-20",
+  "period_start": "2026-04-19T00:00:00Z",
+  "period_end": "2026-04-20T23:59:59Z",
+  "summary": {
+    "total_agents": 4,
+    "total_tasks": 17,
+    "total_duration_min": 480
+  },
+  "agents": {
+    "DesignBot": [
+      {
+        "start": "19/04 02:47",
+        "end": "19/04 04:08",
+        "duration_min": 81,
+        "task": "Refinamento visual CSS Theme",
+        "description": "Verificação e refinamento da paleta verde oliva, logo Criativalia, componentes reutilizáveis",
+        "evidence_link": "/evidencias/20250419/design_update_0547.md",
+        "priority": "P1"
+      },
+      {
+        "start": "19/04 19:38",
+        "end": "19/04 23:38",
+        "duration_min": 240,
+        "task": "Design System v2.1 - Consistência Visual",
+        "description": "Refinamento completo do tema, garantindo consistência em 6 páginas, variáveis CSS, componentes reutilizáveis",
+        "evidence_link": "/evidencias/20260419/design_update_2338.md",
+        "priority": "P0"
+      },
+      {
+        "start": "20/04 00:05",
+        "end": "20/04 00:35",
+        "duration_min": 30,
+        "task": "Design System Update - Night Shift",
+        "description": "Tema visual refinado em todas as páginas do Control Plane, paleta oliva/dourado validada",
+        "evidence_link": "/evidencias/20250420/design_update_0005.md",
+        "priority": "P1"
+      },
+      {
+        "start": "20/04 07:00",
+        "end": "20/04 08:08",
+        "duration_min": 68,
+        "task": "Design System v2.1 - Paleta Expandida",
+        "description": "Expansão da paleta verde oliva, garantia de off-white, novos componentes, utilitários e acessibilidade",
+        "evidence_link": "/evidencias/20250420/design_update_0700.md",
+        "priority": "P1"
+      }
+    ],
+    "OpsBot": [
+      {
+        "start": "19/04 04:38",
+        "end": "19/04 04:45",
+        "duration_min": 7,
+        "task": "Scanner de Oportunidades - Análise Operacional",
+        "description": "Análise de 6 produtos, 12 oportunidades identificadas, 7 quick wins, impacto estimado R$26.3k/mês",
+        "evidence_link": "/evidencias/ops-opportunity-scanner/2026-04-19_execucao.md",
+        "priority": "P0"
+      },
+      {
+        "start": "20/04 00:35",
+        "end": "20/04 00:37",
+        "duration_min": 2,
+        "task": "Scan Diário - Ops Opportunity Scanner",
+        "description": "Scan com base em dados existentes, 12 oportunidades revalidadas, erro de autenticação na API Shopify",
+        "evidence_link": "/evidencias/ops_scan_20260420.json",
+        "priority": "P0"
+      }
+    ],
+    "CopyBot": [
+      {
+        "start": "19/04 04:36",
+        "end": "19/04 04:38",
+        "duration_min": 2,
+        "task": "Análise de Copy - Website Criativalia",
+        "description": "12 oportunidades de copy identificadas: placeholders, gaps de conteúdo, storytelling, otimização de headlines",
+        "evidence_link": "/opportunities/20250419/copy_opps.json",
+        "priority": "P1"
+      }
+    ],
+    "TrafficBot": [
+      {
+        "start": "20/04 12:33",
+        "end": "20/04 12:45",
+        "duration_min": 12,
+        "task": "Análise de Tráfego - Tendências e Oportunidades",
+        "description": "10 oportunidades de tráfego identificadas: mushroom lamp, japandi, cottagecore, Pinterest SEO, iluminação sustentável",
+        "evidence_link": "/opportunities/20250420/traffic_opps.json",
+        "priority": "P1"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "agent": "TrafficBot",
+      "period": "19/04 00:00 - 20/04 12:32",
+      "duration_hours": 36.5
+    },
+    {
+      "agent": "CopyBot", 
+      "period": "19/04 04:38 - 20/04 23:59",
+      "duration_hours": 43.3
+    },
+    {
+      "agent": "OpsBot",
+      "period": "19/04 04:45 - 20/04 00:34",
+      "duration_hours": 19.8
+    }
+  ],
+  "highlights": [
+    {
+      "type": "P0",
+      "agent": "DesignBot",
+      "task": "Design System v2.1",
+      "impact": "Consistência visual em 6 páginas, 15+ componentes reutilizáveis"
+    },
+    {
+      "type": "P0",
+      "agent": "OpsBot",
+      "task": "Scanner de Oportunidades",
+      "impact": "R$26.3k/mês de potencial identificado"
+    }
+  ]
+}

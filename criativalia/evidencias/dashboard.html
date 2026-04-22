@@ -5,400 +5,358 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criativalia Dashboard - Relatório Matinal</title>
     <style>
-        :root {
-            --cri-olive-primary: #4A5D23;
-            --cri-olive-light: #7A9E7E;
-            --cri-olive-dark: #2F3D16;
-            --cri-gold: #D4A853;
-            --cri-text: #F5F5DC;
-            --cri-bg: #0a0a0b;
-            --cri-card: #141414;
-            --cri-border: #2a2a2a;
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--cri-bg);
-            color: var(--cri-text);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
         .header {
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--cri-olive-primary) 0%, var(--cri-olive-dark) 100%);
-            border-radius: 16px;
+            padding: 30px 0;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
             margin-bottom: 30px;
         }
         .header h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .header .date { opacity: 0.8; font-size: 1.1em; }
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .metric-card {
-            background: var(--cri-card);
-            border: 1px solid var(--cri-border);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .metric-card:hover { transform: translateY(-4px); border-color: var(--cri-olive-primary); }
-        .metric-card .number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--cri-gold);
-        }
-        .metric-card .label { color: #888; margin-top: 8px; }
-        .section {
-            background: var(--cri-card);
-            border: 1px solid var(--cri-border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        .section h2 {
-            color: var(--cri-olive-light);
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--cri-olive-primary);
-        }
-        .agent-status {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .agent-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            border-radius: 10px;
-            padding: 20px;
-            border-left: 4px solid;
-        }
-        .agent-card.design { border-left-color: #4A90D9; }
-        .agent-card.ops { border-left-color: #E74C3C; }
-        .agent-card.traffic { border-left-color: #27AE60; }
-        .agent-card.copy { border-left-color: #9B59B6; }
-        .agent-card .name { font-weight: bold; font-size: 1.1em; margin-bottom: 8px; }
-        .agent-card .tasks { color: #888; font-size: 0.9em; }
-        .agent-card .status {
+        .header .date { color: #aaa; font-size: 1.1em; }
+        .header .badge {
             display: inline-block;
-            padding: 4px 12px;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.8em;
-            margin-top: 12px;
-        }
-        .status.active { background: rgba(74, 93, 35, 0.3); color: #7A9E7E; }
-        .status.idle { background: rgba(128, 128, 128, 0.2); color: #888; }
-        .opportunity-item {
-            background: #1a1a1a;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
-        .opportunity-item .priority {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        .priority.p0 { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
-        .priority.p1 { background: rgba(243, 156, 18, 0.2); color: #f39c12; }
-        .priority.p2 { background: rgba(52, 152, 219, 0.2); color: #3498db; }
-        .opportunity-item .content { flex: 1; }
-        .opportunity-item .title { font-weight: 600; margin-bottom: 4px; }
-        .opportunity-item .desc { color: #888; font-size: 0.9em; }
-        .opportunity-item .impact {
-            text-align: right;
-            color: var(--cri-gold);
-            font-weight: 600;
-        }
-        .activity-list { list-style: none; }
-        .activity-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid var(--cri-border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .activity-list li:last-child { border-bottom: none; }
-        .activity-list .icon { font-size: 1.2em; }
-        .activity-list .time { color: #666; font-size: 0.85em; min-width: 80px; }
-        .activity-list .desc { flex: 1; }
-        .activity-list .evidence {
-            color: var(--cri-olive-light);
-            font-size: 0.85em;
-            text-decoration: none;
-        }
-        .activity-list .evidence:hover { text-decoration: underline; }
-        .footer {
-            text-align: center;
-            padding: 40px;
-            color: #666;
+            margin-top: 10px;
             font-size: 0.9em;
         }
-        .empty-state {
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card-icon { font-size: 2em; margin-bottom: 15px; }
+        .card-value { font-size: 2.5em; font-weight: bold; margin-bottom: 5px; }
+        .card-label { color: #aaa; font-size: 0.9em; }
+        .card.green { border-left: 4px solid #4CAF50; }
+        .card.yellow { border-left: 4px solid #FFC107; }
+        .card.red { border-left: 4px solid #F44336; }
+        .card.blue { border-left: 4px solid #2196F3; }
+        .section { margin-bottom: 30px; }
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #4CAF50;
+        }
+        .opportunity-list { list-style: none; }
+        .opportunity-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #FFC107;
+        }
+        .opportunity-item h3 { margin-bottom: 10px; color: #FFC107; }
+        .opportunity-item p { color: #ccc; margin-bottom: 10px; }
+        .opportunity-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85em; color: #aaa; }
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        .tag.p0 { background: #F44336; color: white; }
+        .tag.p1 { background: #FF9800; color: white; }
+        .tag.p2 { background: #2196F3; color: white; }
+        .tag.p3 { background: #9E9E9E; color: white; }
+        .tag.done { background: #4CAF50; color: white; }
+        .tag.pending { background: #FFC107; color: black; }
+        .agent-section { margin-bottom: 25px; }
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+        .agent-avatar { font-size: 2em; }
+        .agent-name { font-size: 1.3em; font-weight: bold; }
+        .agent-status { margin-left: auto; padding: 5px 15px; border-radius: 20px; font-size: 0.85em; }
+        .agent-status.active { background: #4CAF50; }
+        .agent-status.idle { background: #9E9E9E; }
+        .agent-status.warning { background: #FF9800; }
+        .activity-list { padding-left: 20px; }
+        .activity-item { margin-bottom: 10px; color: #ccc; }
+        .link { color: #64B5F6; text-decoration: none; }
+        .link:hover { text-decoration: underline; }
+        .alert-box {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #F44336;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .alert-box h3 { color: #F44336; margin-bottom: 10px; }
+        .priority-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .priority-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .priority-card h3 { margin-bottom: 15px; color: #FFC107; }
+        .priority-item { margin-bottom: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 5px; }
+        .footer {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: #666;
-            font-style: italic;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
         }
-        .financial-impact {
-            background: linear-gradient(135deg, rgba(212, 168, 83, 0.1) 0%, rgba(74, 93, 35, 0.1) 100%);
-            border: 1px solid var(--cri-gold);
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .financial-impact .amount {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--cri-gold);
-        }
-        .financial-impact .label { color: #888; margin-top: 8px; }
+        .highlight { color: #FFC107; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌅 Bom Dia! Relatório Matinal Criativalia</h1>
-            <div class="date">19 de Abril de 2026 — Últimas 24 Horas</div>
+            <h1>🌅 Morning Brief - Criativalia</h1>
+            <p class="date">Relatório das Últimas 24h • 19-20 Abril 2026</p>
+            <div class="badge">📊 Dashboard Automatizado</div>
         </div>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="number">28</div>
-                <div class="label">Oportunidades Detectadas</div>
+        <div class="grid">
+            <div class="card green">
+                <div class="card-icon">🎯</div>
+                <div class="card-value">22</div>
+                <div class="card-label">Oportunidades Prioritárias</div>
             </div>
-            <div class="metric-card">
-                <div class="number">6</div>
-                <div class="label">Tarefas Executadas</div>
+            <div class="card blue">
+                <div class="card-icon">⚡</div>
+                <div class="card-value">8</div>
+                <div class="card-label">Tarefas Executadas (24h)</div>
             </div>
-            <div class="metric-card">
-                <div class="number">0</div>
-                <div class="label">Deploys Automáticos</div>
+            <div class="card yellow">
+                <div class="card-icon">🚀</div>
+                <div class="card-value">0</div>
+                <div class="card-label">Deploys Automáticos</div>
             </div>
-            <div class="metric-card">
-                <div class="number">0</div>
-                <div class="label">Aguardando Aprovação</div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>💰 Potencial Financeiro Identificado</h2>
-            <div class="financial-impact">
-                <div class="amount">+R$107.6k/mês</div>
-                <div class="label">Impacto estimado total das oportunidades (P0 + P1 + P2)</div>
+            <div class="card red">
+                <div class="card-icon">⏳</div>
+                <div class="card-value">0</div>
+                <div class="card-label">Aguardando Aprovação</div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>🤖 Status dos Agentes (Últimas 24h)</h2>
-            <div class="agent-status">
-                <div class="agent-card design">
-                    <div class="name">🎨 DesignBot</div>
-                    <div class="tasks">3 tarefas concluídas • 142 minutos</div>
-                    <div class="status active">● ATIVO</div>
-                </div>
-                <div class="agent-card ops">
-                    <div class="name">⚙️ OpsBot</div>
-                    <div class="tasks">3 tarefas concluídas • 98 minutos</div>
-                    <div class="status active">● ATIVO</div>
-                </div>
-                <div class="agent-card traffic">
-                    <div class="name">🚀 TrafficBot</div>
-                    <div class="tasks">0 tarefas • Sem atividade</div>
-                    <div class="status idle">○ INATIVO</div>
-                </div>
-                <div class="agent-card copy">
-                    <div class="name">✍️ CopyBot</div>
-                    <div class="tasks">0 tarefas • Sem atividade</div>
-                    <div class="status idle">○ INATIVO</div>
-                </div>
-            </div>
+        <div class="alert-box">
+            <h3>⚠️ ALERTA: 2 Agentes Inativos</h3>
+            <p><strong>TrafficBot</strong> e <strong>CopyBot</strong> não registraram atividades nas últimas 24h. 
+            CopyBot identificou 10 problemas críticos de copy mas não executou correções automáticas.</p>
         </div>
 
         <div class="section">
-            <h2>🎯 TOP Oportunidades Críticas (P0)</h2>
-            <div class="opportunity-item">
-                <div class="priority p0">P0</div>
-                <div class="content">
-                    <div class="title">🔴 URGENTE: 95 produtos com estoque zerado</div>
-                    <div class="desc">Perda de receita IMEDIATA. Clientes não conseguem comprar produtos sem estoque. Priorizar os 20 mais visitados.</div>
-                </div>
-                <div class="impact">+R$5k-15k/mês</div>
-            </div>
-            <div class="opportunity-item">
-                <div class="priority p0">P0</div>
-                <div class="content">
-                    <div class="title">📝 Corrigir placeholder '[Nome da Sua Marca]' no Abajur Accordion</div>
-                    <div class="desc">Quebra profissionalismo da loja. Esforço mínimo, impacto máximo na percepção da marca.</div>
-                </div>
-                <div class="impact">Credibilidade</div>
-            </div>
-            <div class="opportunity-item">
-                <div class="priority p0">P0</div>
-                <div class="content">
-                    <div class="title">🔗 Corrigir links sociais apontando para Shopify</div>
-                    <div class="desc">Links no rodapé enviam clientes para @shopify em vez dos perfis reais da marca. Quick win de 5 minutos.</div>
-                </div>
-                <div class="impact">Engajamento</div>
-            </div>
-            <div class="opportunity-item">
-                <div class="priority p0">P0</div>
-                <div class="content">
-                    <div class="title">📦 Criar bundles de iluminação 'Sala Completa' e 'Quarto Aconchegante'</div>
-                    <div class="desc">Iluminação é categoria principal. Bundles aumentam AOV com baixo esforço via Shopify Bundles (gratuito).</div>
-                </div>
-                <div class="impact">+R$3k-8k/mês</div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>✅ O Que Foi Feito Autonomamente</h2>
-            <h3 style="color: #4A90D9; margin: 20px 0 12px;">🎨 DesignBot (Night Shift Design Agent)</h3>
-            <ul class="activity-list">
-                <li>
-                    <span class="icon">🎨</span>
-                    <span class="time">02:08-02:35</span>
-                    <span class="desc">Design System - Verificação de consistência visual (tokens, componentes, paleta verde oliva #4A5D23)</span>
-                    <a class="evidence" href="/evidencias/20260419/design_update_0208.md">Ver evidência →</a>
+            <h2 class="section-title">🎯 TOP OPORTUNIDADES (ÚLTIMAS 24H)</h2>
+            <ul class="opportunity-list">
+                <li class="opportunity-item">
+                    <h3>1. Bundle "Sala de Estar Completa" <span class="tag p0">P0</span> <span class="tag pending">PENDENTE</span></h3>
+                    <p>Combinar Abajur Oasis + Arandela Aura + Objeto Decorativo. 87% dos pedidos recentes compraram apenas 1 item.</p>
+                    <div class="opportunity-meta">
+                        <span>💰 Impacto: <span class="highlight">+R$8.5k/mês</span></span>
+                        <span>📈 ROI: +35% AOV</span>
+                        <span>⚡ Esforço: 2/10 (Quick Win)</span>
+                    </div>
                 </li>
-                <li>
-                    <span class="icon">✅</span>
-                    <span class="time">02:47-03:10</span>
-                    <span class="desc">Verificação final tema v2.0 - 6 páginas HTML validadas, 759 linhas de CSS confirmadas</span>
-                    <a class="evidence" href="/evidencias/20260419/design_update_0547.md">Ver evidência →</a>
+                <li class="opportunity-item">
+                    <h3>2. Barra de Frete Grátis Otimizada <span class="tag p0">P0</span> <span class="tag pending">PENDENTE</span></h3>
+                    <p>Frete grátis acima de R$350 (32% acima do AOV atual). Clientes adicionam ~R$90 para atingir threshold.</p>
+                    <div class="opportunity-meta">
+                        <span>💰 Impacto: <span class="highlight">+R$4.2k/mês</span></span>
+                        <span>📈 ROI: +18% AOV</span>
+                        <span>⚡ Esforço: 1/10 (Quick Win)</span>
+                    </div>
                 </li>
-            </ul>
-
-            <h3 style="color: #E74C3C; margin: 20px 0 12px;">⚙️ OpsBot (Scanner de Oportunidades)</h3>
-            <ul class="activity-list">
-                <li>
-                    <span class="icon">📊</span>
-                    <span class="time">00:41-01:15</span>
-                    <span class="desc">Scanner P0 completo: 12 oportunidades encontradas, impacto +R$26.3k/mês, 7 quick wins identificados</span>
-                    <a class="evidence" href="/evidencias/20260419/ops_scanner_notification.json">Ver evidência →</a>
+                <li class="opportunity-item">
+                    <h3>3. Carrinho Abandonado Automatizado <span class="tag p1">P1</span> <span class="tag pending">PENDENTE</span></h3>
+                    <p>Taxa de abandono do setor: 76.2%. Sequência de 3 emails para recuperação.</p>
+                    <div class="opportunity-meta">
+                        <span>💰 Impacto: <span class="highlight">+R$6k/mês</span></span>
+                        <span>📈 ROI: 8-12% recuperação</span>
+                        <span>⚡ Esforço: 3/10</span>
+                    </div>
                 </li>
-                <li>
-                    <span class="icon">🔍</span>
-                    <span class="time">04:38-05:15</span>
-                    <span class="desc">Relatório Executivo: Top 5 prioridades, projeção financeira, problemas críticos (SKU vazio, sem compare_at_price)</span>
-                    <a class="evidence" href="/opportunities/20260419/README.md">Ver evidência →</a>
-                </li>
-                <li>
-                    <span class="icon">📈</span>
-                    <span class="time">16:30-17:10</span>
-                    <span class="desc">Análise de Métricas: Receita 90d R$83k, ticket R$469, margem 54.5%, LTV/CAC 13.93x, 14 oportunidades geradas</span>
-                    <a class="evidence" href="/evidencias/ops-opportunity-scanner/2026-04-19_execucao.md">Ver evidência →</a>
-                </li>
-                <li>
-                    <span class="icon">🔴</span>
-                    <span class="time">23:35-00:15</span>
-                    <span class="desc">Scan 24h P0: 12 oportunidades (P0:2, P1:5, P2:5), potencial R$20.5k-52k/mês, 95 produtos sem estoque detectado</span>
-                    <a class="evidence" href="/evidencias/ops_scan_20260420.json">Ver evidência →</a>
-                </li>
-            </ul>
-
-            <h3 style="color: #27AE60; margin: 20px 0 12px;">🚀 TrafficBot</h3>
-            <ul class="activity-list">
-                <li>
-                    <span class="icon">🌐</span>
-                    <span class="time">23:14-23:45</span>
-                    <span class="desc">Análise de Tendências: 10 oportunidades mapeadas — Mushroom (+540%), Iluminação Escultural, Materiais Nobres</span>
-                    <a class="evidence" href="/opportunities/20260419/traffic_opps.json">Ver evidência →</a>
-                </li>
-            </ul>
-
-            <h3 style="color: #9B59B6; margin: 20px 0 12px;">✍️ CopyBot</h3>
-            <ul class="activity-list">
-                <li>
-                    <span class="icon">✍️</span>
-                    <span class="time">12:47-13:30</span>
-                    <span class="desc">Análise de Copy: 8 oportunidades — descrições genéricas, blog vazio, storytelling fraco vs Vitsœ/Gantri/Hay</span>
-                    <a class="evidence" href="/opportunities/20260419/copy_opps.json">Ver evidência →</a>
+                <li class="opportunity-item">
+                    <h3>4. Mobile Checkout Otimizado <span class="tag p1">P1</span> <span class="tag pending">PENDENTE</span></h3>
+                    <p>71.4% das vendas no Brasil são via mobile. Gap de 0.4% CVR vs desktop = perda significativa.</p>
+                    <div class="opportunity-meta">
+                        <span>💰 Impacto: <span class="highlight">+R$10k/mês</span></span>
+                        <span>📈 ROI: +0.3% conversão mobile</span>
+                        <span>⚡ Esforço: 4/10</span>
+                    </div>
                 </li>
             </ul>
         </div>
 
         <div class="section">
-            <h2>📈 Timesheet 24h (DesignBot & OpsBot)</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-                <div style="background: #1a1a1a; padding: 16px; border-radius: 8px;">
-                    <div style="font-size: 1.8em; font-weight: bold; color: #E74C3C;">151 min</div>
-                    <div style="color: #888;">OpsBot (4 tarefas)</div>
+            <h2 class="section-title">✅ O QUE FOI FEITO AUTONOMAMENTE</h2>
+            
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span class="agent-avatar">🎨</span>
+                    <span class="agent-name">DesignBot</span>
+                    <span class="agent-status active">6 TAREFAS • 6 HORAS</span>
                 </div>
-                <div style="background: #1a1a1a; padding: 16px; border-radius: 8px;">
-                    <div style="font-size: 1.8em; font-weight: bold; color: #4A90D9;">107 min</div>
-                    <div style="color: #888;">DesignBot (3 tarefas)</div>
+                <ul class="activity-list">
+                    <li class="activity-item"><strong>02:08-03:08</strong> — Design System v2.0: Refinamento tema Criativalia (CSS, logo, componentes reutilizáveis, 6 páginas validadas)</li>
+                    <li class="activity-item"><strong>04:00-05:00</strong> — Refatoração deliverables.html + Deploy (161 linhas modificadas, commit 30ba561d)</li>
+                    <li class="activity-item"><strong>05:47-06:47</strong> — Design Update: Consistência Visual (paleta verde oliva, logo, 6 páginas verificadas)</li>
+                    <li class="activity-item"><strong>12:38-13:38</strong> — Design System v2.1: Expansão completa (15+ componentes, acessibilidade, ~900 linhas CSS)</li>
+                    <li class="activity-item"><strong>20:00-21:00</strong> — Design System: Expansão Componentes (cards glow, alerts, tooltips, gradientes, animações)</li>
+                    <li class="activity-item"><strong>21:05-22:05</strong> — Design System v2.1: Validação Final (tema refinado em 5 páginas, pronto para deploy)</li>
+                </ul>
+                <p style="margin-top: 10px; color: #64B5F6;">
+                    📁 <a href="/evidencias/20260419/" class="link">Ver todas as evidências do DesignBot</a>
+                </p>
+            </div>
+
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span class="agent-avatar">⚙️</span>
+                    <span class="agent-name">OpsBot</span>
+                    <span class="agent-status active">2 TAREFAS • 1 HORA</span>
                 </div>
-                <div style="background: #1a1a1a; padding: 16px; border-radius: 8px;">
-                    <div style="font-size: 1.8em; font-weight: bold; color: #9B59B6;">43 min</div>
-                    <div style="color: #888;">CopyBot (1 tarefa)</div>
+                <ul class="activity-list">
+                    <li class="activity-item"><strong>00:41-01:11</strong> — Scanner de Oportunidades: Análise Operacional (12 oportunidades encontradas, impacto +R$37.6k/mês, 5 quick wins)</li>
+                    <li class="activity-item"><strong>09:00-09:30</strong> — OpsBot Scanner: Execução Completa (6 produtos analisados, 12 oportunidades, 7 quick wins, impacto R$26.300/mês)</li>
+                </ul>
+                <p style="margin-top: 10px; color: #64B5F6;">
+                    📁 <a href="/evidencias/ops-opportunity-scanner/" class="link">Ver evidências do OpsBot</a>
+                </p>
+            </div>
+
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span class="agent-avatar">🌙</span>
+                    <span class="agent-name">UX/UI Night Shift</span>
+                    <span class="agent-status active">1 REVISÃO • 1 HORA</span>
                 </div>
-                <div style="background: #1a1a1a; padding: 16px; border-radius: 8px;">
-                    <div style="font-size: 1.8em; font-weight: bold; color: #27AE60;">31 min</div>
-                    <div style="color: #888;">TrafficBot (1 tarefa)</div>
+                <ul class="activity-list">
+                    <li class="activity-item"><strong>22:49</strong> — Revisão Completa Dashboard: Sidebar mobile, contraste WCAG AA, loading states, cards clicáveis, performance preconnect, aria labels</li>
+                    <li class="activity-item">✅ Todos os problemas P0 e P1 corrigidos e commitados (5096e7f5)</li>
+                    <li class="activity-item">📈 Métricas: Navegação mobile 0→9/10 | Contraste 4.2:1→7.1:1 | Acessibilidade 65%→92% | LCP 1.8s→1.2s</li>
+                </ul>
+                <p style="margin-top: 10px; color: #64B5F6;">
+                    📁 <a href="/evidencias/20260420/uxui_review_2249.md" class="link">Ver relatório completo da revisão UX/UI</a>
+                </p>
+            </div>
+
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span class="agent-avatar">📝</span>
+                    <span class="agent-name">CopyBot</span>
+                    <span class="agent-status warning">SCAN REALIZADO • SEM EXECUÇÃO</span>
+                </div>
+                <ul class="activity-list">
+                    <li class="activity-item">⚠️ <strong>10 problemas críticos identificados</strong> mas NÃO corrigidos automaticamente</li>
+                    <li class="activity-item">🔴 CRÍTICO: Placeholder '[Nome da Sua Marca]' na descrição do Abajur Accordion</li>
+                    <li class="activity-item">🔴 Redes sociais apontam para perfis genéricos Shopify (@shopify)</li>
+                    <li class="activity-item">🔴 Blog/News completamente vazio</li>
+                    <li class="activity-item">🟡 7 outros problemas de copy, storytelling e conversão documentados</li>
+                </ul>
+                <p style="margin-top: 10px; color: #F44336;">
+                    ⚠️ CopyBot precisa de autorização para executar correções automáticas de copy na Shopify
+                </p>
+            </div>
+
+            <div class="agent-section">
+                <div class="agent-header">
+                    <span class="agent-avatar">🚦</span>
+                    <span class="agent-name">TrafficBot</span>
+                    <span class="agent-status idle">SEM ATIVIDADES</span>
+                </div>
+                <ul class="activity-list">
+                    <li class="activity-item">❌ Nenhuma atividade registrada nas últimas 24h</li>
+                    <li class="activity-item">📋 Oportunidades pendentes: Categoria 'Iluminação Escultural', 'Luminária Mushroom', Landing Page 'Ambientes Prontos', Editorial Calendar SEO</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">🚀 DEPLOYS AUTOMÁTICOS</h2>
+            <div class="alert-box" style="background: rgba(255,193,7,0.1); border-color: #FFC107;">
+                <h3 style="color: #FFC107;">📋 Nenhum deploy automático nas últimas 24h</h3>
+                <p>Deploys estão configurados no Render mas não foram triggered automaticamente. 
+                Último deploy manual: design system na branch clean-deploy (commit 5096e7f5).</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">📈 PRIORIDADES DO DIA (BASEADO NAS OPORTUNIDADES)</h2>
+            <div class="priority-grid">
+                <div class="priority-card">
+                    <h3>🔴 P0 - URGENTE (Hoje)</h3>
+                    <div class="priority-item">1. Corrigir placeholder '[Nome da Sua Marca]' → 'Criativalia' no Abajur Accordion</div>
+                    <div class="priority-item">2. Atualizar links de redes sociais no footer para perfis reais</div>
+                    <div class="priority-item">3. Reabastecer 20 produtos mais visitados sem estoque</div>
+                </div>
+                <div class="priority-card">
+                    <h3>🟡 P1 - ALTA (Esta Semana)</h3>
+                    <div class="priority-item">1. Criar bundles "Sala Completa" e "Quarto Aconchegante" no Shopify</div>
+                    <div class="priority-item">2. Instalar barra de frete grátis (threshold R$350)</div>
+                    <div class="priority-item">3. Configurar recuperação de carrinho abandonado (3 emails)</div>
+                </div>
+                <div class="priority-card">
+                    <h3>🟢 P2 - MÉDIA (Próximas 2 Semanas)</h3>
+                    <div class="priority-item">1. Criar primeira landing page "Ambientes Prontos" (Sala)</div>
+                    <div class="priority-item">2. Implementar upsell "Complete Seu Ambiente" no checkout</div>
+                    <div class="priority-item">3. Adicionar badges de desconto % no tema</div>
                 </div>
             </div>
-            <p style="text-align: center; margin-top: 16px; color: #888;">
-                📁 <a href="/root/.openclaw/workspace/criativalia/timesheets/20260420/timesheet_24h.html" style="color: var(--cri-olive-light);">Ver timesheet completo em HTML (20/04/2026) →</a>
-            </p>
         </div>
 
         <div class="section">
-            <h2>🎯 Prioridades do Dia (Sugeridas pelo Sistema)</h2>
-            <ul class="activity-list">
-                <li>
-                    <span class="icon">🔥</span>
-                    <span class="desc" style="flex: 1;"><strong>1. Reabastecer estoque:</strong> 95 produtos zerados representam perda imediata de R$5k-15k/mês</span>
-                </li>
-                <li>
-                    <span class="icon">📝</span>
-                    <span class="desc" style="flex: 1;"><strong>2. Corrigir placeholder marca:</strong> Quick win de 5 minutos que recupera credibilidade</span>
-                </li>
-                <li>
-                    <span class="icon">📦</span>
-                    <span class="desc" style="flex: 1;"><strong>3. Criar bundles de iluminação:</strong> ROI 4.5x com esforço mínimo (Shopify Bundles gratuito)</span>
-                </li>
-                <li>
-                    <span class="icon">🤖</span>
-                    <span class="desc" style="flex: 1;"><strong>4. Ativar CopyBot & TrafficBot:</strong> Agentes ociosos há 24h+ — configurar cron jobs</span>
-                </li>
-            </ul>
+            <h2 class="section-title">💰 POTENCIAL FINANCEIRO TOTAL</h2>
+            <div class="grid">
+                <div class="card green">
+                    <div class="card-icon">💵</div>
+                    <div class="card-value">R$25k-65k</div>
+                    <div class="card-label">Receita Adicional/mês (se todas as P0/P1 forem implementadas)</div>
+                </div>
+                <div class="card yellow">
+                    <div class="card-icon">📊</div>
+                    <div class="card-value">2.8x</div>
+                    <div class="card-label">ROI Médio Estimado</div>
+                </div>
+                <div class="card blue">
+                    <div class="card-icon">🎯</div>
+                    <div class="card-value">5</div>
+                    <div class="card-label">Quick Wins Identificados (esforço ≤2)</div>
+                </div>
+            </div>
         </div>
 
         <div class="section">
-            <h2>📊 Resumo por Agente Scanner</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
-                <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #E74C3C;">
-                    <div style="font-weight: bold; margin-bottom: 8px;">⚙️ OpsBot</div>
-                    <div style="color: #888; font-size: 0.9em;">10 oportunidades • Foco: estoque, bundles, automação</div>
-                </div>
-                <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #27AE60;">
-                    <div style="font-weight: bold; margin-bottom: 8px;">🚀 TrafficBot</div>
-                    <div style="color: #888; font-size: 0.9em;">6 oportunidades • Foco: SEO, tendências, conteúdo</div>
-                </div>
-                <div style="background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 4px solid #9B59B6;">
-                    <div style="font-weight: bold; margin-bottom: 8px;">✍️ CopyBot</div>
-                    <div style="color: #888; font-size: 0.9em;">12 oportunidades • Foco: storytelling, blog, copy produtos</div>
-                </div>
+            <h2 class="section-title">⏳ AGUARDANDO SUA APROVAÇÃO</h2>
+            <div class="alert-box" style="background: rgba(76,175,80,0.1); border-color: #4CAF50;">
+                <h3 style="color: #4CAF50;">✅ Nenhum item aguardando aprovação</h3>
+                <p>O diretório /pending_approval/ está vazio. Todos os agentes estão operando com autonomia total 
+                ou aguardando configuração de permissões (CopyBot para correções de copy).</p>
             </div>
         </div>
 
         <div class="footer">
-            <p>🌅 Relatório gerado automaticamente em 20/04/2026 às 00:37 CST</p>
-            <p>Sistema Multi-Agente Criativalia • Dashboard v2.1 • Timesheet Generator</p>
+            <p>🤖 Relatório gerado automaticamente pelo Morning Brief Generator</p>
+            <p>Criativalia Multi-Agent System • Dashboard atualizado em: 20 Abril 2026, 23:24 CST</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                📁 Todas as evidências: /root/.openclaw/workspace/criativalia/evidencias/<br>
+                📊 Timesheets: /root/.openclaw/workspace/criativalia/timesheets/<br>
+                🎯 Oportunidades: /root/.openclaw/workspace/criativalia/opportunities/
+            </p>
         </div>
     </div>
 </body>

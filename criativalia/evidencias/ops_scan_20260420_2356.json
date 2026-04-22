@@ -1,0 +1,55 @@
+{
+  "scan_id": "ops-20260420-235656",
+  "agent": "OpsBot",
+  "timestamp": "2026-04-20T23:56:56Z",
+  "store": "Criativalia",
+  "shopify_domain": "m-s-negocios-2.myshopify.com",
+  "status": "completed",
+  "previous_scan": "ops-20260420-003526",
+  "data_delta": {
+    "revenue_mtd_change": "+346.80",
+    "orders_mtd_change": "+1",
+    "aov_change": "+2.92",
+    "new_order": {
+      "id": "#2790",
+      "customer": "Thais Nieto",
+      "total": 346.80,
+      "date": "2026-04-20T11:41:44-03:00"
+    }
+  },
+  "current_metrics": {
+    "revenue_mtd": 7866.29,
+    "orders_mtd": 30,
+    "aov": 262.21,
+    "repeat_rate": 2.17,
+    "top_product": "Luminária Mushroom (10 vendas, R$ 3.199)"
+  },
+  "opportunities_status": {
+    "ops_001_bundles": "pending",
+    "ops_002_frete_gratis": "pending",
+    "ops_003_margem_negociavel": "pending",
+    "ops_004_carrinho_abandonado": "pending",
+    "ops_005_criativalia_club": "pending",
+    "ops_006_landing_ambientes": "pending",
+    "ops_007_outlet": "pending",
+    "ops_008_mobile_checkout": "pending",
+    "ops_009_upsell": "pending",
+    "ops_010_indicacao": "pending"
+  },
+  "quick_wins_today": [
+    {
+      "id": "quick_001",
+      "title": "AOV subiu R$ 2,92 — cliente Thais Nieto comprou R$ 346,80 (acima da média)",
+      "type": "positive_signal",
+      "action": "Analisar o que Thais comprou para identificar padrão de bundle natural"
+    },
+    {
+      "id": "quick_002", 
+      "title": "Luminária Mushroom liderando com 10 vendas — oportunidade de criar coleção 'Mushroom'",
+      "type": "product_insight",
+      "action": "Criar landing page ou coleção dedicada à linha Mushroom com produtos complementares"
+    }
+  ],
+  "alerts": [],
+  "notes": "Scan de fechamento de dia. Loja teve 30 pedidos no mês, com AOV crescendo. Nenhum alerta crítico."
+}
