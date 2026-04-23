@@ -1,7 +1,15 @@
 /**
- * Criativalia Design System v2.4
+ * Criativalia Design System v2.5
  * Paleta: Verde Oliva + Off-White + Gold Accents
  * Refinado por Night Shift Design Agent - 2026-04-23
+ *
+ * CHANGELOG v2.5 (Night Shift):
+ * - Added prefers-reduced-motion support for accessibility
+ * - Added focus-visible outline with gold accent
+ * - Added selection color with olive tint
+ * - Fixed body margin and min-height for consistent layout
+ * - Verified all 6 HTML pages link theme CSS consistently
+ * - Logo SVG verified and present in images/
  *
  * CHANGELOG v2.4:
  * - Refined olive palette with better contrast ratios
@@ -155,6 +163,8 @@ body {
   color: var(--cri-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  min-height: 100vh;
 }
 
 /* ============================================
@@ -1673,4 +1683,43 @@ body {
   background: var(--cri-gold-muted);
   color: var(--cri-gold);
   border-color: rgba(212, 168, 83, 0.3);
+}
+
+/* ============================================
+   ACCESSIBILITY - MOTION PREFERENCES
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .cri-skeleton {
+    animation: none;
+    background: var(--cri-bg-tertiary);
+  }
+  
+  .cri-loading__spinner {
+    animation: none;
+    border-top-color: var(--cri-border);
+  }
+}
+
+/* ============================================
+   FOCUS VISIBLE (Accessibility)
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--cri-gold);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   SELECTION COLOR
+   ============================================ */
+::selection {
+  background: rgba(74, 93, 35, 0.4);
+  color: var(--cri-off-white);
 }
